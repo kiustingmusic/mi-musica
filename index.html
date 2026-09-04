@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nombre Artista — Música</title>
+<meta name="description" content="Sitio oficial de [Nombre Artista]. Escucha, mira fotos y ponte en contacto.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header class="site-header">
+  <span class="brand">Nombre Artista</span>
+  <nav class="site-nav">
+    <a href="#musica">Música</a>
+    <a href="#bio">Bio</a>
+    <a href="#fotos">Fotos</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-kicker">Nuevo sencillo</p>
+    <h1 class="hero-title">Nombre<br>de tu<br>música</h1>
+    <p class="hero-sub">Escribe aquí una línea que describa tu sonido — el género, el ánimo, de dónde viene.</p>
+    <a href="#musica" class="hero-cta">Escuchar ahora</a>
+  </section>
+
+  <!-- REPRODUCTOR -->
+  <section id="musica" class="section player-section">
+    <h2 class="section-title">Música</h2>
+
+    <div class="player">
+      <div class="player-art" id="playerArt"></div>
+      <div class="player-body">
+        <div class="now-playing">
+          <p class="np-track" id="npTrack">Selecciona una canción</p>
+          <p class="np-artist">Nombre Artista</p>
+        </div>
+        <div class="player-controls">
+          <button id="prevBtn" class="ctrl-btn" aria-label="Anterior">
+            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+          </button>
+          <button id="playBtn" class="ctrl-btn play-btn" aria-label="Reproducir">
+            <svg id="playIcon" viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button id="nextBtn" class="ctrl-btn" aria-label="Siguiente">
+            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg>
+          </button>
+        </div>
+        <div class="progress-row">
+          <span id="curTime" class="time">0:00</span>
+          <input type="range" id="seek" class="seek" value="0" min="0" max="100" step="0.1">
+          <span id="durTime" class="time">0:00</span>
+        </div>
+      </div>
+    </div>
+
+    <ol class="track-list" id="trackList"><!-- generado por script.js --></ol>
+
+    <div class="stream-links">
+      <p class="stream-label">Escúchame también en</p>
+      <div class="stream-buttons">
+        <a href="#" target="_blank" rel="noopener">Spotify</a>
+        <a href="#" target="_blank" rel="noopener">SoundCloud</a>
+        <a href="#" target="_blank" rel="noopener">Apple Music</a>
+        <a href="#" target="_blank" rel="noopener">YouTube</a>
+      </div>
+    </div>
+
+    <audio id="audio" preload="metadata"></audio>
+  </section>
+
+  <!-- BIO -->
+  <section id="bio" class="section bio-section">
+    <div class="bio-photo">
+      <img src="assets/img/bio.jpg" alt="Foto de Nombre Artista" onerror="this.style.display='none'">
+    </div>
+    <div class="bio-text">
+      <h2 class="section-title">Sobre mí</h2>
+      <p>Escribe aquí dos o tres párrafos de tu biografía: dónde naciste, cómo empezaste en la música, qué te influencia, y qué quieres que la gente sienta al escucharte.</p>
+      <p>Un segundo párrafo funciona bien para mencionar logros, presentaciones o proyectos importantes — sin exagerar, con tono natural.</p>
+    </div>
+  </section>
+
+  <!-- GALERÍA -->
+  <section id="fotos" class="section gallery-section">
+    <h2 class="section-title">Fotos</h2>
+    <div class="gallery-grid" id="galleryGrid"><!-- generado por script.js --></div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" class="section contact-section">
+    <h2 class="section-title">Contacto</h2>
+    <p class="contact-sub">Para bookings, colaboraciones o prensa, escríbeme.</p>
+    <a class="contact-email" href="mailto:tu-correo@ejemplo.com">tu-correo@ejemplo.com</a>
+    <div class="social-row">
+      <a href="#" target="_blank" rel="noopener">Instagram</a>
+      <a href="#" target="_blank" rel="noopener">TikTok</a>
+      <a href="#" target="_blank" rel="noopener">YouTube</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>&copy; <span id="year"></span> Nombre Artista. Todos los derechos reservados.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
