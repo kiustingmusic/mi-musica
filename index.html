@@ -1,120 +1,945 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nombre Artista — Música</title>
-<meta name="description" content="Sitio oficial de [Nombre Artista]. Escucha, mira fotos y ponte en contacto.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kiustin G | Sitio Oficial</title>
+<meta content="Sitio oficial de Kiustin G: música, biografía, videos, libros y proyectos creativos." name="description"/>
+<link href="style.css" rel="stylesheet"/>
 </head>
 <body>
-
-<div class="grain"></div>
-
-<header class="site-header">
-  <span class="brand">Nombre Artista</span>
-  <nav class="site-nav">
-    <a href="#musica">Música</a>
-    <a href="#bio">Bio</a>
-    <a href="#fotos">Fotos</a>
-    <a href="#contacto">Contacto</a>
-  </nav>
+<header class="hero">
+<div class="overlay"></div>
+<nav class="nav">
+<div class="logo">KIUSTIN G</div>
+<div class="menu">
+<a href="#inicio">Inicio</a>
+<a href="#biografia">Biografía</a>
+<a href="#musica">Música</a>
+<a href="#videos">Videos</a>
+<a href="#libros">Libros</a>
+<a href="#contacto">Contacto</a>
+</div>
+</nav>
+<div class="hero-content" id="inicio">
+<p class="small-title">SITIO OFICIAL</p>
+<h1>KIUSTIN G</h1>
+<h2>Médico · Artista · Compositor · Escritor · Creador</h2>
+<p class="tagline">
+        Una vida dedicada a sanar, crear y dejar huellas.
+      </p>
+<div class="buttons">
+<a class="btn primary" href="#musica">Escuchar música</a>
+<a class="btn secondary" href="#biografia">Conocer mi historia</a>
+</div>
+</div>
 </header>
-
 <main>
+<section class="section" id="biografia">
+<div class="container">
+<p class="section-label">SOBRE MÍ</p>
+<h2>La historia de Kiustin G</h2>
+<p>
+<strong>Kiustin G</strong> es médico, artista, compositor, escritor
+          y creador cubano radicado en Estados Unidos.
+        </p>
+<p>
+          Graduado como médico en Cuba en 1996, desarrolló durante
+          aproximadamente 27 años una extensa trayectoria profesional,
+          adquiriendo experiencia en diferentes áreas de la medicina.
+        </p>
+<p>
+          Después de comenzar una nueva etapa de vida en Estados Unidos,
+          continuó vinculado al cuidado de pacientes mientras desarrollaba
+          paralelamente una creciente faceta artística y creativa.
+        </p>
+<p>
+          La música se convirtió en una de sus principales formas de expresión.
+          Sus canciones exploran el amor, la sensualidad, la familia, la alegría,
+          las experiencias cotidianas y las emociones que unen a las personas.
+        </p>
+<p>
+          Su universo musical combina influencias de la balada romántica de
+          los años 80, bachata, ritmos cubanos y caribeños, calipso, mariachi
+          y sonidos contemporáneos.
+        </p>
+<blockquote>
+          “Una canción puede conservar un sentimiento.
+          Una receta puede conservar una familia.
+          Un libro puede conservar una cultura.”
+        </blockquote>
+</div>
+</section>
+<section class="section dark" id="musica">
+<div class="container">
+<p class="section-label">MÚSICA</p>
+<h2>Discografía de Kiustin G</h2>
+<p>
+      Canciones, historias y emociones. Explora la música de Kiustin G
+      organizada por categorías.
+    </p>
+<div class="music-toolbar">
+<div class="music-search-box">
+<span class="search-icon">⌕</span>
+<input autocomplete="off" id="musicSearch" placeholder="Buscar una canción..." type="search"/>
+</div>
+<div class="music-counter">
+<span id="visibleSongCount">0</span>
+<span class="counter-text">canciones</span>
+</div>
+</div>
+<div class="music-tabs">
+<button class="music-tab active" data-cat="romanticas">❤️ Románticas</button>
+<button class="music-tab" data-cat="religiosas">🕊️ Religiosas</button>
+<button class="music-tab" data-cat="patria">🇨🇺 Patria / Protesta</button>
+<button class="music-tab" data-cat="familia">👨‍👩‍👦 Familia / Homenajes</button>
+<button class="music-tab" data-cat="humor">😂 Humor</button>
+<button class="music-tab" data-cat="variado">🎶 Variado</button>
+<button class="music-tab" data-cat="urbanas">🔥 Urbanas / Calle</button><button class="music-tab" data-cat="clasicos">💿 Catálogo anterior</button>
+</div>
+<div class="music-category active" id="romanticas">
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>Bajo El Cielo Azul</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/Bajo%20El%20Cielo%20Azul%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>BAJO LA LUZ AZUL</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/BAJO%20LA%20LUZ%20AZUL.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>Bésame Bajo La Luna</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/B%C3%A9same%20Bajo%20La%20Luna%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>Detrás del abanico</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/Detr%C3%A1s%20del%20abanico.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>Donde el sol besa el mar</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/Donde%20el%20sol%20besa%20el%20mar.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>El beso del colibrí”</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/El%20beso%20del%20colibr%C3%AD%E2%80%9D%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>el-besito</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/el-besito.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>ME ECHASTE PERFUME EN EL ALMA</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/ME%20ECHASTE%20PERFUME%20EN%20EL%20ALMA.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>me-echaste-perfume-en-el-alma</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/me-echaste-perfume-en-el-alma.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>Mi propia luz</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/Mi%20propia%20luz.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>No me mires si no vas</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/No%20me%20mires%20si%20no%20vas%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>Piel Canela</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/Piel%20Canela.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>Rosas para un domingo</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/Rosas%20para%20un%20domingo.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>TE VI ENTRE LA MULTITUD</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/TE%20VI%20ENTRE%20LA%20MULTITUD%20%282%29.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>TODAS MIS VERSIONES</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/TODAS%20MIS%20VERSIONES%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>Tu blanca piel</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/Tu%20blanca%20piel%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>TÚ LE CAMBIASTE EL COLOR AL MAR</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/T%C3%9A%20LE%20CAMBIASTE%20EL%20COLOR%20AL%20MAR.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>Vestido de blanco Dressed in White</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/romanticas/Vestido%20de%20blanco%20%20Dressed%20in%20White.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card"><div class="song-cover">❤️</div><div class="song-info"><h3>Mirame Asi</h3><div class="artist">Kiustin G</div><audio controls="" preload="metadata"><source src="assets/music/romanticas/Mirame%20Asi.mp3" type="audio/mpeg"/></audio></div></div></div>
+<div class="music-category" id="religiosas">
+<div class="song-card">
+<div class="song-cover">🕊️</div>
+<div class="song-info">
+<h3>banderita-blanca</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/religiosas/banderita-blanca.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">🕊️</div>
+<div class="song-info">
+<h3>EL CAMINO BLANCO</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/religiosas/EL%20CAMINO%20BLANCO%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">🕊️</div>
+<div class="song-info">
+<h3>La espada y la copa</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/religiosas/La%20espada%20y%20la%20copa%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">🕊️</div>
+<div class="song-info">
+<h3>MADRE DEL MAR — Canto a Yemayá</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/religiosas/MADRE%20DEL%20MAR%20%E2%80%94%20Canto%20a%20Yemay%C3%A1.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card"><div class="song-cover">🕊️</div><div class="song-info"><h3>Omío Yemayá, Madre del Mar</h3><div class="artist">Kiustin G</div><audio controls="" preload="metadata"><source src="assets/music/religiosas/Om%C3%ADo%20Yemay%C3%A1%2C%20Madre%20del%20Mar.mp3" type="audio/mpeg"/></audio></div></div></div>
+<div class="music-category" id="patria">
+<div class="song-card">
+<div class="song-cover">🇨🇺</div>
+<div class="song-info">
+<h3>Batas Blancas Sin Salario</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/patria-protesta/Batas%20Blancas%20Sin%20Salario%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">🇨🇺</div>
+<div class="song-info">
+<h3>El apagón no apagó la esperanza</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/patria-protesta/El%20apag%C3%B3n%20no%20apag%C3%B3%20la%20esperanza.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">🇨🇺</div>
+<div class="song-info">
+<h3>EL FUTURO EN UNA MALETA</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/patria-protesta/EL%20FUTURO%20EN%20UNA%20MALETA%203.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card"><div class="song-cover">🇨🇺</div><div class="song-info"><h3>LA UTOPÍA CAMINA</h3><div class="artist">Kiustin G</div><audio controls="" preload="metadata"><source src="assets/music/patria-protesta/LA%20UTOP%C3%8DA%20CAMINA.mp3" type="audio/mpeg"/></audio></div></div><div class="song-card">
+<div class="song-cover">🇨🇺</div>
+<div class="song-info">
+<h3>La eutopia camina</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/patria-protesta/La%20eutopia%20camina%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div><div class="song-card">
+<div class="song-cover">🇨🇺</div>
+<div class="song-info">
+<h3>La eutopia en controversia</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/patria-protesta/La%20eutopia%20en%20controversia.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div><div class="song-card">
+<div class="song-cover">🇨🇺</div>
+<div class="song-info">
+<h3>La eutopia en una maleta</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/patria-protesta/La%20eutopia%20en%20una%20maleta%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div><div class="song-card">
+<div class="song-cover">🇨🇺</div>
+<div class="song-info">
+<h3>LA UTOPÍA QUE CAMINA THE UTOPIA WALKS Conga Rebelde Oriental</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/patria-protesta/LA%20UTOP%C3%8DA%20QUE%20CAMINA%20%20THE%20UTOPIA%20WALKS%20%20Conga%20Rebelde%20Oriental.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div><div class="song-card">
+<div class="song-cover">🇨🇺</div>
+<div class="song-info">
+<h3>LA UTOPÍA QUE CAMINA Conga Rebelde Oriental</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/patria-protesta/LA%20UTOP%C3%8DA%20QUE%20CAMINA%20Conga%20Rebelde%20Oriental.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div><div class="song-card">
+<div class="song-cover">🇨🇺</div>
+<div class="song-info">
+<h3>la-generación-que-salvó-al-pueblo</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/patria-protesta/la-generaci%C3%B3n-que-salv%C3%B3-al-pueblo.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div><div class="song-card">
+<div class="song-cover">🇨🇺</div>
+<div class="song-info">
+<h3>la-utopía-camina</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/patria-protesta/la-utop%C3%ADa-camina.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div><div class="song-card">
+<div class="song-cover">🇨🇺</div>
+<div class="song-info">
+<h3>los-dueños-del-ayer</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/patria-protesta/los-due%C3%B1os-del-ayer%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div><div class="song-card">
+<div class="song-cover">🇨🇺</div>
+<div class="song-info">
+<h3>no-soy-propiedad-del-estado</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/patria-protesta/no-soy-propiedad-del-estado.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div><div class="song-card">
+<div class="song-cover">🇨🇺</div>
+<div class="song-info">
+<h3>pilar-de-cuba</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/patria-protesta/pilar-de-cuba.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div></div>
+</div>
+<div class="music-category" id="familia">
+<div class="song-card">
+<div class="song-cover">💛</div>
+<div class="song-info">
+<h3>EL MÉDICO QUE NUNCA DEJÓ DE CANTAR</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/familia-homenajes/EL%20M%C3%89DICO%20QUE%20NUNCA%20DEJ%C3%93%20DE%20CANTAR%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">💛</div>
+<div class="song-info">
+<h3>Feliz cumpleaños, Yainer</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/familia-homenajes/Feliz%20cumplea%C3%B1os%2C%20Yainer%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">💛</div>
+<div class="song-info">
+<h3>Guillo, Go Go Goal</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/familia-homenajes/Guillo%2C%20Go%20Go%20Goal%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">💛</div>
+<div class="song-info">
+<h3>Hoy brilla tu día</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/familia-homenajes/Hoy%20brilla%20tu%20d%C3%ADa%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">💛</div>
+<div class="song-info">
+<h3>Hoy Cumple Guillo</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/familia-homenajes/Hoy%20Cumple%20Guillo.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">💛</div>
+<div class="song-info">
+<h3>La Cama Vacía</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/familia-homenajes/La%20Cama%20Vac%C3%ADa%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
 
-  <!-- HERO -->
-  <section class="hero">
-    <p class="hero-kicker">Nuevo sencillo</p>
-    <h1 class="hero-title">Nombre<br>de tu<br>música</h1>
-    <p class="hero-sub">Escribe aquí una línea que describa tu sonido — el género, el ánimo, de dónde viene.</p>
-    <a href="#musica" class="hero-cta">Escuchar ahora</a>
-  </section>
-
-  <!-- REPRODUCTOR -->
-  <section id="musica" class="section player-section">
-    <h2 class="section-title">Música</h2>
-
-    <div class="player">
-      <div class="player-art" id="playerArt"></div>
-      <div class="player-body">
-        <div class="now-playing">
-          <p class="np-track" id="npTrack">Selecciona una canción</p>
-          <p class="np-artist">Nombre Artista</p>
-        </div>
-        <div class="player-controls">
-          <button id="prevBtn" class="ctrl-btn" aria-label="Anterior">
-            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-          </button>
-          <button id="playBtn" class="ctrl-btn play-btn" aria-label="Reproducir">
-            <svg id="playIcon" viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>
-          </button>
-          <button id="nextBtn" class="ctrl-btn" aria-label="Siguiente">
-            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg>
-          </button>
-        </div>
-        <div class="progress-row">
-          <span id="curTime" class="time">0:00</span>
-          <input type="range" id="seek" class="seek" value="0" min="0" max="100" step="0.1">
-          <span id="durTime" class="time">0:00</span>
-        </div>
-      </div>
-    </div>
-
-    <ol class="track-list" id="trackList"><!-- generado por script.js --></ol>
-
-    <div class="stream-links">
-      <p class="stream-label">Escúchame también en</p>
-      <div class="stream-buttons">
-        <a href="#" target="_blank" rel="noopener">Spotify</a>
-        <a href="#" target="_blank" rel="noopener">SoundCloud</a>
-        <a href="#" target="_blank" rel="noopener">Apple Music</a>
-        <a href="#" target="_blank" rel="noopener">YouTube</a>
-      </div>
-    </div>
-
-    <audio id="audio" preload="metadata"></audio>
-  </section>
-
-  <!-- BIO -->
-  <section id="bio" class="section bio-section">
-    <div class="bio-photo">
-      <img src="assets/img/bio.jpg" alt="Foto de Nombre Artista" onerror="this.style.display='none'">
-    </div>
-    <div class="bio-text">
-      <h2 class="section-title">Sobre mí</h2>
-      <p>Escribe aquí dos o tres párrafos de tu biografía: dónde naciste, cómo empezaste en la música, qué te influencia, y qué quieres que la gente sienta al escucharte.</p>
-      <p>Un segundo párrafo funciona bien para mencionar logros, presentaciones o proyectos importantes — sin exagerar, con tono natural.</p>
-    </div>
-  </section>
-
-  <!-- GALERÍA -->
-  <section id="fotos" class="section gallery-section">
-    <h2 class="section-title">Fotos</h2>
-    <div class="gallery-grid" id="galleryGrid"><!-- generado por script.js --></div>
-  </section>
-
-  <!-- CONTACTO -->
-  <section id="contacto" class="section contact-section">
-    <h2 class="section-title">Contacto</h2>
-    <p class="contact-sub">Para bookings, colaboraciones o prensa, escríbeme.</p>
-    <a class="contact-email" href="mailto:tu-correo@ejemplo.com">tu-correo@ejemplo.com</a>
-    <div class="social-row">
-      <a href="#" target="_blank" rel="noopener">Instagram</a>
-      <a href="#" target="_blank" rel="noopener">TikTok</a>
-      <a href="#" target="_blank" rel="noopener">YouTube</a>
-    </div>
-  </section>
-
+<div class="song-card">
+<div class="song-cover">💛</div>
+<div class="song-info">
+<h3>Las manos del doctor Guerra</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/familia-homenajes/Las%20manos%20del%20doctor%20Guerra.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">💛</div>
+<div class="song-info">
+<h3>melvis,-corazón-de-mi-casa</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/familia-homenajes/melvis%2C-coraz%C3%B3n-de-mi-casa.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">💛</div>
+<div class="song-info">
+<h3>TU MANO TODAVÍA ME ALCANZA</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/familia-homenajes/TU%20MANO%20TODAV%C3%8DA%20ME%20ALCANZA%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">💛</div>
+<div class="song-info">
+<h3>Un sábado con Guillo</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/familia-homenajes/Un%20s%C3%A1bado%20con%20Guillo%202.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+</div>
+<div class="music-category" id="humor">
+<div class="song-card">
+<div class="song-cover">😂</div>
+<div class="song-info">
+<h3>el-vampiro-🧛🥥1</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/humor/el-vampiro-%F0%9F%A7%9B%F0%9F%A5%A51.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">😂</div>
+<div class="song-info">
+<h3>la-panocha-3</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/humor/la-panocha-3.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">😂</div>
+<div class="song-info">
+<h3>la-panocha-4</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/humor/la-panocha-4.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">😂</div>
+<div class="song-info">
+<h3>salió-la-panocha</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/humor/sali%C3%B3-la-panocha.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">😂</div>
+<div class="song-info">
+<h3>salió-la-panocha2</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/humor/sali%C3%B3-la-panocha2.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+</div>
+<div class="music-category" id="variado">
+<div class="song-card">
+<div class="song-cover">🎵</div>
+<div class="song-info">
+<h3>Domingo, yo y las máquinas</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/variado/Domingo%2C%20yo%20y%20las%20m%C3%A1quinas.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">🎵</div>
+<div class="song-info">
+<h3>LO MÁS CRUEL DE ENVEJECER</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/variado/LO%20M%C3%81S%20CRUEL%20DE%20ENVEJECER.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+</div>
+<div class="music-category" id="urbanas"><div class="song-card"><div class="song-cover">🔥</div><div class="song-info"><h3>Santa De Día, Fuego De Noche</h3><div class="artist">Kiustin G</div><audio controls="" preload="metadata"><source src="assets/music/urbanas/Santa%20De%20D%C3%ADa%2C%20Fuego%20De%20Noche.mp3" type="audio/mpeg"/></audio></div></div><div class="song-card"><div class="song-cover">🔥</div><div class="song-info"><h3>Muñeca de neón</h3><div class="artist">Kiustin G</div><audio controls="" preload="metadata"><source src="assets/music/urbanas/Mu%C3%B1eca%20de%20ne%C3%B3n.mp3" type="audio/mpeg"/></audio></div></div><div class="song-card"><div class="song-cover">🔥</div><div class="song-info"><h3>Prohibido pero rico</h3><div class="artist">Kiustin G</div><audio controls="" preload="metadata"><source src="assets/music/urbanas/Prohibido%20pero%20rico.mp3" type="audio/mpeg"/></audio></div></div><div class="song-card"><div class="song-cover">🔥</div><div class="song-info"><h3>La Noche Está Brava</h3><div class="artist">Kiustin G</div><audio controls="" preload="metadata"><source src="assets/music/urbanas/La%20Noche%20Est%C3%A1%20Brava.mp3" type="audio/mpeg"/></audio></div></div><div class="song-card"><div class="song-cover">🔥</div><div class="song-info"><h3>No fue bailando</h3><div class="artist">Kiustin G</div><audio controls="" preload="metadata"><source src="assets/music/urbanas/No%20fue%20bailando.mp3" type="audio/mpeg"/></audio></div></div><div class="song-card"><div class="song-cover">🔥</div><div class="song-info"><h3>Angel con pecado</h3><div class="artist">Kiustin G</div><audio controls="" preload="metadata"><source src="assets/music/urbanas/Angel%20con%20pecado.mp3" type="audio/mpeg"/></audio></div></div><div class="song-card"><div class="song-cover">🔥</div><div class="song-info"><h3>Corazon de bandido</h3><div class="artist">Kiustin G</div><audio controls="" preload="metadata"><source src="assets/music/urbanas/Corazon%20de%20bandido.mp3" type="audio/mpeg"/></audio></div></div><div class="song-card"><div class="song-cover">🔥</div><div class="song-info"><h3>Baila Como Si Fuera Ley</h3><div class="artist">Kiustin G</div><audio controls="" preload="metadata"><source src="assets/music/urbanas/Baila%20Como%20Si%20Fuera%20Ley.mp3" type="audio/mpeg"/></audio></div></div><div class="song-card"><div class="song-cover">🔥</div><div class="song-info"><h3>Cuenta hasta tres</h3><div class="artist">Kiustin G</div><audio controls="" preload="metadata"><source src="assets/music/urbanas/Cuenta%20hasta%20tres.mp3" type="audio/mpeg"/></audio></div></div><div class="song-card"><div class="song-cover">🔥</div><div class="song-info"><h3>La Maldición Del Bajo</h3><div class="artist">Kiustin G</div><audio controls="" preload="metadata"><source src="assets/music/urbanas/La%20Maldici%C3%B3n%20Del%20Bajo.mp3" type="audio/mpeg"/></audio></div></div><div class="song-card"><div class="song-cover">🔥</div><div class="song-info"><h3>Prendió La Esquina</h3><div class="artist">Kiustin G</div><audio controls="" preload="metadata"><source src="assets/music/urbanas/Prendi%C3%B3%20La%20Esquina.mp3" type="audio/mpeg"/></audio></div></div><div class="song-card"><div class="song-cover">🔥</div><div class="song-info"><h3>Que Lo Sepa La Calle</h3><div class="artist">Kiustin G</div><audio controls="" preload="metadata"><source src="assets/music/urbanas/Que%20Lo%20Sepa%20La%20Calle.mp3" type="audio/mpeg"/></audio></div></div></div><div class="music-category" id="clasicos">
+<div class="song-card">
+<div class="song-cover">😊</div>
+<div class="song-info">
+<h3>Con Esa Sonrisa Tuya</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/con-esa-sonrisa-tuya.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">🐎</div>
+<div class="song-info">
+<h3>Dos Caballos y Una Luna</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/dos-caballos-y-una-luna.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">🔥</div>
+<div class="song-info">
+<h3>Manjar de Dioses</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/manjar-de-dioses.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">👀</div>
+<div class="song-info">
+<h3>Mírame Así</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/mirame-asi.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">❤️</div>
+<div class="song-info">
+<h3>Tú Me Miras y Yo Caigo</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/tu-me-miras-y-yo-caigo.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">🥁</div>
+<div class="song-info">
+<h3>Uno Solo en el Tambor</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/uno-solo-tambor.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">💃</div>
+<div class="song-info">
+<h3>Baila que Baila</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/baila-que-baila.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">🏡</div>
+<div class="song-info">
+<h3>Casa de Palma</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/casa-de-palma.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">😂</div>
+<div class="song-info">
+<h3>Qué Situación</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/que-situacion.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">🏥</div>
+<div class="song-info">
+<h3>The Clinic Is Alive</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/the-clinic-is-alive.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">⚡</div>
+<div class="song-info">
+<h3>Tú Me Cambiaste el Sistema</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/tu-me-cambiaste-el-sistema.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">🎉</div>
+<div class="song-info">
+<h3>El Baile de la Semana</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/el-baile-de-la-semana.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">🩺</div>
+<div class="song-info">
+<h3>El Récord del Médico Cubano</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/el-record-del-medico-cubano.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+<div class="song-card">
+<div class="song-cover">🎓</div>
+<div class="song-info">
+<h3>Los del 96</h3>
+<div class="artist">Kiustin G</div>
+<audio controls="" preload="metadata">
+<source src="assets/music/los-del-96.mp3" type="audio/mpeg"/>
+</audio>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="videos">
+<div class="container">
+<p class="section-label">VIDEOS</p>
+<h2>Historias que también se ven</h2>
+<p>
+          Videoclips, momentos musicales, historias y producciones audiovisuales
+          de Kiustin G.
+        </p>
+<div class="video-grid">
+<div class="video-placeholder">
+<span>▶</span>
+<p>Video musical</p>
+</div>
+<div class="video-placeholder">
+<span>▶</span>
+<p>Video romántico</p>
+</div>
+<div class="video-placeholder">
+<span>▶</span>
+<p>Producción Kiustin G</p>
+</div>
+</div>
+<p class="coming">
+          Los videos oficiales se incorporarán próximamente.
+        </p>
+</div>
+</section>
+<section class="section dark" id="libros">
+<div class="container">
+<p class="section-label">LIBROS Y PROYECTOS</p>
+<h2>Crear para dejar memoria</h2>
+<div class="cards">
+<div class="card">
+<div class="icon">📕</div>
+<h3>El Gran Libro de la Cocina Cubana</h3>
+<p>
+              Un proyecto dedicado a preservar recetas, sabores,
+              fotografías y tradiciones de la auténtica cocina cubana.
+            </p>
+</div>
+<div class="card">
+<div class="icon">📗</div>
+<h3>Adimuses de los Orishas</h3>
+<p>
+              Tradición, historia, cultura y devoción dentro de las
+              raíces afrocubanas.
+            </p>
+</div>
+<div class="card">
+<div class="icon">💻</div>
+<h3>Tecnología Creativa</h3>
+<p>
+              Desarrollo de herramientas digitales para música, libros,
+              video, fotografía e inteligencia artificial.
+            </p>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="contacto">
+<div class="container center">
+<p class="section-label">CONTACTO</p>
+<h2>Conecta con Kiustin G</h2>
+<p>
+          Música · Proyectos · Colaboraciones · Producciones creativas
+        </p>
+<div class="socials">
+<a class="social" href="#">YouTube</a>
+<a class="social" href="#">Facebook</a>
+<a class="social" href="#">TikTok</a>
+<a class="social" href="#">Instagram</a>
+</div>
+</div>
+</section>
 </main>
-
-<footer class="site-footer">
-  <p>&copy; <span id="year"></span> Nombre Artista. Todos los derechos reservados.</p>
+<footer>
+<h3>KIUSTIN G</h3>
+<p>
+      Médico por vocación · Cubano de raíces · Artista por sentimiento ·
+      Creador por naturaleza
+    </p>
+<p class="copyright">
+      © 2026 Kiustin G · Todos los derechos reservados
+    </p>
 </footer>
+<script>
+document.querySelectorAll('.music-tab').forEach(button => {
+  button.addEventListener('click', () => {
 
-<script src="script.js"></script>
+    document.querySelectorAll('.music-tab').forEach(b => {
+      b.classList.remove('active');
+    });
+
+    document.querySelectorAll('.music-category').forEach(cat => {
+      cat.classList.remove('active');
+    });
+
+    button.classList.add('active');
+
+    const target = document.getElementById(button.dataset.cat);
+    if (target) target.classList.add('active');
+  });
+});
+</script>
+<script>
+/* KIUSTIN_MUSIC_SEARCH_V1 */
+
+(function () {
+
+  const search = document.getElementById('musicSearch');
+  const counter = document.getElementById('visibleSongCount');
+  const tabs = document.querySelectorAll('.music-tab');
+
+  if (!search || !counter) return;
+
+  function activeCategory() {
+    return document.querySelector('.music-category.active');
+  }
+
+  function updateSongs() {
+
+    const category = activeCategory();
+
+    if (!category) {
+      counter.textContent = '0';
+      return;
+    }
+
+    const query = search.value
+      .trim()
+      .toLocaleLowerCase('es');
+
+    const songs = category.querySelectorAll('.song-card');
+
+    let visible = 0;
+
+    songs.forEach(song => {
+
+      const title =
+        song.querySelector('h3')?.textContent
+        .toLocaleLowerCase('es') || '';
+
+      const artist =
+        song.querySelector('.artist')?.textContent
+        .toLocaleLowerCase('es') || '';
+
+      const match =
+        !query ||
+        title.includes(query) ||
+        artist.includes(query);
+
+      song.classList.toggle('search-hidden', !match);
+
+      if (match) visible++;
+
+    });
+
+    counter.textContent = visible;
+  }
+
+  search.addEventListener('input', updateSongs);
+
+  tabs.forEach(tab => {
+
+    tab.addEventListener('click', function () {
+
+      setTimeout(updateSongs, 0);
+
+    });
+
+  });
+
+  updateSongs();
+
+})();
+</script>
 </body>
 </html>

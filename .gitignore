@@ -1,0 +1,15 @@
+# Respaldos locales de Kiustin G
+*.backup-*
+*.backup-*
+index_antes_*.html
+index_backup_*.html
+index.html.backup*
+style.css.backup*
+*.tmp.mp3
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Utilidades locales
+publicar.sh
