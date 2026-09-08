@@ -1020,3 +1020,157 @@ section {
     padding-top: 0 !important;
   }
 }
+
+/* ==================================================
+   KIUSTIN G - REDES SOCIALES + PLATAFORMAS
+   ================================================== */
+
+.kiustin-social-section {
+  background:
+    radial-gradient(circle at top, rgba(212,175,55,.10), transparent 35%),
+    #0b0b0b;
+  padding: 90px 6%;
+  border-top: 1px solid rgba(212,175,55,.22);
+}
+
+.kiustin-social-inner {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.kiustin-social-section .section-kicker {
+  color: #d4af37;
+  letter-spacing: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.kiustin-social-section h2 {
+  color: #fff;
+  font-size: clamp(32px, 5vw, 52px);
+  margin: 0 0 16px;
+}
+
+.social-intro {
+  color: #aaa;
+  font-size: 18px;
+  margin-bottom: 35px;
+}
+
+.social-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.social-btn {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  color: #f7f7f7;
+  background: #111;
+  border: 1px solid rgba(212,175,55,.45);
+  border-radius: 16px;
+
+  text-decoration: none;
+  font-weight: 700;
+  transition: .25s ease;
+}
+
+.social-btn span {
+  color: #d4af37;
+  font-size: 21px;
+}
+
+.social-btn:hover {
+  color: #000;
+  background: #d4af37;
+  transform: translateY(-2px);
+}
+
+.social-btn:hover span {
+  color: #000;
+}
+
+.platform-divider {
+  width: 90px;
+  height: 1px;
+  background: #d4af37;
+  margin: 75px auto 55px;
+}
+
+.release-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-top: 35px;
+}
+
+.release-card {
+  padding: 32px 24px;
+  background: linear-gradient(145deg, #111, #080808);
+  border: 1px solid rgba(212,175,55,.28);
+  border-radius: 22px;
+  box-shadow: 0 14px 35px rgba(0,0,0,.30);
+}
+
+.release-icon {
+  font-size: 35px;
+  margin-bottom: 14px;
+}
+
+.release-card h3 {
+  color: #fff;
+  font-size: 22px;
+  margin: 0 0 8px;
+}
+
+.release-card p {
+  color: #999;
+  margin: 0 0 22px;
+}
+
+.release-card a {
+  display: inline-block;
+  padding: 11px 22px;
+  border-radius: 24px;
+  color: #050505;
+  background: #d4af37;
+  text-decoration: none;
+  font-weight: 800;
+  transition: .25s ease;
+}
+
+.release-card a:hover {
+  transform: scale(1.04);
+  background: #f0d36c;
+}
+
+@media screen and (max-width: 700px) {
+
+  .kiustin-social-section {
+    padding: 65px 22px;
+  }
+
+  .social-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .release-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .social-btn {
+    font-size: 14px;
+  }
+
+  .release-card {
+    padding: 27px 18px;
+  }
+}
+
