@@ -911,3 +911,30 @@ section {
     background-color: #000;
   }
 }
+
+/* ===== MENU MOVIL KIUSTIN G ===== */
+@media (max-width: 600px) {
+  .nav {
+    padding: 10px 12px !important;
+    display: block !important;
+  }
+
+  .nav .logo {
+    display: none !important;
+  }
+
+  .menu {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px 6px !important;
+    width: 100% !important;
+    align-items: center !important;
+  }
+
+  .menu a {
+    font-size: 14px !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    padding: 6px 2px !important;
+  }
+}
