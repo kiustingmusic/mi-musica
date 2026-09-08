@@ -895,3 +895,19 @@ section {
 
 }
 
+
+/* ========================================
+   KIUSTIN G - PORTADA OPTIMIZADA PARA MOVIL
+   ======================================== */
+@media (max-width: 600px) {
+  .hero {
+    min-height: 0 !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    background-image: url("assets/kiustin-banner.png");
+    background-size: contain !important;
+    background-position: center top !important;
+    background-repeat: no-repeat !important;
+    background-color: #000;
+  }
+}
