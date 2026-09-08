@@ -34,6 +34,55 @@
 
 
 
+
+<style id="kiustin-mobile-layout-final">
+@media screen and (max-width: 600px) {
+
+  /* El hero contiene primero el menú */
+  .hero {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: auto !important;
+    padding: 0 !important;
+    background-image: none !important;
+    background-color: #000 !important;
+  }
+
+  /* Ocultar capa antigua del banner */
+  .hero > .overlay {
+    display: none !important;
+  }
+
+  /* Menú: conservar las dos filas que ya funcionan */
+  .hero > .nav {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 88px !important;
+    margin: 0 !important;
+    padding: 6px 8px !important;
+    background: #050505 !important;
+  }
+
+  /* Portada completa debajo del menú */
+  .hero::after {
+    content: "" !important;
+    display: block !important;
+    width: 100% !important;
+    height: 56.25vw !important;
+    background-image: url("assets/kiustin-banner.png") !important;
+    background-size: 100% 100% !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+  }
+
+  .hero-content {
+    display: none !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header class="hero">
