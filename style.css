@@ -938,3 +938,20 @@ section {
     padding: 6px 2px !important;
   }
 }
+
+/* ===== ALTURA DEFINITIVA MENU MOVIL ===== */
+@media screen and (max-width: 600px) {
+  .nav {
+    height: auto !important;
+    min-height: 100px !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .nav .menu {
+    height: auto !important;
+    min-height: 80px !important;
+    overflow: visible !important;
+    grid-template-rows: repeat(2, auto) !important;
+  }
+}
