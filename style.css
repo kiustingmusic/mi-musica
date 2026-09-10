@@ -1292,3 +1292,19 @@ section {
     min-height: 190px;
   }
 }
+
+/* Portada real — Tienda Kiustin G */
+.book-cover-real {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.book-cover-real img {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 14px 35px rgba(0,0,0,.45);
+}
