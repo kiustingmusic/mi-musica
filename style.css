@@ -1308,3 +1308,32 @@ section {
   border-radius: 8px;
   box-shadow: 0 14px 35px rgba(0,0,0,.45);
 }
+
+/* Ajuste final portada libro Orishas */
+.book-cover-real {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 18px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.book-cover-real img {
+  display: block !important;
+  width: auto !important;
+  max-width: 280px !important;
+  height: auto !important;
+  max-height: 420px !important;
+  object-fit: contain !important;
+  border-radius: 8px;
+  box-shadow: 0 14px 35px rgba(0,0,0,.45);
+}
+
+@media (max-width: 700px) {
+  .book-cover-real img {
+    max-width: 230px !important;
+    max-height: 350px !important;
+  }
+}
