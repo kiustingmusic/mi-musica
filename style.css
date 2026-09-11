@@ -2163,3 +2163,26 @@ section {
     white-space: nowrap !important;
   }
 }
+
+/* ===== ENGLISH CONTACT TITLE DEFINITIVO ===== */
+.contact-title-en {
+  white-space: normal !important;
+}
+
+.contact-title-en > span {
+  display: block !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 600px) {
+  .kiustin-contact .contact-title-en {
+    font-size: 2.35rem !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.03em !important;
+  }
+
+  .kiustin-contact .contact-title-en > span {
+    display: block !important;
+    white-space: nowrap !important;
+  }
+}
