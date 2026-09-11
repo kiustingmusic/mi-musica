@@ -2100,3 +2100,34 @@ section {
     padding: 22px 15px;
   }
 }
+
+/* ===== CONTACTO MOBILE FINAL ===== */
+@media (max-width: 600px) {
+
+  /* Evita que la G de Kiustin G quede sola */
+  .kiustin-contact .contact-heading h2 {
+    font-size: clamp(2.15rem, 10vw, 3rem) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.03em !important;
+  }
+
+  /* Da espacio al texto introductorio */
+  .kiustin-contact .contact-heading {
+    padding-top: 10px !important;
+  }
+
+  .kiustin-contact .contact-heading > p:last-child {
+    line-height: 1.5 !important;
+    padding: 0 8px !important;
+  }
+
+  /* Selector ES | EN arriba, sin tapar Contacto */
+  .kiustin-language-switch {
+    position: fixed !important;
+    top: 84px !important;
+    right: 10px !important;
+    bottom: auto !important;
+    left: auto !important;
+    z-index: 99999 !important;
+  }
+}
