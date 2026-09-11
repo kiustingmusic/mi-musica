@@ -1946,3 +1946,23 @@ section {
     bottom: 12px !important;
   }
 }
+
+/* ===== LANGUAGE SWITCH TOP FINAL ===== */
+
+.kiustin-language-switch {
+  position: fixed !important;
+  top: 105px !important;
+  right: 14px !important;
+  bottom: auto !important;
+  left: auto !important;
+  z-index: 99999 !important;
+}
+
+@media (max-width: 600px) {
+  .kiustin-language-switch {
+    top: 96px !important;
+    right: 10px !important;
+    bottom: auto !important;
+    left: auto !important;
+  }
+}
