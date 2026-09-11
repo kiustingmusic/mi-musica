@@ -1720,3 +1720,63 @@ section {
     margin-inline: auto;
   }
 }
+
+/* ===== AJUSTE FINAL VAMPIRE PERREO - MOBILE ===== */
+
+.upcoming-play-btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 22px !important;
+  border-radius: 12px !important;
+  background: #b2071d !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  font-weight: 800 !important;
+  line-height: 1.2;
+  box-shadow: 0 8px 22px rgba(178, 7, 29, .28);
+}
+
+@media (max-width: 720px) {
+
+  .upcoming-release-grid {
+    gap: 20px !important;
+    padding: 20px 16px 24px !important;
+  }
+
+  .upcoming-video {
+    max-width: 270px !important;
+  }
+
+  .upcoming-info h2 {
+    font-size: clamp(2rem, 10vw, 2.65rem) !important;
+    line-height: 1.05 !important;
+    margin: 8px 0 12px !important;
+    letter-spacing: -.02em;
+  }
+
+  .upcoming-badge {
+    margin-bottom: 6px !important;
+  }
+
+  .upcoming-artist {
+    margin: 0 0 14px !important;
+  }
+
+  .upcoming-tagline {
+    margin: 0 0 10px !important;
+    font-size: 1.08rem !important;
+  }
+
+  .upcoming-copy {
+    margin-top: 0 !important;
+    margin-bottom: 18px !important;
+    line-height: 1.5 !important;
+  }
+
+  .upcoming-play-btn {
+    width: auto !important;
+    min-width: 170px;
+  }
+}
