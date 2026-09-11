@@ -2148,3 +2148,18 @@ section {
     font-size: 2.05rem !important;
   }
 }
+
+/* ===== ENGLISH CONTACT TITLE FIX ===== */
+.keep-together {
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .kiustin-contact .contact-heading h2 {
+    white-space: normal !important;
+  }
+
+  .kiustin-contact .contact-heading .keep-together {
+    white-space: nowrap !important;
+  }
+}
