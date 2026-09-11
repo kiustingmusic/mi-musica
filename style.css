@@ -1926,3 +1926,23 @@ section {
     font-size: .76rem;
   }
 }
+
+/* ===== LANGUAGE SWITCH FINAL POSITION ===== */
+
+.kiustin-language-switch {
+  position: fixed !important;
+  top: auto !important;
+  left: auto !important;
+  right: 16px !important;
+  bottom: 16px !important;
+  z-index: 99999 !important;
+}
+
+@media (max-width: 600px) {
+  .kiustin-language-switch {
+    top: auto !important;
+    left: auto !important;
+    right: 10px !important;
+    bottom: 12px !important;
+  }
+}
