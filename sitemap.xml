@@ -6,4 +6,21 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <url>
+    <loc>https://kiusting.com/en/</loc>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/en/privacy.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/en/terms.html</loc>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/en/digital-purchases.html</loc>
+  </url>
+
 </urlset>
