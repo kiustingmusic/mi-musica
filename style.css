@@ -1935,3 +1935,61 @@ section {
     font-size: .76rem;
   }
 }
+
+/* ===== APPS POLISH FINAL ===== */
+
+.app-meta {
+  margin: -4px 0 14px;
+  font-size: .88rem;
+  font-weight: 700;
+  opacity: .62;
+}
+
+.app-coming-badge {
+  display: inline-flex !important;
+  align-items: center;
+  width: auto !important;
+  padding: 9px 13px !important;
+  border-radius: 999px !important;
+  font-size: .8rem !important;
+  font-weight: 800 !important;
+  letter-spacing: .04em;
+}
+
+.app-more-projects {
+  margin-top: 28px;
+  padding: 28px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.035);
+}
+
+.app-more-projects h3 {
+  margin: 8px 0 12px;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+}
+
+.app-more-projects p {
+  max-width: 720px;
+  opacity: .78;
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .app-product {
+    padding: 20px !important;
+  }
+
+  .app-copy {
+    padding-top: 18px !important;
+  }
+
+  .app-visual {
+    margin-bottom: 14px !important;
+  }
+
+  .app-more-projects {
+    margin-top: 22px;
+    padding: 22px 18px;
+  }
+}
