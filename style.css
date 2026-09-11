@@ -1780,3 +1780,14 @@ section {
     min-width: 170px;
   }
 }
+
+/* ===== AJUSTE ESPACIO PROXIMO LANZAMIENTO ===== */
+#proximo-lanzamiento {
+  padding-top: 70px !important;
+}
+
+@media (max-width: 720px) {
+  #proximo-lanzamiento {
+    padding-top: 48px !important;
+  }
+}
