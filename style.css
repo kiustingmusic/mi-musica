@@ -2820,3 +2820,35 @@ section {
 }
 
 /* KIUSTIN HEALTH ACCORDION END */
+
+
+/* HEALTH CATEGORY 3D ICONS START */
+
+.kiustin-health-accordion-icon {
+    width: 70px;
+    height: 70px;
+    flex: 0 0 70px;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #050505;
+}
+
+.kiustin-health-accordion-icon img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: inherit;
+}
+
+@media (max-width: 650px) {
+    .kiustin-health-accordion-icon {
+        width: 58px;
+        height: 58px;
+        flex-basis: 58px;
+        border-radius: 15px;
+    }
+}
+
+/* HEALTH CATEGORY 3D ICONS END */
