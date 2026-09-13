@@ -2588,3 +2588,62 @@ section {
 .kiustin-health-read:hover{
   text-decoration:underline;
 }
+
+
+/* KIUSTIN HEALTH GROUPS START */
+
+.kiustin-health-group-title {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin: 30px 0 4px;
+    padding: 18px 22px;
+    border-left: 4px solid #d4af37;
+    border-radius: 0 18px 18px 0;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(212,175,55,.13),
+            rgba(212,175,55,.025) 65%,
+            transparent
+        );
+}
+
+.kiustin-health-group-title:first-child {
+    margin-top: 8px;
+}
+
+.kiustin-health-group-title span {
+    display: block;
+    margin: 0;
+    color: #d4af37;
+    font-size: clamp(1.05rem, 2vw, 1.35rem);
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.kiustin-health-group-title p {
+    margin: 6px 0 0;
+    color: rgba(255,255,255,.72);
+    font-size: .95rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+
+    .kiustin-health-group-title {
+        margin-top: 22px;
+        padding: 15px 16px;
+    }
+
+    .kiustin-health-group-title span {
+        font-size: 1rem;
+        letter-spacing: .08em;
+    }
+
+    .kiustin-health-group-title p {
+        font-size: .88rem;
+    }
+}
+
+/* KIUSTIN HEALTH GROUPS END */
