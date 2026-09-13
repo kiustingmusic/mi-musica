@@ -2186,3 +2186,139 @@ section {
     white-space: nowrap !important;
   }
 }
+
+
+/* ========================================================
+   KIUSTIN LIVE STATS
+======================================================== */
+.kiustin-stats-section {
+  padding: 70px 22px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(212,175,55,.11), transparent 45%),
+    #070707;
+  color: #fff;
+}
+
+.kiustin-stats-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 42px 32px;
+  border: 1px solid rgba(212,175,55,.32);
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
+  box-shadow:
+    0 24px 70px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.kiustin-stats-heading {
+  text-align: center;
+  margin-bottom: 34px;
+}
+
+.kiustin-stats-kicker {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #d8b65a;
+  font-size: .78rem;
+  letter-spacing: .32em;
+  font-weight: 700;
+}
+
+.kiustin-stats-heading h2 {
+  margin: 0;
+  color: #f6e0a3;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+}
+
+.kiustin-stats-heading p {
+  margin: 10px 0 0;
+  color: rgba(255,255,255,.68);
+  font-size: 1rem;
+}
+
+.kiustin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.kiustin-stat-card {
+  min-height: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  border: 1px solid rgba(212,175,55,.22);
+  background: rgba(0,0,0,.30);
+  transition:
+    transform .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
+}
+
+.kiustin-stat-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(212,175,55,.55);
+  box-shadow: 0 18px 38px rgba(0,0,0,.30);
+}
+
+.kiustin-stat-icon {
+  color: #d8b65a;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+.kiustin-stat-card strong {
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  font-weight: 800;
+}
+
+.kiustin-stat-card > span:last-child {
+  margin-top: 10px;
+  color: rgba(255,255,255,.65);
+  font-size: .88rem;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+}
+
+.kiustin-stats-footer {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  color: rgba(255,255,255,.58);
+  font-size: .86rem;
+}
+
+.kiustin-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6ee7a8;
+  box-shadow: 0 0 12px rgba(110,231,168,.85);
+}
+
+@media (max-width: 760px) {
+  .kiustin-stats-section {
+    padding: 45px 16px;
+  }
+
+  .kiustin-stats-shell {
+    padding: 32px 18px;
+  }
+
+  .kiustin-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kiustin-stat-card {
+    min-height: 145px;
+  }
+}

@@ -1580,5 +1580,112 @@ document.querySelectorAll('.music-tab').forEach(button => {
 })();
 </script>
 
+
+<!-- =====================================================
+     KIUSTIN G — ESTADÍSTICAS EN VIVO
+===================================================== -->
+<section id="kiustin-live-stats" class="kiustin-stats-section">
+  <div class="kiustin-stats-shell">
+
+    <div class="kiustin-stats-heading">
+      <span class="kiustin-stats-kicker">KIUSTING.COM</span>
+      <h2>Estadísticas en vivo</h2>
+      <p>Actividad registrada durante las últimas 24 horas</p>
+    </div>
+
+    <div class="kiustin-stats-grid">
+
+      <article class="kiustin-stat-card">
+        <span class="kiustin-stat-icon">◉</span>
+        <strong id="kiustin-stat-visits">—</strong>
+        <span>Visitas</span>
+      </article>
+
+      <article class="kiustin-stat-card">
+        <span class="kiustin-stat-icon">↗</span>
+        <strong id="kiustin-stat-requests">—</strong>
+        <span>Solicitudes</span>
+      </article>
+
+      <article class="kiustin-stat-card">
+        <span class="kiustin-stat-icon">◆</span>
+        <strong id="kiustin-stat-traffic">—</strong>
+        <span>Tráfico</span>
+      </article>
+
+    </div>
+
+    <div class="kiustin-stats-footer">
+      <span class="kiustin-live-dot"></span>
+      <span id="kiustin-stat-status">Conectando con Cloudflare…</span>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(async function iniciarEstadisticasKiustin() {
+
+  const ENDPOINT =
+    "https://kiustin-videos-worker.samuela0614.workers.dev/stats";
+
+  const visits = document.getElementById("kiustin-stat-visits");
+  const requests = document.getElementById("kiustin-stat-requests");
+  const traffic = document.getElementById("kiustin-stat-traffic");
+  const status = document.getElementById("kiustin-stat-status");
+
+  if (!visits || !requests || !traffic || !status) return;
+
+  const formato = new Intl.NumberFormat("es-US");
+
+  async function cargar() {
+    try {
+      const respuesta = await fetch(ENDPOINT, {
+        method: "GET",
+        cache: "no-store"
+      });
+
+      if (!respuesta.ok) {
+        throw new Error("HTTP " + respuesta.status);
+      }
+
+      const datos = await respuesta.json();
+
+      if (!datos.ok) {
+        throw new Error(datos.error || "Respuesta no válida");
+      }
+
+      visits.textContent = formato.format(datos.visits || 0);
+      requests.textContent = formato.format(datos.requests || 0);
+      traffic.textContent =
+        Number(datos.megabytes || 0).toLocaleString("es-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }) + " MB";
+
+      const ahora = new Date();
+
+      status.textContent =
+        "Datos en vivo · actualizado " +
+        ahora.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+
+    } catch (error) {
+      console.error("Kiustin Analytics:", error);
+      status.textContent =
+        "Estadísticas temporalmente no disponibles";
+    }
+  }
+
+  await cargar();
+
+  // Actualización automática cada 5 minutos
+  setInterval(cargar, 300000);
+
+})();
+</script>
+
 </body>
 </html>
