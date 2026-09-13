@@ -2555,3 +2555,36 @@ section {
     border-radius: 25px;
   }
 }
+
+
+/* KIUSTIN HEALTH CLICKABLE */
+.kiustin-health-card-clickable{
+  cursor:pointer;
+  transition:
+    transform .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease;
+}
+
+.kiustin-health-card-clickable:hover{
+  transform:translateY(-5px);
+  border-color:rgba(230,188,67,.72);
+  box-shadow:
+    0 22px 48px rgba(0,0,0,.36),
+    0 0 25px rgba(212,175,55,.08);
+}
+
+.kiustin-health-read{
+  display:inline-flex;
+  margin-top:17px;
+  color:#f0ca60;
+  font-size:14px;
+  font-weight:900;
+  text-decoration:none;
+  position:relative;
+  z-index:5;
+}
+
+.kiustin-health-read:hover{
+  text-decoration:underline;
+}
