@@ -1012,6 +1012,16 @@
       </article>
     </div>
 
+    <div style="margin-top:32px;">
+      <p class="section-label">KIUSTIN STUDIO X</p>
+      <h3>Videos subidos desde Kiustin Studio</h3>
+
+      <div
+        id="kiustin-r2-videos"
+        class="video-grid kiustin-youtube-grid">
+      </div>
+    </div>
+
     <div class="youtube-channel-action">
       <a
         href="https://youtube.com/@kiustinguerra6094"
@@ -1521,5 +1531,54 @@ document.querySelectorAll('.music-tab').forEach(button => {
 
 })();
 </script>
+
+<script>
+(async function cargarVideosKiustin() {
+  const contenedor = document.getElementById("kiustin-r2-videos");
+  if (!contenedor) return;
+
+  try {
+    const respuesta = await fetch(
+      "https://kiustin-videos-worker.samuela0614.workers.dev/videos"
+    );
+
+    if (!respuesta.ok) throw new Error("No se pudo cargar la lista");
+
+    const datos = await respuesta.json();
+
+    if (!datos.ok || !Array.isArray(datos.videos) || datos.videos.length === 0) {
+      contenedor.innerHTML =
+        '<p style="opacity:.75;">Próximamente nuevos videos.</p>';
+      return;
+    }
+
+    contenedor.innerHTML = datos.videos.map(video => {
+      const titulo = String(video.titulo || "Video Kiustin G")
+        .replace(/\.(mp3|mp4|mov|m4v)$/i, "");
+
+      return `
+        <article class="youtube-card">
+          <div class="youtube-frame">
+            <video
+              controls
+              playsinline
+              preload="metadata"
+              style="width:100%;height:100%;object-fit:cover;background:#000;"
+              src="${video.url}">
+            </video>
+          </div>
+          <p>${titulo}</p>
+        </article>
+      `;
+    }).join("");
+
+  } catch (error) {
+    console.error("Kiustin Videos:", error);
+    contenedor.innerHTML =
+      '<p style="opacity:.75;">Los videos no están disponibles temporalmente.</p>';
+  }
+})();
+</script>
+
 </body>
 </html>
