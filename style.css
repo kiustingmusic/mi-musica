@@ -2322,3 +2322,147 @@ section {
     min-height: 145px;
   }
 }
+
+
+/* ========================================================
+   SALUD CON KIUSTIN G
+======================================================== */
+
+.kiustin-health {
+  padding: 80px 22px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(212,175,55,.10), transparent 42%),
+    #080808;
+  color: #fff;
+}
+
+.kiustin-health-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.kiustin-health-heading {
+  max-width: 760px;
+  margin: 0 auto 44px;
+  text-align: center;
+}
+
+.kiustin-health-kicker {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #d8b65a;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .25em;
+}
+
+.kiustin-health-heading h2 {
+  margin: 0;
+  color: #f6e0a3;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+}
+
+.kiustin-health-heading p {
+  margin: 14px auto 0;
+  color: rgba(255,255,255,.72);
+  line-height: 1.7;
+  font-size: 1.04rem;
+}
+
+.kiustin-health-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.kiustin-health-card {
+  position: relative;
+  padding: 30px;
+  border: 1px solid rgba(212,175,55,.24);
+  border-radius: 22px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
+  box-shadow: 0 18px 44px rgba(0,0,0,.28);
+  transition:
+    transform .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
+}
+
+.kiustin-health-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(212,175,55,.52);
+  box-shadow: 0 24px 55px rgba(0,0,0,.38);
+}
+
+.kiustin-health-icon {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 18px;
+  border-radius: 16px;
+  background: rgba(212,175,55,.10);
+  border: 1px solid rgba(212,175,55,.22);
+  font-size: 1.7rem;
+}
+
+.kiustin-health-card h3 {
+  margin: 0 0 12px;
+  color: #f4d98b;
+  font-size: 1.35rem;
+}
+
+.kiustin-health-card p {
+  margin: 0 0 20px;
+  color: rgba(255,255,255,.72);
+  line-height: 1.72;
+}
+
+.kiustin-health-tag {
+  display: inline-block;
+  padding: 7px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(212,175,55,.25);
+  color: #d8b65a;
+  font-size: .75rem;
+  letter-spacing: .06em;
+}
+
+.kiustin-health-notice {
+  margin-top: 30px;
+  padding: 22px 24px;
+  border-left: 3px solid #d4af37;
+  border-radius: 12px;
+  background: rgba(212,175,55,.06);
+}
+
+.kiustin-health-notice strong {
+  color: #f4d98b;
+}
+
+.kiustin-health-notice p {
+  margin: 8px 0 0;
+  color: rgba(255,255,255,.65);
+  line-height: 1.65;
+  font-size: .92rem;
+}
+
+@media (max-width: 760px) {
+
+  .kiustin-health {
+    padding: 55px 16px;
+  }
+
+  .kiustin-health-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kiustin-health-card {
+    padding: 24px 20px;
+  }
+
+  .kiustin-health-heading {
+    margin-bottom: 30px;
+  }
+}
