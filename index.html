@@ -1380,7 +1380,7 @@
 
     <div class="kiustin-health-grid">
 
-      <article class="kiustin-health-card kiustin-health-card-clickable" data-health-href="salud/salud-vaginal.html" onclick="window.location.href='salud/salud-vaginal.html'" role="link" tabindex="0" onkeydown="if(event.key==='Enter') window.location.href='salud/salud-vaginal.html'" onclick="window.location.href='salud/embarazo.html'" role="link" tabindex="0">
+      <article class="kiustin-health-card kiustin-health-card-clickable" data-health-href="salud/salud-vaginal.html" onclick="window.location.assign('salud/salud-vaginal.html')" onkeydown="if(event.key==='Enter') window.location.assign('salud/salud-vaginal.html')" role="link" tabindex="0">
         <div class="kiustin-health-icon kiustin-health-icon-app"><img src="assets/health/salud-embarazo.png?v=2" alt="Icono de Embarazo" loading="lazy"></div>
         <h3>Embarazo</h3>
         <p>
@@ -1388,9 +1388,10 @@
           síntomas frecuentes y signos de alarma durante el embarazo.
         </p>
         <span class="kiustin-health-tag">Salud materna</span>
-      <a class="kiustin-health-read" href="salud/embarazo.html">Leer guía completa →</a></article>
+      <a class="kiustin-health-read" href="salud/embarazo.html">Leer guía completa →</a>
+</article>
 
-      <article class="kiustin-health-card">
+      <article class="kiustin-health-card kiustin-health-card-clickable" data-health-href="salud/salud-vaginal.html" onclick="window.location.href='salud/salud-vaginal.html'" role="link" tabindex="0">
         <div class="kiustin-health-icon kiustin-health-icon-app"><img src="assets/health/salud-vaginal.png?v=2" alt="Icono de Salud vaginal" loading="lazy"></div>
         <h3>Salud vaginal</h3>
         <p>
@@ -1398,7 +1399,9 @@
           tricomoniasis y cuándo es importante buscar evaluación médica.
         </p>
         <span class="kiustin-health-tag">Prevención y orientación</span>
-      </article>
+
+<a class="kiustin-health-read" href="salud/salud-vaginal.html" onclick="event.stopPropagation();">Leer guía completa →</a>
+</article>
 
       <article class="kiustin-health-card">
         <div class="kiustin-health-icon kiustin-health-icon-app"><img src="assets/health/salud-its.png?v=2" alt="Icono de Infecciones de transmisión sexual" loading="lazy"></div>
