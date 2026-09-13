@@ -2466,3 +2466,18 @@ section {
     margin-bottom: 30px;
   }
 }
+
+/* ===== ICONOS MÉDICOS SVG PROFESIONALES ===== */
+.kiustin-health-icon svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: #d8b65a;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.kiustin-health-icon {
+  color: #d8b65a;
+}
