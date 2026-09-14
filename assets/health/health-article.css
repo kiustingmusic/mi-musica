@@ -345,3 +345,35 @@ body.health-page{
 }
 
 /* KIUSTIN RELATED HEALTH CSS END */
+
+/* ===== FIX HERO ARTICULOS SALUD 2026-09-14 ===== */
+
+@media (min-width: 801px) {
+
+  .health-hero .health-kicker,
+  .health-hero h1,
+  .health-hero .health-lead {
+    grid-column: 1;
+  }
+
+  .health-hero .health-kicker {
+    grid-row: 1;
+  }
+
+  .health-hero h1 {
+    grid-row: 2;
+  }
+
+  .health-hero .health-lead {
+    grid-row: 3;
+  }
+
+  .health-hero .health-icon {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    align-self: center;
+  }
+
+}
+
+/* ===== END FIX HERO ARTICULOS SALUD ===== */
