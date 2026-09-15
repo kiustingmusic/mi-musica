@@ -152,3 +152,172 @@
         aspect-ratio:16/9;
     }
 }
+
+
+/* =========================================================
+   SALUD PRACTICA - KIUSTIN G
+   2026-09-15
+   ========================================================= */
+
+.health-practical{
+    margin:42px 0 55px;
+    padding:34px;
+    border-radius:28px;
+    border:1px solid rgba(212,175,55,.28);
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(212,175,55,.10),
+            transparent 34%
+        ),
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.055),
+            rgba(255,255,255,.018)
+        );
+}
+
+.health-practical-heading{
+    margin-bottom:28px;
+}
+
+.health-practical-kicker{
+    margin-bottom:8px;
+    color:#d4af37;
+    font-size:.78rem;
+    font-weight:800;
+    letter-spacing:.12em;
+}
+
+.health-practical-heading h2{
+    margin:0 0 10px;
+    color:#fff;
+    font-size:clamp(1.8rem,4vw,2.6rem);
+}
+
+.health-practical-heading h2 span{
+    color:#d4af37;
+}
+
+.health-practical-heading p{
+    max-width:720px;
+    margin:0;
+    color:rgba(255,255,255,.72);
+    line-height:1.65;
+}
+
+.health-practical-grid{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:16px;
+}
+
+.health-practical-card{
+    display:block;
+    box-sizing:border-box;
+    color:inherit;
+    text-decoration:none;
+    min-height:235px;
+    padding:22px;
+    border-radius:22px;
+    border:1px solid rgba(212,175,55,.20);
+    background:rgba(0,0,0,.32);
+    transition:.25s ease;
+}
+
+.health-practical-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(212,175,55,.65);
+    background:rgba(212,175,55,.055);
+}
+
+.health-practical-icon{
+    margin-bottom:14px;
+    font-size:2rem;
+}
+
+.health-practical-card h3{
+    margin:0 0 10px;
+    color:#fff;
+    font-size:1.05rem;
+    line-height:1.3;
+}
+
+.health-practical-card p{
+    margin:0 0 17px;
+    color:rgba(255,255,255,.67);
+    font-size:.88rem;
+    line-height:1.55;
+}
+
+.health-practical-card span{
+    color:#d4af37;
+    font-size:.72rem;
+    font-weight:800;
+    letter-spacing:.07em;
+}
+
+.health-practical-alert{
+    border-color:rgba(255,90,90,.35);
+}
+
+.health-practical-alert span{
+    color:#ff8c8c;
+}
+
+.health-practical-note{
+    margin-top:24px;
+    padding:16px 18px;
+    border-left:3px solid #d4af37;
+    border-radius:12px;
+    background:rgba(212,175,55,.06);
+    color:rgba(255,255,255,.70);
+    font-size:.9rem;
+    line-height:1.55;
+}
+
+@media(max-width:1100px){
+    .health-practical-grid{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+    }
+}
+
+@media(max-width:750px){
+    .health-practical{
+        padding:24px 18px;
+        margin-top:28px;
+    }
+
+    .health-practical-grid{
+        grid-template-columns:1fr;
+    }
+
+    .health-practical-card{
+        min-height:auto;
+    }
+}
+
+/* ===== FIN SALUD PRACTICA ===== */
+
+/* ===== SALUD PRACTICA MOBILE COMPACT ===== */
+@media(max-width:620px){
+
+    .health-practical-card{
+        padding:18px;
+    }
+
+    .health-practical-icon{
+        margin-bottom:8px;
+        font-size:1.7rem;
+    }
+
+    .health-practical-card h3{
+        margin-bottom:7px;
+    }
+
+    .health-practical-card p{
+        margin-bottom:11px;
+        line-height:1.45;
+    }
+}
+/* ===== END SALUD PRACTICA MOBILE COMPACT ===== */

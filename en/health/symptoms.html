@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>What symptom do you have? | Practical Health | Kiustin G</title>
+
+<meta name="description"
+content="Educational guide to common symptoms including headache, dizziness, fever, cough, abdominal pain, chest pain, shortness of breath, heartburn, painful urination and more.">
+
+<link rel="canonical"
+href="https://kiusting.com/en/health/symptoms.html">
+
+<link rel="alternate" hreflang="en"
+href="https://kiusting.com/en/health/symptoms.html">
+
+<link rel="alternate" hreflang="es"
+href="https://kiusting.com/salud/sintomas.html">
+
+<link rel="alternate" hreflang="x-default"
+href="https://kiusting.com/salud/sintomas.html">
+
+<link rel="stylesheet"
+href="../../assets/health/health-article.css?v=20260914b">
+
+<style>
+
+.symptom-main{
+    width:min(94%,1100px);
+    margin:auto;
+    padding:38px 0 70px;
+}
+
+.symptom-back{
+    display:inline-block;
+    margin-bottom:22px;
+    color:#d4af37;
+    text-decoration:none;
+    font-weight:700;
+}
+
+.symptom-hero{
+    border:1px solid rgba(212,175,55,.23);
+    border-radius:24px;
+    padding:32px;
+    background:
+      radial-gradient(circle at top right,
+      rgba(212,175,55,.11),transparent 38%),
+      rgba(255,255,255,.025);
+}
+
+.symptom-kicker{
+    color:#d4af37;
+    font-size:.78rem;
+    font-weight:800;
+    letter-spacing:.12em;
+}
+
+.symptom-hero h1{
+    margin:9px 0 12px;
+    color:#fff;
+    font-size:clamp(2.2rem,7vw,3.7rem);
+}
+
+.symptom-hero h1 span{
+    color:#d4af37;
+}
+
+.symptom-hero p{
+    color:rgba(255,255,255,.72);
+    line-height:1.65;
+}
+
+.symptom-search{
+    margin-top:22px;
+}
+
+.symptom-search input{
+    width:100%;
+    box-sizing:border-box;
+    padding:16px 18px;
+    border-radius:15px;
+    border:1px solid rgba(212,175,55,.30);
+    background:rgba(0,0,0,.45);
+    color:#fff;
+    font-size:1rem;
+    outline:none;
+}
+
+.symptom-search input:focus{
+    border-color:#d4af37;
+}
+
+.symptom-title{
+    color:#fff;
+    margin:32px 0 17px;
+}
+
+.symptom-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+}
+
+.symptom-card{
+    display:block;
+    box-sizing:border-box;
+    color:inherit;
+    text-decoration:none;
+    padding:21px;
+    border-radius:20px;
+    border:1px solid rgba(212,175,55,.18);
+    background:rgba(255,255,255,.025);
+    transition:.2s ease;
+}
+
+.symptom-card:hover{
+    transform:translateY(-2px);
+    border-color:rgba(212,175,55,.50);
+}
+
+.symptom-icon{
+    font-size:1.8rem;
+    margin-bottom:9px;
+}
+
+.symptom-card h2{
+    color:#fff;
+    font-size:1.14rem;
+    margin:0 0 8px;
+}
+
+.symptom-card p{
+    color:rgba(255,255,255,.67);
+    line-height:1.5;
+    margin:0;
+}
+
+.symptom-emergency{
+    margin-top:28px;
+    padding:20px;
+    border-radius:16px;
+    border:1px solid rgba(255,80,80,.40);
+    background:rgba(255,55,55,.07);
+    color:rgba(255,255,255,.75);
+    line-height:1.6;
+}
+
+.symptom-emergency strong{
+    color:#ffaaaa;
+}
+
+.symptom-disclaimer{
+    margin-top:18px;
+    padding:18px;
+    border-left:3px solid #d4af37;
+    background:rgba(212,175,55,.05);
+    border-radius:12px;
+    color:rgba(255,255,255,.62);
+    line-height:1.6;
+    font-size:.9rem;
+}
+
+@media(max-width:850px){
+    .symptom-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:600px){
+    .symptom-main{width:94%;padding-top:22px}
+    .symptom-hero{padding:22px 20px}
+    .symptom-grid{grid-template-columns:1fr}
+    .symptom-card{padding:18px}
+}
+
+
+.symptom-medical-icon{
+    width:48px;
+    height:48px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:12px;
+}
+
+.symptom-medical-icon svg{
+    width:42px;
+    height:42px;
+    fill:none;
+    stroke:#d4af37;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    filter:drop-shadow(0 0 5px rgba(212,175,55,.12));
+}
+
+.symptom-card:hover .symptom-medical-icon svg{
+    stroke:#f1d36b;
+}
+
+@media(max-width:600px){
+    .symptom-medical-icon{
+        width:44px;
+        height:44px;
+    }
+
+    .symptom-medical-icon svg{
+        width:38px;
+        height:38px;
+    }
+}
+
+</style>
+</head>
+
+<body class="health-page">
+
+<header class="health-topbar">
+<a class="health-brand" href="../../">KIUSTIN G</a>
+
+<nav class="health-nav">
+<a href="../">Home</a>
+<a href="./">Health</a>
+<a class="health-lang" href="../../salud/sintomas.html">ES</a>
+</nav>
+</header>
+
+<main class="symptom-main">
+
+<a class="symptom-back" href="./">← Back to Health</a>
+
+<section class="symptom-hero">
+
+<div class="symptom-kicker">
+PRACTICAL HEALTH · SYMPTOMS
+</div>
+
+<h1>🔎 What <span>symptom</span> do you have?</h1>
+
+<p>
+Find clear educational information about common symptoms,
+what to watch for and warning signs that may require medical attention.
+</p>
+
+<div class="symptom-search">
+<input id="symptomSearch"
+type="search"
+placeholder="Type a symptom: dizziness, fever, cough..."
+aria-label="Search symptoms">
+</div>
+
+</section>
+
+<h2 class="symptom-title">Common symptoms</h2>
+
+<section class="symptom-grid" id="symptomGrid">
+
+<a class="symptom-card" href="headache.html" data-search="headache migraine head pain">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M29 40v-6c5-2 8-7 8-13C37 12 31 6 22 6S7 12 7 21c0 5 2 9 6 12v7"/>
+<path d="M18 18c1-3 3-5 6-5 4 0 7 3 7 7 0 3-2 5-5 6"/>
+<path d="M18 26h8"/>
+</svg></div>
+<h2>Headache</h2>
+<p>Common causes and warning signs that require evaluation.</p>
+</a>
+
+<a class="symptom-card" href="dizziness.html" data-search="dizziness dizzy vertigo lightheaded">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M28 39v-5c5-2 8-7 8-13 0-8-6-14-14-14S8 13 8 21c0 5 2 9 6 12v6"/>
+<path d="M15 18c3-5 13-6 17-1"/>
+<path d="M17 13c4-3 11-3 15 0"/>
+<path d="M19 9c3-1 7-1 10 0"/>
+</svg></div>
+<h2>Dizziness</h2>
+<p>Possible causes and when you should seek medical care.</p>
+</a>
+
+<a class="symptom-card" href="fever.html" data-search="fever temperature chills">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M20 28V10a6 6 0 0 1 12 0v18a10 10 0 1 1-12 0Z"/>
+<path d="M26 13v20"/>
+<circle cx="26" cy="35" r="4"/>
+<path d="M32 15h5M32 20h4"/>
+</svg></div>
+<h2>Fever</h2>
+<p>What to watch for and which signs need medical attention.</p>
+</a>
+
+<a class="symptom-card" href="cough.html" data-search="cough respiratory throat">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M24 6v12"/>
+<path d="M24 18c-5 2-8 6-9 12"/>
+<path d="M24 18c5 2 8 6 9 12"/>
+<path d="M21 20c-3-5-8-7-11-4-4 4-4 16 1 21 4 4 10 1 11-5Z"/>
+<path d="M27 20c3-5 8-7 11-4 4 4 4 16-1 21-4 4-10 1-11-5Z"/>
+</svg></div>
+<h2>Cough</h2>
+<p>Acute and persistent cough and important accompanying symptoms.</p>
+</a>
+
+<a class="symptom-card" href="abdominal-pain.html" data-search="abdominal pain abdomen stomach belly">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M17 6c0 7-4 9-4 17 0 11 5 18 11 18s11-7 11-18c0-8-4-10-4-17"/>
+<path d="M18 20c4-3 9-3 13 0"/>
+<path d="M18 27c4 3 8 3 12 0"/>
+<circle cx="24" cy="24" r="2"/>
+</svg></div>
+<h2>Abdominal pain</h2>
+<p>Location, severity and important warning signs.</p>
+</a>
+
+<a class="symptom-card" href="diarrhea.html" data-search="diarrhea stool bowel">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M15 10c-5 0-7 4-7 8s3 6 6 6"/>
+<path d="M33 10c5 0 7 4 7 8s-3 6-6 6"/>
+<path d="M15 10v7c0 3 2 5 5 5h8c3 0 5-2 5-5v-7"/>
+<path d="M14 24v7c0 4 3 7 7 7h6c4 0 7-3 7-7v-7"/>
+<path d="M20 22v9M28 22v9"/>
+</svg></div>
+<h2>Diarrhea</h2>
+<p>Hydration, duration and when to seek medical care.</p>
+</a>
+
+<a class="symptom-card" href="chest-pain.html" data-search="chest pain pressure heart">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M24 40S7 30 7 18c0-6 4-10 10-10 4 0 6 2 7 5 1-3 4-5 8-5 5 0 9 4 9 10 0 12-17 22-17 22Z"/>
+<path d="M11 24h8l3-7 5 14 3-7h7"/>
+</svg></div>
+<h2>Chest pain</h2>
+<p>A symptom that requires special attention to warning signs.</p>
+</a>
+
+<a class="symptom-card" href="shortness-of-breath.html" data-search="shortness breath breathing dyspnea">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M24 6v16"/>
+<path d="M21 18c-3-5-6-8-9-6-5 3-7 15-5 23 1 5 7 7 11 4 3-2 4-7 4-12Z"/>
+<path d="M27 18c3-5 6-8 9-6 5 3 7 15 5 23-1 5-7 7-11 4-3-2-4-7-4-12Z"/>
+</svg></div>
+<h2>Shortness of breath</h2>
+<p>When difficulty breathing may represent an emergency.</p>
+</a>
+
+<a class="symptom-card" href="hair-loss.html" data-search="hair loss alopecia">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M12 25c0-10 5-17 12-17s12 7 12 17"/>
+<path d="M15 21c2-7 6-10 9-10"/>
+<path d="M21 11c3 4 7 6 14 7"/>
+<path d="M15 25v8c0 5 4 9 9 9s9-4 9-9v-8"/>
+<path d="M9 10l3 4M7 17l5 2"/>
+</svg></div>
+<h2>Hair loss</h2>
+<p>Common causes and when medical evaluation may be appropriate.</p>
+</a>
+
+<a class="symptom-card" href="skin-spots-rash.html" data-search="skin spots rash eruption">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M8 14c8-5 13 5 21 0s11 0 11 0v22H8Z"/>
+<circle cx="18" cy="25" r="2"/>
+<circle cx="28" cy="29" r="2"/>
+<circle cx="35" cy="22" r="1.5"/>
+<path d="M8 20c8-5 13 5 21 0s11 0 11 0"/>
+</svg></div>
+<h2>Skin spots or rash</h2>
+<p>Common skin changes and signs that deserve evaluation.</p>
+</a>
+
+<a class="symptom-card" href="fatigue.html" data-search="fatigue tired weakness exhaustion">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<rect x="8" y="14" width="30" height="21" rx="4"/>
+<path d="M38 21h3v7h-3"/>
+<path d="M25 17l-7 10h6l-2 7 8-11h-6Z"/>
+</svg></div>
+<h2>Fatigue</h2>
+<p>When persistent tiredness should be evaluated.</p>
+</a>
+
+<a class="symptom-card" href="nausea-vomiting.html" data-search="nausea vomiting vomit sick">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M22 7c0 8 1 11 6 13 4 2 7 0 10 4 4 6 0 15-8 17-9 2-18-4-19-12-1-6 3-10 7-12 3-2 2-7 2-10"/>
+<path d="M29 25c-4 1-7 4-8 8"/>
+</svg></div>
+<h2>Nausea and vomiting</h2>
+<p>What to watch for and how to recognize warning signs.</p>
+</a>
+
+<a class="symptom-card" href="heartburn.html" data-search="heartburn acid reflux indigestion burning stomach">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M22 7c0 8 1 11 6 13 4 2 7 0 10 4 4 6 0 15-8 17-9 2-18-4-19-12-1-6 3-10 7-12 3-2 2-7 2-10"/>
+<path d="M29 25c-4 1-7 4-8 8"/>
+</svg></div>
+<h2>Heartburn</h2>
+<p>Acid reflux, indigestion and symptoms that should not be ignored.</p>
+</a>
+
+<a class="symptom-card" href="painful-urination.html" data-search="painful urination burning urine dysuria uti">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M18 8v9M30 8v9"/>
+<path d="M18 16c-6 3-8 8-7 14 1 7 6 11 13 11s12-4 13-11c1-6-1-11-7-14"/>
+<path d="M24 41v4"/>
+<path d="M18 28c4 3 8 3 12 0"/>
+</svg></div>
+<h2>Painful urination</h2>
+<p>Common causes, associated urinary symptoms and when to seek care.</p>
+</a>
+
+<a class="symptom-card" href="muscle-cramps.html" data-search="cramps hands legs muscle spasms">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M10 34c5-1 6-6 8-11 2-4 5-6 8-4l3 3c4-2 8 0 10 4 3 7-3 14-11 15-8 1-15-1-18-7Z"/>
+<path d="M18 23l-2-8 6-5 4 8"/>
+<path d="M29 22c-3 3-4 7-2 10"/>
+</svg></div>
+<h2>Hand and leg cramps</h2>
+<p>Possible causes and when recurrent cramps need evaluation.</p>
+</a>
+
+<a class="symptom-card" href="sore-throat.html" data-search="sore throat strep pharyngitis tonsils">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M16 7c0 8-4 10-4 17 0 10 5 17 12 17s12-7 12-17c0-7-4-9-4-17"/>
+<path d="M19 18c3 2 7 2 10 0"/>
+<path d="M20 23c2 3 6 3 8 0"/>
+<path d="M24 24v10"/>
+</svg></div>
+<h2>Sore throat</h2>
+<p>Viruses, strep throat and warning signs requiring attention.</p>
+</a>
+
+<a class="symptom-card" href="nosebleed.html" data-search="nosebleed nose bleeding epistaxis blood">
+<div class="symptom-icon symptom-medical-icon"><svg viewBox="0 0 48 48" aria-hidden="true">
+<path d="M26 7c0 8 0 14 4 20 2 3 0 6-4 6h-7"/>
+<path d="M19 33c2 4 8 5 12 2"/>
+<path d="M35 29c0 4 5 5 5 9a5 5 0 0 1-10 0c0-4 5-5 5-9Z"/>
+</svg></div>
+<h2>Nosebleed</h2>
+<p>How to control it correctly and when to seek medical help.</p>
+</a>
+
+</section>
+
+<div class="symptom-emergency">
+<strong>🚨 Seek emergency care:</strong>
+for severe chest pain or pressure, severe difficulty breathing,
+sudden weakness or numbness, sudden trouble speaking, loss of
+consciousness, or another potentially life-threatening situation.
+In the United States, call <strong>911</strong>.
+</div>
+
+<div class="symptom-disclaimer">
+<strong>Educational information:</strong>
+this content provides general guidance, does not establish a diagnosis
+and does not replace professional medical evaluation.
+</div>
+
+</main>
+
+<script>
+const input = document.getElementById("symptomSearch");
+const cards = [...document.querySelectorAll(".symptom-card")];
+
+input.addEventListener("input", () => {
+    const q = input.value.toLowerCase().trim();
+
+    cards.forEach(card => {
+        const text = (
+            (card.dataset.search || "") + " " + card.innerText
+        ).toLowerCase();
+
+        card.style.display = text.includes(q) ? "" : "none";
+    });
+});
+</script>
+
+</body>
+</html>
