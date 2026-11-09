@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
 
 * {
   margin: 0;
@@ -2981,4 +2982,118 @@ section {
   #salud{
     scroll-margin-top:90px;
   }
+}
+
+/* ============================================================
+   KIUSTIN G — CAPA VISUAL PRO (2026-11-08)
+   Tipografía editorial + pulido profesional. No altera la
+   estructura: refina fuentes, jerarquía, sombras y detalles.
+   ============================================================ */
+:root {
+  --gold: #d4af37;
+  --gold-soft: #f6e0a3;
+  --gold-deep: #9a7b24;
+  --ink: #090909;
+  --panel: #121212;
+  --text: #f5f5f5;
+  --muted: rgba(245,245,245,.72);
+  --radius: 18px;
+  --shadow-card: 0 8px 26px rgba(0,0,0,.32);
+  --shadow-lift: 0 18px 44px rgba(0,0,0,.45);
+  --font-body: 'Inter', Arial, Helvetica, sans-serif;
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+}
+
+body {
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3,
+.song-info h3,
+.book-card h3, .app-card h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+
+.hero h1 {
+  letter-spacing: -.015em;
+  color: var(--gold-soft);
+}
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero h1 {
+    background: linear-gradient(180deg, #f9ecc0 0%, var(--gold) 58%, var(--gold-deep) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+.hero h2, .tagline {
+  font-family: var(--font-body);
+  color: var(--muted);
+}
+
+.section-label {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: .03em;
+  box-shadow: 0 6px 20px rgba(0,0,0,.30);
+}
+.btn.primary {
+  background: linear-gradient(180deg, #e6c65c, var(--gold) 60%, #bd9a2e);
+  box-shadow: 0 10px 26px rgba(212,175,55,.28);
+}
+.btn:hover {
+  box-shadow: var(--shadow-lift);
+}
+.btn.secondary {
+  border-color: rgba(255,255,255,.35);
+  backdrop-filter: blur(4px);
+}
+.btn.secondary:hover {
+  border-color: var(--gold);
+  color: var(--gold-soft);
+}
+
+.song-card {
+  box-shadow: var(--shadow-card);
+}
+.song-card:hover {
+  box-shadow: var(--shadow-lift), 0 0 0 1px rgba(212,175,55,.25);
+}
+.song-cover {
+  box-shadow: inset 0 1px 0 rgba(246,224,163,.25), 0 6px 16px rgba(0,0,0,.35);
+}
+
+a { transition: color .25s ease, border-color .25s ease, background-color .25s ease; }
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection { background: var(--gold); color: #0a0a0a; }
+
+html { scrollbar-color: #3d3d3d #0c0c0c; }
+::-webkit-scrollbar { width: 11px; }
+::-webkit-scrollbar-track { background: #0c0c0c; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 8px; border: 2px solid #0c0c0c; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-deep); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  html { scroll-behavior: auto; }
 }
