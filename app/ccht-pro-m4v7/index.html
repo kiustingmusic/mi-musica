@@ -1,0 +1,2576 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Dialysis Tech Coach PRO — Kiustin G</title>
+<style>
+:root{--gold:#d4af37;--gold2:#f1d97a;--bg:#0c0c0e;--card:#17171b;--card2:#1f1f24;--txt:#f2f0e9;--mut:#a9a698;--ok:#3ecf6f;--bad:#ff5d5d;--line:#2c2c33}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.5;padding-bottom:40px}
+header{padding:22px 16px 14px;text-align:center;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#141416,#0c0c0e)}
+header .kick{letter-spacing:.22em;font-size:11px;color:var(--gold);text-transform:uppercase}
+header h1{font-size:26px;margin:6px 0 2px;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{color:var(--mut);font-size:13px}
+main{max-width:760px;margin:0 auto;padding:16px}
+.hidden{display:none!important}
+.stats{display:flex;gap:8px;justify-content:center;margin:14px 0 4px;flex-wrap:wrap}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 14px;text-align:center}
+.stat b{display:block;font-size:19px;color:var(--gold)}
+.stat span{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em}
+h2.sec{font-size:15px;margin:22px 0 10px;color:var(--gold);text-transform:uppercase;letter-spacing:.12em}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+.mode{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:left;color:var(--txt);cursor:pointer;width:100%}
+.mode:hover{border-color:var(--gold)}
+.mode b{font-size:16px;display:block}
+.mode span{color:var(--mut);font-size:13px}
+.mode .n{color:var(--gold);font-weight:700}
+.exam{background:linear-gradient(135deg,#221d08,#17171b);border:1px solid var(--gold)}
+.bar-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.pill{background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px;color:var(--mut)}
+.pill b{color:var(--gold)}
+#timer{font-variant-numeric:tabular-nums;font-weight:700;color:var(--gold2)}
+#timer.low{color:var(--bad)}
+.progress{height:8px;background:var(--card2);border-radius:99px;overflow:hidden;margin-bottom:14px}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0%}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.tag{font-size:11px;background:#26262e;border:1px solid var(--line);color:var(--mut);border-radius:999px;padding:2px 9px}
+.tag.dom{color:var(--gold);border-color:#4a3f14}
+.qcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.qstem{font-size:17px;margin-bottom:14px}
+.opt{display:block;width:100%;text-align:left;background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:12px 14px;margin:8px 0;cursor:pointer;font-size:15px}
+.opt:hover{border-color:var(--gold)}
+.opt.sel{border-color:var(--gold);background:#2a2510}
+.opt.right{border-color:var(--ok);background:#0f2a18}
+.opt.wrong{border-color:var(--bad);background:#2c1214}
+.opt:disabled{cursor:default;opacity:.92}
+.expl{margin-top:14px;background:#101418;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:10px;padding:12px 14px;font-size:14px}
+.expl .good{color:var(--ok);font-weight:700}
+.expl .bad{color:var(--bad);font-weight:700}
+.expl p{margin-top:6px}
+.expl .es{color:var(--mut)}
+.navrow{display:flex;gap:10px;margin-top:16px}
+.btn{flex:1;background:linear-gradient(135deg,var(--gold),#b8922a);color:#141005;border:none;border-radius:12px;padding:13px;font-size:16px;font-weight:700;cursor:pointer}
+.btn.ghost{background:var(--card2);color:var(--txt);border:1px solid var(--line)}
+.btn:disabled{opacity:.4;cursor:default}
+.score{text-align:center;padding:10px 0}
+.score .big{font-size:52px;font-weight:800;color:var(--gold)}
+.score .verdict{font-size:18px;font-weight:700}
+.domrow{margin:12px 0}
+.domrow .lbl{display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px}
+.domrow .lbl span{color:var(--mut)}
+.dbar{height:10px;background:var(--card2);border-radius:99px;overflow:hidden}
+.dbar i{display:block;height:100%;background:var(--gold)}
+.dbar i.pass{background:var(--ok)}
+.review{margin-top:20px}
+.review h3{color:var(--gold);margin-bottom:8px}
+.rq{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0;font-size:14px}
+.rq .rs{color:var(--bad);font-weight:700}
+.rq .rc{color:var(--ok)}
+.rq p{margin-top:5px}
+.rq .es{color:var(--mut)}
+footer{max-width:760px;margin:24px auto 0;padding:0 16px;color:var(--mut);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+<header>
+<div class="kick">Kiustin G · Entrenamiento CCHT</div>
+<h1>Dialysis Tech Coach PRO</h1>
+<p>120 preguntas originales de escenario · Explicación bilingüe · Blueprint oficial NNCC · Versión PRO 1.0</p>
+</header>
+<main>
+<!-- HOME -->
+<section id="home">
+<div class="stats">
+<div class="stat"><b>120</b><span>preguntas</span></div>
+<div class="stat"><b>7</b><span>bloques</span></div>
+<div class="stat"><b>~74%</b><span>para aprobar</span></div>
+<div class="stat"><b id="bestSim">—</b><span>tu mejor simulación</span></div>
+</div>
+
+<h2 class="sec">📚 Estudio por bloques (con explicación inmediata)</h2>
+<div class="grid" id="blockBtns"></div>
+
+<h2 class="sec">🎯 Práctica por dominio</h2>
+<div class="grid" id="domBtns"></div>
+
+<h2 class="sec">📝 Modo examen (sin ayuda hasta el final)</h2>
+<div class="grid">
+<button class="mode exam" onclick="startExam(50)"><b>Simulación CCHT</b><span><span class="n">50 preguntas</span> en las proporciones oficiales · 60 minutos · corrección y resultados por dominio al terminar</span></button>
+<button class="mode exam" onclick="startExam(120)"><b>Examen completo PRO</b><span><span class="n">Las 120 preguntas</span> del banco · 144 minutos · el ensayo general</span></button>
+</div>
+
+<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:10px">
+<b>❓ Cómo usarla</b>
+<p style="color:var(--mut);font-size:14px;margin-top:6px">1) <b>Estudia por bloques o dominios</b>: cada respuesta se corrige al instante con su explicación en inglés y español.<br>
+2) Cuando domines los temas, pasa a la <b>Simulación CCHT</b> (50 preguntas, 60 minutos, proporciones oficiales) y luego al <b>Examen completo</b> (120 preguntas, 144 minutos).<br>
+3) Revisa tus <b>resultados por dominio</b>: el dominio bajo el 74% es el que debes reforzar antes del examen real.<br>
+4) Funciona sin internet y guarda tu mejor simulación en este dispositivo.</p>
+</div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="hidden">
+<div class="bar-top">
+<span class="pill" id="qCount">1 / 15</span>
+<span class="pill" id="modeName"></span>
+<span class="pill hidden" id="timerPill">⏱ <span id="timer">60:00</span></span>
+<button class="pill" onclick="quitToHome()" style="cursor:pointer">✕ Salir</button>
+</div>
+<div class="progress"><i id="pbar"></i></div>
+<div class="tags" id="qTags"></div>
+<div class="qcard">
+<div class="qstem" id="qStem"></div>
+<div id="qOpts"></div>
+<div id="qExpl"></div>
+</div>
+<div class="navrow">
+<button class="btn ghost" id="btnPrev" onclick="move(-1)">← Anterior</button>
+<button class="btn" id="btnNext" onclick="move(1)">Siguiente →</button>
+</div>
+</section>
+
+<!-- RESULTS -->
+<section id="results" class="hidden">
+<div class="score">
+<div class="big" id="rScore">0%</div>
+<div class="verdict" id="rVerdict"></div>
+<p id="rDetail" style="color:var(--mut)"></p>
+</div>
+<h2 class="sec">Resultados por dominio (meta del examen real)</h2>
+<div id="domResults"></div>
+<div class="navrow">
+<button class="btn ghost" onclick="quitToHome()">🏠 Inicio</button>
+<button class="btn" id="btnRetry">Repetir</button>
+</div>
+<div class="review" id="reviewBox"></div>
+</section>
+</main>
+<footer>
+Preguntas 100% originales creadas desde estándares públicos (AAMI · CDC · KDOQI) y el blueprint NNCC.<br>
+Contenido educativo de Kiustin G — no es material oficial de la NNCC ni de ningún empleador.<br>Licencia de uso personal del comprador · No redistribuir ni revender el archivo.
+</footer>
+
+<script type="application/json" id="bank">[
+ {
+  "id": "b1q1",
+  "block": 1,
+  "blockName": "Agua y dializado",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Cloro total / arranque seguro",
+  "stem": "Before the first treatment of the day, the total chlorine test sampled after the second carbon tank reads 0.12 mg/L. What is the correct action?",
+  "options": [
+   "Start treatments; chlorine at this level only matters after 4 hours",
+   "Average the result with the sample taken between the two tanks",
+   "Do NOT start treatments, notify the charge nurse and the technical team, and follow the unit's procedure for chlorine breakthrough",
+   "Increase RO pressure to dilute the chlorine"
+  ],
+  "answer": 2,
+  "why": "The AAMI maximum for total chlorine in dialysis water is 0.1 mg/L. Above it, chlorine/chloramine can cross into the patient's blood and cause hemolysis. Patient treatments must not begin until the water is back within limits.",
+  "porque": "El límite AAMI de cloro total es 0.1 mg/L. Por encima, el cloro/cloramina puede dañar los glóbulos rojos (hemólisis). No se inicia tratamiento hasta corregir."
+ },
+ {
+  "id": "b1q2",
+  "block": 1,
+  "blockName": "Agua y dializado",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Tanques de carbón en serie",
+  "stem": "The sample between the two carbon tanks shows chloramine breakthrough, while the sample after the second tank is still within limits. What does this pattern mean?",
+  "options": [
+   "Both tanks are exhausted and treatments must stop permanently",
+   "The first (worker) tank is exhausted; the second (polisher) tank is still protecting the water, and the carbon media change must be escalated now",
+   "The RO membrane has failed",
+   "The softener needs regeneration"
+  ],
+  "answer": 1,
+  "why": "In series, the first tank does the work and the second polishes. Breakthrough between tanks is the early-warning sign: protection remains, but only one barrier is left, so replacement is urgent before the second tank also breaks through.",
+  "porque": "El primer tanque trabaja y el segundo pule. Si hay paso entre tanques, queda una sola barrera: hay que escalar el cambio de carbón ya, no esperar."
+ },
+ {
+  "id": "b1q3",
+  "block": 1,
+  "blockName": "Agua y dializado",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Reacción pirógena / endotoxinas",
+  "stem": "One hour into treatment, three patients on the same water loop develop fever and chills. What is the most likely cause and the technician's priority action?",
+  "options": [
+   "Dialysate too cold; raise the temperature",
+   "Bacterial/endotoxin contamination of water or dialysate; stop the treatments as directed, do not return the blood if instructed, notify the RN immediately, and save samples for cultures",
+   "Heparin allergy; give extra heparin",
+   "Ultrafiltration rate too high; slow the UF only"
+  ],
+  "answer": 1,
+  "why": "Fever and chills in several patients sharing a loop at the same time point to a pyrogenic reaction from contaminated water/dialysate, not individual causes. Group pattern = system problem: stop, protect the patient, escalate, culture.",
+  "porque": "Fiebre en varios pacientes del mismo lazo a la vez = problema del sistema (contaminación), no del paciente. Se detiene, se protege, se avisa y se cultiva."
+ },
+ {
+  "id": "b1q4",
+  "block": 1,
+  "blockName": "Agua y dializado",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Rechazo del RO",
+  "stem": "Over two weeks, the RO percent rejection has drifted from 97% to 88%. Which check best helps identify an upstream cause?",
+  "options": [
+   "The patient's Kt/V trend",
+   "Post-softener water hardness — an exhausted softener lets hardness scale the RO membrane and rejection falls",
+   "The bicarbonate jug expiration date",
+   "The venous pressure alarm limits"
+  ],
+  "answer": 1,
+  "why": "Falling rejection means the membrane is passing more dissolved solids. Hardness scale from a failing softener is a classic upstream cause: always read the water train as a chain, from pretreatment to the membrane.",
+  "porque": "Si el rechazo cae, piensa en cadena: un suavizador agotado deja pasar dureza que escama la membrana del RO. El problema suele estar aguas arriba."
+ },
+ {
+  "id": "b1q5",
+  "block": 1,
+  "blockName": "Agua y dializado",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Suavizador / dureza",
+  "stem": "Why is post-softener hardness checked every treatment day, typically at the end of the day?",
+  "options": [
+   "To calculate the patient's sodium level",
+   "To confirm the softener is still exchanging calcium and magnesium before hard water can damage the RO membrane",
+   "To set the dialysate temperature",
+   "To measure chloramine removal"
+  ],
+  "answer": 1,
+  "why": "The softener swaps Ca/Mg for sodium. When its resin is exhausted, hardness passes silently and scales the RO. The end-of-day check catches exhaustion after the day's full water demand.",
+  "porque": "El suavizador cambia calcio/magnesio por sodio. Si se agota, la dureza llega al RO y lo daña en silencio. La prueba al final del día lo detecta a tiempo."
+ },
+ {
+  "id": "b1q6",
+  "block": 1,
+  "blockName": "Agua y dializado",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Tanque DI / resistividad",
+  "stem": "During operation, the deionization (DI) tank's resistivity suddenly drops sharply. Why is this an emergency-level finding for water quality?",
+  "options": [
+   "It only means the tank needs more salt",
+   "An exhausted DI tank can release previously captured ions back into the water, suddenly exposing patients to contaminants",
+   "It raises the water temperature",
+   "It only affects the taste of the water"
+  ],
+  "answer": 1,
+  "why": "DI polishes water by ion exchange. Past exhaustion, the resin can dump ions (such as fluoride and silica) in a surge. Falling resistivity = stop using the water and escalate to the technical team immediately.",
+  "porque": "Un DI agotado puede SOLTAR los iones que había capturado, de golpe. Caída de resistividad = agua insegura hasta que el equipo técnico lo resuelva."
+ },
+ {
+  "id": "b1q7",
+  "block": 1,
+  "blockName": "Agua y dializado",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Verificación independiente pH",
+  "stem": "Machine setup is complete and the machine's own display shows acceptable values. With an independent handheld meter, the dialysate pH reads 6.4. What should happen before any patient is connected?",
+  "options": [
+   "Start; the machine display overrides the handheld meter",
+   "Do not start the treatment; keep the machine in bypass and notify per policy — dialysate pH must be verified within the acceptable range (about 6.9–7.6) with the independent meter",
+   "Add bicarbonate concentrate until the display changes",
+   "Rinse the dialyzer longer"
+  ],
+  "answer": 1,
+  "why": "Independent verification exists because the machine can be wrong while looking fine. Out-of-range pH means the proportioning is off; acidic dialysate is a patient-safety stop, not a suggestion.",
+  "porque": "La verificación independiente es la red de seguridad: la máquina puede marcar bien y estar mal. pH fuera de rango = no conectar al paciente."
+ },
+ {
+  "id": "b1q8",
+  "block": 1,
+  "blockName": "Agua y dializado",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Conductividad alta",
+  "stem": "A patient's dialysate conductivity trends high and the machine keeps alarming toward bypass. If overly concentrated dialysate reached the patient, the main danger would be:",
+  "options": [
+   "Hypotonic blood and hemolysis",
+   "Excess sodium transfer to the patient — hypernatremia, intense thirst, headache and hypertension",
+   "Air embolism",
+   "Clotting of the extracorporeal circuit"
+  ],
+  "answer": 1,
+  "why": "Conductivity reflects the electrolyte concentration of the dialysate. High conductivity = too much sodium salts = sodium loads into the blood. (Low conductivity is the opposite danger: dilute, hypotonic dialysate → hemolysis.)",
+  "porque": "Conductividad alta = dializado concentrado = sodio de más al paciente. La baja es el peligro contrario: dializado diluido e hipotónico → hemólisis."
+ },
+ {
+  "id": "b1q9",
+  "block": 1,
+  "blockName": "Agua y dializado",
+  "domain": "Técnico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Temperatura del dializado",
+  "stem": "Dialysate temperature rising above its safe limit is most dangerous because it:",
+  "options": [
+   "Makes the patient feel cold",
+   "Damages red blood cells (thermal hemolysis) and can drop blood pressure",
+   "Clots the dialyzer fibers instantly",
+   "Raises the patient's potassium"
+  ],
+  "answer": 1,
+  "why": "Blood exposed to overheated dialysate across the membrane can hemolyze. That is why temperature alarms send the machine to bypass and treatments are never run outside the safe temperature range (roughly 35–38 °C at the patient).",
+  "porque": "El calor excesivo daña los glóbulos rojos a través de la membrana. Por eso la alarma de temperatura manda la máquina a bypass: es protección, no estorbo."
+ },
+ {
+  "id": "b1q10",
+  "block": 1,
+  "blockName": "Agua y dializado",
+  "domain": "Técnico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Aluminio",
+  "stem": "A city changes its water treatment and aluminum levels in tap water rise. For dialysis patients, chronic aluminum exposure from inadequately treated water is linked to:",
+  "options": [
+   "Immediate skin rash only",
+   "Bone disease, anemia and a dementia-like encephalopathy",
+   "Improved appetite",
+   "Lower blood pressure"
+  ],
+  "answer": 1,
+  "why": "Aluminum is removed by the RO system, not by the softener or carbon. Chronic exposure accumulates in bone and brain — the historical lesson that made strict water standards (AAMI) mandatory for dialysis.",
+  "porque": "El aluminio lo frena el RO, no el suavizador ni el carbón. Su daño es crónico: hueso, anemia y encefalopatía. Por eso el agua de diálisis es tan estricta."
+ },
+ {
+  "id": "b1q11",
+  "block": 1,
+  "blockName": "Agua y dializado",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Concentrado de bicarbonato",
+  "stem": "At the start of the shift, a half-used bicarbonate jug from the previous day is still connected, and a coworker suggests finishing it first. The best response:",
+  "options": [
+   "Use it — bicarbonate is just a salt",
+   "Do not use leftover bicarbonate; bicarbonate solution supports rapid bacterial growth, so containers are emptied, disinfected and refilled per policy",
+   "Add acid concentrate to sterilize it",
+   "Freeze it for tomorrow"
+  ],
+  "answer": 1,
+  "why": "Unlike acid concentrate (which inhibits growth), mixed bicarbonate is a friendly medium for bacteria and endotoxin formation. Yesterday's jug is a contamination risk even if it looks clean.",
+  "porque": "El bicarbonato preparado es caldo de cultivo para bacterias; el ácido no. Lo que sobró de ayer no se usa hoy: se vacía, se desinfecta, se rellena."
+ },
+ {
+  "id": "b1q12",
+  "block": 1,
+  "blockName": "Agua y dializado",
+  "domain": "Técnico",
+  "level": "Comprensión",
+  "difficulty": "Alta",
+  "topic": "Luz UV y ultrafiltro",
+  "stem": "In the distribution loop, the ultraviolet (UV) unit is followed by an ultrafilter. Why is the ultrafilter still needed after UV disinfection?",
+  "options": [
+   "UV only works when water is cold",
+   "UV inactivates bacteria but their remains release endotoxin; the ultrafilter removes endotoxin and bacteria fragments before water reaches the machines",
+   "The ultrafilter adds minerals back",
+   "It is only decorative backup"
+  ],
+  "answer": 1,
+  "why": "Killing bacteria is not the same as removing their debris. Endotoxin from dead gram-negative bacteria can still trigger pyrogenic reactions, so the loop pairs UV (kill) with ultrafiltration (remove).",
+  "porque": "La UV mata bacterias, pero sus restos liberan endotoxina. El ultrafiltro retira lo que la UV no puede: la endotoxina que causa reacciones pirógenas."
+ },
+ {
+  "id": "b1q13",
+  "block": 1,
+  "blockName": "Agua y dializado",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Frecuencia de prueba de cloro",
+  "stem": "Treatments have been running for five hours since the morning's total chlorine test, and new patients are about to be started. What is required?",
+  "options": [
+   "Nothing; one test per day is enough",
+   "A new total chlorine test — it must be checked before treatments begin and periodically during the treatment day (about every 4 hours) while patients are exposed",
+   "Only a hardness test",
+   "Ask the patients if the water tastes normal"
+  ],
+  "answer": 1,
+  "why": "Carbon can break through at any point in the day as it exhausts. A single morning test cannot protect the afternoon shift; scheduled re-testing during operation is the safety standard.",
+  "porque": "El carbón se agota en cualquier momento del día. La prueba de la mañana no protege la tarde: se repite periódicamente mientras haya pacientes conectados."
+ },
+ {
+  "id": "b1q14",
+  "block": 1,
+  "blockName": "Agua y dializado",
+  "domain": "Técnico",
+  "level": "Comprensión",
+  "difficulty": "Media-Alta",
+  "topic": "Lazo de distribución",
+  "stem": "Product water leaving the RO tests perfectly, yet loop samples grow bacteria. The most likely explanation is:",
+  "options": [
+   "The RO produces bacteria",
+   "Stagnation — dead legs, low flow areas or an undisturbed storage tank let biofilm grow downstream of treatment",
+   "The laboratory made an error, always",
+   "Chlorine is too high"
+  ],
+  "answer": 1,
+  "why": "Perfect water can be recontaminated after treatment. Continuous circulation, no dead legs, and scheduled loop disinfection exist precisely to prevent biofilm between the RO and the patient.",
+  "porque": "El agua puede salir perfecta del RO y contaminarse en el camino: zonas sin flujo y tanques quietos crían biopelícula. Por eso el lazo circula y se desinfecta."
+ },
+ {
+  "id": "b1q15",
+  "block": 1,
+  "blockName": "Agua y dializado",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Tiempo de contacto (EBCT)",
+  "stem": "The unit expands and total water demand on the same carbon system rises well beyond its design flow. Chloramine starts breaking through even though the carbon is fairly new. The best explanation is:",
+  "options": [
+   "New carbon never works",
+   "Higher flow shortened the empty bed contact time (EBCT); chloramine removal needs adequate contact time with the carbon, so capacity is a flow problem, not just media age",
+   "The RO needs a new membrane",
+   "The patients are using too much water"
+  ],
+  "answer": 1,
+  "why": "Carbon removes chloramine by contact, not magic. AAMI guidance calls for about 10 minutes of total EBCT across the carbon beds. Push flow past design and contact time collapses — breakthrough with \"new\" carbon is the classic trap.",
+  "porque": "El carbón trabaja por CONTACTO. Si el flujo supera el diseño, el tiempo de contacto (EBCT ~10 min total) se cae y la cloramina pasa aunque el carbón sea nuevo. ================================================================ CIERRE DEL BLOQUE 1 15 preguntas · Dominio Técnico · 10 de Aplicación, 5 de Comprensión · 6 dificultad alta, 3 media-alta, 6 media · 0 copiadas: escenarios nuevos, redacción propia, valores de estándares públicos (AAMI/CDC). SIGUIENTE: Bloque 2 — Clínico: Acceso Vascular (canulación, evaluación, complicaciones) + primeras preguntas NUEVAS de Ambiente y Rol para balancear el banco hacia los pesos del examen. ================================================================"
+ },
+ {
+  "id": "b2q1",
+  "block": 2,
+  "blockName": "Acceso vascular",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Buttonhole vs rope-ladder",
+  "stem": "A patient has a fistula cannulated with the buttonhole technique. A float technician, wanting to \"give the sites a rest,\" plans to rotate to new spots along the vessel. This plan is wrong because:",
+  "options": [
+   "Buttonhole sites scar over in 24 hours",
+   "Buttonhole requires cannulation of the SAME exact site, angle and depth, forming a track — rotating sites defeats the technique; rotation is the principle of rope-ladder cannulation instead",
+   "Rotating sites increases the blood pump speed",
+   "New sites heal faster than established tracks"
+  ],
+  "answer": 1,
+  "why": "The two techniques are opposites: rope-ladder rotates along the vessel; buttonhole repeats one precise track, ideally by consistent cannulators, with aseptic scab removal. Mixing them up destroys the track and raises infection risk.",
+  "porque": "Son técnicas opuestas: la escalera de cuerda rota; el buttonhole repite el MISMO punto, ángulo y profundidad. Confundirlas daña el acceso y sube el riesgo."
+ },
+ {
+  "id": "b2q2",
+  "block": 2,
+  "blockName": "Acceso vascular",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Estenosis (vigilancia del acceso)",
+  "stem": "Over several treatments, a fistula patient shows rising venous pressures, harder cannulation, and bleeding that takes longer than usual to stop after needle removal. Together, these findings most likely indicate:",
+  "options": [
+   "The patient is drinking too much fluid",
+   "Venous stenosis narrowing the outflow — report to the RN/nephrologist for access evaluation before it progresses to thrombosis",
+   "The heparin dose is too low",
+   "The dialyzer is too small"
+  ],
+  "answer": 1,
+  "why": "That triad — pressure up, cannulation harder, post-needle bleeding prolonged — is the classic clinical picture of stenosis. Monthly access surveillance exists to catch it while angioplasty can still save the access.",
+  "porque": "Presión venosa alta + canulación difícil + sangrado prolongado al retirar agujas = estenosis. Detectarla a tiempo salva el acceso; tarde, se trombosa."
+ },
+ {
+  "id": "b2q3",
+  "block": 2,
+  "blockName": "Acceso vascular",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Síndrome de robo (steal)",
+  "stem": "Thirty minutes into treatment, a patient reports new pain, coolness and tingling in the hand of the access arm. The technician's best action is to:",
+  "options": [
+   "Reassure the patient; hand symptoms are always normal",
+   "Assess the hand (color, temperature, sensation, capillary refill), notify the RN promptly — these are signs of steal syndrome, arterial blood being diverted away from the hand",
+   "Increase the blood pump speed to push more blood to the hand",
+   "Wrap the hand in a hot blanket and continue silently"
+  ],
+  "answer": 1,
+  "why": "Cool, painful, tingling hand on the access side = possible steal syndrome. Left unassessed it can progress to tissue injury. It must be evaluated and escalated, never normalized or hidden with a blanket.",
+  "porque": "Mano fría, dolorosa y con hormigueo del lado del acceso = posible robo arterial. Se evalúa y se reporta; jamás se tapa ni se ignora."
+ },
+ {
+  "id": "b2q4",
+  "block": 2,
+  "blockName": "Acceso vascular",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "CVC — disciplina de conexión",
+  "stem": "Which sequence protects a central venous catheter (CVC) connection?",
+  "options": [
+   "Connect quickly without a mask to reduce exposure time",
+   "Mask on patient and staff, disinfect the hub thoroughly (\"scrub the hub\") and let it dry, and never touch the hub after disinfection",
+   "Disinfect only if the hub looks dirty",
+   "Change gloves after connecting, not before"
+  ],
+  "answer": 1,
+  "why": "CVC bloodstream infections are the most dangerous access complication. CDC core practices: masks for both, vigorous hub disinfection with dry time, and aseptic non-touch after disinfection — every connection, every time.",
+  "porque": "El catéter es el acceso con más infecciones graves. Mascarilla para ambos, desinfección vigorosa del conector con secado, y no tocar tras desinfectar."
+ },
+ {
+  "id": "b2q5",
+  "block": 2,
+  "blockName": "Acceso vascular",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Infiltración",
+  "stem": "Mid-treatment, the venous needle infiltrates: the site swells and the patient reports pain. The technician should:",
+  "options": [
+   "Slow the pump and push the needle in deeper",
+   "Stop the blood pump, notify the RN, apply ice and elevate the arm, and assess the infiltration before any new cannulation above the site",
+   "Move the needle side to side until flow returns",
+   "Increase ultrafiltration to pull the fluid out"
+  ],
+  "answer": 1,
+  "why": "Blood is leaking into tissue. Running the pump worsens the hematoma. Standard care: stop, escalate, ice, elevate, evaluate; re-cannulate above the infiltration only after assessment.",
+  "porque": "La sangre está saliendo al tejido: seguir bombeando agranda el hematoma. Se detiene, se avisa, hielo y elevación; la nueva punción va por encima, evaluada."
+ },
+ {
+  "id": "b2q6",
+  "block": 2,
+  "blockName": "Acceso vascular",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Media-Alta",
+  "topic": "Recirculación",
+  "stem": "Needles placed too close together, or with reversed lines, cause access recirculation. Its main effect on the treatment is:",
+  "options": [
+   "The dialyzer clots faster",
+   "Already-dialyzed blood re-enters the arterial needle, so the patient's blood is cleaned less effectively and adequacy (Kt/V) falls",
+   "The patient becomes hypertensive",
+   "The venous pressure alarm stops working"
+  ],
+  "answer": 1,
+  "why": "Recirculation short-circuits the treatment: cleaned blood loops back instead of systemic blood being processed. Correct spacing and line orientation keep the full blood flow earning its clearance.",
+  "porque": "La sangre ya limpia vuelve a entrar por la aguja arterial y el paciente recibe menos depuración real. Distancia y orientación correctas lo evitan."
+ },
+ {
+  "id": "b2q7",
+  "block": 2,
+  "blockName": "Acceso vascular",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Alta",
+  "topic": "Aneurisma — no canular",
+  "stem": "Before cannulation, a section of a patient's fistula looks bulging, with thin, shiny skin over it. The correct action is:",
+  "options": [
+   "Cannulate gently right at the thinnest point",
+   "Do NOT cannulate that area; notify the RN — thinned skin over an aneurysm can rupture, and the site needs evaluation",
+   "Cover it with extra tape and proceed",
+   "Use a smaller needle in the same spot"
+  ],
+  "answer": 1,
+  "why": "Aneurysmal thinning is a rupture warning, and rupture of a fistula can be life-threatening hemorrhage. That segment is off-limits for needles until the access team evaluates it.",
+  "porque": "Piel fina y brillante sobre un aneurisma = riesgo de ruptura y hemorragia grave. Esa zona no se pincha: se reporta y la evalúa el equipo de acceso."
+ },
+ {
+  "id": "b2q8",
+  "block": 2,
+  "blockName": "Acceso vascular",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Maduración (regla de los 6)",
+  "stem": "A new fistula is being evaluated for first cannulation. The KDOQI \"rule of 6s\" suggests readiness when the access has approximately:",
+  "options": [
+   "Flow 300 mL/min, diameter 3 mm, depth 10 mm at 3 weeks",
+   "Flow over 600 mL/min, diameter over 6 mm, depth less than 6 mm, at about 6 weeks",
+   "Flow over 900 mL/min at 2 weeks",
+   "Any palpable pulse, at any time"
+  ],
+  "answer": 1,
+  "why": "600–6–6–6 weeks: flow >600 mL/min, vein diameter >6 mm, no deeper than 6 mm under the skin, typically maturing around 6 weeks — plus a strong thrill. Cannulating too early is a leading cause of early fistula loss.",
+  "porque": "Flujo >600, diámetro >6 mm, profundidad <6 mm, ~6 semanas. Pinchar antes de tiempo es causa clásica de perder la fístula nueva."
+ },
+ {
+  "id": "b2q9",
+  "block": 2,
+  "blockName": "Acceso vascular",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Signos de infección del acceso",
+  "stem": "During pre-treatment assessment, the area over a patient's graft is red, warm and tender, and the patient reports fever at home. The technician should:",
+  "options": [
+   "Cannulate through the red area quickly to finish on time",
+   "Not cannulate through the area; notify the RN before treatment — these are signs of access infection requiring evaluation",
+   "Apply a warm compress and start",
+   "Give the patient's own antibiotic from his bag"
+  ],
+  "answer": 1,
+  "why": "Cannulating through infected tissue seeds bacteria straight into the bloodstream. Redness + warmth + pain + fever = stop, protect, escalate first.",
+  "porque": "Enrojecimiento, calor, dolor y fiebre = posible infección del acceso. Pinchar a través de esa zona siembra bacterias en la sangre. Primero, evaluación."
+ },
+ {
+  "id": "b2q10",
+  "block": 2,
+  "blockName": "Acceso vascular",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Hemostasia posaguja",
+  "stem": "After needle removal, which hemostasis technique is correct?",
+  "options": [
+   "Press as hard as possible until all thrill disappears for 10 minutes",
+   "Apply firm pressure with two fingers over the vessel puncture (not only the skin), enough to stop bleeding while still feeling the thrill; then confirm thrill/bruit after hemostasis",
+   "Place a tight tourniquet above the site",
+   "Let the patient hold pressure unsupervised and leave"
+  ],
+  "answer": 1,
+  "why": "Pressure must seal the vessel hole without occluding flow: too much pressure can thrombose the access, too little causes hematoma/bleeding. The thrill must still be present when you finish — that check is part of the job.",
+  "porque": "La presión sella el vaso sin cerrar el flujo: exceso = trombosis, defecto = hematoma. Al terminar se verifica que el thrill sigue presente."
+ },
+ {
+  "id": "b2q11",
+  "block": 2,
+  "blockName": "Acceso vascular",
+  "domain": "Ambiente",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Desinfección de la estación",
+  "stem": "A patient leaves and the next patient is waiting. To save time, a coworker wipes the chair and machine surfaces with disinfectant and immediately dries them. The problem with this is:",
+  "options": [
+   "Nothing; speed matters most",
+   "Disinfectant needs its full wet contact (dwell) time on the surface to kill pathogens — drying it early makes the disinfection unreliable",
+   "The surfaces should never be wet",
+   "Only the chair matters, not the machine"
+  ],
+  "answer": 1,
+  "why": "EPA-registered disinfectants work by chemistry plus time. Wiping dry before the label dwell time ends leaves viable pathogens — including bloodborne viruses — for the next patient.",
+  "porque": "El desinfectante necesita su tiempo de contacto húmedo completo. Secarlo antes deja patógenos vivos para el próximo paciente: prisa ≠ desinfección."
+ },
+ {
+  "id": "b2q12",
+  "block": 2,
+  "blockName": "Acceso vascular",
+  "domain": "Ambiente",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Aislamiento HBV",
+  "stem": "Which patient MUST be dialyzed in a separate isolation room with a dedicated machine and dedicated staff assignments?",
+  "options": [
+   "A patient with hepatitis C",
+   "A patient with HIV",
+   "A patient who is HBsAg-positive (hepatitis B surface antigen)",
+   "A patient with a common cold"
+  ],
+  "answer": 2,
+  "why": "Hepatitis B is uniquely stable in the environment and highly transmissible in dialysis settings, so CDC/CMS require room, machine and staff dedication for HBsAg-positive patients. HCV and HIV use standard precautions without isolation.",
+  "porque": "El virus de hepatitis B sobrevive en superficies y es muy contagioso en diálisis: cuarto, máquina y personal dedicados. VHC y VIH: precauciones estándar."
+ },
+ {
+  "id": "b2q13",
+  "block": 2,
+  "blockName": "Acceso vascular",
+  "domain": "Ambiente",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Derrame de sangre",
+  "stem": "A blood spill occurs on the floor beside a station. The correct cleanup is:",
+  "options": [
+   "Mop it with plain water quickly",
+   "Gloves (PPE) on, absorb the spill, then disinfect with an appropriate bleach solution (stronger mix for spills, about 1:10), observe contact time, and dispose of materials as regulated medical waste",
+   "Let housekeeping handle it next week",
+   "Cover it with a towel until the shift ends"
+  ],
+  "answer": 1,
+  "why": "Blood spills are biohazard events: PPE, containment, a spill-strength bleach disinfection with dwell time, and regulated-waste disposal — done now, by trained staff, not deferred.",
+  "porque": "Derrame de sangre = riesgo biológico inmediato: guantes, absorber, desinfectar con cloro fuerte (1:10) con su tiempo, y desecho regulado."
+ },
+ {
+  "id": "b2q14",
+  "block": 2,
+  "blockName": "Acceso vascular",
+  "domain": "Rol",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Alcance de práctica (scope)",
+  "stem": "A patient asks the PCT to \"just lower my target weight today and adjust my heparin — you know me best.\" The correct response is to:",
+  "options": [
+   "Make both changes; experienced techs do this routinely",
+   "Explain that treatment-parameter and medication changes are clinical decisions for the RN/nephrologist, and promptly hand the request to the RN",
+   "Change only the target weight",
+   "Ask another PCT to sign it off"
+  ],
+  "answer": 1,
+  "why": "Trust from patients does not expand legal scope. PCTs monitor, report and advocate — prescriptions and treatment parameters change only through licensed clinicians. The handoff IS the helpful action.",
+  "porque": "La confianza del paciente no amplía el alcance legal. El PCT observa, reporta y canaliza: los cambios clínicos los decide RN/nefrólogo."
+ },
+ {
+  "id": "b2q15",
+  "block": 2,
+  "blockName": "Acceso vascular",
+  "domain": "Rol",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "HIPAA en la vida real",
+  "stem": "A coworker mentions that a patient on today's schedule is her neighbor and asks you what his diagnosis and schedule are, \"just to help him with rides.\" You:",
+  "options": [
+   "Share it — the intention is kind",
+   "Do not share; patient information is accessed and discussed only for treatment-related need-to-know, and you can suggest she ask the neighbor directly",
+   "Share only the schedule, not the diagnosis",
+   "Text it to her after the shift"
+  ],
+  "answer": 1,
+  "why": "HIPAA has no \"good intentions\" exception. Curiosity about a neighbor — even helpful curiosity — is not a treatment need. Protecting the information protects the patient and your license/certification.",
+  "porque": "HIPAA no tiene excepción por buena intención. Sin necesidad clínica, no se comparte: que se lo pregunte directamente al vecino. ================================================================ CIERRE DEL BLOQUE 2 15 preguntas · Clínico 10 (Acceso vascular) · Ambiente 3 · Rol 2 · Aplicación 11, Comprensión 4 · Escenarios nuevos, valores KDOQI/CDC/CMS. SIGUIENTE: Bloque 3 — Clínico: Complicaciones Intradialíticas (la categoría más grande del examen: hipotensión, calambres, embolia gaseosa, hemólisis…). ================================================================"
+ },
+ {
+  "id": "b3q1",
+  "block": 3,
+  "blockName": "Complicaciones",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Hipotensión intradialítica",
+  "stem": "Mid-treatment, a patient becomes nauseated, sweaty and yawning, and BP falls from 138/82 to 96/58. What is the correct first response?",
+  "options": [
+   "Increase the ultrafiltration rate to finish sooner",
+   "Stop ultrafiltration, place the patient supine (Trendelenburg per policy), notify the RN, and give a saline bolus only as directed",
+   "Give the patient a snack and continue",
+   "Slow the blood pump to 100 for the rest of the shift without reporting"
+  ],
+  "answer": 1,
+  "why": "Nausea, sweating and yawning are the classic prodrome of intradialytic hypotension. Removing more fluid deepens it. Stop UF, position, escalate — volume support is a directed intervention, not a reflex.",
+  "porque": "Náusea, sudor y bostezos anuncian la hipotensión. Sacar más líquido la empeora: se detiene la UF, se acuesta al paciente y se avisa al RN."
+ },
+ {
+  "id": "b3q2",
+  "block": 3,
+  "blockName": "Complicaciones",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Embolia gaseosa (aire)",
+  "stem": "A patient suddenly develops chest pain, cough, shortness of breath and confusion, and air is suspected in the venous line. The immediate actions are:",
+  "options": [
+   "Speed up the pump to push the air through",
+   "Stop the blood pump, clamp the venous line, position the patient on the LEFT side with head down (Durant position), notify the RN and call for emergency help — administer oxygen as directed",
+   "Sit the patient upright and give water",
+   "Disconnect and send the patient to the waiting room"
+  ],
+  "answer": 1,
+  "why": "Air embolism is a life-threatening emergency: stop the pump so no more air enters, clamp, left-lateral head-down traps air in the right ventricle, and activate emergency response immediately.",
+  "porque": "Aire en el circuito puede matar. Se para la bomba, se pinza la línea, posición de Durant (izquierdo, cabeza baja), oxígeno y emergencia ya."
+ },
+ {
+  "id": "b3q3",
+  "block": 3,
+  "blockName": "Complicaciones",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Hemólisis aguda",
+  "stem": "Several patients develop burning at the access, pink/red serum is noted, and one complains of back pain and shortness of breath. The most likely cause is:",
+  "options": [
+   "Too much heparin",
+   "Acute hemolysis — from a water/dialysate problem (chloramine, hypotonic or overheated dialysate, contamination); stop treatments, do NOT return the blood, notify the RN/nephrologist immediately",
+   "Normal post-dialysis fatigue",
+   "Low blood sugar in all patients at once"
+  ],
+  "answer": 1,
+  "why": "Hemolysis across multiple patients = a system failure in water or dialysate preparation until proven otherwise. Returning hemolyzed blood releases dangerous potassium. This is a stop-everything event.",
+  "porque": "Hemólisis en varios pacientes = falla del sistema (agua/dializado), no del paciente. No se devuelve esa sangre: el potasio liberado es letal."
+ },
+ {
+  "id": "b3q4",
+  "block": 3,
+  "blockName": "Complicaciones",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Calambres musculares",
+  "stem": "Muscle cramps late in treatment are most often related to:",
+  "options": [
+   "High dialysate potassium",
+   "Rapid fluid removal and plasma volume contraction — often when the patient is at or below true dry weight",
+   "Excess heparin",
+   "Cold blankets"
+  ],
+  "answer": 1,
+  "why": "Cramping tracks ultrafiltration: aggressive removal or an overestimated dry weight leaves muscle under-perfused. Management starts with UF reduction and reassessment of the target weight, not just stretching.",
+  "porque": "El calambre sigue a la ultrafiltración: remover rápido o un peso seco mal estimado deja el músculo sin volumen. Revisa UF y peso objetivo."
+ },
+ {
+  "id": "b3q5",
+  "block": 3,
+  "blockName": "Complicaciones",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Fuga de sangre (blood leak)",
+  "stem": "The blood leak detector alarms and the effluent dialysate in the drain line looks pink-tinged. The technician should:",
+  "options": [
+   "Silence the alarm — it is usually a false alarm",
+   "Confirm with a blood-leak test strip; if positive, stop the pump, notify the RN, and do NOT return the blood if the membrane is ruptured",
+   "Lower the TMP and continue",
+   "Change the alarm limits wider"
+  ],
+  "answer": 1,
+  "why": "A true blood leak means dialyzer fibers are ruptured: blood is lost to the drain and dialysate can cross into blood. Verify with a strip, then stop and escalate — never widen alarm limits to silence a safety device.",
+  "porque": "Fuga real = fibras rotas: se pierde sangre y puede cruzar dializado. Se confirma con tira, se detiene y se escala. Las alarmas no se \"ajustan\"."
+ },
+ {
+  "id": "b3q6",
+  "block": 3,
+  "blockName": "Complicaciones",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Alta",
+  "topic": "Síndrome de desequilibrio",
+  "stem": "A new patient in his second-ever treatment becomes restless, then develops headache, nausea and confusion near the end of a long, efficient session. This picture suggests:",
+  "options": [
+   "Dialysis disequilibrium syndrome — cerebral edema from urea shifting too fast in a new, severely uremic patient; notify the RN immediately",
+   "Hunger",
+   "A clotted dialyzer",
+   "Steal syndrome"
+  ],
+  "answer": 0,
+  "why": "Disequilibrium strikes new patients with very high urea when clearance is too efficient too soon: the brain swells as plasma urea falls faster than brain urea. Shorter, gentler first treatments prevent it — and symptoms demand the RN.",
+  "porque": "Paciente nuevo con urea muy alta + sesión muy eficiente = el cerebro se edematiza. Por eso las primeras sesiones son cortas y suaves."
+ },
+ {
+  "id": "b3q7",
+  "block": 3,
+  "blockName": "Complicaciones",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Dolor torácico / angina",
+  "stem": "A patient reports chest pressure and shortness of breath mid-treatment. The technician's role is to:",
+  "options": [
+   "Finish the treatment faster so the patient can rest",
+   "Stop ultrafiltration, assess vitals, notify the RN immediately and activate the unit's emergency procedure — chest pain on dialysis is treated as a possible cardiac event until evaluated",
+   "Give the patient his own aspirin from his bag without telling anyone",
+   "Lower the temperature and observe quietly for an hour"
+  ],
+  "answer": 1,
+  "why": "Dialysis patients carry high cardiac risk; chest pressure is an emergency presentation, not a discomfort. Stop UF, assess, escalate fast — medications come through licensed staff and protocol, never silently.",
+  "porque": "Dolor en el pecho en diálisis = posible evento cardíaco. Se detiene la UF, se evalúa y se activa emergencia. Nada de medicinas \"por la libre\"."
+ },
+ {
+  "id": "b3q8",
+  "block": 3,
+  "blockName": "Complicaciones",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Coagulación del circuito",
+  "stem": "The fibers of the dialyzer are streaking dark and the venous pressure is climbing. The circuit is clotting. A likely contributing cause to review is:",
+  "options": [
+   "The patient ate breakfast",
+   "Inadequate anticoagulation, low blood flow, or interruptions (access or pump problems) during the treatment",
+   "The dialysate is too warm",
+   "The patient is sitting upright"
+  ],
+  "answer": 1,
+  "why": "Clotting is favored by under-heparinization, poor flows and stoppages. The tech's job: recognize early (streaking, rising pressures), notify the RN, and protect what blood can safely be returned per protocol.",
+  "porque": "Poco anticoagulante, flujos bajos o paradas = circuito que se coagula. Reconocerlo temprano (fibras oscuras, presión subiendo) salva sangre y sesión."
+ },
+ {
+  "id": "b3q9",
+  "block": 3,
+  "blockName": "Complicaciones",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Primera reacción (first-use)",
+  "stem": "Fifteen minutes into a first treatment with a new dialyzer, a patient develops itching, flushing and mild wheeze. This early reaction pattern is called:",
+  "options": [
+   "Disequilibrium",
+   "First-use (dialyzer) reaction — stop/escalate per severity; severe reactions (anaphylactoid) mean stop the pump and do NOT return the blood",
+   "Steal syndrome",
+   "Pyrogenic reaction, always"
+  ],
+  "answer": 1,
+  "why": "Reactions within the first minutes point at the dialyzer itself (membrane or sterilant sensitivity). Mild may resolve per RN direction; severe airway or BP involvement = stop, no rinse-back, emergency care.",
+  "porque": "Reacción en los primeros minutos = reacción al dializador. Si hay vía aérea o presión comprometida: se para, no se devuelve la sangre, emergencia."
+ },
+ {
+  "id": "b3q10",
+  "block": 3,
+  "blockName": "Complicaciones",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Desconexión / sangrado",
+  "stem": "The venous needle dislodges under a blanket and blood loss is first noticed because the venous pressure alarm did NOT sound. The key safety lesson is:",
+  "options": [
+   "Alarms always catch needle dislodgement",
+   "Venous pressure alarms may not detect a dislodged needle — access sites must stay VISIBLE and be checked regularly throughout treatment",
+   "Blankets should be banned",
+   "Blood lines should be taped tighter only"
+  ],
+  "answer": 1,
+  "why": "A dislodged venous needle can exsanguinate a patient while pressures stay in range — the alarm is not a watcher. Uncovered, visible access and frequent direct checks are the real protection.",
+  "porque": "La aguja venosa puede salirse sin que la alarma suene. La protección real: acceso VISIBLE y rondas de observación, no confiar en la máquina."
+ },
+ {
+  "id": "b3q11",
+  "block": 3,
+  "blockName": "Complicaciones",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Media-Alta",
+  "topic": "Hiperpotasemia (contexto)",
+  "stem": "Why is hyperkalemia especially dangerous in the hours BEFORE dialysis?",
+  "options": [
+   "It only causes cramps",
+   "Excess potassium disrupts cardiac conduction and can cause fatal arrhythmia without warning symptoms — a leading cause of death in dialysis patients, especially after the long interdialytic gap",
+   "It raises blood pressure predictably",
+   "It has no cardiac effect"
+  ],
+  "answer": 1,
+  "why": "Potassium silently shifts the heart's electrical stability. The long weekend gap is the highest-risk window, which is why missed treatments and dietary indiscretion in potassium are treated so seriously.",
+  "porque": "El potasio alto desestabiliza el corazón sin avisar: arritmia mortal. El fin de semana largo sin diálisis es la ventana de más riesgo."
+ },
+ {
+  "id": "b3q12",
+  "block": 3,
+  "blockName": "Complicaciones",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Sepsis desde el acceso",
+  "stem": "A catheter patient spikes a fever with shaking chills shortly after connection and becomes hypotensive. The priority interpretation and action:",
+  "options": [
+   "Probably a cold room; add a blanket",
+   "Possible catheter-related bloodstream infection/sepsis — notify the RN immediately, obtain cultures as directed, and prepare for urgent medical evaluation",
+   "Slow the pump and recheck in one hour",
+   "Disconnect and send home with oral fluids"
+  ],
+  "answer": 1,
+  "why": "Fever + rigors + hypotension in a CVC patient is sepsis until proven otherwise. Minutes matter: escalate fast, cultures before antibiotics when directed, and expect hospital-level care.",
+  "porque": "Fiebre con escalofríos e hipotensión en paciente con catéter = sepsis hasta demostrar lo contrario. Cada minuto cuenta: RN, cultivos, hospital."
+ },
+ {
+  "id": "b3q13",
+  "block": 3,
+  "blockName": "Complicaciones",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Convulsión en tratamiento",
+  "stem": "A patient begins seizing during treatment. After calling for help, the technician should:",
+  "options": [
+   "Restrain the patient's limbs tightly",
+   "Protect the patient from injury, protect the access and lines, stop ultrafiltration, and notify the RN — time the seizure and keep the airway area clear",
+   "Insert something in the mouth",
+   "Rinse back and disconnect immediately alone"
+  ],
+  "answer": 1,
+  "why": "Seizure care is protection and escalation: guard the head and access, nothing in the mouth, no restraint, stop UF, and the RN leads medical management. The needles and lines are your zone of vigilance.",
+  "porque": "En convulsión: proteger al paciente y el acceso, nada en la boca, no sujetar, parar la UF y avisar. El RN dirige el manejo médico."
+ },
+ {
+  "id": "b3q14",
+  "block": 3,
+  "blockName": "Complicaciones",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Hipotensión posdiálisis",
+  "stem": "A patient feels fine at disconnect but becomes dizzy when standing for the post-treatment weight. This is most likely:",
+  "options": [
+   "Disequilibrium",
+   "Post-dialysis orthostatic hypotension from intravascular volume still re-equilibrating — sit/lie the patient back down, reassess vitals, and do not let them leave until stable and cleared",
+   "Hunger only",
+   "A machine error"
+  ],
+  "answer": 1,
+  "why": "Plasma refilling lags behind fluid removal; standing pools what volume remains. Falls after dialysis injure real patients — reassessment and a stable recheck gate the exit, not the clock.",
+  "porque": "El volumen tarda en reequilibrarse tras la sesión: al pararse, mareo. Se sienta, se reevalúa, y no sale hasta estar estable. Las caídas son reales."
+ },
+ {
+  "id": "b3q15",
+  "block": 3,
+  "blockName": "Complicaciones",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Resumen — decisión bajo presión",
+  "stem": "Three events occur at once: your patient is hypotensive, the patient next door alarms for a blood leak, and a third calls out with chest pain. The correct prioritization principle is:",
+  "options": [
+   "Finish your documentation first",
+   "Call for help FIRST (never manage three emergencies silently or alone), then triage by airway/breathing/circulation threat — chest pain and the symptomatic hypotensive patient before equipment problems",
+   "Attend stations in chair-number order",
+   "Silence all alarms, then decide"
+  ],
+  "answer": 1,
+  "why": "The exam — and the floor — reward the same reflex: escalate early and loudly, then rank by physiological threat. Alarms are information, not the priority order; people before machines, always with help activated.",
+  "porque": "Pedir ayuda es la primera intervención, no la última. Después: amenaza a vida primero (dolor torácico, hipotensión sintomática), máquinas después. ================================================================ CIERRE DEL BLOQUE 3 15 preguntas · Clínico 15 (Complicaciones intradialíticas y emergencias) · Aplicación 10, Comprensión 5 · 6 dificultad alta, 3 media-alta, 6 media. Acumulado PRO: 45 preguntas (Técnico 15 · Clínico 25 · Ambiente 3 · Rol 2). SIGUIENTE: Bloque 4 — Técnico: Máquina 2008T y Alarmas (preparación, pruebas de alarma, bypass, presión arterial/venosa, TMP) + más Ambiente y Rol. ================================================================"
+ },
+ {
+  "id": "b4q1",
+  "block": 4,
+  "blockName": "Máquina y alarmas",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Pruebas previas (pre-treatment)",
+  "stem": "Before connecting a patient, the machine's alarm tests must confirm:",
+  "options": [
+   "Only that the power light is on",
+   "That audible and visible alarms sound — including the blood leak detector, air detector and pressure alarms — and that the machine bypasses correctly when a limit is exceeded",
+   "Only the dialysate temperature",
+   "That the chair reclines"
+  ],
+  "answer": 1,
+  "why": "Alarm testing is patient safety in miniature: a silent air detector or a dead blood leak alarm is a failure that shows up later as a catastrophe. The pre-treatment check proves the machine can still protect the patient.",
+  "porque": "La prueba de alarmas comprueba que la máquina aún sabe proteger: detector de aire, fuga de sangre, presiones y bypass. Una alarma muda es un riesgo."
+ },
+ {
+  "id": "b4q2",
+  "block": 4,
+  "blockName": "Máquina y alarmas",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Bypass — qué significa",
+  "stem": "During setup, the machine goes into bypass and will not deliver dialysate to the dialyzer. This means:",
+  "options": [
+   "The treatment has started normally",
+   "Dialysate is diverted AWAY from the dialyzer to drain until temperature, conductivity and pH return to safe ranges",
+   "The blood pump has stopped permanently",
+   "The machine is overheating and must be discarded"
+  ],
+  "answer": 1,
+  "why": "Bypass is the machine's safe mode: unacceptable dialysate never reaches blood. Understanding bypass — when it happens and why — is the tech's first diagnostic move, not a nuisance to override.",
+  "porque": "Bypass = dializado desviado al drenaje hasta que temperatura, conductividad y pH vuelvan a rango seguro. Es protección, no un estorbo."
+ },
+ {
+  "id": "b4q3",
+  "block": 4,
+  "blockName": "Máquina y alarmas",
+  "domain": "Técnico",
+  "level": "Comprensión",
+  "difficulty": "Media-Alta",
+  "topic": "Presión arterial (PA) alta",
+  "stem": "Arterial pressure readings become increasingly negative (e.g., –280 mmHg) as the blood pump runs. The most likely cause is:",
+  "options": [
+   "The dialysate flow is too high",
+   "An access problem — the arterial needle is against the vessel wall, the access is clotting, or the line is kinked — restricting blood inflow to the pump",
+   "The patient is hypertensive",
+   "The venous needle is too small"
+  ],
+  "answer": 1,
+  "why": "The pump pulls harder when inflow is restricted: very negative arterial pressure = the pump is starved. Check the access and lines; a starving pump draws air and collapses the vessel, it does not deliver the prescription.",
+  "porque": "Presión arterial muy negativa = la bomba no recibe sangre: acceso contra la pared, trombo o línea doblada. No es la presión del paciente."
+ },
+ {
+  "id": "b4q4",
+  "block": 4,
+  "blockName": "Máquina y alarmas",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Presión venosa (PV) alta",
+  "stem": "Venous pressure climbs steadily during treatment. The first step is to:",
+  "options": [
+   "Raise the blood pump speed",
+   "Check for kinks, clamps and clotting in the venous line and dialyzer (darkening fibers), and notify the RN — rising venous pressure points downstream",
+   "Lower the dialysate temperature",
+   "Ignore it until it alarms"
+  ],
+  "answer": 1,
+  "why": "Venous pressure measures the return path: rising values point to obstruction downstream (line, dialyzer, venous needle). More pump speed makes a clotting circuit worse, not better.",
+  "porque": "La presión venosa vigila el retorno: si sube, el problema está aguas abajo (línea, dializador, aguja). Subir la bomba empeora el coágulo."
+ },
+ {
+  "id": "b4q5",
+  "block": 4,
+  "blockName": "Máquina y alarmas",
+  "domain": "Técnico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "TMP (presión transmembrana)",
+  "stem": "Transmembrane pressure (TMP) rising steadily during treatment most often means:",
+  "options": [
+   "The dialyzer membrane is becoming fouled/clotted and water permeability is falling",
+   "The patient is gaining weight",
+   "The dialysate sodium is too high",
+   "The heparin is working too well"
+  ],
+  "answer": 0,
+  "why": "TMP is the driving force across the membrane; as fibers clog, more pressure is needed for the same ultrafiltration. Rising TMP = the membrane is failing, and clearance falls with it.",
+  "porque": "La TMP sube cuando la membrana se ensucia/coagula y pierde permeabilidad. Más presión para la misma ultrafiltración = dializador que se va."
+ },
+ {
+  "id": "b4q6",
+  "block": 4,
+  "blockName": "Máquina y alarmas",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Detector de aire — fallo de alarma",
+  "stem": "The air detector alarms repeatedly, but inspection shows no visible air in the venous line. The correct approach is to:",
+  "options": [
+   "Mute the alarm for the rest of the treatment",
+   "Verify foam is not present in the venous drip chamber, inspect the line for microbubbles, ensure proper priming level, and notify the RN/biomed — the detector must never be bypassed or disabled",
+   "Disconnect the detector's wire",
+   "Tape over the sensor"
+  ],
+  "answer": 1,
+  "why": "Repeated alarms without visible air are still alarms: foam, microbubbles, wrong drip-chamber level or a faulty sensor. Air detectors are never muted, taped or disabled — they are the last guard against air embolism.",
+  "porque": "La alarma repetida exige verificación (espuma, microburbujas, nivel de la cámara, sensor). El detector de aire NUNCA se silencia ni se tapa."
+ },
+ {
+  "id": "b4q7",
+  "block": 4,
+  "blockName": "Máquina y alarmas",
+  "domain": "Técnico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Conductividad — verificación",
+  "stem": "During treatment, the machine's conductivity reading drifts slowly downward. Which is the most likely meaning?",
+  "options": [
+   "The patient is improving",
+   "The dialysate is becoming more dilute (for example, a concentrate problem or a proportioning error) — verify with the independent meter, notify the RN, and do not treat on out-of-range dialysate",
+   "The dialysate is heating up",
+   "The blood pump is failing"
+  ],
+  "answer": 1,
+  "why": "Conductivity tracks the electrolyte concentration of dialysate. A slow downward drift is a proportioning failure in progress — caught by trending and by the independent check, not by waiting for the machine to bypass.",
+  "porque": "La conductividad es la concentración del dializado: si cae, el dializado se diluye (problema de concentrado/proporción). Se verifica aparte."
+ },
+ {
+  "id": "b4q8",
+  "block": 4,
+  "blockName": "Máquina y alarmas",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Desinfección de la máquina",
+  "stem": "After treatment, the machine undergoes heat disinfection. The critical safety rule during disinfection is:",
+  "options": [
+   "Leave the machine connected to the patient until it cools",
+   "The machine must be OFFLINE with no patient connected, using only the disinfection method and cycle the manufacturer and policy specify — and disinfection must be documented",
+   "Any disinfectant from the shelf works the same",
+   "Skip it if the next patient is waiting"
+  ],
+  "answer": 1,
+  "why": "Disinfection modes (heat or chemical) are unsafe for patients and lethal if mixed up — a machine left in chemical disinfection has killed patients who were connected by mistake. Offline, correct method, documented.",
+  "porque": "La desinfección química/térmica con paciente conectado ha matado personas. Máquina fuera de servicio, método correcto y documentado."
+ },
+ {
+  "id": "b4q9",
+  "block": 4,
+  "blockName": "Máquina y alarmas",
+  "domain": "Técnico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "¿Qué NO hace la máquina?",
+  "stem": "Which task is NOT a function of the hemodialysis machine's safety systems?",
+  "options": [
+   "Detecting air in the venous line",
+   "Monitoring blood pressure automatically",
+   "Administering medications",
+   "Monitoring dialysate temperature and conductivity"
+  ],
+  "answer": 2,
+  "why": "The machine moves and monitors fluids; it does not prescribe or give medications. Knowing where the machine's job ends — and the licensed clinician's begins — is core exam logic.",
+  "porque": "La máquina mueve y monitorea fluidos; no prescribe ni administra medicamentos. Saber dónde termina su trabajo es lógica del examen."
+ },
+ {
+  "id": "b4q10",
+  "block": 4,
+  "blockName": "Máquina y alarmas",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Falla eléctrica / plan B",
+  "stem": "The power goes out mid-treatment. The first priorities are:",
+  "options": [
+   "Keep pumping with the manual hand crank per protocol and notify the RN — protect the blood in the circuit while emergency procedures are activated",
+   "Immediately discard the blood",
+   "Plug the machine into an extension cord from the hallway",
+   "Leave the room to find the maintenance office"
+  ],
+  "answer": 0,
+  "why": "Loss of power does not mean loss of the patient's blood. The hand crank keeps the circuit moving per protocol while the team follows the emergency plan and decides whether to rinse back safely or hold.",
+  "porque": "Sin electricidad, la sangre del paciente sigue contando. La manivela manual mantiene el circuito según protocolo mientras se activa la emergencia."
+ },
+ {
+  "id": "b4q11",
+  "block": 4,
+  "blockName": "Máquina y alarmas",
+  "domain": "Ambiente",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "EPP — orden correcto",
+  "stem": "When putting on PPE for a procedure with splash risk, the correct order is:",
+  "options": [
+   "Mask, gown, gloves, eye protection",
+   "Gown, mask, eye protection, gloves (gloves last — over the cuffs)",
+   "Gloves first, then everything else",
+   "Any order, as long as all items are worn"
+  ],
+  "answer": 1,
+  "why": "Gloves go on last (over gown cuffs) so the skin-to-skin seal is complete, and come off first on removal. Order is the protection — random order leaves gaps where blood lands.",
+  "porque": "Los guantes van últimos (sobre los puños de la bata) y se quitan primeros. El orden ES la protección: un orden aleatorio deja huecos."
+ },
+ {
+  "id": "b4q12",
+  "block": 4,
+  "blockName": "Máquina y alarmas",
+  "domain": "Ambiente",
+  "level": "Comprensión",
+  "difficulty": "Media-Alta",
+  "topic": "Incendio — RACE",
+  "stem": "A fire starts in a storage room on the dialysis floor. The correct first actions follow the RACE sequence:",
+  "options": [
+   "Run — evacuate yourself first, no other steps",
+   "Rescue patients in immediate danger, Activate the alarm, Contain the fire (close doors), Extinguish or evacuate per training",
+   "Extinguish first, then rescue",
+   "Open all doors for ventilation"
+  ],
+  "answer": 1,
+  "why": "RACE is a sequence, not a menu: Rescue, Activate, Contain, Extinguish/ evacuate. Patients who cannot move themselves come first; alarms and closed doors protect the rest of the floor.",
+  "porque": "RACE es un orden: rescatar, activar alarma, contener (cerrar puertas), extinguir/evacuar. Los pacientes que no se mueven solos van primero."
+ },
+ {
+  "id": "b4q13",
+  "block": 4,
+  "blockName": "Máquina y alarmas",
+  "domain": "Ambiente",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Levantamiento seguro",
+  "stem": "A patient who cannot stand asks for help transferring to the chair. The safest approach is to:",
+  "options": [
+   "Lift them quickly by yourself to save time",
+   "Use proper body mechanics — legs, not back; keep the load close; use a mechanical lift or a second person when the patient is heavy or cannot assist — and follow the facility's safe patient handling policy",
+   "Drag them by the arms",
+   "Tell the patient to manage alone"
+  ],
+  "answer": 1,
+  "why": "Back injuries are the most common lost-time injury in dialysis care. Safe patient handling is an exam domain and a career-saver: mechanics, help, and equipment — never the hero lift.",
+  "porque": "Las lesiones de espalda son la lesión más común en diálisis. Mecánica corporal, ayuda y equipo: nunca el levantamiento de héroe."
+ },
+ {
+  "id": "b4q14",
+  "block": 4,
+  "blockName": "Máquina y alarmas",
+  "domain": "Rol",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Documentación veraz",
+  "stem": "At shift end, you realize a water hardness check you were assigned was never done. The correct action is to:",
+  "options": [
+   "Write it in as done — the reading was probably normal",
+   "Document honestly that it was not performed, notify the RN/charge, and follow up on the required check — never chart what you did not do",
+   "Ask a coworker to sign it",
+   "Skip it silently; nobody will notice"
+  ],
+  "answer": 1,
+  "why": "Charting an unperformed check is falsification — a patient-safety and certification-ending act. An honest gap can be fixed; a fabricated record cannot be trusted by anyone after you.",
+  "porque": "Escribir un control que no se hizo es falsificación. Un hueco honesto se corrige; un registro falso no lo cree nadie después."
+ },
+ {
+  "id": "b4q15",
+  "block": 4,
+  "blockName": "Máquina y alarmas",
+  "domain": "Rol",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Delegación y supervisión",
+  "stem": "The RN asks you to prime a dialyzer while she handles an emergency — a task within your competency and training. The correct response is:",
+  "options": [
+   "Refuse — priming is only the RN's job",
+   "Accept and perform it as trained, documenting completion, while the RN remains accountable for supervision and patient outcomes",
+   "Accept but skip the rinse to be faster",
+   "Do it and tell the patient you are the RN"
+  ],
+  "answer": 1,
+  "why": "Delegation is legal when the task fits the PCT's competency and the RN retains accountability. Competent acceptance — done fully, documented, in your role — is the professional move; pretending to be the RN is not.",
+  "porque": "La delegación es válida cuando la tarea cabe en tu competencia y el RN mantiene la responsabilidad. Hacerla completa y documentada es profesional. ================================================================ CIERRE DEL BLOQUE 4 15 preguntas · Técnico 10 (Máquina y alarmas) · Ambiente 3 · Rol 2 · Aplicación 10, Comprensión 5. Acumulado PRO: 60 preguntas (Técnico 25 · Clínico 25 · Ambiente 6 · Rol 4). SIGUIENTE: Bloque 5 — Clínico: Evaluación, Laboratorios y Adecuación (Kt/V, URR, albúmina, hemoglobina, calcio/fósforo/PTH). ================================================================"
+ },
+ {
+  "id": "b5q1",
+  "block": 5,
+  "blockName": "Labs y adecuación",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Toma de muestra posdiálisis",
+  "stem": "To measure adequacy accurately, the post-dialysis BUN sample must be drawn:",
+  "options": [
+   "Immediately at full pump speed the moment time expires",
+   "Using the slow-flow/stop-pump technique — reduce the blood flow (or stop the pump briefly per protocol) and wait the prescribed seconds before drawing, so access recirculation does not falsely lower the result",
+   "From the dialysate drain line",
+   "Any time during the last hour"
+  ],
+  "answer": 1,
+  "why": "A sample drawn at full speed mixes freshly dialyzed blood returning from the dialyzer, making clearance look better than it is. The slow-flow technique samples true systemic blood — adequacy numbers are only as honest as the sample.",
+  "porque": "A velocidad completa la muestra mezcla sangre ya limpia y el Kt/V sale falso. La técnica de flujo lento toma sangre sistémica real: el número vale lo que vale la muestra."
+ },
+ {
+  "id": "b5q2",
+  "block": 5,
+  "blockName": "Labs y adecuación",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Metas de adecuación",
+  "stem": "For a thrice-weekly hemodialysis patient, the KDOQI minimum delivered single-pool Kt/V is approximately:",
+  "options": [
+   "0.8",
+   "1.2 (with a target around 1.4)",
+   "2.0",
+   "0.4"
+  ],
+  "answer": 1,
+  "why": "Minimum delivered spKt/V 1.2, target 1.4, and URR ≥65% (target ~70%) are the classic adequacy anchors. Below them, the prescription — time, flow, dialyzer, access — needs review, not just repetition.",
+  "porque": "Kt/V mínimo 1.2 (meta 1.4) y URR ≥65% son los anclas de adecuación. Por debajo, se revisa la prescripción, no se repite y ya."
+ },
+ {
+  "id": "b5q3",
+  "block": 5,
+  "blockName": "Labs y adecuación",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Kt/V bajo — investigación",
+  "stem": "A patient's Kt/V falls from 1.5 to 1.1 with no change in prescription. Which finding best explains it?",
+  "options": [
+   "The patient gained 1 kg",
+   "The treatment was shortened twice this week and recirculation from a stenosing access is possible — adequacy falls when time, flow or access fail",
+   "The patient changed chairs",
+   "The laboratory changed its printer"
+  ],
+  "answer": 1,
+  "why": "Kt/V = clearance × time ÷ volume. Cut the time or steal the clearance with a failing access, and the number falls exactly like this. The tech's eyes on access and delivered time protect the metric.",
+  "porque": "Kt/V es depuración por tiempo: sesiones recortadas o un acceso con estenosis lo hunden. El técnico que vigila tiempo y acceso protege ese número."
+ },
+ {
+  "id": "b5q4",
+  "block": 5,
+  "blockName": "Labs y adecuación",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Media-Alta",
+  "topic": "Albúmina",
+  "stem": "Serum albumin in a dialysis patient is mainly used as a marker of:",
+  "options": [
+   "Acute infection only",
+   "Nutritional status and inflammation — low albumin predicts poor outcomes and triggers dietitian review",
+   "Dialyzer performance",
+   "Fluid status alone"
+  ],
+  "answer": 1,
+  "why": "Albumin is the strongest routine lab predictor in dialysis care: it falls with malnutrition and inflammation. A sliding albumin is a nutritional alarm, not a machine problem.",
+  "porque": "La albúmina baja refleja desnutrición e inflamación y predice malos resultados. Es alarma nutricional: activa al dietista, no al biomédico."
+ },
+ {
+  "id": "b5q5",
+  "block": 5,
+  "blockName": "Labs y adecuación",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Hemoglobina y anemia",
+  "stem": "Chronic kidney disease causes anemia mainly because the failing kidneys produce less:",
+  "options": [
+   "Insulin",
+   "Erythropoietin (EPO), the hormone that signals the bone marrow to make red blood cells",
+   "Heparin",
+   "Albumin"
+  ],
+  "answer": 1,
+  "why": "Healthy kidneys sense oxygen and release EPO. In kidney failure that signal fades, so patients receive ESAs plus iron management — and hemoglobin targets balance benefit against the risks of overshooting.",
+  "porque": "El riñón sano produce EPO; el enfermo, menos. Por eso el paciente recibe agentes estimulantes y hierro: la anemia renal es hormonal."
+ },
+ {
+  "id": "b5q6",
+  "block": 5,
+  "blockName": "Labs y adecuación",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Hierro (ferritina/TSAT)",
+  "stem": "Before increasing an ESA dose for poor response, iron status is checked because:",
+  "options": [
+   "Iron makes heparin work better",
+   "Iron deficiency is the most common cause of ESA hyporesponsiveness — the marrow cannot build red cells without iron, no matter the EPO dose (tracked with ferritin and TSAT)",
+   "Ferritin measures potassium",
+   "Iron changes the dialysate color"
+  ],
+  "answer": 1,
+  "why": "EPO is the order; iron is the raw material. Ferritin shows stores, TSAT shows availability. Ordering more signal without checking material wastes medication and misses the real problem.",
+  "porque": "La EPO es la orden y el hierro la materia prima. Ferritina = almacén, TSAT = disponibilidad. Sin hierro no hay glóbulos, suba la dosis que suba."
+ },
+ {
+  "id": "b5q7",
+  "block": 5,
+  "blockName": "Labs y adecuación",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Alta",
+  "topic": "Eje calcio–fósforo–PTH",
+  "stem": "In kidney failure, phosphate rises and calcium falls, driving PTH up (secondary hyperparathyroidism). The long-term harm is:",
+  "options": [
+   "Only itching",
+   "Bone disease (renal osteodystrophy) and vascular calcification — the mineral-bone disorder of CKD",
+   "Improved bone strength",
+   "Lower cardiac risk"
+  ],
+  "answer": 1,
+  "why": "The Ca–PO4–PTH axis is a system: retained phosphate and low active vitamin D push PTH, which pulls calcium from bone and deposits it in vessels. Binders, diet, vitamin D and calcimimetics all aim at this same axis.",
+  "porque": "Fósforo alto y calcio bajo disparan la PTH, que roba calcio al hueso y lo deposita en los vasos. Hueso débil y arterias calcificadas: ese es el daño."
+ },
+ {
+  "id": "b5q8",
+  "block": 5,
+  "blockName": "Labs y adecuación",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Fósforo y quelantes",
+  "stem": "A patient asks why he must take phosphate binders WITH meals instead of between them. The correct explanation is:",
+  "options": [
+   "They taste better with food",
+   "Binders work in the gut by trapping dietary phosphate as food passes — taken away from meals, there is nothing to bind",
+   "They are sleeping aids",
+   "They replace dialysis"
+  ],
+  "answer": 1,
+  "why": "Binders are not absorbed to work in blood; they bind phosphate in the intestine during the meal. Timing is the mechanism — a binder on an empty stomach is a missed dose.",
+  "porque": "El quelante actúa en el intestino, atrapando el fósforo de la comida al pasar. Lejos de las comidas no hay nada que atrapar: dosis perdida."
+ },
+ {
+  "id": "b5q9",
+  "block": 5,
+  "blockName": "Labs y adecuación",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Peso seco (dry weight)",
+  "stem": "Which assessment combination best supports that a patient has reached dry weight at the end of treatment?",
+  "options": [
+   "The patient is very thirsty",
+   "No edema, comfortable breathing, blood pressure in their acceptable range, and no cramps or dizziness during ultrafiltration",
+   "The lowest weight the machine can reach",
+   "The weight from admission paperwork, always"
+  ],
+  "answer": 1,
+  "why": "Dry weight is a clinical judgment, not a machine minimum: the lowest weight tolerated WITHOUT symptoms, with normal exam findings. Chasing lower causes the cramps and hypotension of Blocks past.",
+  "porque": "El peso seco es juicio clínico: el menor peso SIN síntomas, con examen normal. Perseguir menos produce los calambres e hipotensiones de siempre."
+ },
+ {
+  "id": "b5q10",
+  "block": 5,
+  "blockName": "Labs y adecuación",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Ganancia interdialítica",
+  "stem": "A patient gains 5.5 kg over the weekend and the prescribed UF rate would be very high. The concern and the technician's role:",
+  "options": [
+   "None — remove it all quickly",
+   "Rapid ultrafiltration risks intradialytic hypotension, cramps and cardiac stress (myocardial stunning) — report the gain so the RN/nephrologist can adjust; educate the patient on fluid and salt, which drives thirst",
+   "Extend the time on your own authority",
+   "Refuse to treat the patient"
+  ],
+  "answer": 1,
+  "why": "High UF rates injure: organs are stunned by rapid removal. The team may extend time or add a treatment — clinical decisions — while the tech reports and teaches: salt intake is the thirst lever patients control.",
+  "porque": "Sacar rápido lesiona (hipotensión, calambres, aturdimiento cardíaco). Se reporta la ganancia; el equipo ajusta; la sal es la palanca de la sed."
+ },
+ {
+  "id": "b5q11",
+  "block": 5,
+  "blockName": "Labs y adecuación",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Potasio sérico",
+  "stem": "A pre-dialysis potassium returns at 6.4 mEq/L. This value means:",
+  "options": [
+   "Nothing — potassium is checked monthly for curiosity",
+   "Dangerous hyperkalemia — notify the RN immediately before treatment decisions are made; the patient may need urgent dialytic removal",
+   "The sample was taken post-dialysis",
+   "The patient ate too little potassium"
+  ],
+  "answer": 1,
+  "why": "6.4 is well above the safe range (~3.5–5.0): this is the arrhythmia zone from Block 3. Labs are not filed and forgotten — critical values move immediately up the chain.",
+  "porque": "Potasio 6.4 = zona de arritmia. Un valor crítico no se archiva: sube al RN de inmediato, antes de cualquier decisión de tratamiento."
+ },
+ {
+  "id": "b5q12",
+  "block": 5,
+  "blockName": "Labs y adecuación",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Evaluación pretratamiento",
+  "stem": "During pre-treatment assessment, the patient reports new shortness of breath when lying flat and has crackles at the lung bases. Before connecting, you:",
+  "options": [
+   "Start and remove the fluid faster",
+   "Report immediately to the RN — these suggest fluid overload/pulmonary congestion requiring clinical assessment before treatment parameters are set",
+   "Give the patient a pillow and proceed silently",
+   "Weigh the patient and ignore the rest"
+  ],
+  "answer": 1,
+  "why": "Orthopnea plus crackles = lungs carrying fluid. That changes the clinical picture (and possibly the setting of care), so the RN assesses BEFORE the technician connects — assessment is the PCT's clinical contribution.",
+  "porque": "Falta de aire acostado + crepitantes = pulmón con líquido. Eso cambia el cuadro: el RN evalúa ANTES de conectar. Evaluar es tu aporte clínico."
+ },
+ {
+  "id": "b5q13",
+  "block": 5,
+  "blockName": "Labs y adecuación",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Presión arterial — metas",
+  "stem": "Blood pressure management in dialysis patients must balance:",
+  "options": [
+   "Only the pre-treatment number",
+   "Both hypertension (cardiac strain, especially with fluid overload) and hypotension (organ hypoperfusion during treatment) — volume control is the foundation of BP control in dialysis",
+   "Numbers do not matter if the patient feels fine",
+   "The lowest possible pressure at all times"
+  ],
+  "answer": 1,
+  "why": "Pressure in dialysis is mostly volume: overload raises it between treatments, aggressive removal crashes it during them. The exam loves this two-sided logic — one number is never the whole story.",
+  "porque": "La presión en diálisis es volumen: sobrecarga la sube entre sesiones, remoción agresiva la tumba durante. Los dos lados cuentan, no un solo número."
+ },
+ {
+  "id": "b5q14",
+  "block": 5,
+  "blockName": "Labs y adecuación",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Sodio y sed",
+  "stem": "A patient complains of constant intense thirst and large interdialytic gains. The most useful dietary teaching point is:",
+  "options": [
+   "Drink more water early in the day",
+   "Reduce SALT intake — sodium drives thirst; controlling salt reduces both thirst and fluid gains more effectively than willpower over water",
+   "Stop all medications",
+   "Eat more soup, it is mostly water anyway"
+  ],
+  "answer": 1,
+  "why": "Thirst is a sodium symptom: the body drinks to dilute salt. Teaching that connection gives the patient a workable lever — a classic application-level nutrition item.",
+  "porque": "La sed es síntoma del sodio: el cuerpo bebe para diluir la sal. Menos sal = menos sed = menos ganancia. Esa enseñanza sí funciona."
+ },
+ {
+  "id": "b5q15",
+  "block": 5,
+  "blockName": "Labs y adecuación",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Glucosa en el paciente diabético",
+  "stem": "A diabetic patient becomes shaky, sweaty and confused near the end of treatment, and the meter reads 58 mg/dL. The technician should:",
+  "options": [
+   "Finish the treatment first, then tell someone",
+   "Treat as hypoglycemia per protocol and notify the RN immediately — glucose can fall during dialysis, and symptoms plus a low reading demand fast action",
+   "Give insulin",
+   "Offer a diet soda"
+  ],
+  "answer": 1,
+  "why": "Hypoglycemia on dialysis is fast and dangerous — and its symptoms mimic hypotension, which is why the meter matters. Fast sugar per protocol plus the RN, not insulin (which lowers glucose further) and not delay.",
+  "porque": "La hipoglucemia en diálisis es rápida y se disfraza de hipotensión: el glucómetro decide. Azúcar rápida según protocolo + RN ya; insulina, jamás. ================================================================ CIERRE DEL BLOQUE 5 15 preguntas · Clínico 15 (Evaluación, laboratorios y adecuación) · Aplicación 9, Comprensión 6 · Valores: Kt/V ≥1.2 (meta 1.4), URR ≥65%, K+ 3.5–5.0, técnica de muestra posdiálisis de flujo lento. Acumulado PRO: 75 preguntas (Clínico 40 · Técnico 25 · Ambiente 6 · Rol 4). SIGUIENTE: Bloque 6 — Equilibrio: Ambiente y Rol en profundidad (control de infecciones avanzado, seguridad OSHA, derechos del paciente, comunicación) para acercar el banco a los pesos oficiales del examen. ================================================================"
+ },
+ {
+  "id": "b6q1",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Ambiente",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Higiene de manos",
+  "stem": "The single most effective practice to prevent healthcare-associated infection is hand hygiene, performed:",
+  "options": [
+   "Only when hands look dirty",
+   "Before and after every patient contact, after glove removal, after touching contaminated surfaces, and before any aseptic task — the WHO \"moments\"",
+   "Once at the start of the shift",
+   "Only by staff with catheters patients"
+  ],
+  "answer": 1,
+  "why": "Hands are the main vehicle between patients in a unit where everyone is connected to blood circuits. The moments are not optional decoration — in dialysis, hand hygiene IS infection control.",
+  "porque": "Las manos son el vehículo principal entre pacientes. Los momentos de higiene no son decoración: en diálisis, manos limpias = control de infecciones."
+ },
+ {
+  "id": "b6q2",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Ambiente",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Pinchazo (needlestick)",
+  "stem": "You sustain a needlestick from a needle used on a patient. The correct immediate steps are:",
+  "options": [
+   "Finish your shift and decide later",
+   "Wash the site immediately with soap and water, report the exposure at once per policy, and seek occupational-health evaluation promptly — post-exposure prophylaxis is time-sensitive",
+   "Squeeze the wound and apply bleach",
+   "Ask the patient if he has any infections"
+  ],
+  "answer": 1,
+  "why": "Exposure care has a clock: HBV/HCV/HIV evaluation and any prophylaxis work best within hours. Washing and immediate reporting protect the worker — delay and silence protect no one.",
+  "porque": "La exposición tiene reloj: evaluación y profilaxis funcionan en horas. Lavar, reportar y acudir a salud ocupacional de inmediato. Callar no protege."
+ },
+ {
+  "id": "b6q3",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Ambiente",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Precauciones estándar",
+  "stem": "Standard precautions are based on the principle that:",
+  "options": [
+   "Only known infected patients are risky",
+   "ALL blood and body fluids from EVERY patient are treated as potentially infectious, regardless of diagnosis",
+   "Gloves replace hand hygiene",
+   "Masks are only for surgery"
+  ],
+  "answer": 1,
+  "why": "Many bloodborne infections are undiagnosed. The universal rule removes guesswork: every patient, every fluid, every time — precautions scale with the task, not with what the chart happens to say.",
+  "porque": "Muchas infecciones no están diagnosticadas. La regla universal quita la adivinanza: todo paciente, todo fluido, siempre."
+ },
+ {
+  "id": "b6q4",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Ambiente",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Objetos punzantes",
+  "stem": "The correct disposal for a used dialysis needle is:",
+  "options": [
+   "Recap it and place it on the tray",
+   "Drop it — without recapping — directly into the nearest sharps container, positioned within arm's reach of the procedure",
+   "Bend it first so it cannot be reused",
+   "Leave it in the dialyzer for housekeeping"
+  ],
+  "answer": 1,
+  "why": "Recapping is the classic needlestick mechanism. Sharps go straight from hand to container, and containers live where the sharps are used — not across the room.",
+  "porque": "Reponer la tapa es el mecanismo clásico del pinchazo. El punzante va directo al contenedor, y el contenedor vive junto al procedimiento."
+ },
+ {
+  "id": "b6q5",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Ambiente",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Vacuna HBV (OSHA)",
+  "stem": "Under OSHA's bloodborne pathogens standard, the employer must:",
+  "options": [
+   "Charge staff for the hepatitis B vaccine",
+   "Offer the hepatitis B vaccine series FREE to all staff with occupational exposure, within 10 working days of assignment",
+   "Wait until someone is exposed",
+   "Offer it only to nurses"
+  ],
+  "answer": 1,
+  "why": "Free, early HBV vaccination for exposed staff is a legal employer duty — and in dialysis, where HBV isolation exists precisely because the virus is so durable, protection is not a perk.",
+  "porque": "La vacuna contra hepatitis B gratuita y temprana es obligación legal del empleador para todo expuesto, no solo enfermeras. En diálisis, es esencial."
+ },
+ {
+  "id": "b6q6",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Ambiente",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Fichas de seguridad (SDS)",
+  "stem": "Before using a new chemical disinfectant, the technician should consult its Safety Data Sheet (SDS) primarily to learn:",
+  "options": [
+   "Its price",
+   "Its hazards, required PPE, safe handling and first-aid measures — the SDS must be accessible to staff during every shift",
+   "Its advertising claims",
+   "Nothing; all disinfectants are identical"
+  ],
+  "answer": 1,
+  "why": "Chemicals in dialysis (bleach, peracetic acid, citric acid) burn eyes, lungs and skin when misused. The SDS is the worker's legal right-to-know — hazards and first aid before the first drop.",
+  "porque": "Los químicos de diálisis queman si se usan mal. La ficha SDS es el derecho a saber del trabajador: peligros, EPP y primeros auxilios antes de usar."
+ },
+ {
+  "id": "b6q7",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Ambiente",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Superficies — sangre seca",
+  "stem": "A dried blood spot is found on a machine surface after the patient has left. The correct action is:",
+  "options": [
+   "Wipe it with a dry paper towel",
+   "Treat it as fresh contamination: gloves on, clean and disinfect the surface with the approved disinfectant and full contact time before the machine is set up again",
+   "Ignore it — dried blood is inactive",
+   "Cover it with a drape"
+  ],
+  "answer": 1,
+  "why": "HBV remains infectious in dried blood for at least a week. \"Dried\" does not mean \"safe\" — it means the organism is patient. Full cleaning and disinfection, every time.",
+  "porque": "La hepatitis B sobrevive en sangre seca una semana o más. Seco no es inocuo: limpieza y desinfección completas, con su tiempo de contacto."
+ },
+ {
+  "id": "b6q8",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Ambiente",
+  "level": "Comprensión",
+  "difficulty": "Media-Alta",
+  "topic": "Aislamiento — quién más",
+  "stem": "Besides HBsAg-positive patients, extra precautions in the dialysis unit focus on patients with:",
+  "options": [
+   "Any chronic disease",
+   "Uncontained drainage, fecal incontinence or conditions that contaminate the environment — managed with separation and enhanced cleaning per policy",
+   "High blood pressure",
+   "Diabetes"
+  ],
+  "answer": 1,
+  "why": "Isolation in dialysis is about what reaches the environment: HBV by rule, and any condition that sheds organisms beyond control. The principle is containment, not diagnosis labels.",
+  "porque": "El aislamiento es por lo que llega al ambiente: HBV por norma, y toda condición que contamina sin contención. El principio es contener, no etiquetar."
+ },
+ {
+  "id": "b6q9",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Ambiente",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Emergencia — evacuación",
+  "stem": "During an evacuation alarm, a patient is mid-treatment and cannot walk. The priority is:",
+  "options": [
+   "Disconnect every patient completely before anyone leaves",
+   "Follow the emergency plan: staff take assigned roles, disconnect per emergency procedure (clamp and cut lines per training), and move patients to the designated safe area — no one improvises alone",
+   "Hide under the stations",
+   "Finish treatments; alarms are usually false"
+  ],
+  "answer": 1,
+  "why": "Emergency disconnection (clamp, cut, cap) is trained precisely for this moment. Orderly role-based action evacuates a floor of non-ambulatory patients safely; panic and solo improvisation do not.",
+  "porque": "La desconexión de emergencia (pinzar, cortar, tapar) se entrena para esto. Roles asignados y plan: así se evacúa un piso de pacientes que no caminan."
+ },
+ {
+  "id": "b6q10",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Ambiente",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Calidad del aire / químicos",
+  "stem": "Chemical disinfectant vapors accumulate in a poorly ventilated storage room. The correct control, in OSHA's hierarchy, is:",
+  "options": [
+   "Open the door when passing by",
+   "Engineering controls first — ventilation and proper storage of closed, labeled containers; PPE is the last line, not the first",
+   "Hold your breath while inside",
+   "Spray perfume"
+  ],
+  "answer": 1,
+  "why": "The hierarchy of controls fixes the source (ventilation, storage) before relying on behavior or masks. Labels on every container also prevent the classic accident: the wrong chemical in the wrong bottle.",
+  "porque": "Primero se controla la fuente (ventilación, envases cerrados y rotulados); el EPP es la última línea. La jerarquía de controles protege de verdad. ================================================================ ROL Y RESPONSABILIDADES (10)"
+ },
+ {
+  "id": "b6q11",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Rol",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Derechos del paciente",
+  "stem": "A patient says he wants to stop treatment 30 minutes early today, against advice. The technician's correct role is to:",
+  "options": [
+   "Physically prevent him from leaving",
+   "Respect his right to refuse/end treatment, inform the RN promptly so risks can be explained and documented, and never coerce the patient",
+   "Turn the machine back on after he stands",
+   "Tell him insurance will cancel him permanently"
+  ],
+  "answer": 1,
+  "why": "Competent patients own their decisions, even unwise ones. The team's duty is information and documentation through the RN — coercion and threats are rights violations, not persuasion.",
+  "porque": "El paciente competente decide, aunque decida mal. El equipo informa y documenta vía el RN; coaccionar o amenazar viola sus derechos."
+ },
+ {
+  "id": "b6q12",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Rol",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Comunicación — malas noticias",
+  "stem": "A patient tells you she just learned her transplant workup found a serious new problem and she is frightened. The best response is to:",
+  "options": [
+   "Promise her everything will be fine",
+   "Listen with empathy, avoid false promises and medical interpretations, and connect her promptly with the RN and social worker — emotional support within your role is part of care",
+   "Change the subject to the weather",
+   "Share another patient's transplant story with names"
+  ],
+  "answer": 1,
+  "why": "Presence, honesty and referral. False reassurance steals trust; sharing other patients' stories breaks confidentiality. The PCT's support is real — and bounded — care.",
+  "porque": "Escuchar, no prometer en falso, no interpretar resultados, y conectar con RN y trabajo social. El apoyo del PCT es real dentro de su rol."
+ },
+ {
+  "id": "b6q13",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Rol",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Quejas (grievance)",
+  "stem": "A patient wants to file a complaint about his care. He must be:",
+  "options": [
+   "Discouraged — complaints hurt the unit",
+   "Informed of his right to file a grievance without retaliation, and given the facility's and the ESRD Network's contact information",
+   "Told to wait until discharge",
+   "Required to complain to the person he is complaining about first"
+  ],
+  "answer": 1,
+  "why": "The grievance right is a CMS Condition for Coverage: patients can complain internally, to the Network and to the state — retaliation is prohibited. Knowing this is a Role-domain anchor.",
+  "porque": "Quejarse sin represalias es derecho protegido por CMS: vía interna, Red ESRD y estado. Informarlo es deber del equipo, no una amenaza."
+ },
+ {
+  "id": "b6q14",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Rol",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Límites profesionales",
+  "stem": "A grateful patient offers you $200 in cash \"for taking such good care of me.\" The correct action is to:",
+  "options": [
+   "Accept — refusing is rude",
+   "Decline politely, explain that care is given equally without gifts, and inform the RN/supervisor per policy — cash gifts cross professional boundaries",
+   "Accept only if nobody sees",
+   "Split it with the team"
+  ],
+  "answer": 1,
+  "why": "Money changes relationships and creates unequal-care pressure. Policy in virtually every facility prohibits cash gifts to staff. A kind refusal plus a report protects the patient, the team and you.",
+  "porque": "El dinero en efectivo altera la relación y crea presión de trato desigual. Rechazo amable e informe al supervisor: así dice la política."
+ },
+ {
+  "id": "b6q15",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Rol",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Reporte de errores",
+  "stem": "You discover that a colleague set up a machine with the wrong dialyzer for a patient who has not yet been connected. You should:",
+  "options": [
+   "Fix it quietly and say nothing — no harm occurred",
+   "Correct the setup AND report it through the unit's safety/incident process — near misses are reported so the system, not just the shift, gets safer",
+   "Confront the colleague publicly at the station",
+   "Wait to see if it happens again"
+  ],
+  "answer": 1,
+  "why": "A culture of safety reports near misses, not just injuries: the same error unreported repeats with a worse ending. Correction protects this patient; reporting protects the next hundred.",
+  "porque": "Corregir protege a este paciente; reportar el casi-error protege a los próximos cien. La seguridad se construye reportando, no callando."
+ },
+ {
+  "id": "b6q16",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Rol",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Competencia cultural",
+  "stem": "Effective culturally competent care from the PCT means:",
+  "options": [
+   "Treating every patient identically regardless of beliefs",
+   "Respecting each patient's cultural and religious practices (diet, modesty, rituals, language needs) and using qualified interpreters rather than family members for clinical communication",
+   "Learning one phrase in each language",
+   "Avoiding all personal conversation"
+  ],
+  "answer": 1,
+  "why": "Equal respect is not identical treatment: fasting, modesty, prayer and language access change how care is delivered. Qualified interpreters are a safety standard for clinical information, not a courtesy.",
+  "porque": "Respetar no es tratar a todos idéntico: ayuno, pudor, oración e idioma cambian el cuidado. Intérprete calificado para lo clínico, no la familia."
+ },
+ {
+  "id": "b6q17",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Rol",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Confidencialidad digital",
+  "stem": "Taking a photo of the treatment floor \"for social media\" that might include patients or schedules is:",
+  "options": [
+   "Fine if faces are small",
+   "Prohibited — patient images and information captured on personal devices violate privacy policy and HIPAA, even without names",
+   "Fine after the shift",
+   "Allowed if the patient is asleep"
+  ],
+  "answer": 1,
+  "why": "A sleeping patient cannot consent; a schedule behind a face is still protected information. Personal phones and patient images never mix — this is a modern Role-domain favorite.",
+  "porque": "El paciente dormido no consiente, y un horario visible también es información protegida. Teléfono personal y pacientes jamás se mezclan."
+ },
+ {
+  "id": "b6q18",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Rol",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Trabajo en equipo — SBAR",
+  "stem": "Handing off a concern about a deteriorating patient to the RN is clearest when organized as:",
+  "options": [
+   "A long story from the patient's childhood",
+   "SBAR — Situation, Background, Assessment, Recommendation: brief, factual, with your observed data first and the request last",
+   "A text message later",
+   "Waiting for the RN to notice"
+  ],
+  "answer": 1,
+  "why": "Structured communication prevents the vital fact from drowning in narrative. SBAR is the shared language of escalation — the exam tests whether help arrives clearly and fast.",
+  "porque": "SBAR ordena la escalada: situación, contexto, evaluación, petición. Los datos primero, sin novela: así la ayuda llega clara y rápido."
+ },
+ {
+  "id": "b6q19",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Rol",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Mejora de calidad (QAPI)",
+  "stem": "The facility's QAPI program exists to:",
+  "options": [
+   "Punish staff for errors",
+   "Systematically measure care (infection rates, adequacy, hospitalizations), find root causes and improve processes — PCT data and observations feed it",
+   "Replace state inspections",
+   "Set staff schedules"
+  ],
+  "answer": 1,
+  "why": "Quality Assessment and Performance Improvement is a CMS requirement and the PCT sits on its raw material: times, pressures, infections, near misses. Quality is a team system, not a blame office.",
+  "porque": "QAPI mide, busca causas raíz y mejora procesos — y el PCT produce sus datos. Calidad es sistema de equipo, no oficina de culpas."
+ },
+ {
+  "id": "b6q20",
+  "block": 6,
+  "blockName": "Ambiente y Rol",
+  "domain": "Rol",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Paciente difícil — desescalada",
+  "stem": "A frustrated patient raises his voice at you over a delayed start. The best first move is to:",
+  "options": [
+   "Raise yours to match",
+   "Stay calm, acknowledge the frustration and the facts (\"You're right that we've kept you waiting — here's what's happening\"), set respectful limits, and involve the RN/charge if it escalates",
+   "Ignore him for the rest of the shift",
+   "Threaten to skip his treatment"
+  ],
+  "answer": 1,
+  "why": "De-escalation starts with acknowledgment, not volume. Patients who feel heard usually settle; staff who escalate create incidents. Limits are set with respect, and backup is a strength, not a defeat.",
+  "porque": "Desescalar empieza reconociendo, no gritando. El paciente que se siente escuchado se calma; los límites se ponen con respeto y apoyo del equipo. ================================================================ CIERRE DEL BLOQUE 6 20 preguntas · Ambiente 10 · Rol 10 · Aplicación 14, Comprensión 6. Acumulado PRO: 95 preguntas (Clínico 40 · Técnico 25 · Ambiente 16 · Rol 14). El examen simulado de la app muestreará con los pesos oficiales NNCC: Clínico ~50% · Técnico ~23% · Ambiente ~15% · Rol ~12%. SIGUIENTE: Bloque 7 — Simulación mixta final (25 preguntas cronometradas que cruzan los 4 dominios en proporciones del examen real). ================================================================"
+ },
+ {
+  "id": "b7q1",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Hipotensión — causa raíz",
+  "stem": "A patient becomes hypotensive on nearly every treatment despite medication review. His interdialytic gains remain 4–5 kg and he eats most meals at fast food restaurants. The most useful insight for the care plan is:",
+  "options": [
+   "The machine is damaging his blood pressure reflexes",
+   "Sodium-driven thirst keeps gains high, forcing high ultrafiltration rates — sustained benefit requires dietitian work on salt, not faster fluid removal",
+   "He needs a smaller dialyzer",
+   "Hypotension is unpreventable in dialysis"
+  ],
+  "answer": 1,
+  "why": "The pattern repeats because the input repeats: salt → thirst → gains → aggressive UF → hypotension. Exam application items reward treating the driver, not the episode.",
+  "porque": "El ciclo se repite porque la entrada se repite: sal, sed, ganancia, ultrafiltración agresiva, hipotensión. Se trata la causa, no el episodio."
+ },
+ {
+  "id": "b7q2",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Acceso — sangrado tardío",
+  "stem": "Two hours after leaving the unit, a patient calls: his fistula needle site reopened and is bleeding steadily. By phone he should be told to:",
+  "options": [
+   "Wait and see if it stops",
+   "Apply firm direct pressure to the site and seek emergency care immediately (call 911) — access bleeding can be life-threatening",
+   "Take an aspirin for the pain",
+   "Raise the arm and drive himself slowly"
+  ],
+  "answer": 1,
+  "why": "Post-dialysis access hemorrhage kills patients at home. Pressure plus emergency services is the taught response — minutes of fistula bleeding are liters of blood.",
+  "porque": "La hemorragia del acceso en casa mata. Presión directa y emergencias (911) de inmediato: minutos de sangrado son litros de sangre."
+ },
+ {
+  "id": "b7q3",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Agua — doble falla",
+  "stem": "The morning checks show total chlorine at 0.09 mg/L (acceptable) but the water hardness after the softener is elevated. What is the correct reading?",
+  "options": [
+   "Both numbers pass — start treatments",
+   "Chlorine passes, but elevated hardness signals softener exhaustion that will damage the RO — escalate before treating it as a completed check",
+   "Hardness is a cosmetic number",
+   "Retest chlorine twice instead"
+  ],
+  "answer": 1,
+  "why": "Each test guards a different failure: chlorine protects the patient's blood TODAY; hardness protects the membrane that protects every patient next month. One pass does not excuse the other failure.",
+  "porque": "Cada prueba cuida una falla distinta: el cloro protege la sangre hoy; la dureza, la membrana de todos mañana. Un pase no excusa la otra falla."
+ },
+ {
+  "id": "b7q4",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Heparina — sangrado",
+  "stem": "A patient on heparin during dialysis reports gum bleeding and you notice oozing at the needle sites that is hard to stop. The likely issue and action:",
+  "options": [
+   "Normal — apply more tape",
+   "Excess anticoagulation — notify the RN; the heparin dose/infusion will be reviewed, and post-treatment hemostasis time will lengthen",
+   "The dialyzer is too big",
+   "The patient is dehydrated"
+  ],
+  "answer": 1,
+  "why": "Mucosal bleeding plus stubborn needle-site oozing is the visible face of over-anticoagulation. The RN reviews the dose; the tech's value is early recognition, not silent management.",
+  "porque": "Encías que sangran + sitios que no cierran = anticoagulación excesiva. Se avisa al RN: tu valor es reconocerlo temprano, no taparlo."
+ },
+ {
+  "id": "b7q5",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Ambiente",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Fuente de infección",
+  "stem": "Three CVC patients develop bloodstream infections in one month. The QAPI review should focus FIRST on:",
+  "options": [
+   "The patients' home hygiene only",
+   "Auditing the unit's own hub care, hand hygiene and connection technique — most catheter infections trace to care processes at connection/disconnection",
+   "Replacing all catheters with fistulas tomorrow",
+   "The laboratory"
+  ],
+  "answer": 1,
+  "why": "Clusters point at systems, and in catheter care the system is us: audit the hands and hubs before anything else. That is how infection rates actually fall.",
+  "porque": "Un conglomerado apunta al sistema, y en catéteres el sistema somos nosotros: auditar manos y conectores primero. Así bajan las infecciones."
+ },
+ {
+  "id": "b7q6",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Rol",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Error de medicación — alcance",
+  "stem": "You realize an RN handed you a medication vial to \"give when you connect the patient.\" Administering medications is:",
+  "options": [
+   "Fine if the RN asked",
+   "Outside the PCT's scope of practice — respectfully return it and clarify roles; the RN administers medications",
+   "Fine after 5 years of experience",
+   "Fine if the dose is small"
+  ],
+  "answer": 1,
+  "why": "Scope does not expand by invitation or seniority. A respectful boundary protects the patient, the RN and your certification.",
+  "porque": "El alcance no crece por invitación ni por años. La frontera respetuosa protege al paciente, a la RN y a tu certificación."
+ },
+ {
+  "id": "b7q7",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Embolia aérea — reconocimiento",
+  "stem": "Which set of symptoms during treatment most suggests venous air embolism?",
+  "options": [
+   "Itching and a rash",
+   "Sudden chest pain, dyspnea, cough and a sense of doom, possibly with a mill-wheel murmur",
+   "Leg cramps and yawning",
+   "Fever and chills"
+  ],
+  "answer": 1,
+  "why": "Air in the venous return reaches heart and lungs: the presentation is cardiopulmonary and sudden. Fever-chills point to pyrogens, cramps-yawning to hypotension — the exam pays for telling emergencies apart.",
+  "porque": "El aire venoso llega a corazón y pulmón: presentación cardiopulmonar súbita. Fiebre es pirógeno; calambre y bostezo, hipotensión. Distinguir paga."
+ },
+ {
+  "id": "b7q8",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Técnico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Dializador — coeficiente",
+  "stem": "A dialyzer's ultrafiltration coefficient (KUF) describes:",
+  "options": [
+   "Its urea clearance only",
+   "The water permeability of its membrane — how much fluid crosses per mmHg of transmembrane pressure per hour",
+   "Its heparin requirement",
+   "The size of its box"
+  ],
+  "answer": 1,
+  "why": "KUF is water permeability (mL/h/mmHg): high-flux dialyzers have high KUF and remove middle molecules better, demanding precise UF control — hardware concepts the exam expects cold.",
+  "porque": "El KUF es permeabilidad al agua (mL/h/mmHg): alto flujo, más permeabilidad y mejor remoción de moléculas medianas. Concepto frío del examen."
+ },
+ {
+  "id": "b7q9",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Peso — tendencia",
+  "stem": "A patient's post-treatment weights have crept 0.4 kg above target for two weeks, with mild ankle edema now present. The correct interpretation is:",
+  "options": [
+   "The scale is broken",
+   "A TREND matters more than any single weight — rising weights with edema suggest dry weight has changed or fluid is accumulating; report for reassessment",
+   "Ignore changes under 1 kg",
+   "Remove the difference in one session without telling anyone"
+  ],
+  "answer": 1,
+  "why": "Dialysis care reads trends, not snapshots. Edema plus gradual weight creep is the body reporting that target weight no longer matches reality.",
+  "porque": "En diálisis se leen tendencias, no fotos. Peso que sube de a poco con edema = el peso objetivo ya no calza; se reporta para reevaluar."
+ },
+ {
+  "id": "b7q10",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Ambiente",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Seguridad química",
+  "stem": "A splash of chemical disinfectant enters a coworker's eye. The correct immediate action is:",
+  "options": [
+   "Rub the eye and continue working",
+   "Eyewash station — flush continuously for at least 15 minutes, remove contact lenses, and seek medical evaluation",
+   "Apply eye drops from the supply shelf",
+   "Wait until the shift ends"
+  ],
+  "answer": 1,
+  "why": "Chemical eye injuries are minutes-sensitive: immediate, prolonged flushing at the eyewash is the standard — it must be located before it is needed, which is also an exam point.",
+  "porque": "La quemadura química ocular se trata en minutos: lavado continuo 15 minutos en la estación lavaojos y evaluación médica. Se ubica antes de necesitarla."
+ },
+ {
+  "id": "b7q11",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Modalidades — DP",
+  "stem": "Compared with hemodialysis, peritoneal dialysis differs most fundamentally in that:",
+  "options": [
+   "It uses no membrane",
+   "It uses the patient's own peritoneum as the membrane, with dialysate dwelling in the abdomen — gentler, continuous, home-based therapy",
+   "It never causes infection",
+   "It removes more potassium per minute"
+  ],
+  "answer": 1,
+  "why": "Same principles (diffusion, osmosis), different membrane and rhythm: the peritoneum, continuous dwells, home independence — with peritonitis as its signature risk.",
+  "porque": "Mismos principios, otra membrana: el peritoneo del propio paciente, terapia continua en casa. Su riesgo firma: la peritonitis."
+ },
+ {
+  "id": "b7q12",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Rol",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Consentimiento informado",
+  "stem": "A patient scheduled for a new procedure (access surgery) says nobody explained its risks to him. The PCT should:",
+  "options": [
+   "Explain the risks from memory",
+   "Notify the RN/provider promptly — informed consent requires the licensed clinician's explanation; the PCT supports, witnesses and escalates, never substitutes",
+   "Reassure him it is routine and sign for him",
+   "Postpone and tell no one"
+  ],
+  "answer": 1,
+  "why": "Consent belongs to the clinician who performs/prescribes. Noticing the gap and escalating it is exactly the PCT's protective role.",
+  "porque": "El consentimiento lo explica quien prescribe/opera. Detectar el hueco y escalarlo es tu rol protector. Firmar por él, jamás."
+ },
+ {
+  "id": "b7q13",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Alarmas — patrón combinado",
+  "stem": "Repeated pressure alarms trace to a patient whose access has developed inflow stenosis. Short-term, alarms will continue until the access is treated. The safe professional response is:",
+  "options": [
+   "Widen all alarm limits permanently",
+   "Report the pattern for access evaluation and manage each alarm by protocol — alarm limits are never permanently widened to hide a known problem",
+   "Silence the machine's sound output",
+   "Transfer the patient to any other tech"
+  ],
+  "answer": 1,
+  "why": "Alarm fatigue is a killer; the answer to alarms caused by a failing access is fixing access, not deafening the messenger. Pattern reporting is the tech's surveillance role.",
+  "porque": "La fatiga de alarmas mata: la respuesta es tratar el acceso, no ensordecer la máquina. Reportar el patrón es tu rol de vigilancia."
+ },
+ {
+  "id": "b7q14",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media-Alta",
+  "topic": "Nutrición — potasio oculto",
+  "stem": "A patient's potassium keeps returning high despite \"never eating bananas.\" The most likely hidden sources to explore with the dietitian are:",
+  "options": [
+   "Water and ice",
+   "Salt substitutes (\"low-salt\" products made with potassium chloride), tomato/orange products and certain supplements",
+   "Plain rice",
+   "Chicken breast"
+  ],
+  "answer": 1,
+  "why": "The classic trap: salt substitutes are potassium chloride in disguise. Application items love hidden potassium — it changes real counseling.",
+  "porque": "La trampa clásica: el sustituto de sal ES cloruro de potasio disfrazado. Explorar fuentes ocultas cambia el consejo real al paciente."
+ },
+ {
+  "id": "b7q15",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Primera sesión — prudencia",
+  "stem": "For a brand-new patient with BUN of 118 mg/dL, the safest first treatments are:",
+  "options": [
+   "Four hours at maximum blood flow for fastest cleanup",
+   "Shorter, gentler sessions (lower blood flow, smaller dialyzer, shorter time) advanced gradually — preventing disequilibrium syndrome",
+   "No treatment for a week",
+   "Back-to-back double sessions on day one"
+  ],
+  "answer": 1,
+  "why": "Urea that high plus aggressive clearance equals cerebral edema. The gradual start is one of the exam's most reliable safety patterns.",
+  "porque": "Urea altísima + depuración agresiva = edema cerebral. El inicio suave y progresivo es uno de los patrones de seguridad favoritos del examen."
+ },
+ {
+  "id": "b7q16",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Ambiente",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Residuos regulados",
+  "stem": "Blood-soaked disposable items from a treatment belong in:",
+  "options": [
+   "Regular trash",
+   "Red-bag regulated medical waste — and sharps always in sharps containers, never loose in bags",
+   "Recycling",
+   "The patient's belongings bag"
+  ],
+  "answer": 1,
+  "why": "Waste segregation protects housekeeping, the public and the facility's license. Sharps in bags are the classic downstream injury.",
+  "porque": "La segregación protege a limpieza, al público y a la licencia del centro. Punzantes sueltos en bolsas son la lesión clásica río abajo."
+ },
+ {
+  "id": "b7q17",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Técnico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Flujo de dializado",
+  "stem": "Dialysate flow is commonly set at:",
+  "options": [
+   "100 mL/min",
+   "500–800 mL/min, roughly 1.5–2× the blood flow, so clearance is not limited by dialysate saturation",
+   "Exactly equal to urine output",
+   "Zero between alarms"
+  ],
+  "answer": 1,
+  "why": "Clearance needs fresh dialysate gradient: standard 500, often 800 mL/min with higher blood flows. The ratio logic — not the number alone — is the exam's target.",
+  "porque": "La depuración necesita gradiente fresco: 500–800 mL/min frente a 300–450 de sangre. La lógica de la proporción es lo que el examen cobra."
+ },
+ {
+  "id": "b7q18",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Evaluación — edema",
+  "stem": "Pitting edema assessed as 2+ in both ankles pre-treatment most directly informs:",
+  "options": [
+   "The heparin dose",
+   "The ultrafiltration goal discussion — it is objective evidence of fluid excess to report with today's weight versus target",
+   "The dialysate temperature",
+   "The patient's mood"
+  ],
+  "answer": 1,
+  "why": "Assessment findings feed the plan: edema grade + weights + BP + lungs together justify the day's removal. The PCT's exam value is data with meaning, not data alone.",
+  "porque": "El edema con peso y presión alimenta la meta de ultrafiltración. Tu valor de examen: datos con significado, no datos sueltos."
+ },
+ {
+  "id": "b7q19",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Rol",
+  "level": "Comprensión",
+  "difficulty": "Media-Alta",
+  "topic": "Cadena de reporte",
+  "stem": "An incident occurs (a patient falls without injury). After ensuring safety, the PCT must:",
+  "options": [
+   "Document only if someone asks",
+   "Complete the incident report factually the same shift and notify the RN — factual, timely, without blame or speculation; the report is separate from the medical record narrative",
+   "Write opinions about who is at fault",
+   "Tell the next shift verbally only"
+  ],
+  "answer": 1,
+  "why": "Incident reports are safety tools: facts, same shift, chain notified. Speculation and blame poison both the report and the culture.",
+  "porque": "El reporte de incidente es herramienta de seguridad: hechos, el mismo turno, cadena avisada. Opiniones y culpas lo arruinan todo."
+ },
+ {
+  "id": "b7q20",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Clínico",
+  "level": "Comprensión",
+  "difficulty": "Media",
+  "topic": "Anemia — síntomas",
+  "stem": "Which symptom set fits worsening anemia in a dialysis patient?",
+  "options": [
+   "Itching and hiccups",
+   "Fatigue, pallor, exertional dyspnea and reduced exercise tolerance",
+   "Metallic taste and restless legs only",
+   "Fever and chills"
+  ],
+  "answer": 1,
+  "why": "Anemia presents as oxygen-delivery failure: tired, pale, breathless on effort. Recognizing the pattern triggers the Hgb/iron review of Block 5.",
+  "porque": "La anemia es falla de entrega de oxígeno: cansancio, palidez, disnea de esfuerzo. Reconocer el patrón dispara la revisión de hemoglobina y hierro."
+ },
+ {
+  "id": "b7q21",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Técnico",
+  "level": "Comprensión",
+  "difficulty": "Media-Alta",
+  "topic": "Desinfección — compatibilidad",
+  "stem": "Using an unapproved household cleaner on the machine's external surfaces is wrong because:",
+  "options": [
+   "It smells bad",
+   "Only manufacturer-approved agents are safe for the device and effective against bloodborne pathogens — unapproved chemicals can damage surfaces and fail disinfection standards",
+   "It costs more",
+   "It works too well"
+  ],
+  "answer": 1,
+  "why": "Surface disinfection is both chemistry and device protection: approved EPA-registered products with bloodborne-pathogen claims, used at the right dilution and dwell time.",
+  "porque": "Solo agentes aprobados protegen la máquina Y desinfectan contra patógenos sanguíneos. El limpiador casero falla en ambos frentes."
+ },
+ {
+  "id": "b7q22",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Exceso de UF — stunning",
+  "stem": "Repeated episodes of intradialytic hypotension are now understood to cause:",
+  "options": [
+   "Stronger hearts over time",
+   "Repetitive organ injury — myocardial stunning that can progress to fixed systolic dysfunction, plus gut and brain ischemia episodes",
+   "Better dry-weight accuracy",
+   "Nothing beyond the day's symptoms"
+  ],
+  "answer": 1,
+  "why": "Modern evidence reframed hypotension: each crash stuns the heart a little; the damage accumulates. That is why UF-rate discipline and honest dry weights matter beyond comfort.",
+  "porque": "Cada caída de presión aturde un poco el corazón, y el daño se acumula. La disciplina de ultrafiltración es protección de órganos, no comodidad."
+ },
+ {
+  "id": "b7q23",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Ambiente",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Visitantes y control",
+  "stem": "During a respiratory-virus surge, the unit asks visitors to wait outside and screens patients at entry. This is:",
+  "options": [
+   "Discrimination",
+   "Standard transmission-based risk management — temporary measures that protect a uniquely vulnerable, semi-open treatment population",
+   "Optional for regular patients",
+   "A suggestion patients can veto individually"
+  ],
+  "answer": 1,
+  "why": "Dialysis units are open floors of immunocompromised patients who cannot skip sessions. Screening and visitor limits during surges protect everyone's treatment access.",
+  "porque": "En diálisis nadie puede faltar y todos son vulnerables: el cribado y los límites temporales protegen el acceso al tratamiento de todos."
+ },
+ {
+  "id": "b7q24",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Clínico",
+  "level": "Aplicación",
+  "difficulty": "Media",
+  "topic": "Comunicación con el equipo",
+  "stem": "You notice a new medication appeared on a patient's treatment sheet with an unfamiliar name and no one mentioned it. The safest action is:",
+  "options": [
+   "Ignore it — sheets are always right",
+   "Ask the RN to verify before the treatment proceeds — clarification of anything unclear on an order is expected professional practice",
+   "Ask the patient if he recognizes it",
+   "Skip that line silently"
+  ],
+  "answer": 1,
+  "why": "\"When in doubt, verify\" is the cheapest safety rule in healthcare. Asking is not insubordination — it is the system working.",
+  "porque": "Ante la duda, verificar: es la regla de seguridad más barata que existe. Preguntar no es insubordinación, es el sistema funcionando."
+ },
+ {
+  "id": "b7q25",
+  "block": 7,
+  "blockName": "Simulación mixta",
+  "domain": "Clínico/Técnico",
+  "level": "Aplicación",
+  "difficulty": "Alta",
+  "topic": "Síntesis final",
+  "stem": "At the end of a treatment day, the MOST complete picture of a patient's status comes from integrating:",
+  "options": [
+   "Only the post-treatment weight",
+   "Weights, blood pressures, symptoms, delivered time, pressures/alarms, access condition and labs over time — trends across every domain of care",
+   "The patient's mood alone",
+   "The machine's self-report only"
+  ],
+  "answer": 1,
+  "why": "That integration IS the CCHT's clinical identity — and the blueprint of this entire question bank: no single number ever tells the story.",
+  "porque": "Integrar todo — pesos, presiones, síntomas, tiempos, acceso, labs en tendencia — es la identidad del técnico. Ningún número solo cuenta la historia. ================================================================ CIERRE DEL BLOQUE 7 — Y DEL BANCO PRO BASE 25 preguntas mixtas · Aplicación 17, Comprensión 8. BANCO PRO TOTAL: 120 preguntas originales, bilingües, etiquetadas por dominio/nivel/dificultad, construidas desde estándares públicos. SIGUIENTE FASE (construcción de la app PRO): 1) Cargar los 7 bloques en la app con modo examen cronometrado (150 min para simulación de 150 aplicando muestreo o 60 min para esta de 25… la app escala: 25 preguntas = 30 min a ritmo oficial de 72 s/pregunta ≈ 30 min). 2) Resultados por dominio con el mapa de calor del blueprint. 3) Versión gratuita queda como gancho en kiusting.com; la PRO se vende. ================================================================"
+ }
+]</script>
+<script>
+const BANK = JSON.parse(document.getElementById('bank').textContent);
+const BLOCKS = {1:'Agua y dializado',2:'Acceso vascular',3:'Complicaciones',4:'Máquina y alarmas',5:'Labs y adecuación',6:'Ambiente y Rol',7:'Simulación mixta'};
+const DOMS = ['Clínico','Técnico','Ambiente','Rol'];
+const RANGES = {'Clínico':'48–52%','Técnico':'21–25%','Ambiente':'13–17%','Rol':'10–14%'};
+const domOf = q => DOMS.find(d => q.domain.startsWith(d)) || 'Clínico';
+const shuffle = a => { a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+
+let S = null; // session
+function show(id){ ['home','quiz','results'].forEach(x=>document.getElementById(x).classList.toggle('hidden', x!==id)); window.scrollTo(0,0); }
+
+// Home buttons
+const bb = document.getElementById('blockBtns');
+Object.keys(BLOCKS).forEach(n=>{
+  const c = BANK.filter(q=>q.block===+n).length;
+  const b = document.createElement('button'); b.className='mode';
+  b.innerHTML = `<b>Bloque ${n} · ${BLOCKS[n]}</b><span><span class="n">${c} preguntas</span> · práctica con explicación bilingüe</span>`;
+  b.onclick = ()=>startStudy(BANK.filter(q=>q.block===+n), `Bloque ${n} · ${BLOCKS[n]}`);
+  bb.appendChild(b);
+});
+const db = document.getElementById('domBtns');
+DOMS.forEach(d=>{
+  const c = BANK.filter(q=>domOf(q)===d).length;
+  const b = document.createElement('button'); b.className='mode';
+  b.innerHTML = `<b>${d}</b><span><span class="n">${c} preguntas</span> · peso oficial ${RANGES[d]} del examen</span>`;
+  b.onclick = ()=>startStudy(shuffle(BANK.filter(q=>domOf(q)===d)), `Dominio ${d}`);
+  db.appendChild(b);
+});
+try{ const bs = localStorage.getItem('dtcpro_best_sim'); if(bs) document.getElementById('bestSim').textContent = bs+'%'; }catch(e){}
+
+function baseSession(queue, title, exam, seconds){
+  S = {queue, title, exam, idx:0, answers:{}, locked:{}, deadline: seconds? Date.now()+seconds*1000 : null, timerInt:null};
+  document.getElementById('modeName').innerHTML = title;
+  document.getElementById('timerPill').classList.toggle('hidden', !exam);
+  show('quiz');
+  if(exam){ tick(); S.timerInt = setInterval(tick, 500); }
+  render();
+}
+function startStudy(queue, title){ baseSession(queue, title, false, 0); }
+function startExam(n){
+  let queue;
+  if(n===120){ queue = shuffle(BANK); }
+  else{
+    const want = {'Clínico':25,'Técnico':12,'Ambiente':7,'Rol':6};
+    queue = [];
+    DOMS.forEach(d=>{ queue = queue.concat(shuffle(BANK.filter(q=>domOf(q)===d)).slice(0, want[d])); });
+    queue = shuffle(queue);
+  }
+  baseSession(queue, n===120? 'Examen completo PRO' : 'Simulación CCHT', true, n*72);
+}
+function tick(){
+  if(!S || !S.deadline) return;
+  const left = Math.max(0, Math.round((S.deadline - Date.now())/1000));
+  const m = String(Math.floor(left/60)).padStart(2,'0'), s = String(left%60).padStart(2,'0');
+  const el = document.getElementById('timer'); el.textContent = `${m}:${s}`;
+  el.parentElement.classList.toggle('low', left<=300);
+  if(left<=0){ finish(); }
+}
+function render(){
+  const q = S.queue[S.idx];
+  document.getElementById('qCount').innerHTML = `<b>${S.idx+1}</b> / ${S.queue.length}`;
+  document.getElementById('pbar').style.width = ((S.idx)/S.queue.length*100)+'%';
+  document.getElementById('qTags').innerHTML =
+    `<span class="tag dom">${q.domain}</span><span class="tag">${q.topic}</span><span class="tag">${q.level}</span><span class="tag">Dificultad: ${q.difficulty}</span><span class="tag">Bloque ${q.block}</span>`;
+  document.getElementById('qStem').textContent = q.stem;
+  const box = document.getElementById('qOpts'); box.innerHTML='';
+  const locked = !!S.locked[q.id];
+  q.options.forEach((op,i)=>{
+    const b = document.createElement('button'); b.className='opt'; b.textContent = 'ABCD'[i]+') '+op;
+    if(S.answers[q.id]===i) b.classList.add('sel');
+    if(locked){
+      b.disabled = true;
+      if(i===q.answer) b.classList.add('right');
+      else if(S.answers[q.id]===i) b.classList.add('wrong');
+    }
+    b.onclick = ()=>pick(i);
+    box.appendChild(b);
+  });
+  const ex = document.getElementById('qExpl');
+  if(locked && !S.exam){
+    const ok = S.answers[q.id]===q.answer;
+    ex.innerHTML = `<div class="expl"><span class="${ok?'good':'bad'}">${ok?'✔ Correcto':'✘ Incorrecto — la correcta es '+'ABCD'[q.answer]}</span><p><b>Why:</b> ${q.why}</p><p class="es"><b>Por qué:</b> ${q.porque}</p></div>`;
+  } else ex.innerHTML='';
+  document.getElementById('btnPrev').disabled = S.idx===0;
+  const last = S.idx===S.queue.length-1;
+  document.getElementById('btnNext').textContent = last ? (S.exam? 'Terminar examen ✔' : 'Ver resultados ✔') : 'Siguiente →';
+}
+function pick(i){
+  const q = S.queue[S.idx];
+  if(S.locked[q.id]) return;
+  S.answers[q.id] = i;
+  if(!S.exam) S.locked[q.id] = true;
+  render();
+}
+function move(d){
+  if(d>0 && S.idx===S.queue.length-1){ finish(); return; }
+  S.idx = Math.min(S.queue.length-1, Math.max(0, S.idx+d));
+  render();
+}
+function quitToHome(){
+  if(S && S.timerInt) clearInterval(S.timerInt);
+  S = null; show('home');
+}
+function finish(){
+  if(!S) return;
+  if(S.timerInt) clearInterval(S.timerInt);
+  const total = S.queue.length;
+  let right = 0; const per = {};
+  DOMS.forEach(d=>per[d]={r:0,t:0});
+  const missed = [];
+  S.queue.forEach(q=>{
+    const d = domOf(q); per[d].t++;
+    if(S.answers[q.id]===q.answer){ right++; per[d].r++; }
+    else missed.push(q);
+  });
+  const pct = Math.round(right/total*100);
+  document.getElementById('rScore').textContent = pct+'%';
+  const pass = pct>=74;
+  document.getElementById('rVerdict').textContent = S.exam ? (pass? '✅ Nivel de APROBADO (sobre el ~74% del CCHT)' : '⚠️ Aún bajo el ~74% — a reforzar y repetir') : 'Práctica terminada';
+  document.getElementById('rVerdict').style.color = pass? 'var(--ok)':'var(--gold2)';
+  document.getElementById('rDetail').textContent = `${right} de ${total} correctas · ${S.title}`;
+  const dr = document.getElementById('domResults'); dr.innerHTML='';
+  DOMS.forEach(d=>{
+    if(!per[d].t) return;
+    const p = Math.round(per[d].r/per[d].t*100);
+    dr.innerHTML += `<div class="domrow"><div class="lbl"><b>${d}</b><span>${per[d].r}/${per[d].t} · ${p}% · peso oficial ${RANGES[d]}</span></div><div class="dbar"><i class="${p>=74?'pass':''}" style="width:${p}%"></i></div></div>`;
+  });
+  document.getElementById('btnRetry').onclick = ()=>{ const t=S.title, ex=S.exam, n=S.queue.length; if(ex) startExam(n===120?120:50); else startStudy(S.queue, t); };
+  const rb = document.getElementById('reviewBox');
+  if(missed.length){
+    rb.innerHTML = '<h3>Repasa tus fallos ('+missed.length+')</h3>' + missed.map(q=>
+      `<div class="rq"><span class="rs">✘ ${q.domain} · ${q.topic}</span><p>${q.stem}</p><p>Tu respuesta: <span class="rs">${S.answers[q.id]!=null? 'ABCD'[S.answers[q.id]]+') '+q.options[S.answers[q.id]] : '(sin responder)'}</span></p><p>Correcta: <span class="rc">${'ABCD'[q.answer]}) ${q.options[q.answer]}</span></p><p><b>Why:</b> ${q.why}</p><p class="es"><b>Por qué:</b> ${q.porque}</p></div>`).join('');
+  } else rb.innerHTML = '<h3>🎉 Sin fallos. Perfecto.</h3>';
+  if(S.exam){ try{ const prev = +(localStorage.getItem('dtcpro_best_sim')||0); if(pct>prev){ localStorage.setItem('dtcpro_best_sim', pct); document.getElementById('bestSim').textContent = pct+'%'; } }catch(e){} }
+  show('results');
+}
+</script>
+</body>
+</html>
