@@ -377,3 +377,12 @@ body.health-page{
 }
 
 /* ===== END FIX HERO ARTICULOS SALUD ===== */
+
+/* ===== AUTOR EDUCATIVO + CTA APP (2026-11-08) ===== */
+.health-author { margin: 28px 0 8px; padding: 18px 20px; border: 1px solid rgba(212,175,55,.35); border-radius: 14px; background: linear-gradient(135deg, rgba(212,175,55,.10), rgba(212,175,55,.03)); }
+.health-author strong { color: #d4af37; }
+.health-author p { margin: 6px 0 0; }
+.health-author .ha-note { font-size: .92em; opacity: .85; }
+.health-app-cta { margin: 14px 0 8px; padding: 16px 20px; border: 1px solid rgba(212,175,55,.35); border-left: 5px solid #d4af37; border-radius: 12px; background: rgba(255,255,255,.04); }
+.health-app-cta a { color: #d4af37; font-weight: 700; text-decoration: none; }
+.health-app-cta a:hover { text-decoration: underline; }
