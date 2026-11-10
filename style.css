@@ -2048,6 +2048,17 @@ section {
   opacity: .62;
 }
 
+a.contact-purpose {
+  color: inherit;
+  text-decoration: none;
+  transition: .2s ease;
+}
+
+a.contact-purpose:hover {
+  transform: translateY(-2px);
+  border-color: rgba(212,175,55,.55);
+}
+
 .contact-social-block {
   max-width: 800px;
   margin: 0 auto;
