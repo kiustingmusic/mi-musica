@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Manage your health | Practical Health | Kiustin G</title>
+
+<meta name="description"
+content="Prevention and control in plain words: blood pressure, glucose, cholesterol, heart health, kidney health, anemia and thyroid — the numbers that protect you and how to follow them.">
+
+<link rel="canonical"
+href="https://kiusting.com/en/health/manage-your-health">
+
+<link rel="alternate" hreflang="en"
+href="https://kiusting.com/en/health/manage-your-health">
+
+<link rel="alternate" hreflang="es"
+href="https://kiusting.com/salud/cuida-tu-salud">
+
+<link rel="alternate" hreflang="x-default"
+href="https://kiusting.com/salud/cuida-tu-salud">
+
+<link rel="stylesheet"
+href="../../assets/health/health-article.css?v=20260914b">
+
+<style>
+
+.symptom-main{
+    width:min(94%,1100px);
+    margin:auto;
+    padding:38px 0 70px;
+}
+
+.symptom-back{
+    display:inline-block;
+    margin-bottom:22px;
+    color:#d4af37;
+    text-decoration:none;
+    font-weight:700;
+}
+
+.symptom-hero{
+    border:1px solid rgba(212,175,55,.23);
+    border-radius:24px;
+    padding:32px;
+    background:
+      radial-gradient(circle at top right,
+      rgba(212,175,55,.11),transparent 38%),
+      rgba(255,255,255,.025);
+}
+
+.symptom-kicker{
+    color:#d4af37;
+    font-size:.78rem;
+    font-weight:800;
+    letter-spacing:.12em;
+}
+
+.symptom-hero h1{
+    margin:9px 0 12px;
+    color:#fff;
+    font-size:clamp(2.2rem,7vw,3.7rem);
+}
+
+.symptom-hero h1 span{
+    color:#d4af37;
+}
+
+.symptom-hero p{
+    color:rgba(255,255,255,.72);
+    line-height:1.65;
+}
+
+.symptom-search{
+    margin-top:22px;
+}
+
+.symptom-search input{
+    width:100%;
+    box-sizing:border-box;
+    padding:16px 18px;
+    border-radius:15px;
+    border:1px solid rgba(212,175,55,.30);
+    background:rgba(0,0,0,.45);
+    color:#fff;
+    font-size:1rem;
+    outline:none;
+}
+
+.symptom-search input:focus{
+    border-color:#d4af37;
+}
+
+.symptom-title{
+    color:#fff;
+    margin:32px 0 17px;
+}
+
+.symptom-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+}
+
+.symptom-card{
+    display:block;
+    box-sizing:border-box;
+    color:inherit;
+    text-decoration:none;
+    padding:21px;
+    border-radius:20px;
+    border:1px solid rgba(212,175,55,.18);
+    background:rgba(255,255,255,.025);
+    transition:.2s ease;
+}
+
+.symptom-card:hover{
+    transform:translateY(-2px);
+    border-color:rgba(212,175,55,.50);
+}
+
+.symptom-icon{
+    font-size:1.8rem;
+    margin-bottom:9px;
+}
+
+.symptom-card h2{
+    color:#fff;
+    font-size:1.14rem;
+    margin:0 0 8px;
+}
+
+.symptom-card p{
+    color:rgba(255,255,255,.67);
+    line-height:1.5;
+    margin:0;
+}
+
+.symptom-emergency{
+    margin-top:28px;
+    padding:20px;
+    border-radius:16px;
+    border:1px solid rgba(255,80,80,.40);
+    background:rgba(255,55,55,.07);
+    color:rgba(255,255,255,.75);
+    line-height:1.6;
+}
+
+.symptom-emergency strong{
+    color:#ffaaaa;
+}
+
+.symptom-disclaimer{
+    margin-top:18px;
+    padding:18px;
+    border-left:3px solid #d4af37;
+    background:rgba(212,175,55,.05);
+    border-radius:12px;
+    color:rgba(255,255,255,.62);
+    line-height:1.6;
+    font-size:.9rem;
+}
+
+@media(max-width:850px){
+    .symptom-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:600px){
+    .symptom-main{width:94%;padding-top:22px}
+    .symptom-hero{padding:22px 20px}
+    .symptom-grid{grid-template-columns:1fr}
+    .symptom-card{padding:18px}
+}
+
+
+.symptom-medical-icon{
+    width:48px;
+    height:48px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:12px;
+}
+
+.symptom-medical-icon svg{
+    width:42px;
+    height:42px;
+    fill:none;
+    stroke:#d4af37;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    filter:drop-shadow(0 0 5px rgba(212,175,55,.12));
+}
+
+.symptom-card:hover .symptom-medical-icon svg{
+    stroke:#f1d36b;
+}
+
+@media(max-width:600px){
+    .symptom-medical-icon{
+        width:44px;
+        height:44px;
+    }
+
+    .symptom-medical-icon svg{
+        width:38px;
+        height:38px;
+    }
+}
+
+</style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2442573311696020" crossorigin="anonymous"></script>
+</head>
+
+<body class="health-page">
+
+<header class="health-topbar">
+<a class="health-brand" href="../../">KIUSTIN G</a>
+
+<nav class="health-nav">
+<a href="../">Home</a>
+<a href="./">Health</a>
+<a class="health-lang" href="../../salud/cuida-tu-salud">ES</a>
+</nav>
+</header>
+
+<main class="symptom-main">
+
+<a class="symptom-back" href="./">← Back to Health</a>
+
+<section class="symptom-hero">
+
+<div class="symptom-kicker">
+PRACTICAL HEALTH · PREVENTION & CONTROL
+</div>
+
+<h1>❤️ Manage your <span>health</span></h1>
+
+<p>
+The numbers that protect you: blood pressure, glucose,
+cholesterol, heart and kidney health, weight and prevention —
+explained clearly so you can follow them at home and with your doctor.
+</p>
+
+<div class="symptom-search">
+<input id="symptomSearch"
+type="search"
+placeholder="Type a topic: pressure, glucose, kidney..."
+aria-label="Search health control topics">
+</div>
+
+</section>
+
+<h2 class="symptom-title">Your health, under control</h2>
+
+<section class="symptom-grid">
+
+<a class="symptom-card" href="high-blood-pressure" data-search="blood pressure hypertension control">
+<div class="symptom-icon">🫀</div>
+<h2>High blood pressure</h2>
+<p>Targets, home measurement and daily control.</p>
+</a>
+
+<a class="symptom-card" href="type-2-diabetes" data-search="diabetes glucose a1c control">
+<div class="symptom-icon">🩸</div>
+<h2>Type 2 diabetes</h2>
+<p>Glucose, A1c and habits that keep it in range.</p>
+</a>
+
+<a class="symptom-card" href="high-cholesterol" data-search="cholesterol ldl hdl triglycerides">
+<div class="symptom-icon">🧈</div>
+<h2>High cholesterol</h2>
+<p>LDL, HDL and triglycerides in plain words.</p>
+</a>
+
+<a class="symptom-card" href="heart-health" data-search="heart cardiovascular prevention">
+<div class="symptom-icon">💓</div>
+<h2>Heart health</h2>
+<p>Prevention and care of your cardiovascular system.</p>
+</a>
+
+<a class="symptom-card" href="chronic-kidney-disease" data-search="kidney chronic disease ckd">
+<div class="symptom-icon">🫘</div>
+<h2>Chronic kidney disease</h2>
+<p>Silent damage: how kidneys fail slowly and how it is detected.</p>
+</a>
+
+<a class="symptom-card" href="kidney-and-dialysis" data-search="kidney dialysis treatment">
+<div class="symptom-icon">🩺</div>
+<h2>Kidney and dialysis</h2>
+<p>When kidneys stop working: dialysis explained by a dialysis technician.</p>
+</a>
+
+<a class="symptom-card" href="anemia" data-search="anemia hemoglobin iron">
+<div class="symptom-icon">🔴</div>
+<h2>Anemia</h2>
+<p>Hemoglobin, iron and why follow-up matters.</p>
+</a>
+
+<a class="symptom-card" href="thyroid-disorders" data-search="thyroid hormones metabolism">
+<div class="symptom-icon">🦋</div>
+<h2>Thyroid disorders</h2>
+<p>The gland that sets your body's rhythm.</p>
+</a>
+
+</section>
+
+<div class="symptom-emergency">
+<strong>🚨 Seek emergency care:</strong>
+for severe chest pain or pressure, severe difficulty breathing,
+sudden weakness or numbness, sudden trouble speaking, loss of
+consciousness, or another potentially life-threatening situation.
+In the United States, call <strong>911</strong>.
+</div>
+
+<div class="symptom-disclaimer">
+<strong>Educational information:</strong>
+this content provides general guidance, does not establish a diagnosis
+and does not replace professional medical evaluation.
+</div>
+
+
+<aside class="health-author"><p><strong>Educational article by Kiustin Guerra</strong> — trained as a physician in Cuba, now a dialysis technician and preceptor in New York.</p><p class="ha-note">Educational content only: it does not replace guidance from a US-licensed healthcare professional. Last reviewed: November 2026.</p></aside>
+</main>
+
+<script>
+const input = document.getElementById("symptomSearch");
+const cards = [...document.querySelectorAll(".symptom-card")];
+
+input.addEventListener("input", () => {
+    const q = input.value.toLowerCase().trim();
+
+    cards.forEach(card => {
+        const text = (
+            (card.dataset.search || "") + " " + card.innerText
+        ).toLowerCase();
+
+        card.style.display = text.includes(q) ? "" : "none";
+    });
+});
+</script>
+
+</body>
+</html>
