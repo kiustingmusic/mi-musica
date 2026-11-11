@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora Obstétrica — Kiustin G</title>
+<style>
+  :root{ --pink:#c2437e; --pink-dark:#9c2f63; --gold:#e8b33c; --ink:#2b2230; --bg:#fdf7fa; --card:#ffffff; --soft:#f7e8f0; --ok:#2e7d52; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--ink); line-height:1.45; }
+  header{ background:linear-gradient(135deg,var(--pink-dark),var(--pink)); color:#fff; padding:22px 16px 18px; text-align:center; }
+  header h1{ font-size:1.55rem; letter-spacing:.3px; }
+  header p{ opacity:.92; font-size:.95rem; margin-top:4px; }
+  .brand{ color:var(--gold); font-weight:700; }
+  .langbar{ text-align:center; padding:10px; }
+  .langbar button{ border:2px solid var(--pink); background:#fff; color:var(--pink-dark); font-weight:700; padding:6px 18px; border-radius:999px; margin:0 4px; cursor:pointer; font-size:.95rem; }
+  .langbar button.on{ background:var(--pink); color:#fff; }
+  main{ max-width:680px; margin:0 auto; padding:6px 14px 30px; }
+  .tabs{ display:flex; gap:8px; margin:8px 0 14px; }
+  .tabs button{ flex:1; padding:12px 6px; border-radius:12px; border:2px solid var(--pink); background:#fff; color:var(--pink-dark); font-weight:700; font-size:.98rem; cursor:pointer; }
+  .tabs button.on{ background:var(--pink); color:#fff; }
+  .panel{ background:var(--card); border-radius:16px; padding:18px 16px; box-shadow:0 2px 10px rgba(156,47,99,.10); }
+  label{ display:block; font-weight:600; margin:12px 0 6px; font-size:.97rem; }
+  input[type=date], input[type=number], select{ width:100%; padding:12px; font-size:1.05rem; border:2px solid #e6cbd8; border-radius:10px; background:#fff; }
+  .row{ display:flex; gap:10px; } .row > div{ flex:1; }
+  .calc{ width:100%; margin-top:18px; background:var(--pink); color:#fff; border:none; padding:15px; font-size:1.1rem; font-weight:800; border-radius:12px; cursor:pointer; }
+  .calc:active{ background:var(--pink-dark); }
+  .hint{ font-size:.85rem; color:#7a6873; margin-top:6px; }
+  #results{ margin-top:18px; display:none; }
+  .hero{ background:linear-gradient(135deg,var(--pink-dark),var(--pink)); color:#fff; border-radius:16px; padding:18px 16px; text-align:center; }
+  .hero .big{ font-size:1.5rem; font-weight:800; margin:4px 0; }
+  .hero .sub{ opacity:.94; }
+  .bar{ background:rgba(255,255,255,.28); border-radius:999px; height:12px; margin:12px 0 4px; overflow:hidden; }
+  .bar > div{ background:var(--gold); height:100%; border-radius:999px; }
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+  .card{ background:var(--card); border-radius:14px; padding:13px 14px; box-shadow:0 2px 8px rgba(156,47,99,.09); }
+  .card h3{ font-size:.83rem; text-transform:uppercase; letter-spacing:.5px; color:var(--pink-dark); margin-bottom:5px; }
+  .card .v{ font-size:1.06rem; font-weight:700; }
+  .card .n{ font-size:.84rem; color:#7a6873; margin-top:3px; }
+  .wide{ grid-column:1 / -1; }
+  ul.miles{ list-style:none; margin-top:6px; }
+  ul.miles li{ padding:8px 2px; border-bottom:1px dashed #ecd3e0; display:flex; justify-content:space-between; gap:8px; font-size:.95rem; }
+  ul.miles li:last-child{ border-bottom:none; }
+  ul.miles b{ white-space:nowrap; }
+  .past{ color:#a08b97; } .past b{ text-decoration:line-through; }
+  .note{ background:var(--soft); border-radius:12px; padding:12px 14px; font-size:.9rem; margin-top:12px; }
+  .warn{ background:#fdeeda; border-radius:12px; padding:12px 14px; font-size:.92rem; margin-top:12px; color:#7a4a12; }
+  footer{ max-width:680px; margin:0 auto; padding:0 14px 26px; font-size:.82rem; color:#8a7581; text-align:center; }
+  .print{ width:100%; margin-top:12px; background:#fff; color:var(--pink-dark); border:2px solid var(--pink); padding:12px; font-weight:700; border-radius:12px; cursor:pointer; font-size:1rem; }
+  @media print{ .tabs,.langbar,.calc,.print,.panel{ display:none !important; } #results{ display:block !important; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>🤰 <span data-i="title">Calculadora Obstétrica</span></h1>
+  <p><span data-i="subtitle">Fecha de parto, edad gestacional, ovulación y ventana fértil</span><br><span class="brand">Kiustin G · Salud</span></p>
+</header>
+<div class="langbar">
+  <button id="btn-es" class="on" onclick="setLang('es')">Español</button>
+  <button id="btn-en" onclick="setLang('en')">English</button>
+</div>
+<main>
+  <div class="tabs">
+    <button id="tab-lmp" class="on" onclick="showTab('lmp')">📅 <span data-i="tabLmp">Por última regla</span></button>
+    <button id="tab-us" onclick="showTab('us')">🩻 <span data-i="tabUs">Por ecografía</span></button>
+  </div>
+
+  <section class="panel" id="panel-lmp">
+    <label for="lmp" data-i="lmpLabel">Fecha de la última regla (primer día)</label>
+    <input type="date" id="lmp">
+    <label for="cycle" data-i="cycleLabel">Duración habitual del ciclo (días)</label>
+    <input type="number" id="cycle" value="28" min="20" max="45" inputmode="numeric">
+    <p class="hint" data-i="cycleHint">Lo más común es 28 días. Si tu ciclo es más largo o más corto, ajústalo: la ovulación ocurre unos 14 días antes de la siguiente regla.</p>
+    <button class="calc" onclick="calcLMP()" data-i="calc">Calcular</button>
+  </section>
+
+  <section class="panel" id="panel-us" style="display:none">
+    <label for="usdate" data-i="usDateLabel">Fecha de la ecografía</label>
+    <input type="date" id="usdate">
+    <label data-i="usGaLabel">Edad gestacional que dio la ecografía ese día</label>
+    <div class="row">
+      <div><input type="number" id="usw" min="4" max="42" placeholder="Semanas / Weeks" inputmode="numeric"></div>
+      <div><input type="number" id="usd" min="0" max="6" placeholder="Días / Days" inputmode="numeric"></div>
+    </div>
+    <p class="hint" data-i="usHint">La ecografía del primer trimestre es el método más preciso para fechar el embarazo.</p>
+    <button class="calc" onclick="calcUS()" data-i="calc">Calcular</button>
+  </section>
+
+  <div id="results"></div>
+</main>
+<footer>
+  <p data-i="privacy">🔒 Esta calculadora funciona sin internet y no guarda ni envía ningún dato. Todo se calcula en tu teléfono.</p>
+  <p style="margin-top:6px" data-i="disclaimer">Herramienta educativa. Las fechas son estimaciones basadas en ciclos regulares; la ecografía temprana es el método más preciso. No sustituye el control prenatal con tu médico o partera.</p>
+  <p style="margin-top:6px"><a href="https://kiusting.com/salud/embarazo" style="color:#9c2f63;font-weight:700">Kiustin G · kiusting.com</a></p>
+</footer>
+
+<script>
+/* ==== i18n ==== */
+var LANG = 'es';
+var T = {
+  es: { title:'Calculadora Obstétrica', subtitle:'Fecha de parto, edad gestacional, ovulación y ventana fértil',
+    tabLmp:'Por última regla', tabUs:'Por ecografía',
+    lmpLabel:'Fecha de la última regla (primer día)', cycleLabel:'Duración habitual del ciclo (días)',
+    cycleHint:'Lo más común es 28 días. Si tu ciclo es más largo o más corto, ajústalo: la ovulación ocurre unos 14 días antes de la siguiente regla.',
+    usDateLabel:'Fecha de la ecografía', usGaLabel:'Edad gestacional que dio la ecografía ese día',
+    usHint:'La ecografía del primer trimestre es el método más preciso para fechar el embarazo.',
+    calc:'Calcular', privacy:'🔒 Esta calculadora funciona sin internet y no guarda ni envía ningún dato. Todo se calcula en tu teléfono.',
+    disclaimer:'Herramienta educativa. Las fechas son estimaciones basadas en ciclos regulares; la ecografía temprana es el método más preciso. No sustituye el control prenatal con tu médico o partera.',
+    edd:'Fecha probable de parto', gaToday:'Edad gestacional hoy', days:'días', weeks:'semanas', week:'semana', day:'día', and:'y',
+    tri1:'Primer trimestre', tri2:'Segundo trimestre', tri3:'Tercer trimestre',
+    leftForEdd:'faltan', leftSuffix:'para la fecha de parto', born:'¡Ya pasó la fecha probable de parto hace', bornSuffix:'! Habla con tu médico.',
+    progress:'del embarazo', conception:'Ovulación / concepción probable', fertile:'Ventana fértil',
+    fertileNote:'Los 6 días de mayor probabilidad de embarazo.', coito:'Posible día del coito fecundante',
+    coitoNote:'El esperma puede sobrevivir hasta 5 días; el óvulo, unas 24 horas. La relación que fecunda pudo ser cualquiera de estos días.',
+    lmpUsed:'Última regla usada', impliedLmp:'Última regla (calculada)', milestones:'Hitos del embarazo',
+    m12:'Semana 12 · Ecografía del primer trimestre (11–13+6)', m20:'Semana 20 · Ecografía morfológica (18–22)', m24:'Semana 24 · Viabilidad',
+    mGlucose:'Semanas 24–28 · Prueba de glucosa', m28:'Semana 28 · Comienza el tercer trimestre', mGbs:'Semanas 35–37 · Cultivo de estreptococo grupo B',
+    m37:'Semana 37 · Término temprano', m40:'Semana 40 · Fecha probable de parto', m42:'Semana 42 · Límite habitual',
+    errDate:'Elige una fecha válida.', errGa:'Escribe las semanas y días de la ecografía.',
+    warnFuture:'Ojo: la fecha está en el futuro.', warnOld:'Ojo: la fecha ya pasa de 42 semanas; verifica los datos.',
+    print:'🖨️ Imprimir / guardar resultados' },
+  en: { title:'Obstetric Calculator', subtitle:'Due date, gestational age, ovulation and fertile window',
+    tabLmp:'By last period', tabUs:'By ultrasound',
+    lmpLabel:'First day of your last period (LMP)', cycleLabel:'Usual cycle length (days)',
+    cycleHint:'28 days is most common. If your cycle is longer or shorter, adjust it: ovulation happens about 14 days before the next period.',
+    usDateLabel:'Ultrasound date', usGaLabel:'Gestational age the ultrasound showed that day',
+    usHint:'A first-trimester ultrasound is the most accurate way to date a pregnancy.',
+    calc:'Calculate', privacy:'🔒 This calculator works offline and does not store or send any data. Everything is calculated on your phone.',
+    disclaimer:'Educational tool. Dates are estimates based on regular cycles; early ultrasound is the most accurate method. It does not replace prenatal care with your doctor or midwife.',
+    edd:'Estimated due date', gaToday:'Gestational age today', days:'days', weeks:'weeks', week:'week', day:'day', and:'and',
+    tri1:'First trimester', tri2:'Second trimester', tri3:'Third trimester',
+    leftForEdd:'to go', leftSuffix:'until the due date', born:'The due date was', bornSuffix:' ago! Talk to your doctor.',
+    progress:'of the pregnancy', conception:'Probable ovulation / conception', fertile:'Fertile window',
+    fertileNote:'The 6 days with the highest chance of pregnancy.', coito:'Possible day of the fertilizing intercourse',
+    coitoNote:'Sperm can survive up to 5 days; the egg, about 24 hours. The intercourse that conceived could have been on any of these days.',
+    lmpUsed:'Last period used', impliedLmp:'Last period (calculated)', milestones:'Pregnancy milestones',
+    m12:'Week 12 · First-trimester ultrasound (11–13+6)', m20:'Week 20 · Anatomy ultrasound (18–22)', m24:'Week 24 · Viability',
+    mGlucose:'Weeks 24–28 · Glucose test', m28:'Week 28 · Third trimester begins', mGbs:'Weeks 35–37 · Group B strep test',
+    m37:'Week 37 · Early term', m40:'Week 40 · Due date', m42:'Week 42 · Usual limit',
+    errDate:'Please pick a valid date.', errGa:'Enter the weeks and days from the ultrasound.',
+    warnFuture:'Note: that date is in the future.', warnOld:'Note: that date is beyond 42 weeks; please check the data.',
+    print:'🖨️ Print / save results' }
+};
+function setLang(l){ LANG=l;
+  document.getElementById('btn-es').className = l==='es' ? 'on' : '';
+  document.getElementById('btn-en').className = l==='en' ? 'on' : '';
+  var nodes = document.querySelectorAll('[data-i]');
+  for (var i=0;i<nodes.length;i++){ var k=nodes[i].getAttribute('data-i'); if (T[l][k]) nodes[i].textContent = T[l][k]; }
+  document.documentElement.lang = l;
+}
+function showTab(t){
+  document.getElementById('panel-lmp').style.display = t==='lmp' ? 'block' : 'none';
+  document.getElementById('panel-us').style.display = t==='us' ? 'block' : 'none';
+  document.getElementById('tab-lmp').className = t==='lmp' ? 'on' : '';
+  document.getElementById('tab-us').className = t==='us' ? 'on' : '';
+}
+
+/* ==== date engine (date-only, UTC) ==== */
+var DAY = 86400000;
+function parseDate(v){ if(!v) return null; var p=v.split('-'); if(p.length!==3) return null; return Date.UTC(+p[0], +p[1]-1, +p[2]); }
+function todayUTC(){ var n=new Date(); return Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()); }
+function addD(ms,n){ return ms + n*DAY; }
+function diffD(a,b){ return Math.round((a-b)/DAY); }
+function fmt(ms){ return new Date(ms).toLocaleDateString(LANG==='es'?'es-ES':'en-US',{timeZone:'UTC', weekday:'long', day:'numeric', month:'long', year:'numeric'}); }
+function fmtS(ms){ return new Date(ms).toLocaleDateString(LANG==='es'?'es-ES':'en-US',{timeZone:'UTC', day:'numeric', month:'short', year:'numeric'}); }
+function gaTxt(days){ var t=T[LANG]; var w=Math.floor(days/7), d=days%7;
+  var ws = w===1 ? t.week : t.weeks, ds = d===1 ? t.day : t.days;
+  return w + ' ' + ws + ' ' + t.and + ' ' + d + ' ' + ds; }
+function triOf(gaDays){ var t=T[LANG]; if (gaDays < 98) return t.tri1; if (gaDays < 196) return t.tri2; return t.tri3; }
+
+/* ==== render ==== */
+function render(o){
+  var t=T[LANG], today=todayUTC();
+  var ga = diffD(today, o.lmp);               /* gestational age in days */
+  var total = diffD(o.edd, o.lmp);            /* full length in days */
+  var left = diffD(o.edd, today);
+  var pct = Math.max(0, Math.min(100, Math.round(ga/total*100)));
+  var warn = '';
+  if (o.lmp > today) warn = '<div class="warn">⚠️ ' + t.warnFuture + '</div>';
+  if (ga > 294) warn += '<div class="warn">⚠️ ' + t.warnOld + '</div>';
+  var leftTxt = left >= 0 ? (t.leftForEdd + ' <b>' + left + ' ' + t.days + '</b> ' + t.leftSuffix)
+                            : (t.born + ' <b>' + (-left) + ' ' + t.days + '</b>' + t.bornSuffix);
+  var miles = [
+    [84, t.m12], [140, t.m20], [168, t.m24], [182, t.mGlucose], [196, t.m28], [252, t.mGbs], [259, t.m37], [280, t.m40], [294, t.m42]
+  ];
+  var mh = '';
+  for (var i=0;i<miles.length;i++){ var md = addD(o.lmp, miles[i][0]);
+    mh += '<li class="' + (md < today ? 'past' : '') + '"><span>' + miles[i][1] + '</span><b>' + fmtS(md) + '</b></li>'; }
+  var html = warn +
+  '<div class="hero"><div>🤰 ' + t.gaToday + '</div><div class="big">' + gaTxt(Math.max(0,ga)) + '</div>' +
+  '<div class="sub">' + triOf(Math.max(0,ga)) + ' · ' + leftTxt + '</div>' +
+  '<div class="bar"><div style="width:' + pct + '%"></div></div><div class="sub">' + pct + '% ' + t.progress + '</div></div>' +
+  '<div class="grid">' +
+  '<div class="card wide"><h3>📅 ' + t.edd + '</h3><div class="v">' + fmt(o.edd) + '</div></div>' +
+  '<div class="card"><h3>🥚 ' + t.conception + '</h3><div class="v">' + fmtS(o.conception) + '</div></div>' +
+  '<div class="card"><h3>💞 ' + t.fertile + '</h3><div class="v">' + fmtS(o.fertStart) + ' – ' + fmtS(o.fertEnd) + '</div><div class="n">' + t.fertileNote + '</div></div>' +
+  '<div class="card wide"><h3>🔍 ' + t.coito + '</h3><div class="v">' + fmtS(o.fertStart) + ' – ' + fmtS(o.conception) + '</div><div class="n">' + t.coitoNote + '</div></div>' +
+  '<div class="card wide"><h3>' + (o.usMode ? t.impliedLmp : t.lmpUsed) + '</h3><div class="v">' + fmtS(o.lmp) + '</div></div>' +
+  '<div class="card wide"><h3>📌 ' + t.milestones + '</h3><ul class="miles">' + mh + '</ul></div>' +
+  '</div><button class="print" onclick="window.print()">' + t.print + '</button>';
+  var r = document.getElementById('results');
+  r.innerHTML = html; r.style.display = 'block';
+  r.scrollIntoView({behavior:'smooth'});
+}
+
+/* ==== calculators ==== */
+function calcLMP(){
+  var t=T[LANG];
+  var lmp = parseDate(document.getElementById('lmp').value);
+  if (lmp===null){ alert(t.errDate); return; }
+  var cycle = parseInt(document.getElementById('cycle').value,10);
+  if (isNaN(cycle) || cycle<20 || cycle>45) cycle = 28;
+  var conception = addD(lmp, cycle - 14);          /* ovulation: 14 days before next period */
+  var edd = addD(lmp, 280 + (cycle - 28));         /* Naegele adjusted by cycle */
+  render({ lmp:lmp, edd:edd, conception:conception, fertStart:addD(conception,-5), fertEnd:conception, usMode:false });
+}
+function calcUS(){
+  var t=T[LANG];
+  var usd = parseDate(document.getElementById('usdate').value);
+  var w = parseInt(document.getElementById('usw').value,10), d = parseInt(document.getElementById('usd').value,10);
+  if (usd===null){ alert(t.errDate); return; }
+  if (isNaN(w) || isNaN(d) || w<0 || d<0 || d>6){ alert(t.errGa); return; }
+  var gaUs = w*7 + d;
+  var edd = addD(usd, 280 - gaUs);
+  var lmp = addD(usd, -gaUs);
+  var conception = addD(edd, -266);
+  render({ lmp:lmp, edd:edd, conception:conception, fertStart:addD(conception,-5), fertEnd:conception, usMode:true });
+}
+</script>
+</body>
+</html>
