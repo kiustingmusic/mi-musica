@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluentix — Aprende inglés desde cero · Kiustin G</title>
+<style>
+  :root{ --vio:#7c5cff; --vio2:#9d7bff; --blue:#38bdf8; --gold:#f5c542; --ink:#f2efff; --mut:#b9b3d9; --bg:#17122b; --bg2:#1f1838; --card:#241b45; --card2:#2c2154; --line:#3d3170; --ok:#3ddc84; --bad:#ff6b81; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:linear-gradient(180deg,var(--bg),var(--bg2)); color:var(--ink); line-height:1.5; min-height:100vh; }
+  header{ background:linear-gradient(135deg,#3b2a7a,var(--vio) 55%,var(--blue)); padding:22px 16px 16px; text-align:center; }
+  header h1{ font-size:1.7rem; letter-spacing:.3px; }
+  header h1 .logo{ font-size:1.9rem; }
+  header p{ opacity:.95; font-size:.95rem; margin-top:3px; }
+  .brand{ color:var(--gold); font-weight:800; }
+  .stats{ display:flex; gap:8px; max-width:680px; margin:-2px auto 0; padding:12px 14px 0; }
+  .stat{ flex:1; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:9px 6px; text-align:center; }
+  .stat .v{ font-size:1.15rem; font-weight:800; }
+  .stat .l{ font-size:.72rem; color:var(--mut); text-transform:uppercase; letter-spacing:.5px; }
+  .xpbar{ max-width:652px; margin:10px auto 0; background:#120d24; border-radius:999px; height:12px; overflow:hidden; border:1px solid var(--line); }
+  .xpbar > div{ background:linear-gradient(90deg,var(--gold),#ff9d42); height:100%; border-radius:999px; transition:width .4s; }
+  .xpnote{ text-align:center; font-size:.8rem; color:var(--mut); margin-top:4px; }
+  main{ max-width:680px; margin:0 auto; padding:12px 14px 30px; }
+  .tabs{ display:flex; gap:8px; margin:4px 0 14px; }
+  .tabs button{ flex:1; padding:12px 4px; border-radius:12px; border:2px solid var(--vio); background:transparent; color:var(--vio2); font-weight:700; font-size:.92rem; cursor:pointer; }
+  .tabs button.on{ background:var(--vio); color:#fff; }
+  .view{ display:none; } .view.on{ display:block; }
+  .lvl{ font-size:.78rem; font-weight:800; letter-spacing:1px; color:var(--blue); text-transform:uppercase; margin:14px 0 8px; }
+  .lesson{ display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:13px 14px; margin-bottom:9px; cursor:pointer; width:100%; text-align:left; color:var(--ink); font-size:1rem; }
+  .lesson:active{ background:var(--card2); }
+  .lesson .num{ background:var(--vio); color:#fff; font-weight:800; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none; }
+  .lesson.done .num{ background:var(--ok); color:#0c2417; }
+  .lesson .t{ font-weight:700; }
+  .lesson .s{ font-size:.83rem; color:var(--mut); }
+  .lesson .st{ margin-left:auto; font-size:1.05rem; flex:none; }
+  .panel{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 16px; }
+  .panel h2{ font-size:1.25rem; margin-bottom:4px; }
+  .panel h3{ margin:16px 0 6px; color:var(--vio2); font-size:1.02rem; }
+  .rule{ background:#1a1332; border-left:4px solid var(--vio); border-radius:10px; padding:12px 14px; font-size:.97rem; }
+  .rule b{ color:var(--gold); } .rule i{ color:var(--blue); }
+  .rule table{ width:100%; border-collapse:collapse; margin:8px 0; font-size:.93rem; }
+  .rule td,.rule th{ border:1px solid var(--line); padding:6px 8px; text-align:left; }
+  .rule th{ background:var(--card2); }
+  .ex{ display:flex; align-items:center; gap:10px; background:var(--card2); border-radius:12px; padding:10px 12px; margin:8px 0; }
+  .ex .en{ font-weight:700; font-size:1.03rem; }
+  .ex .es{ color:var(--mut); font-size:.88rem; }
+  .sbtn{ background:var(--vio); color:#fff; border:none; border-radius:999px; width:42px; height:42px; font-size:1.15rem; cursor:pointer; flex:none; }
+  .sbtn.mic{ background:#123a5c; border:2px solid var(--blue); }
+  .sbtn:active{ transform:scale(.94); }
+  .q{ background:#1a1332; border:1px solid var(--line); border-radius:12px; padding:13px 14px; margin:10px 0; }
+  .q .qt{ font-weight:700; margin-bottom:9px; }
+  .opt{ display:block; width:100%; text-align:left; background:var(--card2); color:var(--ink); border:2px solid var(--line); border-radius:10px; padding:11px 12px; margin:6px 0; font-size:.99rem; cursor:pointer; }
+  .opt.right{ border-color:var(--ok); background:#173d2a; }
+  .opt.wrong{ border-color:var(--bad); background:#40202c; }
+  .opt:disabled{ opacity:.85; cursor:default; }
+  .fillrow{ display:flex; gap:8px; }
+  .fillrow input{ flex:1; padding:11px; font-size:1rem; border:2px solid var(--line); border-radius:10px; background:#120d24; color:var(--ink); }
+  .chk{ background:var(--vio); color:#fff; border:none; border-radius:10px; padding:11px 16px; font-weight:800; cursor:pointer; }
+  .fb{ margin-top:8px; font-size:.93rem; font-weight:700; display:none; }
+  .fb.ok{ color:var(--ok); } .fb.no{ color:var(--bad); }
+  .big{ width:100%; margin-top:14px; background:linear-gradient(90deg,var(--vio),#5b8cff); color:#fff; border:none; padding:15px; font-size:1.08rem; font-weight:800; border-radius:12px; cursor:pointer; }
+  .ghost{ width:100%; margin-top:10px; background:transparent; color:var(--vio2); border:2px solid var(--vio); padding:12px; font-weight:800; border-radius:12px; cursor:pointer; font-size:1rem; }
+  .flash{ background:linear-gradient(135deg,var(--card2),#372a6b); border:1px solid var(--vio); border-radius:18px; min-height:190px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:22px 16px; cursor:pointer; }
+  .flash .w{ font-size:1.9rem; font-weight:800; }
+  .flash .tr{ color:var(--gold); font-size:1.15rem; font-weight:700; margin-top:6px; }
+  .flash .tap{ color:var(--mut); font-size:.8rem; margin-top:12px; }
+  .navrow{ display:flex; gap:8px; margin-top:12px; }
+  .navrow button{ flex:1; padding:12px; border-radius:12px; border:2px solid var(--vio); background:transparent; color:var(--vio2); font-weight:800; cursor:pointer; font-size:.98rem; }
+  .ph{ display:flex; align-items:center; gap:9px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:11px 12px; margin:8px 0; }
+  .ph .en{ font-weight:700; } .ph .es{ color:var(--mut); font-size:.86rem; }
+  .ph .res{ font-size:.85rem; font-weight:700; }
+  .note{ background:#1a1332; border-radius:12px; padding:12px 14px; font-size:.9rem; color:var(--mut); margin-top:12px; }
+  .badge-free{ display:inline-block; background:var(--gold); color:#241a02; font-weight:800; padding:2px 10px; border-radius:999px; font-size:.78rem; }
+  footer{ max-width:680px; margin:0 auto; padding:0 14px 26px; font-size:.82rem; color:var(--mut); text-align:center; }
+  .toast{ position:fixed; left:50%; bottom:22px; transform:translateX(-50%); background:var(--gold); color:#241a02; font-weight:800; padding:11px 18px; border-radius:999px; box-shadow:0 6px 24px rgba(0,0,0,.4); display:none; z-index:60; font-size:.95rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="logo">🗣️</span> Fluentix</h1>
+  <p>Tu tutor de inglés desde cero — reglas en español, práctica en inglés<br><span class="brand">Kiustin G</span> · <span class="badge-free">GRATIS · Nivel A1</span></p>
+</header>
+<div class="stats">
+  <div class="stat"><div class="v" id="stXp">0</div><div class="l">XP ⭐</div></div>
+  <div class="stat"><div class="v" id="stStreak">0 🔥</div><div class="l">Días seguidos</div></div>
+  <div class="stat"><div class="v" id="stDone">0/6</div><div class="l">Lecciones</div></div>
+</div>
+<div class="xpbar"><div id="xpFill" style="width:0%"></div></div>
+<p class="xpnote" id="xpNote">Meta diaria: gana XP hoy para mantener tu racha 🔥</p>
+<main>
+  <div class="tabs">
+    <button id="tab-lessons" class="on" onclick="showView('lessons')">📚 Lecciones</button>
+    <button id="tab-vocab" onclick="showView('vocab')">🃏 Vocabulario</button>
+    <button id="tab-phrases" onclick="showView('phrases')">🎤 Frases</button>
+  </div>
+
+  <section class="view on" id="view-lessons">
+    <p class="lvl">Nivel A1 · Principiante absoluto</p>
+    <div id="lessonList"></div>
+    <div class="note">💡 <b>Cómo estudiar:</b> abre una lección, lee la regla en español, escucha los ejemplos con el botón 🔊 y luego responde el ejercicio. Cada respuesta correcta suma XP. Vuelve cada día para mantener tu racha.</div>
+  </section>
+
+  <section class="view" id="view-lesson"></section>
+
+  <section class="view" id="view-vocab">
+    <p class="lvl">Vocabulario esencial · <span id="cardCount"></span></p>
+    <div class="flash" id="flash" onclick="flipCard()">
+      <div class="w" id="cardWord">word</div>
+      <div class="tr" id="cardTr" style="display:none"></div>
+      <div class="tap" id="cardTap">Toca la tarjeta para ver la traducción</div>
+    </div>
+    <div class="navrow">
+      <button onclick="prevCard()">⬅ Anterior</button>
+      <button onclick="speakCard()">🔊 Escuchar</button>
+      <button onclick="nextCard()">Siguiente ➡</button>
+    </div>
+    <div class="navrow">
+      <button onclick="shuffleCards()">🔀 Mezclar tarjetas</button>
+    </div>
+    <div class="note">Escucha la palabra, repítela en voz alta y luego toca la tarjeta para comprobar su significado. Repetir en voz alta es la forma más rápida de fijar el inglés.</div>
+  </section>
+
+  <section class="view" id="view-phrases">
+    <p class="lvl">Frases para hablar · escucha y repite</p>
+    <div id="phraseList"></div>
+    <div class="note">🎤 Pulsa el micrófono y di la frase en inglés: la app escucha tu pronunciación (funciona en Chrome y en la mayoría de los teléfonos Android; en iPhone usa el botón 🔊 y repite en voz alta).</div>
+  </section>
+</main>
+<footer>
+  <p>🔒 Fluentix funciona sin internet. Tu progreso (XP, racha y lecciones) se guarda SOLO en este dispositivo; nada se envía a ningún servidor.</p>
+  <p style="margin-top:6px">Versión gratuita (A1). La versión PRO llega hasta B1 con diálogos guiados, temas de conversación, test de nivel y logros.</p>
+  <p style="margin-top:6px">Fluentix · <b>Kiustin G</b> · kiusting.com</p>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= Utilidades de voz ================= */
+function speak(text){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US'; u.rate = 0.92;
+    var vs = speechSynthesis.getVoices(), i;
+    for(i=0;i<vs.length;i++){ if(vs[i].lang && vs[i].lang.indexOf('en')===0){ u.voice = vs[i]; break; } }
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+if('speechSynthesis' in window){ try{ speechSynthesis.getVoices(); }catch(e){} }
+function norm(s){ return (s||'').toLowerCase().replace(/[.,!?;:'"¿¡]/g,'').replace(/\s+/g,' ').trim(); }
+var SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+function listen(target, resEl, okMsg){
+  if(!SR){ resEl.textContent = '⚠️ Tu navegador no admite reconocimiento de voz. Escucha con 🔊 y repite en voz alta.'; resEl.style.color = 'var(--gold)'; return; }
+  var rec;
+  try{ rec = new SR(); }catch(e){ resEl.textContent = '⚠️ Reconocimiento de voz no disponible aquí.'; return; }
+  rec.lang = 'en-US'; rec.interimResults = false; rec.maxAlternatives = 1;
+  resEl.textContent = '🎙️ Escuchando… di la frase ahora'; resEl.style.color = 'var(--blue)';
+  rec.onresult = function(ev){
+    var said = ev.results[0][0].transcript;
+    if(norm(said) === norm(target)){ resEl.textContent = '✅ ¡Perfecto! Dijiste: "' + said + '"'; resEl.style.color = 'var(--ok)'; addXP(5); }
+    else { resEl.textContent = '🔁 Escuché: "' + said + '". La frase es: "' + target + '". Inténtalo otra vez.'; resEl.style.color = 'var(--gold)'; }
+  };
+  rec.onerror = function(){ resEl.textContent = '⚠️ No pude escucharte. Revisa el permiso del micrófono e inténtalo de nuevo.'; resEl.style.color = 'var(--bad)'; };
+  try{ rec.start(); }catch(e){}
+}
+
+/* ================= Estado (solo en este dispositivo) ================= */
+var SKEY = 'fluentix_free_state';
+var ST = { xp:0, streak:0, lastDay:'', done:{}, quizXp:{} };
+try{ var saved = JSON.parse(localStorage.getItem(SKEY)||'null'); if(saved) ST = saved; }catch(e){}
+function save(){ try{ localStorage.setItem(SKEY, JSON.stringify(ST)); }catch(e){} }
+function dayStr(d){ return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+function touchStreak(){
+  var today = dayStr(new Date());
+  if(ST.lastDay === today) return;
+  var y = new Date(); y.setDate(y.getDate()-1);
+  ST.streak = (ST.lastDay === dayStr(y)) ? ST.streak + 1 : 1;
+  ST.lastDay = today; save();
+}
+function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.style.display='block'; setTimeout(function(){ t.style.display='none'; }, 2600); }
+function addXP(n){
+  ST.xp += n; touchStreak(); save(); drawStats();
+  if(n>0) toast('+'+n+' XP ⭐');
+}
+function doneCount(){ var c=0, k; for(k in ST.done) if(ST.done[k]) c++; return c; }
+function drawStats(){
+  document.getElementById('stXp').textContent = ST.xp;
+  document.getElementById('stStreak').textContent = ST.streak + ' 🔥';
+  document.getElementById('stDone').textContent = doneCount() + '/' + LESSONS.length;
+  var pct = Math.min(100, Math.round(doneCount()/LESSONS.length*100));
+  document.getElementById('xpFill').style.width = pct + '%';
+  document.getElementById('xpNote').textContent = ST.lastDay === dayStr(new Date()) ? '✅ Ya estudiaste hoy. ¡Sigue así!' : 'Meta diaria: gana XP hoy para mantener tu racha 🔥';
+}
+function showView(v){
+  var views = ['lessons','lesson','vocab','phrases'], i;
+  for(i=0;i<views.length;i++){ document.getElementById('view-'+views[i]).className = 'view' + (views[i]===v ? ' on' : ''); }
+  var tab = (v==='lesson') ? 'lessons' : v;
+  var tabs = ['lessons','vocab','phrases'];
+  for(i=0;i<tabs.length;i++){ document.getElementById('tab-'+tabs[i]).className = (tabs[i]===tab ? 'on' : ''); }
+  window.scrollTo(0,0);
+}
+function esc(s){ return (s||'').replace(/</g,'&lt;'); }
+</script>
+
+<script>
+/* ================= LECCIONES A1 ================= */
+var LESSONS = [
+{ id:'l1', lvl:'A1', title:'Saludos y presentaciones', sub:'Greetings & introductions',
+  rule:'<p>En inglés saludas según el momento del día: <b>Good morning</b> (buenos días), <b>Good afternoon</b> (buenas tardes) y <b>Good evening</b> (buenas noches al llegar). Para despedirte de noche: <i>Good night</i>.</p><p>Para presentarte: <b>My name is…</b> (me llamo…) y <b>I am from…</b> (soy de…). La respuesta amable a «How are you?» es <b>I am fine, thank you</b>.</p><p>👉 Consejo: en inglés casi nunca se traduce palabra por palabra. Aprende las frases completas, tal como suenan.</p>',
+  examples:[
+    {en:'Hello! My name is Carlos.', es:'¡Hola! Me llamo Carlos.'},
+    {en:'Good morning. How are you?', es:'Buenos días. ¿Cómo estás?'},
+    {en:'I am fine, thank you. And you?', es:'Estoy bien, gracias. ¿Y tú?'},
+    {en:'I am from Cuba. Nice to meet you!', es:'Soy de Cuba. ¡Encantado de conocerte!'},
+    {en:'See you later. Goodbye!', es:'Hasta luego. ¡Adiós!'}],
+  quiz:[
+    {type:'mc', q:'¿Cómo dices «Buenas tardes» en inglés?', options:['Good night','Good afternoon','Goodbye'], answer:1, why:'«Good afternoon» se usa desde el mediodía hasta que oscurece.'},
+    {type:'mc', q:'Elige la presentación correcta:', options:['My name Carlos is.','Name my is Carlos.','My name is Carlos.'], answer:2, why:'La fórmula fija es: My name is + tu nombre.'},
+    {type:'fill', q:'Completa: «I ___ from New York.» (soy de Nueva York)', answer:['am'], why:'Con «I» el verbo es «am»: I am from…'},
+    {type:'mc', q:'Te preguntan «How are you?». La respuesta correcta es:', options:['I am fine, thank you.','I am Carlos.','Good night.'], answer:0, why:'«I am fine, thank you» = Estoy bien, gracias.'},
+    {type:'fill', q:'Completa el saludo: «Good ___, teacher.» (al llegar a clase por la noche)', answer:['evening'], why:'Al llegar de noche se saluda con «Good evening»; «Good night» es al despedirse.'}]},
+{ id:'l2', lvl:'A1', title:'El verbo TO BE (ser / estar)', sub:'I am · you are · he is',
+  rule:'<p><b>To be</b> es el verbo más importante: significa <b>ser</b> y <b>estar</b>. Cambia según la persona:</p><table><tr><th>Persona</th><th>To be</th><th>Ejemplo</th></tr><tr><td>I (yo)</td><td><b>am</b></td><td>I am a teacher.</td></tr><tr><td>You (tú / usted)</td><td><b>are</b></td><td>You are happy.</td></tr><tr><td>He / She / It (él / ella / eso)</td><td><b>is</b></td><td>She is Cuban.</td></tr><tr><td>We / They (nosotros / ellos)</td><td><b>are</b></td><td>They are friends.</td></tr></table><p>Forma corta (contracción): <i>I\'m, you\'re, he\'s, she\'s, we\'re, they\'re</i>. Para negar, añade <b>not</b>: <i>She is not Cuban</i> → <i>She isn\'t Cuban</i>.</p>',
+  examples:[
+    {en:'I am a student.', es:'Yo soy estudiante.'},
+    {en:'She is my sister.', es:'Ella es mi hermana.'},
+    {en:'We are at home now.', es:'Estamos en casa ahora.'},
+    {en:'It is a beautiful day.', es:'Es un día hermoso.'},
+    {en:'They are not tired.', es:'Ellos no están cansados.'}],
+  quiz:[
+    {type:'mc', q:'«She ___ my friend.»', options:['am','is','are'], answer:1, why:'Con he/she/it se usa «is».'},
+    {type:'fill', q:'Completa: «They ___ happy today.»', answer:['are'], why:'Con they/we/you se usa «are».'},
+    {type:'mc', q:'La contracción de «I am» es:', options:["I'm","I's","I are"], answer:0, why:'«I am» se acorta a «I\'m».'},
+    {type:'fill', q:'Completa: «You ___ a good student.»', answer:['are'], why:'Con «you» siempre va «are», en singular y en plural.'},
+    {type:'mc', q:'¿Cómo niegas «He is tired»?', options:['He not is tired.','He is not tired.','He are not tired.'], answer:1, why:'El «not» va después del verbo to be.'}]},
+{ id:'l3', lvl:'A1', title:'Presente simple: rutinas diarias', sub:'Present simple · daily routines',
+  rule:'<p>El <b>presente simple</b> habla de rutinas y hábitos: lo que haces todos los días. Se forma con el verbo sin «to»: <i>I work, you work, we work</i>.</p><p>⚠️ La trampa: con <b>he / she / it</b> el verbo lleva <b>-s</b>: <i>She work<b>s</b>, He get<b>s</b> up at 6</i>. Esa -s es obligatoria: es el error más común del principiante.</p><p>Palabras de rutina: <i>always</i> (siempre), <i>usually</i> (normalmente), <i>every day</i> (cada día), <i>in the morning / at night</i>.</p>',
+  examples:[
+    {en:'I get up at six every day.', es:'Me levanto a las seis cada día.'},
+    {en:'She works in a hospital.', es:'Ella trabaja en un hospital.'},
+    {en:'He watches TV at night.', es:'Él mira la televisión de noche.'},
+    {en:'We study English in the morning.', es:'Estudiamos inglés por la mañana.'},
+    {en:'My mother cooks very well.', es:'Mi madre cocina muy bien.'}],
+  quiz:[
+    {type:'mc', q:'«He ___ to work by bus.»', options:['go','goes','going'], answer:1, why:'Con he/she/it, los verbos terminados en -o llevan -es: go → goes.'},
+    {type:'fill', q:'Completa: «She ___ (study) English every day.» Escribe solo el verbo.', answer:['studies'], why:'Con she, study → studies (la -y cambia a -ies).'},
+    {type:'mc', q:'«I ___ coffee in the morning.»', options:['drinks','drink','drinking'], answer:1, why:'Con «I» el verbo va sin -s: I drink.'},
+    {type:'fill', q:'Completa: «My father ___ (work) on Saturdays.» Escribe solo el verbo.', answer:['works'], why:'Con he/she/it se añade -s: work → works.'},
+    {type:'mc', q:'¿Qué frase es una rutina?', options:['I am working now.','I work every day.','I worked yesterday.'], answer:1, why:'«Every day» marca hábito: presente simple.'}]},
+{ id:'l4', lvl:'A1', title:'Preguntas con DO y DOES', sub:'Questions & short answers',
+  rule:'<p>Para preguntar en presente simple se usa un ayudante: <b>Do</b> con I / you / we / they, y <b>Does</b> con he / she / it.</p><p>Estructura: <b>Do/Does + persona + verbo (sin -s) + …?</b> — <i>Does she work here?</i> (fíjate: el verbo vuelve a «work», sin -s, porque el «does» ya la lleva).</p><p>Respuestas cortas: <i>Yes, I do. / No, I don\'t. — Yes, she does. / No, she doesn\'t.</i> Nunca respondas solo «yes» en el trabajo: la respuesta corta suena mucho más natural.</p>',
+  examples:[
+    {en:'Do you speak English?', es:'¿Hablas inglés?'},
+    {en:'Does he live in New York?', es:'¿Él vive en Nueva York?'},
+    {en:'Yes, I do. I speak a little.', es:'Sí. Hablo un poco.'},
+    {en:'Does she like coffee? — No, she doesn\'t.', es:'¿A ella le gusta el café? — No.'},
+    {en:'What do you do?', es:'¿A qué te dedicas? (¿Cuál es tu trabajo?)'}],
+  quiz:[
+    {type:'mc', q:'«___ she work on Sundays?»', options:['Do','Does','Is'], answer:1, why:'Con she se pregunta con «Does».'},
+    {type:'fill', q:'Completa: «___ you like music?»', answer:['do'], why:'Con «you» la pregunta empieza con «Do».'},
+    {type:'mc', q:'«Does he ___ a car?»', options:['has','have','haves'], answer:1, why:'Después de «does» el verbo va en su forma base: have.'},
+    {type:'fill', q:'Respuesta corta: «Do they live here? — Yes, they ___.»', answer:['do'], why:'La respuesta corta repite el ayudante: Yes, they do.'},
+    {type:'mc', q:'La pregunta correcta es:', options:['Do she play soccer?','Does she play soccer?','Does she plays soccer?'], answer:1, why:'Does + she + verbo sin -s.'}]},
+{ id:'l5', lvl:'A1', title:'Familia y descripciones', sub:'Family · have/has · adjectives',
+  rule:'<p>Vocabulario de familia: <i>mother, father, parents, brother, sister, son, daughter, children, husband, wife</i>.</p><p><b>Have / has</b> (tener): <i>I have, you have, we have, they have</i> — pero <i>he/she <b>has</b></i>. Ej.: <i>She has two children</i>.</p><p>Los <b>adjetivos</b> en inglés van <b>antes</b> del sustantivo y no cambian con el número: <i>a tall man, two tall men</i> (nunca «talls»). Útiles: <i>tall/short, young/old, friendly, happy, intelligent</i>.</p>',
+  examples:[
+    {en:'I have one brother and two sisters.', es:'Tengo un hermano y dos hermanas.'},
+    {en:'My daughter is eight years old.', es:'Mi hija tiene ocho años.'},
+    {en:'She has a big family.', es:'Ella tiene una familia grande.'},
+    {en:'My father is tall and friendly.', es:'Mi padre es alto y simpático.'},
+    {en:'Her children are happy.', es:'Sus hijos (de ella) están felices.'}],
+  quiz:[
+    {type:'mc', q:'«My sister ___ three children.»', options:['have','has','haves'], answer:1, why:'Con he/she se usa «has».'},
+    {type:'fill', q:'Completa: «I ___ two brothers.» (tener)', answer:['have'], why:'Con «I» se usa «have».'},
+    {type:'mc', q:'El adjetivo va…', options:['después del sustantivo: a man tall','antes del sustantivo: a tall man','al final de la frase'], answer:1, why:'En inglés: adjetivo + sustantivo (a tall man).'},
+    {type:'fill', q:'«Hija» en inglés es…', answer:['daughter'], why:'Daughter = hija; son = hijo varón.'},
+    {type:'mc', q:'«___ years old» se usa para la edad. La frase correcta:', options:['She has eight years old.','She is eight years old.','She eight years old.'], answer:1, why:'La edad se dice con «to be»: She is eight years old.'}]},
+{ id:'l6', lvl:'A1', title:'Pasado simple: introducción', sub:'Past simple · was/were · -ed',
+  rule:'<p>El <b>pasado simple</b> cuenta cosas terminadas: <i>yesterday</i> (ayer), <i>last week</i> (la semana pasada), <i>last year</i>.</p><p>El verbo «to be» en pasado: <b>was</b> (I / he / she / it) y <b>were</b> (you / we / they). Ej.: <i>I was tired. They were happy.</i></p><p>Los verbos regulares añaden <b>-ed</b>: <i>work → worked, watch → watched, study → studied</i> (la -y pasa a -i). Ese -ed se pronuncia como un golpe suave, casi como una «t».</p>',
+  examples:[
+    {en:'Yesterday I was very busy.', es:'Ayer estuve muy ocupado.'},
+    {en:'We watched a movie last night.', es:'Vimos una película anoche.'},
+    {en:'She worked all day yesterday.', es:'Ella trabajó todo el día ayer.'},
+    {en:'They were at home on Sunday.', es:'Estaban en casa el domingo.'},
+    {en:'I studied English last year.', es:'Estudié inglés el año pasado.'}],
+  quiz:[
+    {type:'mc', q:'«I ___ happy yesterday.»', options:['am','was','were'], answer:1, why:'Con «I» en pasado: was.'},
+    {type:'fill', q:'Pasado de «work»: escríbelo.', answer:['worked'], why:'Verbo regular: work + ed = worked.'},
+    {type:'mc', q:'«They ___ at the party last night.»', options:['was','were','are'], answer:1, why:'Con they en pasado: were.'},
+    {type:'fill', q:'Pasado de «study»:', answer:['studied'], why:'La -y final cambia a -i: study → studied.'},
+    {type:'mc', q:'«Last week» pide…', options:['presente','futuro','pasado'], answer:2, why:'«Last week» (la semana pasada) siempre va con pasado simple.'}]}
+];
+
+/* ================= VOCABULARIO (tarjetas) ================= */
+var VOCAB = [
+['hello','hola'],['goodbye','adiós'],['please','por favor'],['thank you','gracias'],['yes','sí'],['no','no'],
+['morning','mañana'],['night','noche'],['today','hoy'],['tomorrow','mañana (día siguiente)'],['yesterday','ayer'],['week','semana'],
+['mother','madre'],['father','padre'],['brother','hermano'],['sister','hermana'],['son','hijo'],['daughter','hija'],
+['family','familia'],['friend','amigo/a'],['husband','esposo'],['wife','esposa'],['children','hijos / niños'],['baby','bebé'],
+['house','casa'],['home','hogar'],['door','puerta'],['window','ventana'],['table','mesa'],['chair','silla'],
+['bed','cama'],['room','habitación'],['kitchen','cocina'],['bathroom','baño'],['street','calle'],['city','ciudad'],
+['water','agua'],['coffee','café'],['bread','pan'],['rice','arroz'],['chicken','pollo'],['egg','huevo'],
+['milk','leche'],['breakfast','desayuno'],['lunch','almuerzo'],['dinner','cena'],['food','comida'],['fruit','fruta'],
+['work','trabajo / trabajar'],['job','empleo'],['hospital','hospital'],['doctor','médico'],['nurse','enfermera/o'],['teacher','maestro/a'],
+['school','escuela'],['book','libro'],['money','dinero'],['car','carro'],['bus','autobús'],['phone','teléfono'],
+['to eat','comer'],['to drink','beber / tomar'],['to sleep','dormir'],['to walk','caminar'],['to run','correr'],['to speak','hablar'],
+['to learn','aprender'],['to read','leer'],['to write','escribir'],['to listen','escuchar'],['to watch','mirar (TV)'],['to cook','cocinar'],
+['happy','feliz'],['tired','cansado/a'],['big','grande'],['small','pequeño/a'],['good','bueno/a'],['new','nuevo/a'],
+['day','día'],['man','hombre'],['woman','mujer'],['boy','niño'],['girl','niña'],['sun','sol']
+];
+
+/* ================= FRASES PARA PRACTICAR ================= */
+var PHRASES = [
+['Hello, how are you?','Hola, ¿cómo estás?'],
+['My name is… What is your name?','Me llamo… ¿Cómo te llamas? (di tu nombre)'],
+['I am learning English.','Estoy aprendiendo inglés.'],
+['Please speak slowly.','Por favor, habla despacio.'],
+['I do not understand. Can you repeat that?','No entiendo. ¿Puedes repetir eso?'],
+['Where is the bathroom, please?','¿Dónde está el baño, por favor?'],
+['How much does it cost?','¿Cuánto cuesta?'],
+['I would like a coffee, please.','Quisiera un café, por favor.'],
+['I work in a hospital.','Trabajo en un hospital.'],
+['My family lives in Cuba.','Mi familia vive en Cuba.'],
+['I get up at six every day.','Me levanto a las seis cada día.'],
+['Thank you very much. You are very kind.','Muchas gracias. Eres muy amable.'],
+['See you tomorrow!','¡Hasta mañana!'],
+['Excuse me, can you help me?','Disculpa, ¿puedes ayudarme?'],
+['I am sorry, I am late.','Lo siento, llegué tarde.'],
+['Have a nice day!','¡Que tengas un buen día!']
+];
+</script>
+
+<script>
+/* ================= Motor de la app ================= */
+var curLesson = null, quizState = {};
+
+function drawLessons(){
+  var html = '', i, L;
+  for(i=0;i<LESSONS.length;i++){ L = LESSONS[i];
+    html += '<button class="lesson' + (ST.done[L.id] ? ' done' : '') + '" onclick="openLesson(' + i + ')">' +
+      '<span class="num">' + (i+1) + '</span><span><span class="t">' + L.title + '</span><br><span class="s">' + L.sub + '</span></span>' +
+      '<span class="st">' + (ST.done[L.id] ? '✅' : '›') + '</span></button>';
+  }
+  document.getElementById('lessonList').innerHTML = html;
+}
+
+function openLesson(idx){
+  curLesson = LESSONS[idx]; quizState = {};
+  var html = '<div class="panel"><p class="lvl" style="margin-top:0">Lección · Nivel ' + curLesson.lvl + '</p>' +
+    '<h2>' + curLesson.title + '</h2><p style="color:var(--mut)">' + curLesson.sub + '</p>' +
+    '<h3>📖 La regla (en español)</h3><div class="rule">' + curLesson.rule + '</div>' +
+    '<h3>🔊 Ejemplos — toca para escuchar</h3>';
+  var i;
+  for(i=0;i<curLesson.examples.length;i++){ var ex = curLesson.examples[i];
+    html += '<div class="ex"><button class="sbtn" onclick="speak(' + jsq(ex.en) + ')">🔊</button><span><span class="en">' + ex.en + '</span><br><span class="es">' + ex.es + '</span></span></div>';
+  }
+  html += '<h3>✍️ Practica — responde y recibe corrección al instante</h3><div id="quizBox">';
+  for(i=0;i<curLesson.quiz.length;i++){ html += quizHTML(curLesson.quiz[i], i); }
+  html += '</div><div id="finishBox"></div>' +
+    '<button class="ghost" onclick="showView(\'lessons\')">⬅ Volver a las lecciones</button></div>';
+  document.getElementById('view-lesson').innerHTML = html;
+  showView('lesson');
+}
+function jsq(s){ return "'" + s.replace(/'/g,"\\'") + "'"; }
+
+function quizHTML(q, i){
+  var h = '<div class="q"><div class="qt">' + (i+1) + '. ' + q.q + '</div>';
+  if(q.type === 'mc'){
+    for(var j=0;j<q.options.length;j++){
+      h += '<button class="opt" id="opt-' + i + '-' + j + '" onclick="answerMC(' + i + ',' + j + ')">' + q.options[j] + '</button>';
+    }
+  } else {
+    h += '<div class="fillrow"><input id="fill-' + i + '" type="text" autocomplete="off" placeholder="Escribe tu respuesta…">' +
+         '<button class="chk" onclick="answerFill(' + i + ')">Comprobar</button></div>';
+  }
+  h += '<div class="fb" id="fb-' + i + '"></div></div>';
+  return h;
+}
+function markAnswered(i, right, q){
+  var fb = document.getElementById('fb-' + i);
+  fb.style.display = 'block';
+  if(right){ fb.className = 'fb ok'; fb.textContent = '✅ ¡Correcto! +5 XP — ' + q.why; }
+  else { fb.className = 'fb no'; fb.textContent = '❌ Todavía no. ' + q.why; }
+  if(quizState[i] === undefined){ quizState[i] = right; if(right) addXP(5); }
+  checkFinish();
+}
+function answerMC(qi, oi){
+  var q = curLesson.quiz[qi]; if(quizState[qi] !== undefined) return;
+  var right = (oi === q.answer);
+  var b = document.getElementById('opt-' + qi + '-' + oi);
+  b.className = 'opt ' + (right ? 'right' : 'wrong');
+  if(!right){ var good = document.getElementById('opt-' + qi + '-' + q.answer); if(good) good.className = 'opt right'; }
+  for(var j=0;j<q.options.length;j++){ var ob = document.getElementById('opt-' + qi + '-' + j); if(ob) ob.disabled = true; }
+  markAnswered(qi, right, q);
+}
+function answerFill(qi){
+  var q = curLesson.quiz[qi];
+  var inp = document.getElementById('fill-' + qi);
+  var val = norm(inp.value);
+  var right = false;
+  for(var j=0;j<q.answer.length;j++){ if(val === norm(q.answer[j])) right = true; }
+  if(quizState[qi] !== undefined){ return; }
+  inp.style.borderColor = right ? 'var(--ok)' : 'var(--bad)';
+  if(!right && val === ''){ document.getElementById('fb-' + qi).style.display='block'; document.getElementById('fb-' + qi).className='fb no'; document.getElementById('fb-' + qi).textContent = '✍️ Escribe una respuesta primero.'; return; }
+  markAnswered(qi, right, q);
+}
+function checkFinish(){
+  var total = curLesson.quiz.length, answered = 0, right = 0, k;
+  for(k in quizState){ answered++; if(quizState[k]) right++; }
+  if(answered < total) return;
+  var box = document.getElementById('finishBox');
+  var wasDone = !!ST.done[curLesson.id];
+  var html = '<div class="note" style="text-align:center;font-size:1rem;color:var(--ink)">Tu resultado: <b>' + right + ' de ' + total + '</b> correctas.';
+  if(right >= Math.ceil(total*0.6)){
+    html += '<br>🎉 ¡Lección superada!</div><button class="big" onclick="finishLesson(' + right + ')">' + (wasDone ? 'Repasar de nuevo ✓' : 'Completar lección (+20 XP)') + '</button>';
+  } else {
+    html += '<br>Repasa la regla de arriba y vuelve a intentarlo: lo vas a lograr. 💪</div><button class="big" onclick="openLessonById()">Reintentar la lección</button>';
+  }
+  box.innerHTML = html;
+  box.scrollIntoView({behavior:'smooth'});
+}
+function openLessonById(){ for(var i=0;i<LESSONS.length;i++){ if(LESSONS[i].id === curLesson.id) openLesson(i); } }
+function finishLesson(score){
+  if(!ST.done[curLesson.id]){ ST.done[curLesson.id] = score; addXP(20); }
+  save(); drawStats(); drawLessons(); showView('lessons');
+  toast('🎉 Lección completada');
+}
+
+/* ===== Tarjetas de vocabulario ===== */
+var cardIdx = 0, cardFlip = false;
+function drawCard(){
+  document.getElementById('cardCount').textContent = (cardIdx+1) + ' de ' + VOCAB.length + ' palabras';
+  document.getElementById('cardWord').textContent = VOCAB[cardIdx][0];
+  var tr = document.getElementById('cardTr');
+  tr.textContent = VOCAB[cardIdx][1];
+  tr.style.display = cardFlip ? 'block' : 'none';
+  document.getElementById('cardTap').textContent = cardFlip ? 'Toca 🔊 para escucharla otra vez' : 'Toca la tarjeta para ver la traducción';
+}
+function flipCard(){ cardFlip = !cardFlip; drawCard(); if(cardFlip) touchStreak(); drawStats(); }
+function nextCard(){ cardIdx = (cardIdx+1) % VOCAB.length; cardFlip = false; drawCard(); }
+function prevCard(){ cardIdx = (cardIdx-1+VOCAB.length) % VOCAB.length; cardFlip = false; drawCard(); }
+function shuffleCards(){ for(var i=VOCAB.length-1;i>0;i--){ var j = Math.floor(Math.random()*(i+1)); var t = VOCAB[i]; VOCAB[i]=VOCAB[j]; VOCAB[j]=t; } cardIdx = 0; cardFlip = false; drawCard(); }
+function speakCard(){ speak(VOCAB[cardIdx][0]); }
+
+/* ===== Frases ===== */
+function drawPhrases(){
+  var html = '', i;
+  for(i=0;i<PHRASES.length;i++){
+    html += '<div class="ph"><button class="sbtn" onclick="speak(' + jsq(PHRASES[i][0]) + ')">🔊</button>' +
+      '<span style="flex:1"><span class="en">' + PHRASES[i][0] + '</span><br><span class="es">' + PHRASES[i][1] + '</span><br><span class="res" id="pres-' + i + '"></span></span>' +
+      '<button class="sbtn mic" onclick="listen(' + jsq(PHRASES[i][0]) + ', document.getElementById(\'pres-' + i + '\'))">🎤</button></div>';
+  }
+  document.getElementById('phraseList').innerHTML = html;
+}
+
+/* ===== Inicio ===== */
+drawStats(); drawLessons(); drawCard(); drawPhrases();
+</script>
+</body>
+</html>

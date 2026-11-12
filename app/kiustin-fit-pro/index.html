@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiustin Fit Pro — Kiustin G</title>
+<style>
+  :root{ --lime:#a3e635; --lime-dark:#65a30d; --ink:#eef5e6; --bg:#0b0f0a; --card:#151d12; --soft:#1d2a18; --mut:#a3b18a; --line:#33482a; --gold:#e8b33c; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--ink); line-height:1.45; }
+  header{ background:linear-gradient(135deg,#16240c,#0b0f0a); border-bottom:3px solid var(--lime); padding:22px 16px 18px; text-align:center; }
+  header h1{ font-size:1.6rem; letter-spacing:.3px; }
+  header h1 .k{ color:var(--lime); }
+  header p{ opacity:.92; font-size:.95rem; margin-top:4px; }
+  .brand{ color:var(--lime); font-weight:700; }
+  .tag{ background:var(--lime); color:#131a0c; font-weight:800; padding:2px 10px; border-radius:999px; font-size:.8rem; }
+  .langbar{ text-align:center; padding:10px; }
+  .langbar button{ border:2px solid var(--lime); background:transparent; color:var(--lime); font-weight:700; padding:6px 18px; border-radius:999px; margin:0 4px; cursor:pointer; font-size:.95rem; }
+  .langbar button.on{ background:var(--lime); color:#131a0c; }
+  main{ max-width:680px; margin:0 auto; padding:6px 14px 30px; }
+  .tabs{ display:flex; gap:8px; margin:8px 0 14px; }
+  .tabs button{ flex:1; padding:12px 6px; border-radius:12px; border:2px solid var(--lime); background:transparent; color:var(--lime); font-weight:700; font-size:.95rem; cursor:pointer; }
+  .tabs button.on{ background:var(--lime); color:#131a0c; }
+  .panel{ background:var(--card); border-radius:16px; padding:18px 16px; box-shadow:0 2px 10px rgba(0,0,0,.4); margin-bottom:14px; }
+  .panel h3{ color:var(--lime); margin-bottom:8px; }
+  label{ display:block; font-weight:600; margin:12px 0 6px; font-size:.97rem; }
+  input[type=date], input[type=number], input[type=text], select{ width:100%; padding:12px; font-size:1.05rem; border:2px solid var(--line); border-radius:10px; background:#0f160c; color:var(--ink); }
+  .row{ display:flex; gap:10px; } .row > div{ flex:1; }
+  .calc{ width:100%; margin-top:18px; background:var(--lime); color:#131a0c; border:none; padding:15px; font-size:1.1rem; font-weight:800; border-radius:12px; cursor:pointer; }
+  .calc:active{ background:var(--lime-dark); }
+  .ghost{ width:100%; margin-top:10px; background:transparent; color:var(--lime); border:2px solid var(--lime); padding:12px; font-weight:700; border-radius:12px; cursor:pointer; font-size:1rem; }
+  .hint{ font-size:.85rem; color:var(--mut); margin-top:6px; }
+  .chips{ display:flex; gap:8px; margin-top:6px; flex-wrap:wrap; }
+  .chips button{ flex:1; min-width:56px; padding:11px 4px; border-radius:10px; border:2px solid var(--line); background:#0f160c; color:var(--ink); font-weight:700; cursor:pointer; font-size:.95rem; }
+  .chips button.on{ border-color:var(--lime); background:var(--lime); color:#131a0c; }
+  .chips button.lock{ opacity:.45; cursor:not-allowed; }
+  .day{ background:var(--soft); border-radius:14px; padding:14px; margin-top:12px; }
+  .day h4{ color:var(--lime); font-size:1.05rem; margin-bottom:8px; }
+  .ex{ padding:9px 2px; border-bottom:1px dashed #3c5231; }
+  .ex:last-child{ border-bottom:none; }
+  .ex .nm{ font-weight:700; }
+  .ex .sr{ color:var(--gold); font-weight:700; white-space:nowrap; }
+  .ex .how{ font-size:.86rem; color:var(--mut); margin-top:2px; }
+  .timerbox{ text-align:center; }
+  .phase{ font-size:1rem; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:var(--gold); }
+  .bigtime{ font-size:4.2rem; font-weight:800; color:var(--lime); line-height:1.1; font-variant-numeric:tabular-nums; }
+  .nowex{ font-size:1.25rem; font-weight:800; margin-top:4px; }
+  .setinfo{ color:var(--mut); margin-top:2px; }
+  .tbtns{ display:flex; gap:8px; margin-top:14px; }
+  .tbtns button{ flex:1; padding:13px 6px; border-radius:12px; font-weight:800; font-size:1rem; cursor:pointer; border:2px solid var(--lime); }
+  .tbtns .main{ background:var(--lime); color:#131a0c; border:none; }
+  .tbtns .alt{ background:transparent; color:var(--lime); }
+  .hist-item{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:9px 2px; border-bottom:1px dashed #3c5231; font-size:.95rem; }
+  .hist-item button{ border:1px solid var(--lime); background:transparent; color:var(--lime); border-radius:8px; padding:4px 10px; font-weight:700; cursor:pointer; }
+  .bmi-v{ font-size:2rem; font-weight:800; color:var(--lime); text-align:center; }
+  .bmi-c{ text-align:center; font-weight:700; margin-top:2px; }
+  canvas{ width:100%; height:auto; background:#0f160c; border-radius:12px; margin-top:10px; }
+  .note{ background:var(--soft); border-radius:12px; padding:12px 14px; font-size:.9rem; margin-top:12px; }
+  footer{ max-width:680px; margin:0 auto; padding:0 14px 26px; font-size:.82rem; color:var(--mut); text-align:center; }
+</style>
+</head>
+<body>
+<header>
+  <h1>💪 Kiustin <span class="k">Fit Pro</span></h1>
+  <p><span class="tag" data-i="freeTag">GRATIS / FREE</span><br><span data-i="subtitle">Plan semanal de fuerza y cardio, con temporizador guiado</span><br><span class="brand">Kiustin G</span></p>
+</header>
+<div class="langbar">
+  <button id="btn-es" class="on" onclick="setLang('es')">Español</button>
+  <button id="btn-en" onclick="setLang('en')">English</button>
+</div>
+<main>
+  <div class="tabs">
+    <button id="tab-plan" class="on" onclick="showTab('plan')">📅 <span data-i="tabPlan">Mi plan</span></button>
+    <button id="tab-work" onclick="showTab('work')">⏱️ <span data-i="tabWork">Entrenar</span></button>
+    <button id="tab-weight" onclick="showTab('weight')">⚖️ <span data-i="tabWeight">Mi peso</span></button>
+  </div>
+
+  <section class="panel" id="panel-plan">
+    <label data-i="daysLabel">Días por semana</label>
+    <div class="chips" id="dayChips">
+      <button class="on" data-days="3">3</button>
+      <button class="lock" data-days="4">4 🔒 PRO</button>
+      <button class="lock" data-days="5">5 🔒 PRO</button>
+      <button class="lock" data-days="6">6 🔒 PRO</button>
+    </div>
+    <p class="hint" data-i="daysHint">La versión PRO incluye planes de 3 a 6 días, registro por ejercicio y rachas.</p>
+    <div class="row">
+      <div>
+        <label for="level" data-i="levelLabel">Nivel</label>
+        <select id="level">
+          <option value="beg" data-i="beg">Principiante</option>
+          <option value="int" data-i="int">Intermedio</option>
+        </select>
+      </div>
+      <div>
+        <label for="place" data-i="placeLabel">Lugar</label>
+        <select id="place">
+          <option value="home" data-i="home">Casa (sin equipo)</option>
+          <option value="gym" data-i="gym">Gimnasio</option>
+        </select>
+      </div>
+    </div>
+    <button class="calc" onclick="generatePlan()" data-i="genBtn">Generar mi plan semanal</button>
+    <div id="planOut"></div>
+  </section>
+
+  <section class="panel" id="panel-work" style="display:none">
+    <label for="workDay" data-i="workDayLabel">Elige el día del plan</label>
+    <select id="workDay"></select>
+    <div class="timerbox" style="margin-top:16px">
+      <div class="phase" id="tPhase">—</div>
+      <div class="bigtime" id="tTime">0:40</div>
+      <div class="nowex" id="tEx">—</div>
+      <div class="setinfo" id="tInfo"></div>
+      <div class="setinfo" id="tNext"></div>
+      <div class="tbtns">
+        <button class="main" id="tStart" onclick="toggleTimer()">▶ <span data-i="start">Iniciar</span></button>
+        <button class="alt" onclick="skipPhase()" data-i="skip">Saltar</button>
+        <button class="alt" onclick="stopTimer()" data-i="stop">Parar</button>
+      </div>
+      <p class="hint" data-i="timerHint">Trabajo 40 s · Descanso 20 s por serie (principiante: 30/20). Suena un pitido en cada cambio.</p>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-weight" style="display:none">
+    <h3 data-i="bmiTitle">Calculadora de IMC (BMI)</h3>
+    <label for="unit" data-i="unitLabel">Unidades</label>
+    <select id="unit">
+      <option value="metric" data-i="metric">kg y cm</option>
+      <option value="imperial" data-i="imperial">lb y pulgadas</option>
+    </select>
+    <div class="row">
+      <div><label for="hgt" data-i="hLabel">Estatura</label><input type="number" id="hgt" inputmode="decimal" placeholder="170"></div>
+      <div><label for="wgt" data-i="wLabel">Peso</label><input type="number" id="wgt" inputmode="decimal" placeholder="80"></div>
+    </div>
+    <button class="calc" onclick="calcBMI()" data-i="calc">Calcular</button>
+    <div id="bmiOut" style="margin-top:12px"></div>
+    <h3 style="margin-top:22px" data-i="logTitle">Registro de peso</h3>
+    <div class="row">
+      <div><label for="logDate" data-i="dateLabel">Fecha</label><input type="date" id="logDate"></div>
+      <div><label for="logW" data-i="wLabel">Peso</label><input type="number" id="logW" inputmode="decimal" placeholder="80"></div>
+    </div>
+    <button class="ghost" onclick="addWeight()" data-i="addW">＋ Guardar peso</button>
+    <canvas id="wChart" width="620" height="240"></canvas>
+    <div id="wList" style="margin-top:8px"></div>
+  </section>
+</main>
+<footer>
+  <p data-i="privacy">🔒 Funciona sin internet. Tu registro de peso queda SOLO en este dispositivo; nada se envía a ningún servidor.</p>
+  <p style="margin-top:6px" data-i="disclaimer">Consulta a tu médico antes de comenzar un programa de ejercicio. Esta app es una herramienta general de planificación de actividad física; no ofrece diagnóstico ni tratamiento.</p>
+  <p style="margin-top:6px">Kiustin G · kiusting.com</p>
+</footer>
+
+<script>
+/* ==== i18n ==== */
+var LANG = 'es';
+var T = {
+  es: { freeTag:'GRATIS / FREE', subtitle:'Plan semanal de fuerza y cardio, con temporizador guiado',
+    tabPlan:'Mi plan', tabWork:'Entrenar', tabWeight:'Mi peso',
+    daysLabel:'Días por semana', daysHint:'La versión PRO incluye planes de 3 a 6 días, registro por ejercicio y rachas.',
+    levelLabel:'Nivel', beg:'Principiante', int:'Intermedio', placeLabel:'Lugar', home:'Casa (sin equipo)', gym:'Gimnasio',
+    genBtn:'Generar mi plan semanal', workDayLabel:'Elige el día del plan',
+    start:'Iniciar', pause:'Pausa', skip:'Saltar', stop:'Parar',
+    timerHint:'Trabajo 40 s · Descanso 20 s por serie (principiante: 30/20). Suena un pitido en cada cambio.',
+    bmiTitle:'Calculadora de IMC (BMI)', unitLabel:'Unidades', metric:'kg y cm', imperial:'lb y pulgadas',
+    hLabel:'Estatura', wLabel:'Peso', calc:'Calcular', logTitle:'Registro de peso', dateLabel:'Fecha', addW:'＋ Guardar peso',
+    privacy:'🔒 Funciona sin internet. Tu registro de peso queda SOLO en este dispositivo; nada se envía a ningún servidor.',
+    disclaimer:'Consulta a tu médico antes de comenzar un programa de ejercicio. Esta app es una herramienta general de planificación de actividad física; no ofrece diagnóstico ni tratamiento.',
+    sets:'series', reps:'reps', sec:'seg', min:'min', work:'¡A entrenar!', rest:'Descanso', done:'¡Entrenamiento completo! 🎉',
+    ready:'Listo', setOf:'Serie', of:'de', next:'Siguiente:', dayA:'Día 1 · Cuerpo completo A', dayB:'Día 2 · Cardio y core', dayC:'Día 3 · Cuerpo completo B',
+    restDay:'Descanso / caminata suave', week:'Tu semana', bmiIs:'Tu IMC es', catUnder:'Bajo peso (categoría general OMS)', catNorm:'Peso normal (categoría general OMS)', catOver:'Sobrepeso (categoría general OMS)', catObese:'Obesidad (categoría general OMS)',
+    bmiNote:'El IMC es solo una referencia general para adultos; no distingue músculo de grasa.',
+    noData:'Todavía no hay registros.', needHW:'Escribe tu estatura y tu peso.', needW:'Escribe un peso válido.',
+    today:'Hoy', genFirst:'Genera tu plan en la pestaña «Mi plan».' },
+  en: { freeTag:'GRATIS / FREE', subtitle:'Weekly strength and cardio plan with a guided timer',
+    tabPlan:'My plan', tabWork:'Workout', tabWeight:'My weight',
+    daysLabel:'Days per week', daysHint:'The PRO version includes 3 to 6-day plans, per-exercise tracking and streaks.',
+    levelLabel:'Level', beg:'Beginner', int:'Intermediate', placeLabel:'Place', home:'Home (no equipment)', gym:'Gym',
+    genBtn:'Generate my weekly plan', workDayLabel:'Choose a plan day',
+    start:'Start', pause:'Pause', skip:'Skip', stop:'Stop',
+    timerHint:'Work 40 s · Rest 20 s per set (beginner: 30/20). A beep sounds at every change.',
+    bmiTitle:'BMI Calculator', unitLabel:'Units', metric:'kg and cm', imperial:'lb and inches',
+    hLabel:'Height', wLabel:'Weight', calc:'Calculate', logTitle:'Weight log', dateLabel:'Date', addW:'＋ Save weight',
+    privacy:'🔒 Works offline. Your weight log stays ONLY on this device; nothing is sent to any server.',
+    disclaimer:'Consult your physician before starting an exercise program. This app is a general physical-activity planning tool; it does not diagnose or treat any condition.',
+    sets:'sets', reps:'reps', sec:'sec', min:'min', work:'Work!', rest:'Rest', done:'Workout complete! 🎉',
+    ready:'Ready', setOf:'Set', of:'of', next:'Next:', dayA:'Day 1 · Full Body A', dayB:'Day 2 · Cardio & Core', dayC:'Day 3 · Full Body B',
+    restDay:'Rest / easy walk', week:'Your week', bmiIs:'Your BMI is', catUnder:'Underweight (general WHO category)', catNorm:'Normal weight (general WHO category)', catOver:'Overweight (general WHO category)', catObese:'Obesity (general WHO category)',
+    bmiNote:'BMI is only a general reference for adults; it does not distinguish muscle from fat.',
+    noData:'No entries yet.', needHW:'Enter your height and weight.', needW:'Enter a valid weight.',
+    today:'Today', genFirst:'Generate your plan in the "My plan" tab.' }
+};
+function t(k){ return T[LANG][k] || k; }
+function setLang(l){
+  LANG = l; document.documentElement.lang = l;
+  document.getElementById('btn-es').className = (l==='es' ? 'on' : '');
+  document.getElementById('btn-en').className = (l==='en' ? 'on' : '');
+  var els = document.querySelectorAll('[data-i]');
+  for (var i=0;i<els.length;i++){ var k = els[i].getAttribute('data-i'); if (T[l][k]) els[i].textContent = T[l][k]; }
+  renderPlan(); fillDaySelect(); renderWeights();
+}
+function showTab(name){
+  var tabs = ['plan','work','weight'];
+  for (var i=0;i<tabs.length;i++){
+    document.getElementById('panel-'+tabs[i]).style.display = (tabs[i]===name ? 'block' : 'none');
+    document.getElementById('tab-'+tabs[i]).className = (tabs[i]===name ? 'on' : '');
+  }
+  if (name==='work') fillDaySelect();
+  if (name==='weight') renderWeights();
+}
+
+/* ==== Exercise library ==== */
+/* unit: reps | sec | min ; beg/int: [sets, amount] */
+var EX = [
+ {id:'squat', es:'Sentadilla', en:'Squat', howEs:'Pies al ancho de los hombros; baja como si te sentaras y sube empujando con los talones.', howEn:'Feet shoulder-width apart; sit back and down, then drive up through your heels.', unit:'reps', beg:[3,10], int:[4,12]},
+ {id:'pushup', es:'Flexiones (lagartijas)', en:'Push-ups', howEs:'Cuerpo recto, manos bajo los hombros; baja el pecho y empuja. Si cuesta, apoya las rodillas.', howEn:'Body in a straight line, hands under shoulders; lower your chest and push up. Use your knees if needed.', unit:'reps', beg:[3,8], int:[4,15]},
+ {id:'benchpress', es:'Press de banca', en:'Bench Press', howEs:'Barra o mancuernas al pecho y empuja hacia arriba con control.', howEn:'Bar or dumbbells to your chest, then press up with control.', unit:'reps', beg:[3,10], int:[4,12]},
+ {id:'backrow', es:'Remo con mochila', en:'Backpack Row', howEs:'Inclina el torso, mochila con peso en una mano; tira del codo hacia la cadera.', howEn:'Hinge forward, weighted backpack in one hand; pull your elbow toward your hip.', unit:'reps', beg:[3,10], int:[4,12]},
+ {id:'latpull', es:'Jalón al pecho', en:'Lat Pulldown', howEs:'Tira de la barra hacia el pecho juntando los omóplatos.', howEn:'Pull the bar to your chest while squeezing your shoulder blades.', unit:'reps', beg:[3,10], int:[4,12]},
+ {id:'glutebridge', es:'Puente de glúteos', en:'Glute Bridge', howEs:'Boca arriba, pies en el suelo; eleva la cadera apretando los glúteos.', howEn:'On your back, feet flat; lift your hips while squeezing your glutes.', unit:'reps', beg:[3,12], int:[4,15]},
+ {id:'deadlift', es:'Peso muerto', en:'Deadlift', howEs:'Espalda recta; levanta la barra empujando el suelo con las piernas.', howEn:'Flat back; lift the bar by pushing the floor away with your legs.', unit:'reps', beg:[3,8], int:[4,10]},
+ {id:'plank', es:'Plancha', en:'Plank', howEs:'Antebrazos y puntas de los pies; cuerpo recto, abdomen firme.', howEn:'Forearms and toes; straight body, brace your core.', unit:'sec', beg:[3,25], int:[4,45]},
+ {id:'jacks', es:'Saltos de tijera', en:'Jumping Jacks', howEs:'Salta abriendo piernas y brazos; ritmo constante.', howEn:'Jump feet and arms out and in at a steady pace.', unit:'sec', beg:[3,30], int:[4,45]},
+ {id:'highknees', es:'Rodillas altas', en:'High Knees', howEs:'Corre en el sitio llevando las rodillas a la altura de la cadera.', howEn:'Run in place, driving knees up to hip height.', unit:'sec', beg:[3,25], int:[4,40]},
+ {id:'crunch', es:'Abdominales cortos', en:'Crunches', howEs:'Boca arriba, rodillas dobladas; eleva los hombros sin tirar del cuello.', howEn:'On your back, knees bent; lift your shoulders without pulling your neck.', unit:'reps', beg:[3,12], int:[4,18]},
+ {id:'deadbug', es:'Bicho muerto', en:'Dead Bug', howEs:'Boca arriba; baja brazo y pierna contrarios sin arquear la espalda.', howEn:'On your back; lower opposite arm and leg without arching your back.', unit:'reps', beg:[3,8], int:[3,12]},
+ {id:'briskwalk', es:'Caminata rápida', en:'Brisk Walk', howEs:'Camina a paso vivo, que puedas hablar pero no cantar.', howEn:'Walk briskly — able to talk, not sing.', unit:'min', beg:[1,15], int:[1,25]},
+ {id:'lunge', es:'Zancadas', en:'Lunges', howEs:'Paso largo al frente, baja la rodilla trasera y vuelve. Alterna piernas.', howEn:'Long step forward, lower the back knee and return. Alternate legs.', unit:'reps', beg:[3,8], int:[4,12]},
+ {id:'pike', es:'Flexiones en pica', en:'Pike Push-ups', howEs:'Cadera arriba en forma de V; dobla los codos llevando la frente al suelo.', howEn:'Hips up in a V shape; bend elbows, lowering your forehead toward the floor.', unit:'reps', beg:[3,6], int:[4,10]},
+ {id:'ohpress', es:'Press de hombros', en:'Overhead Press', howEs:'Empuja las mancuernas sobre la cabeza sin arquear la espalda.', howEn:'Press the dumbbells overhead without arching your back.', unit:'reps', beg:[3,10], int:[4,12]},
+ {id:'seatedrow', es:'Remo en polea', en:'Seated Cable Row', howEs:'Tira del agarre hacia el abdomen juntando los omóplatos.', howEn:'Pull the handle to your abdomen while squeezing your shoulder blades.', unit:'reps', beg:[3,10], int:[4,12]},
+ {id:'superman', es:'Superman', en:'Superman', howEs:'Boca abajo; eleva brazos y piernas unos segundos y baja lento.', howEn:'Face down; lift arms and legs for a few seconds, lower slowly.', unit:'reps', beg:[3,10], int:[3,14]},
+ {id:'calfraise', es:'Elevación de talones', en:'Calf Raises', howEs:'De pie, sube sobre las puntas de los pies y baja despacio.', howEn:'Standing, rise onto your toes and lower slowly.', unit:'reps', beg:[3,12], int:[4,18]},
+ {id:'twist', es:'Giros rusos', en:'Russian Twists', howEs:'Sentado, pies elevados; gira el torso de lado a lado con control.', howEn:'Seated, feet up; rotate your torso side to side with control.', unit:'reps', beg:[3,12], int:[4,20]},
+ {id:'burpee', es:'Burpees suaves', en:'Low-impact Burpees', howEs:'Manos al suelo, pasos atrás a plancha, vuelve y ponte de pie. Sin salto si eres principiante.', howEn:'Hands down, step back to a plank, return and stand. No jump for beginners.', unit:'reps', beg:[2,6], int:[3,10]},
+ {id:'curl', es:'Curl de bíceps', en:'Biceps Curl', howEs:'Botellas, mochila o mancuernas; sube sin balancear el cuerpo.', howEn:'Bottles, backpack or dumbbells; curl without swinging your body.', unit:'reps', beg:[3,10], int:[4,12]}
+];
+function exById(id){ for (var i=0;i<EX.length;i++) if (EX[i].id===id) return EX[i]; return null; }
+/* slots: {any:id} or {home:id, gym:id} */
+var PLAN3 = [
+ { key:'dayA', slots:[{any:'squat'},{home:'pushup',gym:'benchpress'},{home:'backrow',gym:'latpull'},{home:'glutebridge',gym:'deadlift'},{any:'plank'}] },
+ { key:'dayB', slots:[{any:'jacks'},{any:'crunch'},{any:'highknees'},{any:'deadbug'},{any:'burpee'},{any:'briskwalk'}] },
+ { key:'dayC', slots:[{any:'lunge'},{home:'pike',gym:'ohpress'},{home:'superman',gym:'seatedrow'},{any:'calfraise'},{any:'curl'},{any:'twist'}] }
+];
+var PLAN = null; /* built by generatePlan */
+function lvlAmounts(ex){ var lv = document.getElementById('level').value; return ex[lv]; }
+function resolveSlot(slot){
+  var place = document.getElementById('place').value;
+  var id = slot.any || (place==='gym' ? slot.gym : slot.home);
+  return exById(id);
+}
+function buildPlan(){
+  PLAN = [];
+  for (var d=0; d<PLAN3.length; d++){
+    var day = { title: t(PLAN3[d].key), items: [] };
+    for (var s=0; s<PLAN3[d].slots.length; s++){
+      var ex = resolveSlot(PLAN3[d].slots[s]);
+      if (ex) day.items.push(ex);
+    }
+    PLAN.push(day);
+  }
+}
+function srText(ex){
+  var a = lvlAmounts(ex);
+  if (ex.unit==='reps') return a[0] + ' × ' + a[1] + ' ' + t('reps');
+  if (ex.unit==='sec') return a[0] + ' × ' + a[1] + ' ' + t('sec');
+  return a[1] + ' ' + t('min');
+}
+function generatePlan(){ buildPlan(); renderPlan(); fillDaySelect(); }
+function renderPlan(){
+  var out = document.getElementById('planOut');
+  if (!PLAN){ out.innerHTML = ''; return; }
+  var html = '<p class="hint" style="margin-top:14px">' + t('week') + ' · ' + t('restDay') + '</p>';
+  for (var d=0; d<PLAN.length; d++){
+    html += '<div class="day"><h4>' + PLAN[d].title + '</h4>';
+    for (var i=0; i<PLAN[d].items.length; i++){
+      var ex = PLAN[d].items[i];
+      html += '<div class="ex"><span class="nm">' + (LANG==='es'?ex.es:ex.en) + '</span> · <span class="sr">' + srText(ex) + '</span><div class="how">' + (LANG==='es'?ex.howEs:ex.howEn) + '</div></div>';
+    }
+    html += '</div>';
+  }
+  out.innerHTML = html;
+}
+
+/* ==== Guided workout timer (WebAudio beeps) ==== */
+var TM = { seq:[], idx:0, left:0, running:false, intId:null, day:null };
+var AC = null;
+function beep(freq, dur){
+  try{
+    if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+    var o = AC.createOscillator(), g = AC.createGain();
+    o.type='sine'; o.frequency.value = freq || 880;
+    g.gain.setValueAtTime(0.25, AC.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, AC.currentTime + (dur||0.15));
+    o.connect(g); g.connect(AC.destination);
+    o.start(); o.stop(AC.currentTime + (dur||0.15));
+  }catch(e){}
+}
+function fillDaySelect(){
+  var sel = document.getElementById('workDay'); if (!sel) return;
+  var cur = sel.value; sel.innerHTML = '';
+  if (!PLAN){ sel.innerHTML = '<option value="">' + t('genFirst') + '</option>'; return; }
+  for (var i=0;i<PLAN.length;i++){
+    var op = document.createElement('option'); op.value = i; op.textContent = PLAN[i].title; sel.appendChild(op);
+  }
+  if (cur !== '' && PLAN[cur]) sel.value = cur;
+}
+function workSecs(ex){ /* timed work window per set in guided mode */
+  if (ex.unit==='sec') return lvlAmounts(ex)[1];
+  if (ex.unit==='min') return 60;
+  return document.getElementById('level').value==='beg' ? 30 : 40;
+}
+function restSecs(){ return 20; }
+function buildSeq(day){
+  var seq = [];
+  for (var i=0;i<day.items.length;i++){
+    var ex = day.items[i], sets = lvlAmounts(ex)[0];
+    for (var s=0;s<sets;s++){
+      seq.push({phase:'work', ex:ex, set:s+1, sets:sets, dur:workSecs(ex)});
+      if (!(i===day.items.length-1 && s===sets-1)) seq.push({phase:'rest', ex:ex, set:s+1, sets:sets, dur:restSecs()});
+    }
+  }
+  return seq;
+}
+function startTimer(){
+  if (!PLAN) generatePlan();
+  var sel = document.getElementById('workDay');
+  var di = parseInt(sel.value||'0',10) || 0;
+  TM.day = PLAN[di]; TM.seq = buildSeq(TM.day); TM.idx = 0;
+  TM.left = TM.seq[0].dur; TM.running = true;
+  document.getElementById('tStart').innerHTML = '⏸ <span>' + t('pause') + '</span>';
+  runTick();
+}
+function runTick(){
+  clearInterval(TM.intId);
+  TM.intId = setInterval(function(){
+    if (!TM.running) return;
+    TM.left--;
+    if (TM.left <= 0){ nextPhase(); }
+    paintTimer();
+  }, 1000);
+  paintTimer();
+}
+function nextPhase(){
+  TM.idx++;
+  if (TM.idx >= TM.seq.length){
+    stopTimer(); beep(660,0.4); setTimeout(function(){ beep(880,0.5); }, 350);
+    document.getElementById('tPhase').textContent = t('done');
+    document.getElementById('tTime').textContent = '0:00';
+    document.getElementById('tEx').textContent = '💪';
+    document.getElementById('tInfo').textContent = '';
+    document.getElementById('tNext').textContent = '';
+    return;
+  }
+  TM.left = TM.seq[TM.idx].dur;
+  beep(TM.seq[TM.idx].phase==='work' ? 990 : 520, 0.18);
+}
+function paintTimer(){
+  if (!TM.seq.length) return;
+  var cur = TM.seq[TM.idx]; if (!cur) return;
+  var m = Math.floor(TM.left/60), s = TM.left%60;
+  document.getElementById('tTime').textContent = m + ':' + (s<10?'0':'') + s;
+  document.getElementById('tPhase').textContent = cur.phase==='work' ? t('work') : t('rest');
+  document.getElementById('tPhase').style.color = cur.phase==='work' ? '#a3e635' : '#e8b33c';
+  document.getElementById('tEx').textContent = LANG==='es' ? cur.ex.es : cur.ex.en;
+  document.getElementById('tInfo').textContent = t('setOf') + ' ' + cur.set + ' ' + t('of') + ' ' + cur.sets + ' · ' + srText(cur.ex);
+  var nx = TM.seq[TM.idx+1];
+  document.getElementById('tNext').textContent = nx ? (t('next') + ' ' + (nx.phase==='rest' ? t('rest') : (LANG==='es'?nx.ex.es:nx.ex.en))) : '';
+}
+function toggleTimer(){
+  if (!TM.seq.length){ startTimer(); return; }
+  TM.running = !TM.running;
+  document.getElementById('tStart').innerHTML = TM.running ? ('⏸ <span>' + t('pause') + '</span>') : ('▶ <span>' + t('start') + '</span>');
+  if (TM.running && !TM.intId) runTick();
+}
+function skipPhase(){ if (TM.seq.length){ TM.left = 0; nextPhase(); paintTimer(); } }
+function stopTimer(){
+  TM.running = false; clearInterval(TM.intId); TM.intId = null; TM.seq = []; TM.idx = 0;
+  document.getElementById('tStart').innerHTML = '▶ <span>' + t('start') + '</span>';
+  document.getElementById('tPhase').textContent = t('ready');
+  document.getElementById('tEx').textContent = '—';
+  document.getElementById('tInfo').textContent = ''; document.getElementById('tNext').textContent = '';
+}
+
+/* ==== BMI + weight log ==== */
+function toKg(w){ return document.getElementById('unit').value==='imperial' ? w*0.453592 : w; }
+function toCm(h){ return document.getElementById('unit').value==='imperial' ? h*2.54 : h; }
+function fromKg(kg){ return document.getElementById('unit').value==='imperial' ? (kg/0.453592) : kg; }
+function unitName(){ return document.getElementById('unit').value==='imperial' ? 'lb' : 'kg'; }
+function calcBMI(){
+  var h = parseFloat(document.getElementById('hgt').value), w = parseFloat(document.getElementById('wgt').value);
+  var out = document.getElementById('bmiOut');
+  if (!h || !w){ out.innerHTML = '<p class="hint">' + t('needHW') + '</p>'; return; }
+  var m = toCm(h)/100, bmi = toKg(w)/(m*m);
+  var cat = bmi<18.5 ? t('catUnder') : (bmi<25 ? t('catNorm') : (bmi<30 ? t('catOver') : t('catObese')));
+  out.innerHTML = '<div class="bmi-v">' + bmi.toFixed(1) + '</div><div class="bmi-c">' + t('bmiIs') + ': ' + cat + '</div><p class="hint" style="text-align:center">' + t('bmiNote') + '</p>';
+}
+function getWLog(){ try { return JSON.parse(localStorage.getItem('fitpro_wlog') || '[]'); } catch(e){ return []; } }
+function setWLog(a){ try { localStorage.setItem('fitpro_wlog', JSON.stringify(a)); } catch(e){} }
+function addWeight(){
+  var w = parseFloat(document.getElementById('logW').value);
+  var d = document.getElementById('logDate').value;
+  if (!w){ alert(t('needW')); return; }
+  if (!d) d = new Date().toISOString().slice(0,10);
+  var a = getWLog(); a.push({d:d, kg:Math.round(toKg(w)*10)/10});
+  a.sort(function(x,y){ return x.d<y.d?-1:1; });
+  setWLog(a); document.getElementById('logW').value=''; renderWeights();
+}
+function delWeight(i){ var a = getWLog(); a.splice(i,1); setWLog(a); renderWeights(); }
+function fmtD(ds){ var p = ds.split('-'); var dt = new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10)); return dt.toLocaleDateString(LANG==='es'?'es-ES':'en-US',{day:'numeric', month:'short', year:'numeric'}); }
+function renderWeights(){
+  var a = getWLog(), list = document.getElementById('wList');
+  if (!list) return;
+  if (!a.length){ list.innerHTML = '<p class="hint">' + t('noData') + '</p>'; drawChart([]); return; }
+  var html = '';
+  for (var i=a.length-1;i>=0;i--){
+    html += '<div class="hist-item"><span>' + fmtD(a[i].d) + '</span><b>' + (Math.round(fromKg(a[i].kg)*10)/10) + ' ' + unitName() + '</b><button onclick="delWeight(' + i + ')">✕</button></div>';
+  }
+  list.innerHTML = html;
+  drawChart(a);
+}
+function drawChart(a){
+  var cv = document.getElementById('wChart'); if (!cv) return;
+  var ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+  ctx.clearRect(0,0,W,H);
+  if (a.length < 2){ ctx.fillStyle = '#a3b18a'; ctx.font = '15px sans-serif'; ctx.fillText(t('noData'), 16, 30); return; }
+  var vals = a.map(function(e){ return fromKg(e.kg); });
+  var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+  if (mx-mn < 2){ var mid=(mx+mn)/2; mn=mid-1; mx=mid+1; }
+  var padL=44, padR=12, padT=14, padB=24;
+  ctx.strokeStyle = '#33482a'; ctx.fillStyle = '#a3b18a'; ctx.font = '12px sans-serif';
+  for (var g=0; g<=4; g++){
+    var v = mn + (mx-mn)*g/4, y = padT + (H-padT-padB)*(1-g/4);
+    ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(W-padR,y); ctx.stroke();
+    ctx.fillText((Math.round(v*10)/10).toString(), 6, y+4);
+  }
+  ctx.strokeStyle = '#a3e635'; ctx.lineWidth = 2.5; ctx.beginPath();
+  for (var i=0;i<a.length;i++){
+    var x = padL + (W-padL-padR)*(a.length===1?0.5:i/(a.length-1));
+    var y = padT + (H-padT-padB)*(1-(fromKg(a[i].kg)-mn)/(mx-mn));
+    if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+  ctx.fillStyle = '#a3e635';
+  for (var j=0;j<a.length;j++){
+    var x2 = padL + (W-padL-padR)*(j/(a.length-1));
+    var y2 = padT + (H-padT-padB)*(1-(fromKg(a[j].kg)-mn)/(mx-mn));
+    ctx.beginPath(); ctx.arc(x2,y2,3.5,0,Math.PI*2); ctx.fill();
+  }
+  ctx.lineWidth = 1;
+}
+/* ==== init ==== */
+document.getElementById('logDate').value = new Date().toISOString().slice(0,10);
+generatePlan();
+</script>
+</body>
+</html>

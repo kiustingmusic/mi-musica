@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiustin OB Pro — Kiustin G</title>
+<style>
+  :root{ --teal:#14b8a6; --teal-light:#2dd4bf; --teal-dark:#0f766e; --gold:#e8b33c; --ink:#e9f1f6; --muted:#93a7b8; --bg:#0b1220; --card:#141f30; --panel:#182636; --line:#24404f; --ok:#34d399; --warn-bg:#3a2c14; --warn-ink:#f5c86e; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--ink); line-height:1.45; }
+  header{ background:linear-gradient(135deg,#08222b,#0d3a3a 55%,#0f766e); color:#fff; padding:22px 16px 18px; text-align:center; }
+  header h1{ font-size:1.55rem; letter-spacing:.3px; }
+  header p{ opacity:.92; font-size:.95rem; margin-top:4px; }
+  .brand{ color:var(--gold); font-weight:700; }
+  .freechip{ background:var(--gold); color:#231a05; font-weight:800; padding:2px 10px; border-radius:999px; font-size:.8rem; display:inline-block; margin-bottom:6px; }
+  .langbar{ text-align:center; padding:10px; }
+  .langbar button{ border:2px solid var(--teal); background:transparent; color:var(--teal-light); font-weight:700; padding:6px 18px; border-radius:999px; margin:0 4px; cursor:pointer; font-size:.95rem; }
+  .langbar button.on{ background:var(--teal); color:#04211d; }
+  main{ max-width:680px; margin:0 auto; padding:6px 14px 30px; }
+  .tabs{ display:flex; gap:8px; margin:8px 0 14px; flex-wrap:wrap; }
+  .tabs button{ flex:1; min-width:100px; padding:12px 6px; border-radius:12px; border:2px solid var(--teal); background:transparent; color:var(--teal-light); font-weight:700; font-size:.95rem; cursor:pointer; }
+  .tabs button.on{ background:var(--teal); color:#04211d; }
+  .panel{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px 16px; }
+  label{ display:block; font-weight:600; margin:12px 0 6px; font-size:.97rem; }
+  input[type=date], input[type=number], input[type=text], select{ width:100%; padding:12px; font-size:1.05rem; border:2px solid var(--line); border-radius:10px; background:#0d1826; color:var(--ink); }
+  input::placeholder{ color:#5f7488; }
+  .row{ display:flex; gap:10px; } .row > div{ flex:1; }
+  .calc{ width:100%; margin-top:18px; background:var(--teal); color:#04211d; border:none; padding:15px; font-size:1.1rem; font-weight:800; border-radius:12px; cursor:pointer; }
+  .calc:active{ background:var(--teal-dark); color:#fff; }
+  .hint{ font-size:.85rem; color:var(--muted); margin-top:6px; }
+  #results{ margin-top:18px; display:none; }
+  .hero{ background:linear-gradient(135deg,#0f766e,#14b8a6); color:#fff; border-radius:16px; padding:18px 16px; text-align:center; }
+  .hero .big{ font-size:1.5rem; font-weight:800; margin:4px 0; }
+  .hero .sub{ opacity:.94; }
+  .bar{ background:rgba(255,255,255,.28); border-radius:999px; height:12px; margin:12px 0 4px; overflow:hidden; }
+  .bar > div{ background:var(--gold); height:100%; border-radius:999px; }
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:13px 14px; }
+  .card h3{ font-size:.83rem; text-transform:uppercase; letter-spacing:.5px; color:var(--teal-light); margin-bottom:5px; }
+  .card .v{ font-size:1.06rem; font-weight:700; }
+  .card .n{ font-size:.84rem; color:var(--muted); margin-top:3px; }
+  .wide{ grid-column:1 / -1; }
+  .note{ background:#10222b; border:1px solid var(--line); border-radius:12px; padding:12px 14px; font-size:.9rem; margin-top:12px; }
+  .warn{ background:var(--warn-bg); border-radius:12px; padding:12px 14px; font-size:.92rem; margin-top:12px; color:var(--warn-ink); }
+  .probox{ margin-top:16px; border:2px dashed var(--gold); border-radius:14px; padding:14px; text-align:center; color:var(--ink); }
+  .probox b{ color:var(--gold); }
+  footer{ max-width:680px; margin:0 auto; padding:0 14px 26px; font-size:.82rem; color:var(--muted); text-align:center; }
+  .print{ width:100%; margin-top:12px; background:transparent; color:var(--teal-light); border:2px solid var(--teal); padding:12px; font-weight:700; border-radius:12px; cursor:pointer; font-size:1rem; }
+  @media print{ .tabs,.langbar,.calc,.print,.panel,.probox{ display:none !important; } body{ background:#fff; color:#000; } .card,.note{ border-color:#ccc; } #results{ display:block !important; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>🤰 Kiustin OB Pro</h1>
+  <p><span class="freechip" data-i="freeChip">GRATIS / FREE</span><br><span data-i="subtitle">Calculadora obstétrica profesional: datación, edad gestacional y control de peso</span><br><span class="brand">Kiustin G · Salud</span></p>
+</header>
+<div class="langbar">
+  <button id="btn-es" class="on" onclick="setLang('es')">Español</button>
+  <button id="btn-en" onclick="setLang('en')">English</button>
+</div>
+<main>
+  <div class="tabs">
+    <button id="tab-lmp" class="on" onclick="showTab('lmp')">📅 <span data-i="tabLmp">Por FUM</span></button>
+    <button id="tab-rev" onclick="showTab('rev')">🔁 <span data-i="tabRev">Modo inverso</span></button>
+    <button id="tab-bmi" onclick="showTab('bmi')">⚖️ <span data-i="tabBmi">IMC y peso</span></button>
+  </div>
+
+  <section class="panel" id="panel-lmp">
+    <label for="lmp" data-i="lmpLabel">Fecha de la última menstruación (FUM, primer día)</label>
+    <input type="date" id="lmp">
+    <label for="cycle" data-i="cycleLabel">Duración habitual del ciclo (días)</label>
+    <input type="number" id="cycle" value="28" min="20" max="45" inputmode="numeric">
+    <p class="hint" data-i="cycleHint">Regla de Naegele ajustada por el ciclo: lo más común es 28 días. La ovulación ocurre unos 14 días antes de la siguiente regla.</p>
+    <button class="calc" onclick="calcLMP()" data-i="calc">Calcular</button>
+  </section>
+
+  <section class="panel" id="panel-rev" style="display:none">
+    <label for="eddIn" data-i="eddLabel">Fecha probable de parto (FPP) conocida</label>
+    <input type="date" id="eddIn">
+    <label for="cycle2" data-i="cycleLabel">Duración habitual del ciclo (días)</label>
+    <input type="number" id="cycle2" value="28" min="20" max="45" inputmode="numeric">
+    <p class="hint" data-i="revHint">Modo inverso: a partir de la FPP calcula hacia atrás la FUM, la concepción y la edad gestacional de hoy.</p>
+    <button class="calc" onclick="calcRev()" data-i="calc">Calcular</button>
+  </section>
+
+  <section class="panel" id="panel-bmi" style="display:none">
+    <label for="preW" data-i="preWLabel">Peso antes del embarazo (kg)</label>
+    <input type="number" id="preW" min="30" max="250" step="0.1" inputmode="decimal" placeholder="kg">
+    <label for="height" data-i="heightLabel">Talla (cm)</label>
+    <input type="number" id="height" min="120" max="210" step="0.5" inputmode="decimal" placeholder="cm">
+    <label for="curW" data-i="curWLabel">Peso actual (kg) — opcional</label>
+    <input type="number" id="curW" min="30" max="280" step="0.1" inputmode="decimal" placeholder="kg">
+    <p class="hint" data-i="bmiHint">El IMC pregestacional define la ganancia total recomendada según las guías del IOM (Institute of Medicine).</p>
+    <button class="calc" onclick="calcBMI()" data-i="calc">Calcular</button>
+  </section>
+
+  <div id="results"></div>
+
+  <div class="probox">
+    <p>⭐ <b>Kiustin OB Pro — versión PRO</b></p>
+    <p data-i="proTxt">Con biometría ecográfica y peso fetal estimado (Hadlock), Doppler (IP de arteria umbilical y cerebral media, índice cerebroplacentario), historial con nombre y reporte profesional imprimible. Búscala en la tienda de kiusting.com.</p>
+  </div>
+</main>
+<footer>
+  <p data-i="privacy">🔒 Esta herramienta funciona sin internet y no guarda ni envía ningún dato. Todo se calcula en tu dispositivo.</p>
+  <p style="margin-top:6px">Herramienta de apoyo profesional / Professional support tool. No sustituye el juicio clínico ni los protocolos institucionales / Does not replace clinical judgment or institutional protocols.</p>
+  <p style="margin-top:6px">Kiustin G · kiusting.com</p>
+</footer>
+
+<script>
+/* ==== i18n ==== */
+var LANG = 'es';
+var T = {
+  es: { freeChip:'GRATIS / FREE', subtitle:'Calculadora obstétrica profesional: datación, edad gestacional y control de peso',
+    tabLmp:'Por FUM', tabRev:'Modo inverso', tabBmi:'IMC y peso',
+    lmpLabel:'Fecha de la última menstruación (FUM, primer día)', cycleLabel:'Duración habitual del ciclo (días)',
+    cycleHint:'Regla de Naegele ajustada por el ciclo: lo más común es 28 días. La ovulación ocurre unos 14 días antes de la siguiente regla.',
+    eddLabel:'Fecha probable de parto (FPP) conocida',
+    revHint:'Modo inverso: a partir de la FPP calcula hacia atrás la FUM, la concepción y la edad gestacional de hoy.',
+    preWLabel:'Peso antes del embarazo (kg)', heightLabel:'Talla (cm)', curWLabel:'Peso actual (kg) — opcional',
+    bmiHint:'El IMC pregestacional define la ganancia total recomendada según las guías del IOM (Institute of Medicine).',
+    calc:'Calcular',
+    privacy:'🔒 Esta herramienta funciona sin internet y no guarda ni envía ningún dato. Todo se calcula en tu dispositivo.',
+    proTxt:'Con biometría ecográfica y peso fetal estimado (Hadlock), Doppler (IP de arteria umbilical y cerebral media, índice cerebroplacentario), historial con nombre y reporte profesional imprimible. Búscala en la tienda de kiusting.com.',
+    edd:'Fecha probable de parto (FPP)', gaToday:'Edad gestacional hoy', days:'días', weeks:'semanas', week:'semana', day:'día', and:'y',
+    tri1:'Primer trimestre', tri2:'Segundo trimestre', tri3:'Tercer trimestre',
+    leftForEdd:'faltan', leftSuffix:'para la fecha de parto', born:'¡Ya pasó la fecha probable de parto hace', bornSuffix:'! Requiere valoración clínica.',
+    progress:'del embarazo', conception:'Ovulación / concepción probable', lmpUsed:'FUM utilizada', impliedLmp:'FUM (calculada)',
+    errDate:'Elige una fecha válida.', errBmi:'Escribe un peso pregestacional y una talla válidos.',
+    warnFuture:'Ojo: la fecha está en el futuro.', warnOld:'Ojo: la fecha ya pasa de 42 semanas; verifica los datos.',
+    print:'🖨️ Imprimir / guardar resultados',
+    bmiTitle:'IMC pregestacional', bmiUnit:'kg/m²', catUnder:'Bajo peso', catNormal:'Peso normal', catOver:'Sobrepeso', catObese:'Obesidad',
+    gainRange:'Ganancia total recomendada (IOM)', gainSoFar:'Ganancia hasta hoy', currentW:'Peso actual',
+    kg:'kg', gainNote:'Rangos del IOM para embarazo único. En embarazo gemelar los rangos son mayores; correlacionar clínicamente.' },
+  en: { freeChip:'GRATIS / FREE', subtitle:'Professional obstetric calculator: dating, gestational age and weight tracking',
+    tabLmp:'By LMP', tabRev:'Reverse mode', tabBmi:'BMI & weight',
+    lmpLabel:'First day of the last menstrual period (LMP)', cycleLabel:'Usual cycle length (days)',
+    cycleHint:'Naegele rule adjusted for cycle length: 28 days is most common. Ovulation happens about 14 days before the next period.',
+    eddLabel:'Known estimated due date (EDD)',
+    revHint:'Reverse mode: from the EDD it works backwards to the LMP, conception and today\u2019s gestational age.',
+    preWLabel:'Pre-pregnancy weight (kg)', heightLabel:'Height (cm)', curWLabel:'Current weight (kg) — optional',
+    bmiHint:'Pre-pregnancy BMI defines the recommended total weight gain under IOM (Institute of Medicine) guidelines.',
+    calc:'Calculate',
+    privacy:'🔒 This tool works offline and does not store or send any data. Everything is calculated on your device.',
+    proTxt:'With ultrasound biometry and Hadlock estimated fetal weight, Doppler (umbilical and middle cerebral artery PI, cerebroplacental ratio), a named history and a printable professional report. Find it in the kiusting.com store.',
+    edd:'Estimated due date (EDD)', gaToday:'Gestational age today', days:'days', weeks:'weeks', week:'week', day:'day', and:'and',
+    tri1:'First trimester', tri2:'Second trimester', tri3:'Third trimester',
+    leftForEdd:'to go', leftSuffix:'until the due date', born:'The due date was', bornSuffix:' ago! Clinical assessment required.',
+    progress:'of the pregnancy', conception:'Probable ovulation / conception', lmpUsed:'LMP used', impliedLmp:'LMP (calculated)',
+    errDate:'Please pick a valid date.', errBmi:'Enter a valid pre-pregnancy weight and height.',
+    warnFuture:'Note: that date is in the future.', warnOld:'Note: that date is beyond 42 weeks; please check the data.',
+    print:'🖨️ Print / save results',
+    bmiTitle:'Pre-pregnancy BMI', bmiUnit:'kg/m²', catUnder:'Underweight', catNormal:'Normal weight', catOver:'Overweight', catObese:'Obesity',
+    gainRange:'Recommended total gain (IOM)', gainSoFar:'Gain so far', currentW:'Current weight',
+    kg:'kg', gainNote:'IOM ranges for a singleton pregnancy. Twin pregnancies have higher ranges; correlate clinically.' }
+};
+function setLang(l){ LANG=l;
+  document.getElementById('btn-es').className = l==='es' ? 'on' : '';
+  document.getElementById('btn-en').className = l==='en' ? 'on' : '';
+  var nodes = document.querySelectorAll('[data-i]');
+  for (var i=0;i<nodes.length;i++){ var k=nodes[i].getAttribute('data-i'); if (T[l][k]) nodes[i].textContent = T[l][k]; }
+  document.documentElement.lang = l;
+}
+function showTab(t){
+  document.getElementById('panel-lmp').style.display = t==='lmp' ? 'block' : 'none';
+  document.getElementById('panel-rev').style.display = t==='rev' ? 'block' : 'none';
+  document.getElementById('panel-bmi').style.display = t==='bmi' ? 'block' : 'none';
+  document.getElementById('tab-lmp').className = t==='lmp' ? 'on' : '';
+  document.getElementById('tab-rev').className = t==='rev' ? 'on' : '';
+  document.getElementById('tab-bmi').className = t==='bmi' ? 'on' : '';
+}
+
+/* ==== date engine (date-only, UTC) ==== */
+var DAY = 86400000;
+function parseDate(v){ if(!v) return null; var p=v.split('-'); if(p.length!==3) return null; return Date.UTC(+p[0], +p[1]-1, +p[2]); }
+function todayUTC(){ var n=new Date(); return Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()); }
+function addD(ms,n){ return ms + n*DAY; }
+function diffD(a,b){ return Math.round((a-b)/DAY); }
+function fmt(ms){ return new Date(ms).toLocaleDateString(LANG==='es'?'es-ES':'en-US',{timeZone:'UTC', weekday:'long', day:'numeric', month:'long', year:'numeric'}); }
+function fmtS(ms){ return new Date(ms).toLocaleDateString(LANG==='es'?'es-ES':'en-US',{timeZone:'UTC', day:'numeric', month:'short', year:'numeric'}); }
+function gaTxt(days){ var t=T[LANG]; var w=Math.floor(days/7), d=days%7;
+  var ws = w===1 ? t.week : t.weeks, ds = d===1 ? t.day : t.days;
+  return w + ' ' + ws + ' ' + t.and + ' ' + d + ' ' + ds; }
+function triOf(gaDays){ var t=T[LANG]; if (gaDays < 98) return t.tri1; if (gaDays < 196) return t.tri2; return t.tri3; }
+
+/* ==== render: dating ==== */
+function renderDating(o){
+  var t=T[LANG], today=todayUTC();
+  var ga = diffD(today, o.lmp);
+  var total = diffD(o.edd, o.lmp);
+  var left = diffD(o.edd, today);
+  var pct = Math.max(0, Math.min(100, Math.round(ga/total*100)));
+  var warn = '';
+  if (o.lmp > today) warn = '<div class="warn">⚠️ ' + t.warnFuture + '</div>';
+  if (ga > 294) warn += '<div class="warn">⚠️ ' + t.warnOld + '</div>';
+  var leftTxt = left >= 0 ? (t.leftForEdd + ' <b>' + left + ' ' + t.days + '</b> ' + t.leftSuffix)
+                            : (t.born + ' <b>' + (-left) + ' ' + t.days + '</b>' + t.bornSuffix);
+  var html = warn +
+  '<div class="hero"><div>🤰 ' + t.gaToday + '</div><div class="big">' + gaTxt(Math.max(0,ga)) + '</div>' +
+  '<div class="sub">' + triOf(Math.max(0,ga)) + ' · ' + leftTxt + '</div>' +
+  '<div class="bar"><div style="width:' + pct + '%"></div></div><div class="sub">' + pct + '% ' + t.progress + '</div></div>' +
+  '<div class="grid">' +
+  '<div class="card wide"><h3>📅 ' + t.edd + '</h3><div class="v">' + fmt(o.edd) + '</div></div>' +
+  '<div class="card"><h3>🥚 ' + t.conception + '</h3><div class="v">' + fmtS(o.conception) + '</div></div>' +
+  '<div class="card"><h3>' + (o.revMode ? t.impliedLmp : t.lmpUsed) + '</h3><div class="v">' + fmtS(o.lmp) + '</div></div>' +
+  '</div><button class="print" onclick="window.print()">' + t.print + '</button>';
+  showResults(html);
+}
+function showResults(html){
+  var r = document.getElementById('results');
+  r.innerHTML = html; r.style.display = 'block';
+  r.scrollIntoView({behavior:'smooth'});
+}
+
+/* ==== calculators ==== */
+function readCycle(id){ var c = parseInt(document.getElementById(id).value,10); if (isNaN(c) || c<20 || c>45) c = 28; return c; }
+function calcLMP(){
+  var t=T[LANG];
+  var lmp = parseDate(document.getElementById('lmp').value);
+  if (lmp===null){ alert(t.errDate); return; }
+  var cycle = readCycle('cycle');
+  var conception = addD(lmp, cycle - 14);          /* ovulation: 14 days before next period */
+  var edd = addD(lmp, 280 + (cycle - 28));         /* Naegele adjusted by cycle */
+  renderDating({ lmp:lmp, edd:edd, conception:conception, revMode:false });
+}
+function calcRev(){
+  var t=T[LANG];
+  var edd = parseDate(document.getElementById('eddIn').value);
+  if (edd===null){ alert(t.errDate); return; }
+  var cycle = readCycle('cycle2');
+  var lmp = addD(edd, -(280 + (cycle - 28)));
+  var conception = addD(lmp, cycle - 14);
+  renderDating({ lmp:lmp, edd:edd, conception:conception, revMode:true });
+}
+/* ==== BMI + IOM weight gain ==== */
+function iomOf(bmi){ var t=T[LANG];
+  if (bmi < 18.5) return { cat:t.catUnder, lo:12.5, hi:18 };
+  if (bmi < 25)   return { cat:t.catNormal, lo:11.5, hi:16 };
+  if (bmi < 30)   return { cat:t.catOver, lo:7, hi:11.5 };
+  return { cat:t.catObese, lo:5, hi:9 };
+}
+function calcBMI(){
+  var t=T[LANG];
+  var preW = parseFloat(document.getElementById('preW').value);
+  var hCm = parseFloat(document.getElementById('height').value);
+  var curW = parseFloat(document.getElementById('curW').value);
+  if (isNaN(preW) || isNaN(hCm) || preW<30 || preW>250 || hCm<120 || hCm>210){ alert(t.errBmi); return; }
+  var hm = hCm/100, bmi = preW/(hm*hm);
+  var iom = iomOf(bmi);
+  var html = '<div class="hero"><div>⚖️ ' + t.bmiTitle + '</div><div class="big">' + bmi.toFixed(1) + ' ' + t.bmiUnit + '</div>' +
+  '<div class="sub">' + iom.cat + '</div></div>' +
+  '<div class="grid">' +
+  '<div class="card wide"><h3>📈 ' + t.gainRange + '</h3><div class="v">' + iom.lo + ' – ' + iom.hi + ' ' + t.kg + '</div><div class="n">' + t.gainNote + '</div></div>';
+  if (!isNaN(curW) && curW>=30 && curW<=280){
+    var gain = curW - preW;
+    html += '<div class="card"><h3>' + t.currentW + '</h3><div class="v">' + curW.toFixed(1) + ' ' + t.kg + '</div></div>' +
+    '<div class="card"><h3>' + t.gainSoFar + '</h3><div class="v">' + (gain>=0?'+':'') + gain.toFixed(1) + ' ' + t.kg + '</div></div>';
+  }
+  html += '</div><button class="print" onclick="window.print()">' + t.print + '</button>';
+  showResults(html);
+}
+</script>
+</body>
+</html>
