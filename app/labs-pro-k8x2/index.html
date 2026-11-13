@@ -188,7 +188,7 @@
 <div id="printarea"></div>
 
 <footer id="t-foot">
-  <p><strong>Cómo leer esto:</strong> los rangos combinan varias fuentes de EE. UU.: MedlinePlus (NIH), las redes ESRD de CMS y las guías públicas KDOQI/KDIGO. Cada laboratorio puede usar rangos un poco distintos — manda siempre tus resultados a tu equipo de salud.</p>
+  <p><strong>Cómo leer esto:</strong> los rangos combinan varias fuentes de EE. UU.: MedlinePlus (NIH), Mayo Clinic Laboratories, las redes ESRD de CMS y las guías públicas KDOQI/KDIGO. Cada laboratorio puede usar rangos un poco distintos — manda siempre tus resultados a tu equipo de salud.</p>
   <p style="margin-top:8px;">Interpreta tus Labs · Una herramienta educativa de <strong>Kiustin G</strong> — formado como médico en Cuba, hoy técnico de diálisis y preceptor en Nueva York. Contenido educativo; no establece relación médico-paciente.</p>
 </footer>
 
@@ -267,7 +267,7 @@ range:'Meta',normal:'NORMAL',high:'ALTO',low:'BAJO',your:'tu valor',rec:'Recomen
 crit:'⚠️ <strong>Atención:</strong> tienes valores en nivel crítico. Compártelos <strong>hoy mismo</strong> con tu equipo de diálisis o tu médico. Si tienes falta de aire, dolor de pecho, confusión o debilidad fuerte, llama al <strong>911</strong>.',
 sumOk:'🎉 Todos tus valores están dentro de la meta.',sumN:(a,b)=>`Revisaste ${a} valores: ${b} fuera de la meta — míralos abajo con calma y compártelos con tu equipo.`,
 resDisc:'Resultados orientativos y educativos: tu laboratorio puede usar rangos distintos. Compártelos siempre con tu equipo de salud.',
-foot:'<p><strong>Cómo leer esto:</strong> los rangos combinan varias fuentes de EE. UU.: MedlinePlus (NIH), las redes ESRD de CMS y las guías públicas KDOQI/KDIGO. Cada laboratorio puede usar rangos un poco distintos — manda siempre tus resultados a tu equipo de salud.</p><p style="margin-top:8px;">Interpreta tus Labs · Una herramienta educativa de <strong>Kiustin G</strong> — formado como médico en Cuba, hoy técnico de diálisis y preceptor en Nueva York. Contenido educativo; no establece relación médico-paciente.</p>'},
+foot:'<p><strong>Cómo leer esto:</strong> los rangos combinan varias fuentes de EE. UU.: MedlinePlus (NIH), Mayo Clinic Laboratories, las redes ESRD de CMS y las guías públicas KDOQI/KDIGO. Cada laboratorio puede usar rangos un poco distintos — manda siempre tus resultados a tu equipo de salud.</p><p style="margin-top:8px;">Interpreta tus Labs · Una herramienta educativa de <strong>Kiustin G</strong> — formado como médico en Cuba, hoy técnico de diálisis y preceptor en Nueva York. Contenido educativo; no establece relación médico-paciente.</p>'},
 en:{title:'Understand Your Labs',sub:'Enter your results and see whether they are high, low or normal — with general recommendations.',
 disc:'⚠️ <strong>Educational only.</strong> This tool does not diagnose and does not replace your doctor or your dialysis team. If a value comes back at a critical level, contact your care team today. <strong>If you have shortness of breath, chest pain or confusion, call 911.</strong>',
 mdial:'Dialysis patient',mgen:'General public',go:'✔ Interpret my results',clear:'Clear all',
@@ -276,7 +276,7 @@ range:'Target',normal:'NORMAL',high:'HIGH',low:'LOW',your:'your value',rec:'Reco
 crit:'⚠️ <strong>Attention:</strong> you have values at a critical level. Share them <strong>today</strong> with your dialysis team or your doctor. If you have shortness of breath, chest pain, confusion or severe weakness, call <strong>911</strong>.',
 sumOk:'🎉 All your values are within target.',sumN:(a,b)=>`You checked ${a} values: ${b} outside target — review them calmly below and share them with your team.`,
 resDisc:'Guidance only, for education: your lab may use different ranges. Always share your results with your care team.',
-foot:'<p><strong>How to read this:</strong> ranges combine several US sources: MedlinePlus (NIH), the CMS ESRD Networks and the public KDOQI/KDIGO guidelines. Each lab may use slightly different ranges — always send your results to your care team.</p><p style="margin-top:8px;">Understand Your Labs · An educational tool by <strong>Kiustin G</strong> — trained as a physician in Cuba, now a dialysis technician and preceptor in New York. Educational content; it does not create a doctor-patient relationship.</p>'}};
+foot:'<p><strong>How to read this:</strong> ranges combine several US sources: MedlinePlus (NIH), Mayo Clinic Laboratories, the CMS ESRD Networks and the public KDOQI/KDIGO guidelines. Each lab may use slightly different ranges — always send your results to your care team.</p><p style="margin-top:8px;">Understand Your Labs · An educational tool by <strong>Kiustin G</strong> — trained as a physician in Cuba, now a dialysis technician and preceptor in New York. Educational content; it does not create a doctor-patient relationship.</p>'}};
 let mode='dial', lang='es';
 const $=id=>document.getElementById(id);
 function rangeTxt(l){
@@ -372,7 +372,7 @@ cc:(v,st)=>`Calcio corregido por albúmina: <strong>${v} mg/dL</strong> ${st} <s
 cap:(v,st)=>`Producto calcio × fósforo: <strong>${v} mg²/dL²</strong> ${st} <span class="mini">(guía general en diálisis: por debajo de 55)</span>`,
 ag:(v,st)=>`Brecha aniónica: <strong>${v} mEq/L</strong> ${st} <span class="mini">(rango general orientativo: 8–16)</span>`,
 stOk:'dentro de lo orientativo',stOut:'fuera de lo orientativo',
-repT:'Interpreta tus Labs PRO — Resumen para mi equipo de salud',repD:'Contenido educativo: no es un diagnóstico. Rangos de EE. UU. (MedlinePlus/NIH, redes ESRD de CMS, KDOQI/KDIGO).',
+repT:'Interpreta tus Labs PRO — Resumen para mi equipo de salud',repD:'Contenido educativo: no es un diagnóstico. Rangos de EE. UU. (MedlinePlus/NIH, Mayo Clinic Laboratories, redes ESRD de CMS, KDOQI/KDIGO).',
 thV:'Valor',thR:'Resultado',confirmDel:'¿Borrar todo tu historial de este dispositivo?'},
 en:{tabLabs:'Labs',tabPeso:'Weight & BMI',tabIdwg:'Dry weight & IDWG',tabHist:'History',
 bmiT:'Body mass index (BMI) and healthy weight',bmiH:'Enter your weight and height. BMI is a general guide for adults; it does not apply the same way in pregnancy, in very muscular athletes, or in dialysis patients (where the dry weight set by your team rules).',wL:'Your weight',hL:'Your height',calc:'Calculate',
@@ -389,7 +389,7 @@ cc:(v,st)=>`Albumin-corrected calcium: <strong>${v} mg/dL</strong> ${st} <span c
 cap:(v,st)=>`Calcium × phosphorus product: <strong>${v} mg²/dL²</strong> ${st} <span class="mini">(general dialysis guide: below 55)</span>`,
 ag:(v,st)=>`Anion gap: <strong>${v} mEq/L</strong> ${st} <span class="mini">(general guide range: 8–16)</span>`,
 stOk:'within the guide range',stOut:'outside the guide range',
-repT:'Understand Your Labs PRO — Summary for my care team',repD:'Educational content: not a diagnosis. US ranges (MedlinePlus/NIH, CMS ESRD Networks, KDOQI/KDIGO).',
+repT:'Understand Your Labs PRO — Summary for my care team',repD:'Educational content: not a diagnosis. US ranges (MedlinePlus/NIH, Mayo Clinic Laboratories, CMS ESRD Networks, KDOQI/KDIGO).',
 thV:'Value',thR:'Result',confirmDel:'Delete all your history from this device?'}};
 
 function applyPROTexts(){
