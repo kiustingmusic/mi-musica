@@ -1,0 +1,1472 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#0a6e7e" />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a1418" />
+<meta name="description" content="Mi Panel de Salud — tu portal personal: presión arterial, pulso, peso y glucosa, control de diálisis con peso seco y ganancia entre sesiones, medicamentos, citas y un reporte listo para tu médico. Incluye la guía en español para entender tu MyCare y tu MyChart. Gratis y bilingüe." />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Kiustin G · Salud" />
+<meta property="og:title" content="Mi Panel de Salud — Portal Personal Profesional" />
+<meta property="og:description" content="Lleva tu salud en tus manos: signos vitales con gráficas, control de diálisis (peso seco, ganancia entre sesiones y UF), medicamentos con cumplimiento, citas y reporte imprimible para tu médico. Con la guía en español para entender tu MyCare y tu MyChart. Gratis y bilingüe." />
+<meta property="og:locale" content="es_ES" />
+<meta property="og:locale:alternate" content="en_US" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Mi Panel de Salud — Portal Personal Profesional" />
+<meta name="twitter:description" content="Signos vitales, control de diálisis, medicamentos y citas en un solo panel — más la guía en español para entender tu MyCare y tu MyChart. Gratis y bilingüe." />
+<link rel="icon" href="data:," />
+<title>Mi Panel de Salud — Portal Personal Profesional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#eef3f5; --bg2:#e3ecef;
+    --surface:#ffffff; --surface2:#f5f9fa; --surface3:#eaf1f3;
+    --ink:#10242c; --ink2:#33505c; --muted:#637984;
+    --line:#d7e2e6; --line2:#c3d2d8;
+    --brand:#0a6e7e; --brand-deep:#075664; --brand-soft:#e2f2f4; --brand-ink:#ffffff;
+    --cyan:#0d94a8;
+    --ok:#178a5b; --ok-bg:#e2f4ec;
+    --warn:#b97a08; --warn-bg:#fbf0d7;
+    --bad:#c93a3a; --bad-bg:#fbe7e7;
+    --info:#1c6fb8; --info-bg:#e3eef9;
+    --shadow:0 1px 2px rgba(16,36,44,.05),0 8px 24px -12px rgba(16,36,44,.18);
+    --shadow-lg:0 2px 4px rgba(16,36,44,.06),0 20px 44px -18px rgba(7,40,50,.28);
+    --r-lg:18px; --r-md:13px; --r-sm:9px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0a1418; --bg2:#0d1a1f;
+      --surface:#122228; --surface2:#16282f; --surface3:#1b3038;
+      --ink:#e9f2f4; --ink2:#b9cdd3; --muted:#87a0a9;
+      --line:#22383f; --line2:#2c4750;
+      --brand:#1299ae; --brand-deep:#0d7d8f; --brand-soft:#12333a; --brand-ink:#ffffff;
+      --cyan:#2bb3c6;
+      --ok:#3ec78d; --ok-bg:#123128;
+      --warn:#e5ac33; --warn-bg:#372a10;
+      --bad:#f07777; --bad-bg:#3a1b1b;
+      --info:#6db1e8; --info-bg:#16293c;
+      --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 26px -12px rgba(0,0,0,.55);
+      --shadow-lg:0 2px 4px rgba(0,0,0,.4),0 22px 46px -18px rgba(0,0,0,.6);
+    }
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-size:15.5px; line-height:1.5;
+  }
+  h1,h2,h3,.disp{font-family:"Sora","Public Sans",sans-serif; letter-spacing:-.01em}
+  button,[role="button"],select,summary,input:not([type="checkbox"],[type="radio"]){min-height:2.25rem}
+  button{font:inherit; cursor:pointer}
+  input,select,textarea{font:inherit; color:var(--ink)}
+  :focus-visible{outline:2px solid var(--cyan); outline-offset:2px; border-radius:6px}
+  .num{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+
+  /* ---------- App frame ---------- */
+  .app{display:grid; grid-template-columns:248px 1fr; min-height:100dvh}
+  .side{
+    background:linear-gradient(178deg,#0a3540 0%,#072a33 58%,#06222a 100%);
+    color:#dceef1; padding:22px 16px 18px; display:flex; flex-direction:column; gap:6px;
+    position:sticky; top:0; height:100dvh;
+  }
+  @media (prefers-color-scheme: dark){ .side{background:linear-gradient(178deg,#0d2c35,#081c22 60%,#06161b)} }
+  .side .brandmark{display:flex; align-items:center; gap:11px; padding:2px 8px 16px}
+  .side .brandmark .pulse{
+    width:40px;height:40px;border-radius:12px;flex:none;display:grid;place-items:center;
+    background:linear-gradient(145deg,#17b6c9,#0a7d8f); box-shadow:0 6px 16px -6px rgba(23,182,201,.7), inset 0 1px 0 rgba(255,255,255,.35);
+  }
+  .side .brandmark b{font-family:"Sora",sans-serif; font-size:16.5px; line-height:1.15; color:#fff; display:block}
+  .side .brandmark span{font-size:11.5px; color:#9fc3cb; letter-spacing:.04em; text-transform:uppercase}
+  .navlabel{font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#7fa6ae; padding:12px 10px 5px}
+  .navbtn{
+    display:flex; align-items:center; gap:11px; width:100%; text-align:left;
+    background:transparent; border:0; color:#cfe3e7; padding:10px 11px; border-radius:11px;
+    font-size:14.5px; font-weight:500; min-height:44px;
+  }
+  .navbtn svg{flex:none; opacity:.85}
+  .navbtn:hover{background:rgba(255,255,255,.07); color:#fff}
+  .navbtn.active{background:linear-gradient(120deg,rgba(23,182,201,.28),rgba(13,148,168,.14)); color:#fff; box-shadow:inset 0 0 0 1px rgba(120,215,228,.35)}
+  .navbtn .cnt{margin-left:auto; font-size:11.5px; background:rgba(255,255,255,.14); border-radius:99px; padding:1px 8px; font-weight:600}
+  .side .foot{margin-top:auto; padding:12px 10px 2px; border-top:1px solid rgba(255,255,255,.12); font-size:12px; color:#8fb2ba; line-height:1.55}
+  .side .foot b{color:#d7ecef}
+
+  .main{min-width:0; display:flex; flex-direction:column}
+  .topbar{
+    position:sticky; top:0; z-index:30; display:flex; align-items:center; gap:12px;
+    padding:12px clamp(14px,3vw,30px); background:color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
+  }
+  .topbar .who{display:flex; align-items:center; gap:11px; min-width:0}
+  .avatar{
+    width:42px;height:42px;border-radius:50%;flex:none;display:grid;place-items:center;
+    background:linear-gradient(145deg,var(--brand),var(--brand-deep)); color:#fff;
+    font-family:"Sora",sans-serif; font-weight:700; font-size:16px; box-shadow:inset 0 1px 0 rgba(255,255,255,.3);
+  }
+  .topbar .who b{font-family:"Sora",sans-serif; font-size:16px; display:block; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .topbar .who span{font-size:12.5px; color:var(--muted); display:block; white-space:nowrap}
+  .topbar .sp{flex:1}
+  .langseg{display:flex; background:var(--surface3); border:1px solid var(--line); border-radius:99px; padding:3px; gap:2px}
+  .langseg button{border:0; background:transparent; border-radius:99px; padding:5px 13px; font-weight:600; font-size:13px; color:var(--ink2); min-height:34px}
+  .langseg button.on{background:var(--surface); color:var(--brand-deep); box-shadow:0 1px 4px rgba(10,40,50,.18)}
+  @media (prefers-color-scheme: dark){ .langseg button.on{color:#7fd8e6} }
+
+  .wrap{padding:22px clamp(14px,3vw,30px) 60px; max-width:1180px; width:100%; margin:0 auto}
+  .view{display:none}
+  .view.on{display:block; animation:vin .28s ease both}
+  @keyframes vin{from{opacity:0; transform:translateY(5px)} to{opacity:1; transform:none}}
+  @media (prefers-reduced-motion: reduce){ .view.on{animation:none} }
+
+  .pagehead{margin:2px 0 18px}
+  .pagehead h1{font-size:clamp(23px,3.4vw,30px); margin:0 0 4px; font-weight:700}
+  .pagehead p{margin:0; color:var(--muted); font-size:14.5px; max-width:62ch}
+
+  /* ---------- Cards & grids ---------- */
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg); box-shadow:var(--shadow)}
+  .card .chead{display:flex; align-items:center; gap:10px; padding:15px 18px 0}
+  .card .chead h3{margin:0; font-size:15px; font-weight:700}
+  .card .chead .sub{font-size:12.5px; color:var(--muted)}
+  .card .cbody{padding:13px 18px 17px}
+  .grid{display:grid; gap:16px}
+  .g-kpi{grid-template-columns:repeat(4,1fr)}
+  .g-2{grid-template-columns:1.55fr 1fr}
+  .g-2e{grid-template-columns:1fr 1fr}
+  @media (max-width:1020px){ .g-kpi{grid-template-columns:repeat(2,1fr)} .g-2,.g-2e{grid-template-columns:1fr} }
+  @media (max-width:520px){ .g-kpi{grid-template-columns:1fr 1fr} }
+
+  .kpi{padding:16px 17px 15px; position:relative; overflow:hidden}
+  .kpi::before{content:""; position:absolute; inset:0 auto 0 0; width:4px; background:var(--kc,var(--brand))}
+  .kpi .klab{display:flex; align-items:center; gap:7px; font-size:12px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--muted)}
+  .kpi .kval{font-family:"Sora",sans-serif; font-weight:700; font-size:29px; line-height:1.12; margin:7px 0 2px}
+  .kpi .kval small{font-size:14px; font-weight:600; color:var(--muted); font-family:"Public Sans",sans-serif}
+  .kpi .knote{font-size:12.5px; color:var(--muted)}
+  .chip{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; border-radius:99px; padding:2.5px 9px; line-height:1.35}
+  .chip.ok{background:var(--ok-bg); color:var(--ok)}
+  .chip.warn{background:var(--warn-bg); color:var(--warn)}
+  .chip.bad{background:var(--bad-bg); color:var(--bad)}
+  .chip.info{background:var(--info-bg); color:var(--info)}
+  .chip.plain{background:var(--surface3); color:var(--ink2)}
+  .dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+
+  /* ---------- Buttons / forms ---------- */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:11px;
+    border:1px solid var(--line2); background:var(--surface); color:var(--ink);
+    padding:9px 16px; font-weight:600; font-size:14px; min-height:42px; text-decoration:none;
+  }
+  .btn:hover{border-color:var(--brand); color:var(--brand-deep)}
+  @media (prefers-color-scheme: dark){ .btn:hover{color:#7fd8e6} }
+  .btn.primary{background:linear-gradient(160deg,var(--cyan),var(--brand-deep)); border-color:transparent; color:#fff; box-shadow:0 8px 18px -8px rgba(10,110,126,.65)}
+  .btn.primary:hover{color:#fff; filter:brightness(1.06)}
+  .btn.small{min-height:36px; padding:6px 12px; font-size:13px; border-radius:9px}
+  .btn.danger:hover{border-color:var(--bad); color:var(--bad)}
+  .iconbtn{width:38px;height:38px; min-height:38px; border-radius:10px; border:1px solid var(--line); background:var(--surface); display:inline-grid; place-items:center; color:var(--muted); padding:0}
+  .iconbtn:hover{color:var(--bad); border-color:var(--bad)}
+
+  form.addform{display:grid; gap:12px}
+  .frow{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+  .frow.c2{grid-template-columns:repeat(2,1fr)}
+  .frow.c4{grid-template-columns:repeat(4,1fr)}
+  @media (max-width:640px){ .frow,.frow.c2,.frow.c4{grid-template-columns:1fr 1fr} }
+  .field label{display:block; font-size:12px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-bottom:5px}
+  .field input,.field select,.field textarea{
+    width:100%; background:var(--surface2); border:1px solid var(--line2); border-radius:10px;
+    padding:9px 11px; min-height:42px;
+  }
+  .field textarea{min-height:64px; resize:vertical}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan); outline:2px solid color-mix(in srgb, var(--cyan) 30%, transparent); outline-offset:0; background:var(--surface)}
+  .formnote{font-size:12.5px; color:var(--muted)}
+  .err{display:none; background:var(--bad-bg); color:var(--bad); border-radius:10px; padding:9px 12px; font-size:13.5px; font-weight:600}
+  .err.show{display:block}
+
+  /* ---------- Lists & tables ---------- */
+  .rows{display:flex; flex-direction:column}
+  .rowitem{display:flex; align-items:center; gap:13px; padding:12px 2px; border-bottom:1px solid var(--line)}
+  .rowitem:last-child{border-bottom:0}
+  .rowitem .ric{width:40px;height:40px;border-radius:11px;flex:none;display:grid;place-items:center;background:var(--brand-soft); color:var(--brand-deep)}
+  @media (prefers-color-scheme: dark){ .rowitem .ric{color:#7fd8e6} }
+  .rowitem .rmain{flex:1; min-width:0}
+  .rowitem .rmain b{display:block; font-size:14.5px; line-height:1.3}
+  .rowitem .rmain span{font-size:12.5px; color:var(--muted); display:block}
+  .rowitem .rval{text-align:right; flex:none}
+  .rowitem .rval b{font-family:"IBM Plex Mono",monospace; font-size:15px; display:block; line-height:1.25}
+  .rowitem .rval span{font-size:11.5px; color:var(--muted)}
+  .empty{padding:26px 16px; text-align:center; color:var(--muted); font-size:14px}
+  .empty b{color:var(--ink2); display:block; font-family:"Sora",sans-serif; font-size:15px; margin-bottom:3px}
+  table.data{width:100%; border-collapse:collapse; font-size:14px}
+  table.data th{font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); text-align:left; padding:8px 10px; border-bottom:1px solid var(--line2)}
+  table.data td{padding:10px; border-bottom:1px solid var(--line); vertical-align:middle}
+  table.data tr:last-child td{border-bottom:0}
+  td.r,th.r{text-align:right}
+  .tblwrap{overflow-x:auto}
+  @media (max-width:640px){
+    table.stack thead{display:none}
+    table.stack tr{display:block; padding:8px 0; border-bottom:1px solid var(--line)}
+    table.stack td{display:flex; justify-content:space-between; gap:14px; border:0; padding:5px 10px; text-align:right}
+    table.stack td::before{content:attr(data-l); font-size:11.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); text-align:left; padding-top:2px}
+    table.stack td.act{justify-content:flex-end}
+  }
+
+  /* ---------- Meds ---------- */
+  .med{display:flex; gap:13px; padding:14px 2px; border-bottom:1px solid var(--line); align-items:flex-start}
+  .med:last-child{border-bottom:0}
+  .med .mic{width:44px;height:44px;border-radius:12px;flex:none;display:grid;place-items:center;background:var(--info-bg); color:var(--info)}
+  .med .mmain{flex:1; min-width:0}
+  .med .mmain b{font-size:15px}
+  .med .mmain .dose{color:var(--ink2); font-size:13.5px}
+  .med .times{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px}
+  .dosebtn{border:1px solid var(--line2); background:var(--surface2); border-radius:99px; padding:5px 12px; font-size:13px; font-weight:600; min-height:36px; display:inline-flex; gap:6px; align-items:center}
+  .dosebtn.taken{background:var(--ok-bg); border-color:var(--ok); color:var(--ok)}
+  .adherence{height:9px; border-radius:99px; background:var(--surface3); overflow:hidden}
+  .adherence i{display:block; height:100%; background:linear-gradient(90deg,var(--cyan),var(--ok)); border-radius:99px; transition:width .4s ease}
+
+  /* ---------- Charts ---------- */
+  .chartbox{padding:6px 4px 0}
+  .legend{display:flex; gap:16px; flex-wrap:wrap; font-size:12.5px; color:var(--muted); padding:0 4px 6px}
+  .legend i{width:18px; height:3px; border-radius:2px; display:inline-block; vertical-align:middle; margin-right:6px}
+  svg.chart{width:100%; height:auto; display:block}
+  svg.chart .grid{stroke:var(--line); stroke-width:1}
+  svg.chart .axl{fill:var(--muted); font-size:10.5px; font-family:"Public Sans",sans-serif}
+  svg.chart .ptlbl{fill:var(--ink2); font-size:10.5px; font-weight:600; font-family:"IBM Plex Mono",monospace}
+
+  .secttl{display:flex; align-items:baseline; gap:10px; margin:26px 0 12px}
+  .secttl h2{font-size:19px; margin:0}
+  .secttl span{font-size:13px; color:var(--muted)}
+  .secttl .sp{flex:1}
+
+  .alert{display:flex; gap:12px; border-radius:var(--r-md); padding:13px 15px; font-size:14px; align-items:flex-start}
+  .alert svg{flex:none; margin-top:1px}
+  .alert.warn{background:var(--warn-bg); color:var(--ink)}
+  .alert.info{background:var(--info-bg); color:var(--ink)}
+  .alert b{font-weight:700}
+
+  .kv{display:grid; grid-template-columns:1fr auto; gap:7px 16px; font-size:14px}
+  .kv dt{color:var(--muted)} .kv dd{margin:0; font-weight:600; text-align:right}
+
+  .prog{height:10px; background:var(--surface3); border-radius:99px; overflow:hidden}
+  .prog i{display:block;height:100%;border-radius:99px;background:var(--cyan)}
+  .prog i.over{background:var(--bad)} .prog i.mid{background:var(--warn)}
+
+  /* ---------- Guide ---------- */
+  .gsteps{list-style:none; margin:4px 0 0; padding:0; counter-reset:gs}
+  .gsteps li{display:flex; gap:12px; padding:9px 0; border-bottom:1px solid var(--line); font-size:14px; align-items:flex-start}
+  .gsteps li:last-child{border-bottom:0}
+  .gsteps .n{
+    counter-increment:gs; flex:none; width:26px; height:26px; border-radius:50%; margin-top:1px;
+    background:var(--brand-soft); color:var(--brand-deep); font-weight:700; font-size:13px;
+    display:grid; place-items:center; font-family:"Sora",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){ .gsteps .n{color:#7fd8e6} }
+  .gsteps .n::before{content:counter(gs)}
+  .gtag{font-size:11px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--cyan)}
+
+  /* ---------- Report ---------- */
+  .report{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg); box-shadow:var(--shadow-lg); padding:clamp(18px,4vw,38px)}
+  .report .rhead{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; border-bottom:2px solid var(--brand); padding-bottom:14px; margin-bottom:6px}
+  .report h2{margin:0; font-size:22px}
+  .report .rsec{margin-top:20px}
+  .report .rsec h3{font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--brand-deep); margin:0 0 8px}
+  @media (prefers-color-scheme: dark){ .report .rsec h3{color:#7fd8e6} }
+  .fineprint{font-size:12px; color:var(--muted); line-height:1.6; margin-top:26px; border-top:1px solid var(--line); padding-top:12px}
+
+  /* ---------- Mobile nav ---------- */
+  .tabbar{display:none}
+  @media (max-width:860px){
+    .app{grid-template-columns:1fr}
+    .side{display:none}
+    .tabbar{
+      display:flex; position:fixed; left:0; right:0; bottom:0; z-index:40;
+      background:color-mix(in srgb, var(--surface) 94%, transparent); backdrop-filter:blur(12px);
+      border-top:1px solid var(--line2); padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+    }
+    .tabbar button{
+      flex:1; border:0; background:transparent; color:var(--muted); border-radius:11px;
+      display:flex; flex-direction:column; align-items:center; gap:2px; padding:7px 2px 5px;
+      font-size:10.5px; font-weight:600; min-height:52px;
+    }
+    .tabbar button.active{color:var(--brand-deep); background:var(--brand-soft)}
+    @media (prefers-color-scheme: dark){ .tabbar button.active{color:#7fd8e6} }
+    .wrap{padding-bottom:104px}
+    .topbar .who span{display:none}
+  }
+  @media print{
+    .side,.topbar,.tabbar,.noprint{display:none !important}
+    .app{grid-template-columns:1fr}
+    .view{display:none !important}
+    #view-report{display:block !important}
+    body{background:#fff}
+    .report{box-shadow:none; border:0}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="side">
+    <div class="brandmark">
+      <div class="pulse" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5-6 4 12L16 12h5"/></svg>
+      </div>
+      <div><b data-i18n="brand">Mi Panel de Salud</b><span data-i18n="brandsub">Portal personal</span></div>
+    </div>
+    <div class="navlabel" data-i18n="navmain">Panel</div>
+    <nav id="sidenav" aria-label="Principal"></nav>
+    <div class="foot">
+      <b data-i18n="footT">Tus datos, en tus manos.</b><br>
+      <span data-i18n="footB">Exporta una copia cuando quieras desde la sección Reporte.</span>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div class="main">
+    <header class="topbar">
+      <div class="who">
+        <div class="avatar" id="avatarInit">K</div>
+        <div>
+          <b id="topName">Kiustin</b>
+          <span id="topDate">—</span>
+        </div>
+      </div>
+      <div class="sp"></div>
+      <div class="langseg" role="group" aria-label="Idioma / Language">
+        <button id="langEs" class="on" type="button">Español</button>
+        <button id="langEn" type="button">English</button>
+      </div>
+    </header>
+
+    <div class="wrap">
+
+      <!-- ======== VIEW: RESUMEN ======== -->
+      <section class="view on" id="view-home">
+        <div class="pagehead">
+          <h1 id="greeting">Buenas tardes, Kiustin</h1>
+          <p data-i18n="homeSub">Tu resumen de salud de un vistazo: últimos signos vitales, tu próxima cita y las dosis de hoy.</p>
+        </div>
+
+        <div class="grid g-kpi" id="kpiGrid"></div>
+
+        <div class="grid g-2" style="margin-top:16px">
+          <div class="card">
+            <div class="chead">
+              <h3 data-i18n="bpTrend">Tendencia de presión arterial</h3>
+              <div class="sp" style="flex:1"></div>
+              <span class="sub" data-i18n="lastReadings">Últimas lecturas</span>
+            </div>
+            <div class="cbody chartbox">
+              <div class="legend">
+                <span><i style="background:#c93a3a"></i><span data-i18n="systolic">Sistólica</span></span>
+                <span><i style="background:#1c6fb8"></i><span data-i18n="diastolic">Diastólica</span></span>
+              </div>
+              <div id="bpChart"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="chead"><h3 data-i18n="todayMeds">Medicamentos de hoy</h3></div>
+            <div class="cbody">
+              <div id="todayMeds"></div>
+              <div style="margin-top:12px">
+                <div style="display:flex; justify-content:space-between; font-size:12.5px; color:var(--muted); margin-bottom:6px">
+                  <span id="adhLabel" data-i18n="adherence">Cumplimiento de hoy</span><b class="num" id="adhPct" style="color:var(--ink)">0%</b>
+                </div>
+                <div class="adherence"><i id="adhBar" style="width:0%"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid g-2" style="margin-top:16px">
+          <div class="card">
+            <div class="chead"><h3 data-i18n="nextAppt">Próxima cita</h3></div>
+            <div class="cbody" id="nextApptBox"></div>
+          </div>
+          <div class="card">
+            <div class="chead"><h3 data-i18n="dialysisSnap">Diálisis · última sesión</h3></div>
+            <div class="cbody" id="dialSnap"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======== VIEW: SIGNOS VITALES ======== -->
+      <section class="view" id="view-vitals">
+        <div class="pagehead">
+          <h1 data-i18n="vitalsT">Signos vitales</h1>
+          <p data-i18n="vitalsSub">Registra tu presión arterial, pulso, peso y glucosa. Cada lectura se clasifica al momento con las categorías estándar.</p>
+        </div>
+
+        <div class="grid g-2">
+          <div class="card">
+            <div class="chead"><h3 data-i18n="addReading">Nueva lectura</h3></div>
+            <div class="cbody">
+              <form class="addform" id="vitalForm" novalidate>
+                <div class="err" id="vitalErr"></div>
+                <div class="frow c4">
+                  <div class="field"><label for="vSys" data-i18n="systolic">Sistólica</label><input id="vSys" type="number" inputmode="numeric" min="60" max="260" placeholder="120"></div>
+                  <div class="field"><label for="vDia" data-i18n="diastolic">Diastólica</label><input id="vDia" type="number" inputmode="numeric" min="30" max="160" placeholder="80"></div>
+                  <div class="field"><label for="vPulse" data-i18n="pulse">Pulso (lpm)</label><input id="vPulse" type="number" inputmode="numeric" min="25" max="220" placeholder="72"></div>
+                  <div class="field"><label for="vGlu" data-i18n="glucose">Glucosa (mg/dL)</label><input id="vGlu" type="number" inputmode="numeric" min="30" max="600" placeholder="—"></div>
+                </div>
+                <div class="frow c2">
+                  <div class="field"><label for="vWeight" data-i18n="weightKg">Peso (kg)</label><input id="vWeight" type="number" inputmode="decimal" step="0.1" min="25" max="350" placeholder="—"></div>
+                  <div class="field"><label for="vWhen" data-i18n="dateTime">Fecha y hora</label><input id="vWhen" type="datetime-local"></div>
+                </div>
+                <div class="field"><label for="vCtx" data-i18n="context">Contexto de la glucosa</label>
+                  <select id="vCtx">
+                    <option value="fasting" data-i18n="ctxFasting">En ayunas</option>
+                    <option value="post" data-i18n="ctxPost">Después de comer (2 h)</option>
+                    <option value="random" data-i18n="ctxRandom">Aleatoria</option>
+                  </select>
+                </div>
+                <div class="field"><label for="vNote" data-i18n="noteOpt">Nota (opcional)</label><input id="vNote" type="text" maxlength="90" placeholder="…"></div>
+                <div><button class="btn primary" type="submit" data-i18n="saveReading">Guardar lectura</button></div>
+                <p class="formnote" data-i18n="bpGuide">Categorías de presión arterial (AHA): Normal &lt;120/&lt;80 · Elevada 120–129/&lt;80 · Etapa 1: 130–139 u 80–89 · Etapa 2: ≥140 o ≥90 · Crisis: &gt;180 y/o &gt;120.</p>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="chead"><h3 data-i18n="weightTrend">Tendencia de peso</h3></div>
+            <div class="cbody chartbox">
+              <div id="wtChart"></div>
+              <dl class="kv" id="wtStats" style="margin-top:10px"></dl>
+            </div>
+          </div>
+        </div>
+
+        <div class="secttl"><h2 data-i18n="history">Historial</h2><span id="vitalCount"></span></div>
+        <div class="card"><div class="cbody tblwrap" style="padding-top:6px">
+          <table class="data stack" id="vitalTable">
+            <thead><tr>
+              <th data-i18n="thDate">Fecha</th><th data-i18n="thBP">Presión</th><th data-i18n="thCat">Categoría</th>
+              <th data-i18n="pulse">Pulso</th><th data-i18n="glucose">Glucosa</th><th data-i18n="weight">Peso</th><th></th>
+            </tr></thead>
+            <tbody id="vitalBody"></tbody>
+          </table>
+          <div class="empty" id="vitalEmpty">
+            <b data-i18n="noReadings">Sin lecturas todavía</b>
+            <span data-i18n="noReadingsB">Guarda tu primera lectura con el formulario y aquí verás tu historial completo.</span>
+          </div>
+        </div></div>
+      </section>
+
+      <!-- ======== VIEW: DIÁLISIS ======== -->
+      <section class="view" id="view-dialysis">
+        <div class="pagehead">
+          <h1 data-i18n="dialT">Control de diálisis</h1>
+          <p data-i18n="dialSub">Peso seco, ganancia de líquido entre sesiones (IDWG) y meta de ultrafiltración, calculados en cada registro.</p>
+        </div>
+
+        <div class="grid g-kpi" id="dialKpis"></div>
+
+        <div class="grid g-2" style="margin-top:16px">
+          <div class="card">
+            <div class="chead"><h3 data-i18n="addSession">Registrar sesión</h3></div>
+            <div class="cbody">
+              <form class="addform" id="dialForm" novalidate>
+                <div class="err" id="dialErr"></div>
+                <div class="frow c2">
+                  <div class="field"><label for="dDate" data-i18n="date">Fecha</label><input id="dDate" type="date"></div>
+                  <div class="field"><label for="dDry" data-i18n="dryWeight">Peso seco (kg)</label><input id="dDry" type="number" inputmode="decimal" step="0.1" min="25" max="350"></div>
+                </div>
+                <div class="frow c2">
+                  <div class="field"><label for="dPre" data-i18n="preWeight">Peso pre-sesión (kg)</label><input id="dPre" type="number" inputmode="decimal" step="0.1" min="25" max="350"></div>
+                  <div class="field"><label for="dPost" data-i18n="postWeight">Peso post-sesión (kg)</label><input id="dPost" type="number" inputmode="decimal" step="0.1" min="25" max="350"></div>
+                </div>
+                <div class="frow c2">
+                  <div class="field"><label for="dBpPre" data-i18n="bpPre">Presión pre (ej. 138/84)</label><input id="dBpPre" type="text" inputmode="numeric" placeholder="138/84"></div>
+                  <div class="field"><label for="dBpPost" data-i18n="bpPost">Presión post (ej. 126/78)</label><input id="dBpPost" type="text" inputmode="numeric" placeholder="126/78"></div>
+                </div>
+                <div class="field"><label for="dNote" data-i18n="noteOpt">Nota (opcional)</label><input id="dNote" type="text" maxlength="90" placeholder="…"></div>
+                <div><button class="btn primary" type="submit" data-i18n="saveSession">Guardar sesión</button></div>
+                <p class="formnote" data-i18n="idwgGuide">La ganancia entre sesiones (IDWG) se expresa en kg y como % del peso seco. Como referencia general, muchas unidades buscan mantenerla por debajo del ~4% del peso seco; tu meta personal la define tu equipo de nefrología.</p>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="chead"><h3 data-i18n="idwgTrend">Ganancia entre sesiones (kg)</h3></div>
+            <div class="cbody chartbox"><div id="idwgChart"></div></div>
+          </div>
+        </div>
+
+        <div class="secttl"><h2 data-i18n="sessions">Sesiones</h2><span id="dialCount"></span></div>
+        <div class="card"><div class="cbody tblwrap" style="padding-top:6px">
+          <table class="data stack" id="dialTable">
+            <thead><tr>
+              <th data-i18n="date">Fecha</th><th data-i18n="dryWeightS">Peso seco</th><th data-i18n="preW">Pre</th>
+              <th data-i18n="postW">Post</th><th data-i18n="thGain">Ganancia</th><th data-i18n="thUF">UF retirada</th><th></th>
+            </tr></thead>
+            <tbody id="dialBody"></tbody>
+          </table>
+          <div class="empty" id="dialEmpty">
+            <b data-i18n="noSessions">Sin sesiones registradas</b>
+            <span data-i18n="noSessionsB">Registra tu peso seco y los pesos de tu próxima sesión para ver tu control de líquidos.</span>
+          </div>
+        </div></div>
+      </section>
+
+      <!-- ======== VIEW: MEDICAMENTOS ======== -->
+      <section class="view" id="view-meds">
+        <div class="pagehead">
+          <h1 data-i18n="medsT">Medicamentos</h1>
+          <p data-i18n="medsSub">Tu lista activa con dosis y horarios. Marca cada toma del día y sigue tu cumplimiento.</p>
+        </div>
+        <div class="grid g-2">
+          <div class="card">
+            <div class="chead"><h3 data-i18n="addMed">Agregar medicamento</h3></div>
+            <div class="cbody">
+              <form class="addform" id="medForm" novalidate>
+                <div class="err" id="medErr"></div>
+                <div class="field"><label for="mName" data-i18n="medName">Nombre</label><input id="mName" type="text" maxlength="60" placeholder="Ej. Losartán"></div>
+                <div class="frow c2">
+                  <div class="field"><label for="mDose" data-i18n="dose">Dosis</label><input id="mDose" type="text" maxlength="30" placeholder="Ej. 50 mg · 1 tableta"></div>
+                  <div class="field"><label for="mFreq" data-i18n="freq">Frecuencia</label>
+                    <select id="mFreq">
+                      <option value="1" data-i18n="f1">1 vez al día</option>
+                      <option value="2" data-i18n="f2">2 veces al día</option>
+                      <option value="3" data-i18n="f3">3 veces al día</option>
+                      <option value="0" data-i18n="f0">Según necesidad</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field"><label for="mTimes" data-i18n="times">Horarios (separados por coma)</label><input id="mTimes" type="text" maxlength="40" placeholder="8:00 AM, 8:00 PM"></div>
+                <div class="field"><label for="mPurpose" data-i18n="purpose">Para qué es (opcional)</label><input id="mPurpose" type="text" maxlength="60" placeholder="Ej. Presión arterial"></div>
+                <div><button class="btn primary" type="submit" data-i18n="addMedBtn">Agregar a mi lista</button></div>
+                <p class="formnote" data-i18n="medNote">Registra solo los medicamentos que tu médico te indicó. Ante cualquier duda de dosis, consulta a tu equipo de salud.</p>
+              </form>
+            </div>
+          </div>
+          <div class="card">
+            <div class="chead"><h3 data-i18n="myList">Mi lista activa</h3><div style="flex:1"></div><span class="sub" id="medCount"></span></div>
+            <div class="cbody" id="medList" style="padding-top:4px"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======== VIEW: CITAS ======== -->
+      <section class="view" id="view-appts">
+        <div class="pagehead">
+          <h1 data-i18n="apptT">Citas</h1>
+          <p data-i18n="apptSub">Tus próximas consultas y estudios en un solo lugar, con el lugar y las notas de preparación.</p>
+        </div>
+        <div class="grid g-2">
+          <div class="card">
+            <div class="chead"><h3 data-i18n="addAppt">Nueva cita</h3></div>
+            <div class="cbody">
+              <form class="addform" id="apptForm" novalidate>
+                <div class="err" id="apptErr"></div>
+                <div class="field"><label for="aTitle" data-i18n="apptWhat">Consulta o estudio</label><input id="aTitle" type="text" maxlength="60" placeholder="Ej. Nefrología · control"></div>
+                <div class="frow c2">
+                  <div class="field"><label for="aWhen" data-i18n="dateTime">Fecha y hora</label><input id="aWhen" type="datetime-local"></div>
+                  <div class="field"><label for="aWith" data-i18n="apptWith">Médico / equipo</label><input id="aWith" type="text" maxlength="50" placeholder="—"></div>
+                </div>
+                <div class="field"><label for="aWhere" data-i18n="apptWhere">Lugar</label><input id="aWhere" type="text" maxlength="70" placeholder="—"></div>
+                <div class="field"><label for="aNote" data-i18n="apptNote">Notas de preparación (opcional)</label><textarea id="aNote" maxlength="160" placeholder="Ej. Llevar lista de medicamentos y últimos laboratorios"></textarea></div>
+                <div><button class="btn primary" type="submit" data-i18n="saveAppt">Guardar cita</button></div>
+              </form>
+            </div>
+          </div>
+          <div class="card">
+            <div class="chead"><h3 data-i18n="upcoming">Próximas</h3></div>
+            <div class="cbody" id="apptList" style="padding-top:4px"></div>
+          </div>
+        </div>
+        <div class="secttl"><h2 data-i18n="pastAppts">Citas pasadas</h2></div>
+        <div class="card"><div class="cbody" id="pastList" style="padding-top:4px"></div></div>
+      </section>
+
+      <!-- ======== VIEW: GUÍA MYCARE / MYCHART ======== -->
+      <section class="view" id="view-guide">
+        <div class="pagehead">
+          <h1 data-i18n="guideT">Guía: entiende tu MyCare / MyChart</h1>
+          <p data-i18n="guideSub">Paso a paso, en español, para usar el portal de tu hospital sin perderte: resultados, imágenes, mensajes, citas y facturas.</p>
+        </div>
+        <div class="alert info" style="margin-bottom:16px">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <div id="guideIntroBox"></div>
+        </div>
+        <div class="grid g-2e" id="guideBody"></div>
+      </section>
+
+      <!-- ======== VIEW: REPORTE ======== -->
+      <section class="view" id="view-report">
+        <div class="pagehead noprint">
+          <h1 data-i18n="repT">Reporte para tu médico</h1>
+          <p data-i18n="repSub">Un resumen limpio de tus registros, listo para imprimir o guardar. También puedes exportar una copia de seguridad de todos tus datos.</p>
+        </div>
+        <div class="noprint" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px">
+          <button class="btn primary" id="btnExport" type="button">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+            <span data-i18n="exportBtn">Exportar mis datos (JSON)</span>
+          </button>
+          <label class="btn" for="importFile" style="margin:0">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg>
+            <span data-i18n="importBtn">Importar copia</span>
+          </label>
+          <input id="importFile" type="file" accept="application/json,.json" hidden>
+        </div>
+        <div class="alert info noprint" id="importMsg" style="display:none; margin-bottom:16px"></div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="chead"><h3 data-i18n="profileT">Mi perfil</h3></div>
+          <div class="cbody">
+            <form class="addform" id="profileForm">
+              <div class="frow c4">
+                <div class="field"><label for="pName" data-i18n="pName">Nombre</label><input id="pName" type="text" maxlength="40" value="Kiustin"></div>
+                <div class="field"><label for="pDob" data-i18n="pDob">Fecha de nacimiento</label><input id="pDob" type="date"></div>
+                <div class="field"><label for="pHeight" data-i18n="pHeight">Estatura (cm)</label><input id="pHeight" type="number" inputmode="numeric" min="100" max="230" placeholder="—"></div>
+                <div class="field"><label for="pBlood" data-i18n="pBlood">Tipo de sangre</label>
+                  <select id="pBlood"><option value="">—</option><option>O+</option><option>O−</option><option>A+</option><option>A−</option><option>B+</option><option>B−</option><option>AB+</option><option>AB−</option></select>
+                </div>
+              </div>
+              <div class="frow c2">
+                <div class="field"><label for="pAllergy" data-i18n="pAllergy">Alergias conocidas</label><input id="pAllergy" type="text" maxlength="90" placeholder="—"></div>
+                <div class="field"><label for="pEmergency" data-i18n="pEmergency">Contacto de emergencia</label><input id="pEmergency" type="text" maxlength="70" placeholder="—"></div>
+              </div>
+              <div><button class="btn" type="submit" data-i18n="saveProfile">Guardar perfil</button></div>
+            </form>
+          </div>
+        </div>
+
+        <div class="report" id="reportDoc"></div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ MOBILE TAB BAR ============ -->
+<nav class="tabbar" id="tabbar" aria-label="Principal"></nav>
+
+<script>
+"use strict";
+/* =================== i18n =================== */
+var I = {
+es:{ brand:"Mi Panel de Salud", brandsub:"Portal personal", navmain:"Panel",
+  footT:"Tus datos, en tus manos.", footB:"Exporta una copia cuando quieras desde la sección Reporte.",
+  nav_home:"Resumen", nav_vitals:"Signos vitales", nav_dialysis:"Diálisis", nav_meds:"Medicamentos", nav_appts:"Citas", nav_report:"Reporte", nav_guide:"Guía",
+  guideT:"Guía: entiende tu MyCare / MyChart",
+  guideSub:"Paso a paso, en español, para usar el portal de tu hospital sin perderte: resultados, imágenes, mensajes, citas y facturas.",
+  guideIntro:"En Rochester el mismo sistema (Epic) se presenta con dos nombres: MyCare es el portal de Rochester Regional Health y MyChart es el de UR Medicine. Por dentro funcionan igual: lo que aprendes en uno te sirve en el otro.",
+  noDoses:"Sin dosis programadas hoy",
+  homeSub:"Tu resumen de salud de un vistazo: últimos signos vitales, tu próxima cita y las dosis de hoy.",
+  bpTrend:"Tendencia de presión arterial", lastReadings:"Últimas lecturas", systolic:"Sistólica", diastolic:"Diastólica",
+  todayMeds:"Medicamentos de hoy", adherence:"Cumplimiento de hoy", nextAppt:"Próxima cita", dialysisSnap:"Diálisis · última sesión",
+  vitalsT:"Signos vitales", vitalsSub:"Registra tu presión arterial, pulso, peso y glucosa. Cada lectura se clasifica al momento con las categorías estándar.",
+  addReading:"Nueva lectura", pulse:"Pulso (lpm)", glucose:"Glucosa (mg/dL)", weightKg:"Peso (kg)", weight:"Peso",
+  dateTime:"Fecha y hora", context:"Contexto de la glucosa", ctxFasting:"En ayunas", ctxPost:"Después de comer (2 h)", ctxRandom:"Aleatoria",
+  noteOpt:"Nota (opcional)", saveReading:"Guardar lectura",
+  bpGuide:"Categorías de presión arterial (AHA): Normal <120/<80 · Elevada 120–129/<80 · Etapa 1: 130–139 u 80–89 · Etapa 2: ≥140 o ≥90 · Crisis: >180 y/o >120.",
+  weightTrend:"Tendencia de peso", history:"Historial", noReadings:"Sin lecturas todavía",
+  noReadingsB:"Guarda tu primera lectura con el formulario y aquí verás tu historial completo.",
+  thDate:"Fecha", thBP:"Presión", thCat:"Categoría", date:"Fecha",
+  dialT:"Control de diálisis", dialSub:"Peso seco, ganancia de líquido entre sesiones (IDWG) y meta de ultrafiltración, calculados en cada registro.",
+  addSession:"Registrar sesión", dryWeight:"Peso seco (kg)", dryWeightS:"Peso seco", preWeight:"Peso pre-sesión (kg)", postWeight:"Peso post-sesión (kg)",
+  bpPre:"Presión pre (ej. 138/84)", bpPost:"Presión post (ej. 126/78)", saveSession:"Guardar sesión",
+  idwgGuide:"La ganancia entre sesiones (IDWG) se expresa en kg y como % del peso seco. Como referencia general, muchas unidades buscan mantenerla por debajo del ~4% del peso seco; tu meta personal la define tu equipo de nefrología.",
+  idwgTrend:"Ganancia entre sesiones (kg)", sessions:"Sesiones", noSessions:"Sin sesiones registradas",
+  noSessionsB:"Registra tu peso seco y los pesos de tu próxima sesión para ver tu control de líquidos.",
+  preW:"Pre", postW:"Post", thGain:"Ganancia", thUF:"UF retirada",
+  medsT:"Medicamentos", medsSub:"Tu lista activa con dosis y horarios. Marca cada toma del día y sigue tu cumplimiento.",
+  addMed:"Agregar medicamento", medName:"Nombre", dose:"Dosis", freq:"Frecuencia",
+  f1:"1 vez al día", f2:"2 veces al día", f3:"3 veces al día", f0:"Según necesidad",
+  times:"Horarios (separados por coma)", timesShort:"Horarios", purpose:"Para qué es (opcional)", purposeShort:"Indicación", addMedBtn:"Agregar a mi lista",
+  medNote:"Registra solo los medicamentos que tu médico te indicó. Ante cualquier duda de dosis, consulta a tu equipo de salud.",
+  myList:"Mi lista activa",
+  apptT:"Citas", apptSub:"Tus próximas consultas y estudios en un solo lugar, con el lugar y las notas de preparación.",
+  addAppt:"Nueva cita", apptWhat:"Consulta o estudio", apptWith:"Médico / equipo", apptWhere:"Lugar",
+  apptNote:"Notas de preparación (opcional)", saveAppt:"Guardar cita", upcoming:"Próximas", pastAppts:"Citas pasadas",
+  repT:"Reporte para tu médico", repSub:"Un resumen limpio de tus registros, listo para imprimir o guardar. También puedes exportar una copia de seguridad de todos tus datos.",
+  printBtn:"Ver / imprimir reporte", exportBtn:"Exportar mis datos (JSON)", importBtn:"Importar copia",
+  profileT:"Mi perfil", pName:"Nombre", pDob:"Fecha de nacimiento", pHeight:"Estatura (cm)", pBlood:"Tipo de sangre",
+  pAllergy:"Alergias conocidas", pEmergency:"Contacto de emergencia", saveProfile:"Guardar perfil",
+  greet_m:"Buenos días", greet_a:"Buenas tardes", greet_e:"Buenas noches",
+  kBP:"Presión arterial", kPulse:"Pulso", kWeight:"Peso", kGlucose:"Glucosa",
+  noData:"Sin registros", recordFirst:"Registra tu primera lectura", last:"Última", today:"Hoy",
+  cat_normal:"Normal", cat_elevated:"Elevada", cat_stage1:"Etapa 1", cat_stage2:"Etapa 2", cat_crisis:"Crisis",
+  gluFasting:"ayunas", gluPost:"post-comida", gluRandom:"aleatoria",
+  gluLow:"Baja", gluOk:"En rango", gluHigh:"Alta", gluVeryHigh:"Muy alta",
+  noAppt:"No tienes citas próximas", noApptB:"Agrega tu próxima consulta en la sección Citas.",
+  noDial:"Sin sesiones de diálisis", noDialB:"Registra tu primera sesión en la sección Diálisis.",
+  noMeds:"Sin medicamentos en tu lista", noMedsB:"Agrega tus medicamentos en la sección Medicamentos.",
+  asNeeded:"Según necesidad", taken:"Tomada", pending:"Pendiente",
+  dryW:"Peso seco", gain:"Ganancia", ufGoal:"UF de la sesión", vsDry:"vs. peso seco",
+  inDays:"en {n} días", tomorrow:"mañana", todayL:"hoy",
+  readings:"lecturas", sessionsW:"sesiones", medsW:"medicamentos",
+  change:"Cambio", bmi:"IMC", current:"Actual",
+  errBP:"Ingresa una presión válida (sistólica mayor que la diastólica).",
+  errVital:"Completa al menos la presión arterial o un valor (peso o glucosa).",
+  errDial:"Completa el peso seco y los pesos pre y post sesión.",
+  errMed:"Escribe el nombre del medicamento.", errAppt:"Escribe la consulta y elige fecha y hora.",
+  rTitle:"Resumen de salud", rGen:"Generado el", rProfile:"Datos del paciente",
+  rVitals:"Signos vitales recientes", rDial:"Diálisis · sesiones recientes", rMeds:"Medicamentos activos", rAppts:"Próximas citas",
+  rNone:"Sin registros.", rDisclaimer:"Este resumen lo genera el propio paciente con fines informativos para compartir con su equipo de salud. No sustituye la historia clínica oficial ni el consejo médico profesional.",
+  age:"años", importOk:"Copia importada correctamente. Tus registros ya están en el panel.", importBad:"Ese archivo no es una copia válida de Mi Panel de Salud.",
+  del:"Eliminar", withL:"con", atL:"en",
+  chartEmpty:"Aún no hay datos para graficar.", chartEmptyB:"Tus lecturas aparecerán aquí en cuanto registres la primera.",
+  profileSaved:"Perfil guardado."
+},
+en:{ brand:"My Health Panel", brandsub:"Personal portal", navmain:"Dashboard",
+  footT:"Your data, in your hands.", footB:"Export a backup copy any time from the Report section.",
+  nav_home:"Overview", nav_vitals:"Vital signs", nav_dialysis:"Dialysis", nav_meds:"Medications", nav_appts:"Appointments", nav_report:"Report", nav_guide:"Guide",
+  guideT:"Guide: understand your MyCare / MyChart",
+  guideSub:"Step by step, in plain language, to use your hospital portal without getting lost: results, imaging, messages, appointments and bills.",
+  guideIntro:"In Rochester the same system (Epic) goes by two names: MyCare is Rochester Regional Health's portal and MyChart is UR Medicine's. Underneath they work the same: what you learn in one works in the other.",
+  noDoses:"No doses scheduled today",
+  homeSub:"Your health at a glance: latest vital signs, your next appointment, and today's doses.",
+  bpTrend:"Blood pressure trend", lastReadings:"Latest readings", systolic:"Systolic", diastolic:"Diastolic",
+  todayMeds:"Today's medications", adherence:"Today's adherence", nextAppt:"Next appointment", dialysisSnap:"Dialysis · last session",
+  vitalsT:"Vital signs", vitalsSub:"Log your blood pressure, pulse, weight and glucose. Every reading is classified instantly using standard categories.",
+  addReading:"New reading", pulse:"Pulse (bpm)", glucose:"Glucose (mg/dL)", weightKg:"Weight (kg)", weight:"Weight",
+  dateTime:"Date & time", context:"Glucose context", ctxFasting:"Fasting", ctxPost:"After eating (2 h)", ctxRandom:"Random",
+  noteOpt:"Note (optional)", saveReading:"Save reading",
+  bpGuide:"Blood pressure categories (AHA): Normal <120/<80 · Elevated 120–129/<80 · Stage 1: 130–139 or 80–89 · Stage 2: ≥140 or ≥90 · Crisis: >180 and/or >120.",
+  weightTrend:"Weight trend", history:"History", noReadings:"No readings yet",
+  noReadingsB:"Save your first reading with the form and your full history will appear here.",
+  thDate:"Date", thBP:"Pressure", thCat:"Category", date:"Date",
+  dialT:"Dialysis control", dialSub:"Dry weight, interdialytic weight gain (IDWG) and ultrafiltration, calculated with every entry.",
+  addSession:"Log a session", dryWeight:"Dry weight (kg)", dryWeightS:"Dry weight", preWeight:"Pre-session weight (kg)", postWeight:"Post-session weight (kg)",
+  bpPre:"Pre BP (e.g. 138/84)", bpPost:"Post BP (e.g. 126/78)", saveSession:"Save session",
+  idwgGuide:"Interdialytic weight gain (IDWG) is shown in kg and as % of dry weight. As a general reference, many units aim to keep it under ~4% of dry weight; your personal goal is set by your nephrology team.",
+  idwgTrend:"Weight gain between sessions (kg)", sessions:"Sessions", noSessions:"No sessions logged",
+  noSessionsB:"Enter your dry weight and your next session's weights to see your fluid control.",
+  preW:"Pre", postW:"Post", thGain:"Gain", thUF:"UF removed",
+  medsT:"Medications", medsSub:"Your active list with doses and schedules. Check off each dose for the day and track your adherence.",
+  addMed:"Add a medication", medName:"Name", dose:"Dose", freq:"Frequency",
+  f1:"Once a day", f2:"Twice a day", f3:"3 times a day", f0:"As needed",
+  times:"Times (comma separated)", timesShort:"Times", purpose:"What it's for (optional)", purposeShort:"Purpose", addMedBtn:"Add to my list",
+  medNote:"Only log medications your doctor prescribed. If you have any dosing question, ask your care team.",
+  myList:"My active list",
+  apptT:"Appointments", apptSub:"Your upcoming visits and studies in one place, with location and prep notes.",
+  addAppt:"New appointment", apptWhat:"Visit or study", apptWith:"Doctor / team", apptWhere:"Location",
+  apptNote:"Prep notes (optional)", saveAppt:"Save appointment", upcoming:"Upcoming", pastAppts:"Past appointments",
+  repT:"Report for your doctor", repSub:"A clean summary of your records, ready to print or save. You can also export a backup copy of all your data.",
+  printBtn:"View / print report", exportBtn:"Export my data (JSON)", importBtn:"Import backup",
+  profileT:"My profile", pName:"Name", pDob:"Date of birth", pHeight:"Height (cm)", pBlood:"Blood type",
+  pAllergy:"Known allergies", pEmergency:"Emergency contact", saveProfile:"Save profile",
+  greet_m:"Good morning", greet_a:"Good afternoon", greet_e:"Good evening",
+  kBP:"Blood pressure", kPulse:"Pulse", kWeight:"Weight", kGlucose:"Glucose",
+  noData:"No records", recordFirst:"Log your first reading", last:"Last", today:"Today",
+  cat_normal:"Normal", cat_elevated:"Elevated", cat_stage1:"Stage 1", cat_stage2:"Stage 2", cat_crisis:"Crisis",
+  gluFasting:"fasting", gluPost:"post-meal", gluRandom:"random",
+  gluLow:"Low", gluOk:"In range", gluHigh:"High", gluVeryHigh:"Very high",
+  noAppt:"No upcoming appointments", noApptB:"Add your next visit in the Appointments section.",
+  noDial:"No dialysis sessions", noDialB:"Log your first session in the Dialysis section.",
+  noMeds:"No medications on your list", noMedsB:"Add your medications in the Medications section.",
+  asNeeded:"As needed", taken:"Taken", pending:"Pending",
+  dryW:"Dry weight", gain:"Gain", ufGoal:"Session UF", vsDry:"vs. dry weight",
+  inDays:"in {n} days", tomorrow:"tomorrow", todayL:"today",
+  readings:"readings", sessionsW:"sessions", medsW:"medications",
+  change:"Change", bmi:"BMI", current:"Current",
+  errBP:"Enter a valid pressure (systolic higher than diastolic).",
+  errVital:"Enter at least the blood pressure or one value (weight or glucose).",
+  errDial:"Enter dry weight and pre/post session weights.",
+  errMed:"Type the medication name.", errAppt:"Type the visit and pick a date and time.",
+  rTitle:"Health summary", rGen:"Generated on", rProfile:"Patient details",
+  rVitals:"Recent vital signs", rDial:"Dialysis · recent sessions", rMeds:"Active medications", rAppts:"Upcoming appointments",
+  rNone:"No records.", rDisclaimer:"This summary is generated by the patient for informational purposes to share with their care team. It does not replace the official medical record or professional medical advice.",
+  age:"y/o", importOk:"Backup imported successfully. Your records are now on the panel.", importBad:"That file is not a valid My Health Panel backup.",
+  del:"Delete", withL:"with", atL:"at",
+  chartEmpty:"No data to chart yet.", chartEmptyB:"Your readings will appear here as soon as you log the first one.",
+  profileSaved:"Profile saved."
+}};
+var lang = "es";
+function t(k){ return (I[lang] && I[lang][k]) || I.es[k] || k; }
+
+/* =================== State (persistencia local en el dispositivo) =================== */
+var S = {
+  profile:{ name:"Kiustin", dob:"", height:"", blood:"", allergy:"", emergency:"" },
+  vitals:[],   /* {id, ts, sys, dia, pulse, glu, gluCtx, weight, note} */
+  dialysis:[], /* {id, date, dry, pre, post, bpPre, bpPost, note} */
+  meds:[],     /* {id, name, dose, freq, times[], purpose, taken:{dateKey:[idx]}} */
+  appts:[]     /* {id, title, ts, withW, where, note} */
+};
+
+/* =================== Persistencia automática (localStorage) ===================
+   Los registros se guardan solos en este dispositivo en cada cambio y se
+   recuperan al abrir la app. Exportar/Importar (sección Reporte) sigue
+   disponible como copia de seguridad y para cambiar de dispositivo. */
+var LS_KEY = "mi-panel-de-salud:v1";
+function saveState(){
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify({
+      profile: S.profile, vitals: S.vitals, dialysis: S.dialysis,
+      meds: S.meds, appts: S.appts
+    }));
+  } catch (e) { /* almacenamiento no disponible: la app sigue en sesión */ }
+}
+function loadState(){
+  try {
+    var raw = localStorage.getItem(LS_KEY);
+    if (!raw) return;
+    var d = JSON.parse(raw);
+    if (!d || typeof d !== "object") return;
+    if (d.profile) S.profile = d.profile;
+    S.vitals   = Array.isArray(d.vitals)   ? d.vitals   : [];
+    S.dialysis = Array.isArray(d.dialysis) ? d.dialysis : [];
+    S.meds     = Array.isArray(d.meds)     ? d.meds     : [];
+    S.appts    = Array.isArray(d.appts)    ? d.appts    : [];
+  } catch (e) { /* copia ilegible: se ignora y se arranca con el panel vacío */ }
+}
+var uid = 1;
+function nid(){ return "x" + (uid++) + Date.now().toString(36); }
+
+/* =================== Helpers =================== */
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function loc(){ return lang === "es" ? "es-ES" : "en-US"; }
+function fmtDate(ts){ return new Date(ts).toLocaleDateString(loc(), {day:"numeric", month:"short", year:"numeric"}); }
+function fmtTime(ts){ return new Date(ts).toLocaleTimeString(loc(), {hour:"numeric", minute:"2-digit"}); }
+function fmtDT(ts){ return fmtDate(ts) + " · " + fmtTime(ts); }
+function dayKey(ts){ var d = new Date(ts || Date.now()); return d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate(); }
+function f1n(n){ return (Math.round(n*10)/10).toLocaleString(loc(), {minimumFractionDigits:1, maximumFractionDigits:1}); }
+
+function bpCat(sys, dia){
+  if (sys > 180 || dia > 120) return {k:"cat_crisis", cls:"bad"};
+  if (sys >= 140 || dia >= 90) return {k:"cat_stage2", cls:"bad"};
+  if (sys >= 130 || dia >= 80) return {k:"cat_stage1", cls:"warn"};
+  if (sys >= 120) return {k:"cat_elevated", cls:"warn"};
+  return {k:"cat_normal", cls:"ok"};
+}
+function gluCat(v, ctx){
+  if (v == null) return null;
+  if (v < 70) return {k:"gluLow", cls:"bad"};
+  if (ctx === "fasting"){ return v <= 99 ? {k:"gluOk", cls:"ok"} : (v <= 125 ? {k:"gluHigh", cls:"warn"} : {k:"gluVeryHigh", cls:"bad"}); }
+  if (ctx === "post"){ return v < 140 ? {k:"gluOk", cls:"ok"} : (v <= 199 ? {k:"gluHigh", cls:"warn"} : {k:"gluVeryHigh", cls:"bad"}); }
+  return v < 140 ? {k:"gluOk", cls:"ok"} : (v <= 199 ? {k:"gluHigh", cls:"warn"} : {k:"gluVeryHigh", cls:"bad"});
+}
+function chip(cls, txt){ return '<span class="chip ' + cls + '"><span class="dot"></span>' + esc(txt) + '</span>'; }
+function delBtn(kind, id){ return '<button class="iconbtn" type="button" data-del="' + kind + ':' + id + '" aria-label="' + esc(t("del")) + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>'; }
+
+/* =================== Charts (hand-authored SVG) =================== */
+function lineChart(el, series, opts){
+  opts = opts || {};
+  var all = [];
+  series.forEach(function(s){ s.pts.forEach(function(p){ all.push(p.y); }); });
+  if (!all.length){
+    el.innerHTML = '<div class="empty"><b>' + esc(t("chartEmpty")) + '</b><span>' + esc(t("chartEmptyB")) + '</span></div>';
+    return;
+  }
+  var W = 640, H = 210, P = {l:38, r:14, t:14, b:26};
+  var min = Math.min.apply(null, all), max = Math.max.apply(null, all);
+  if (opts.min != null) min = Math.min(min, opts.min);
+  if (opts.max != null) max = Math.max(max, opts.max);
+  var pad = (max - min) * 0.18 || 5; min -= pad; max += pad;
+  var n = Math.max.apply(null, series.map(function(s){ return s.pts.length; }));
+  function X(i){ return P.l + (n <= 1 ? (W - P.l - P.r)/2 : i * (W - P.l - P.r) / (n - 1)); }
+  function Y(v){ return P.t + (max - v) * (H - P.t - P.b) / (max - min); }
+  var g = "";
+  for (var i = 0; i <= 3; i++){
+    var v = min + (max - min) * i / 3, y = Y(v);
+    g += '<line class="grid" x1="' + P.l + '" y1="' + y + '" x2="' + (W - P.r) + '" y2="' + y + '"/>' +
+         '<text class="axl" x="' + (P.l - 6) + '" y="' + (y + 3.5) + '" text-anchor="end">' + Math.round(v) + '</text>';
+  }
+  if (opts.band){
+    var y1 = Y(opts.band[1]), y2 = Y(opts.band[0]);
+    g += '<rect x="' + P.l + '" y="' + y1 + '" width="' + (W - P.l - P.r) + '" height="' + Math.max(0, y2 - y1) + '" fill="var(--ok)" opacity="0.08"/>';
+  }
+  series.forEach(function(s){
+    if (s.pts.length > 1){
+      g += '<polyline fill="none" stroke="' + s.color + '" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" points="' +
+        s.pts.map(function(p, i){ return X(i) + "," + Y(p.y); }).join(" ") + '"/>';
+    }
+    s.pts.forEach(function(p, i){
+      g += '<circle cx="' + X(i) + '" cy="' + Y(p.y) + '" r="3.6" fill="' + s.color + '" stroke="var(--surface)" stroke-width="1.6"/>';
+      if (i === s.pts.length - 1 || s.pts.length <= 8)
+        g += '<text class="ptlbl" x="' + X(i) + '" y="' + (Y(p.y) - 9) + '" text-anchor="middle">' + p.y + '</text>';
+      if (s === series[0])
+        g += '<text class="axl" x="' + X(i) + '" y="' + (H - 6) + '" text-anchor="middle">' + esc(p.x) + '</text>';
+    });
+  });
+  el.innerHTML = '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img">' + g + '</svg>';
+}
+function barChart(el, pts, limitPct){
+  if (!pts.length){
+    el.innerHTML = '<div class="empty"><b>' + esc(t("chartEmpty")) + '</b><span>' + esc(t("chartEmptyB")) + '</span></div>';
+    return;
+  }
+  var W = 640, H = 200, P = {l:38, r:14, t:16, b:26};
+  var max = Math.max.apply(null, pts.map(function(p){ return p.y; })) * 1.25 || 1;
+  var bw = (W - P.l - P.r) / pts.length;
+  function Y(v){ return P.t + (max - v) * (H - P.t - P.b) / max; }
+  var g = "";
+  for (var i = 0; i <= 3; i++){
+    var v = max * i / 3, y = Y(v);
+    g += '<line class="grid" x1="' + P.l + '" y1="' + y + '" x2="' + (W - P.r) + '" y2="' + y + '"/>' +
+         '<text class="axl" x="' + (P.l - 6) + '" y="' + (y + 3.5) + '" text-anchor="end">' + (Math.round(v*10)/10) + '</text>';
+  }
+  pts.forEach(function(p, i){
+    var x = P.l + i * bw + bw * 0.22, w = bw * 0.56, y = Y(p.y);
+    var col = (limitPct != null && p.pct != null && p.pct > limitPct) ? "var(--bad)" : "var(--cyan)";
+    g += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + (H - P.b - y) + '" rx="4" fill="' + col + '" opacity="0.88"/>' +
+         '<text class="ptlbl" x="' + (x + w/2) + '" y="' + (y - 6) + '" text-anchor="middle">' + p.y + '</text>' +
+         '<text class="axl" x="' + (x + w/2) + '" y="' + (H - 6) + '" text-anchor="middle">' + esc(p.x) + '</text>';
+  });
+  el.innerHTML = '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img">' + g + '</svg>';
+}
+function shortD(ts){ return new Date(ts).toLocaleDateString(loc(), {day:"numeric", month:"short"}); }
+
+/* =================== Navigation =================== */
+var NAV = [
+  {id:"home", icon:'<path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>'},
+  {id:"vitals", icon:'<path d="M3 12h4l2.5-6 4 12L16 12h5"/>'},
+  {id:"dialysis", icon:'<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>'},
+  {id:"meds", icon:'<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7z"/><path d="m8.5 8.5 7 7"/>'},
+  {id:"appts", icon:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>'},
+  {id:"report", icon:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/>'},
+  {id:"guide", icon:'<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>'}
+];
+function navCount(id){
+  if (id === "vitals") return S.vitals.length || "";
+  if (id === "dialysis") return S.dialysis.length || "";
+  if (id === "meds") return S.meds.length || "";
+  if (id === "appts") return S.appts.filter(function(a){ return a.ts >= Date.now() - 3600000; }).length || "";
+  return "";
+}
+var curView = "home";
+function buildNav(){
+  var html = NAV.map(function(n){
+    var c = navCount(n.id);
+    return '<button class="navbtn' + (curView === n.id ? " active" : "") + '" type="button" data-nav="' + n.id + '">' +
+      '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + n.icon + '</svg>' +
+      esc(t("nav_" + n.id)) + (c !== "" ? '<span class="cnt num">' + c + '</span>' : "") + '</button>';
+  }).join("");
+  $("sidenav").innerHTML = html;
+  $("tabbar").innerHTML = NAV.map(function(n){
+    return '<button class="' + (curView === n.id ? "active" : "") + '" type="button" data-nav="' + n.id + '">' +
+      '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + n.icon + '</svg>' +
+      esc(t("nav_" + n.id)) + '</button>';
+  }).join("");
+}
+function go(view){
+  curView = view;
+  document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("on"); });
+  $("view-" + view).classList.add("on");
+  buildNav();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+/* =================== Renders =================== */
+function sortedVitals(){ return S.vitals.slice().sort(function(a,b){ return a.ts - b.ts; }); }
+function lastVitalWith(key){
+  var v = sortedVitals();
+  for (var i = v.length - 1; i >= 0; i--) if (v[i][key] != null) return v[i];
+  return null;
+}
+function renderHome(){
+  var h = new Date().getHours();
+  var g = h < 12 ? t("greet_m") : (h < 19 ? t("greet_a") : t("greet_e"));
+  $("greeting").textContent = g + ", " + (S.profile.name || "Kiustin");
+  $("topName").textContent = S.profile.name || "Kiustin";
+  $("avatarInit").textContent = (S.profile.name || "K").trim().charAt(0).toUpperCase() || "K";
+  $("topDate").textContent = new Date().toLocaleDateString(loc(), {weekday:"long", day:"numeric", month:"long", year:"numeric"});
+
+  var bp = lastVitalWith("sys"), wt = lastVitalWith("weight"), gl = lastVitalWith("glu"), pu = lastVitalWith("pulse");
+  function kpi(color, label, val, note){
+    return '<div class="card kpi" style="--kc:' + color + '"><div class="klab">' + esc(label) + '</div>' +
+      '<div class="kval">' + val + '</div><div class="knote">' + note + '</div></div>';
+  }
+  var bpVal = bp ? '<span class="num">' + bp.sys + "/" + bp.dia + '</span> <small>mmHg</small>' : "—";
+  var bpNote = bp ? chip(bpCat(bp.sys, bp.dia).cls, t(bpCat(bp.sys, bp.dia).k)) + ' <span style="margin-left:4px">' + esc(fmtDT(bp.ts)) + '</span>'
+                 : esc(t("recordFirst"));
+  var puVal = pu ? '<span class="num">' + pu.pulse + '</span> <small>lpm</small>' : "—";
+  var puNote = pu ? esc(fmtDT(pu.ts)) : esc(t("noData"));
+  var wtVal = wt ? '<span class="num">' + f1n(wt.weight) + '</span> <small>kg</small>' : "—";
+  var wtNote = wt ? esc(fmtDT(wt.ts)) : esc(t("noData"));
+  var glVal = gl ? '<span class="num">' + gl.glu + '</span> <small>mg/dL</small>' : "—";
+  var glNote = gl ? chip(gluCat(gl.glu, gl.gluCtx).cls, t(gluCat(gl.glu, gl.gluCtx).k)) + ' <span style="margin-left:4px">' + esc(t("glu" + (gl.gluCtx === "fasting" ? "Fasting" : gl.gluCtx === "post" ? "Post" : "Random"))) + " · " + esc(fmtDT(gl.ts)) + '</span>'
+                 : esc(t("noData"));
+  $("kpiGrid").innerHTML =
+    kpi("#c93a3a", t("kBP"), bpVal, bpNote) +
+    kpi("#1c6fb8", t("kPulse"), puVal, puNote) +
+    kpi("#0a6e7e", t("kWeight"), wtVal, wtNote) +
+    kpi("#b97a08", t("kGlucose"), glVal, glNote);
+
+  /* BP chart: last 10 */
+  var withBp = sortedVitals().filter(function(v){ return v.sys != null; }).slice(-10);
+  lineChart($("bpChart"), [
+    {color:"#c93a3a", pts: withBp.map(function(v){ return {x: shortD(v.ts), y: v.sys}; })},
+    {color:"#1c6fb8", pts: withBp.map(function(v){ return {x: shortD(v.ts), y: v.dia}; })}
+  ], {band:[80, 120]});
+
+  renderTodayMeds();
+  renderNextAppt();
+  renderDialSnap();
+}
+function medDosesToday(m){
+  var key = dayKey();
+  var taken = (m.taken && m.taken[key]) || [];
+  return {taken: taken, total: m.times.length};
+}
+function adherence(){
+  var tot = 0, done = 0;
+  S.meds.forEach(function(m){ var d = medDosesToday(m); tot += d.total; done += d.taken.length; });
+  return {tot: tot, done: done, pct: tot ? Math.round(done / tot * 100) : 0};
+}
+function renderTodayMeds(){
+  var box = $("todayMeds");
+  if (!S.meds.length){
+    box.innerHTML = '<div class="empty"><b>' + esc(t("noMeds")) + '</b><span>' + esc(t("noMedsB")) + '</span></div>';
+  } else {
+    box.innerHTML = S.meds.map(function(m){
+      var d = medDosesToday(m);
+      var btns = m.times.length ? m.times.map(function(tm, i){
+        var tk = d.taken.indexOf(i) >= 0;
+        return '<button class="dosebtn' + (tk ? " taken" : "") + '" type="button" data-dose="' + m.id + ":" + i + '">' +
+          (tk ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : "") +
+          esc(tm) + '</button>';
+      }).join("") : '<span class="chip plain">' + esc(t("asNeeded")) + '</span>';
+      return '<div style="padding:9px 0; border-bottom:1px solid var(--line)"><div style="display:flex; justify-content:space-between; gap:10px; align-items:baseline">' +
+        '<b style="font-size:14.5px">' + esc(m.name) + '</b><span style="font-size:12.5px; color:var(--muted)">' + esc(m.dose) + '</span></div>' +
+        '<div class="times" style="display:flex; flex-wrap:wrap; gap:6px; margin-top:7px">' + btns + '</div></div>';
+    }).join("");
+  }
+  var a = adherence();
+  if (a.tot === 0){
+    $("adhPct").textContent = "—";
+    $("adhBar").style.width = "0%";
+    $("adhLabel").textContent = t("noDoses");
+  } else {
+    $("adhPct").textContent = a.pct + "%";
+    $("adhBar").style.width = a.pct + "%";
+    $("adhLabel").textContent = t("adherence");
+  }
+}
+function nextAppt(){
+  var now = Date.now() - 3600000;
+  var up = S.appts.filter(function(a){ return a.ts >= now; }).sort(function(a,b){ return a.ts - b.ts; });
+  return up[0] || null;
+}
+function relDay(ts){
+  var d0 = new Date(); d0.setHours(0,0,0,0);
+  var d1 = new Date(ts); d1.setHours(0,0,0,0);
+  var diff = Math.round((d1 - d0) / 86400000);
+  if (diff <= 0) return t("todayL");
+  if (diff === 1) return t("tomorrow");
+  return t("inDays").replace("{n}", diff);
+}
+function renderNextAppt(){
+  var a = nextAppt(), box = $("nextApptBox");
+  if (!a){
+    box.innerHTML = '<div class="empty"><b>' + esc(t("noAppt")) + '</b><span>' + esc(t("noApptB")) + '</span></div>';
+    return;
+  }
+  box.innerHTML = '<div style="display:flex; gap:14px; align-items:flex-start">' +
+    '<div style="background:var(--brand-soft); color:var(--brand-deep); border-radius:13px; padding:9px 13px; text-align:center; flex:none">' +
+    '<div style="font-family:Sora,sans-serif; font-weight:800; font-size:23px; line-height:1">' + new Date(a.ts).getDate() + '</div>' +
+    '<div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em">' + esc(new Date(a.ts).toLocaleDateString(loc(), {month:"short"})) + '</div></div>' +
+    '<div style="min-width:0"><b style="font-size:16px; font-family:Sora,sans-serif">' + esc(a.title) + '</b>' +
+    '<div style="color:var(--muted); font-size:13.5px; margin-top:2px">' + esc(fmtTime(a.ts)) +
+    (a.withW ? " · " + esc(a.withW) : "") + (a.where ? "<br>" + esc(a.where) : "") + '</div>' +
+    '<div style="margin-top:8px">' + chip("info", relDay(a.ts)) + '</div></div></div>';
+}
+function dialCalc(d){
+  var gain = d.pre - d.dry;
+  var pct = d.dry ? gain / d.dry * 100 : 0;
+  var uf = d.pre - d.post;
+  return {gain: gain, pct: pct, uf: uf};
+}
+function renderDialSnap(){
+  var box = $("dialSnap");
+  if (!S.dialysis.length){
+    box.innerHTML = '<div class="empty"><b>' + esc(t("noDial")) + '</b><span>' + esc(t("noDialB")) + '</span></div>';
+    return;
+  }
+  var d = S.dialysis.slice().sort(function(a,b){ return a.date - b.date; }).pop();
+  var c = dialCalc(d);
+  box.innerHTML = '<dl class="kv">' +
+    '<dt>' + esc(t("date")) + '</dt><dd>' + esc(fmtDate(d.date)) + '</dd>' +
+    '<dt>' + esc(t("dryW")) + '</dt><dd class="num">' + f1n(d.dry) + ' kg</dd>' +
+    '<dt>' + esc(t("gain")) + '</dt><dd class="num">' + (c.gain >= 0 ? "+" : "") + f1n(c.gain) + ' kg (' + f1n(c.pct) + '%)</dd>' +
+    '<dt>' + esc(t("ufGoal")) + '</dt><dd class="num">' + f1n(c.uf) + ' kg</dd></dl>' +
+    '<div style="margin-top:12px">' + (c.pct <= 4 ? chip("ok", t("gluOk")) : chip("warn", "IDWG " + f1n(c.pct) + "%")) + '</div>';
+}
+function renderVitals(){
+  var v = sortedVitals();
+  /* weight chart */
+  var withW = v.filter(function(x){ return x.weight != null; }).slice(-12);
+  lineChart($("wtChart"), [{color:"#0a6e7e", pts: withW.map(function(x){ return {x: shortD(x.ts), y: Math.round(x.weight*10)/10}; })}], {});
+  var stats = "";
+  if (withW.length){
+    var cur = withW[withW.length - 1].weight;
+    var first = withW[0].weight;
+    var chg = cur - first;
+    stats = '<dt>' + esc(t("current")) + '</dt><dd class="num">' + f1n(cur) + ' kg</dd>' +
+            '<dt>' + esc(t("change")) + '</dt><dd class="num">' + (chg > 0 ? "+" : "") + f1n(chg) + ' kg</dd>';
+    if (S.profile.height){
+      var m = S.profile.height / 100, bmi = cur / (m * m);
+      stats += '<dt>' + esc(t("bmi")) + '</dt><dd class="num">' + f1n(bmi) + '</dd>';
+    }
+  }
+  $("wtStats").innerHTML = stats;
+  $("vitalCount").textContent = v.length ? v.length + " " + t("readings") : "";
+  $("vitalEmpty").style.display = v.length ? "none" : "block";
+  $("vitalTable").style.display = v.length ? "" : "none";
+  $("vitalBody").innerHTML = v.slice().reverse().map(function(x){
+    var cat = x.sys != null ? bpCat(x.sys, x.dia) : null;
+    var gc = x.glu != null ? gluCat(x.glu, x.gluCtx) : null;
+    return '<tr>' +
+      '<td data-l="' + esc(t("thDate")) + '">' + esc(fmtDT(x.ts)) + (x.note ? '<div style="font-size:12px; color:var(--muted)">' + esc(x.note) + '</div>' : "") + '</td>' +
+      '<td data-l="' + esc(t("thBP")) + '" class="num">' + (x.sys != null ? x.sys + "/" + x.dia : "—") + '</td>' +
+      '<td data-l="' + esc(t("thCat")) + '">' + (cat ? chip(cat.cls, t(cat.k)) : "—") + '</td>' +
+      '<td data-l="' + esc(t("pulse")) + '" class="num">' + (x.pulse != null ? x.pulse : "—") + '</td>' +
+      '<td data-l="' + esc(t("glucose")) + '">' + (x.glu != null ? '<span class="num">' + x.glu + '</span> ' + chip(gc.cls, t(gc.k)) : "—") + '</td>' +
+      '<td data-l="' + esc(t("weight")) + '" class="num">' + (x.weight != null ? f1n(x.weight) : "—") + '</td>' +
+      '<td class="act">' + delBtn("vital", x.id) + '</td></tr>';
+  }).join("");
+}
+function renderDialysis(){
+  var ds = S.dialysis.slice().sort(function(a,b){ return a.date - b.date; });
+  var last = ds[ds.length - 1];
+  function kpi(color, label, val, note){
+    return '<div class="card kpi" style="--kc:' + color + '"><div class="klab">' + esc(label) + '</div><div class="kval">' + val + '</div><div class="knote">' + note + '</div></div>';
+  }
+  if (!last){
+    $("dialKpis").innerHTML =
+      kpi("#0a6e7e", t("dryW"), "—", esc(t("noSessions"))) +
+      kpi("#1c6fb8", t("gain"), "—", esc(t("noData"))) +
+      kpi("#b97a08", "IDWG %", "—", esc(t("noData"))) +
+      kpi("#178a5b", t("ufGoal"), "—", esc(t("noData")));
+  } else {
+    var c = dialCalc(last);
+    var pctCls = c.pct <= 4 ? "ok" : (c.pct <= 5 ? "warn" : "bad");
+    $("dialKpis").innerHTML =
+      kpi("#0a6e7e", t("dryW"), '<span class="num">' + f1n(last.dry) + '</span> <small>kg</small>', esc(fmtDate(last.date))) +
+      kpi("#1c6fb8", t("gain"), '<span class="num">' + (c.gain >= 0 ? "+" : "") + f1n(c.gain) + '</span> <small>kg</small>', esc(t("vsDry"))) +
+      kpi("#b97a08", "IDWG %", '<span class="num">' + f1n(c.pct) + '</span> <small>%</small>', chip(pctCls, c.pct <= 4 ? t("gluOk") : t("gluHigh"))) +
+      kpi("#178a5b", t("ufGoal"), '<span class="num">' + f1n(c.uf) + '</span> <small>kg</small>', esc(fmtDate(last.date)));
+  }
+  var last8 = ds.slice(-8);
+  barChart($("idwgChart"), last8.map(function(d){ var c = dialCalc(d); return {x: shortD(d.date), y: Math.round(c.gain*10)/10, pct: c.pct}; }), 4);
+  $("dialCount").textContent = ds.length ? ds.length + " " + t("sessionsW") : "";
+  $("dialEmpty").style.display = ds.length ? "none" : "block";
+  $("dialTable").style.display = ds.length ? "" : "none";
+  $("dialBody").innerHTML = ds.slice().reverse().map(function(d){
+    var c = dialCalc(d);
+    return '<tr>' +
+      '<td data-l="' + esc(t("date")) + '">' + esc(fmtDate(d.date)) + (d.note ? '<div style="font-size:12px; color:var(--muted)">' + esc(d.note) + '</div>' : "") + '</td>' +
+      '<td data-l="' + esc(t("dryWeightS")) + '" class="num">' + f1n(d.dry) + '</td>' +
+      '<td data-l="' + esc(t("preW")) + '" class="num">' + f1n(d.pre) + (d.bpPre ? '<div style="font-size:12px; color:var(--muted)">' + esc(d.bpPre) + '</div>' : "") + '</td>' +
+      '<td data-l="' + esc(t("postW")) + '" class="num">' + f1n(d.post) + (d.bpPost ? '<div style="font-size:12px; color:var(--muted)">' + esc(d.bpPost) + '</div>' : "") + '</td>' +
+      '<td data-l="' + esc(t("thGain")) + '" class="num">' + (c.gain >= 0 ? "+" : "") + f1n(c.gain) + ' kg · ' + f1n(c.pct) + '%</td>' +
+      '<td data-l="' + esc(t("thUF")) + '" class="num">' + f1n(c.uf) + ' kg</td>' +
+      '<td class="act">' + delBtn("dial", d.id) + '</td></tr>';
+  }).join("");
+}
+function renderMeds(){
+  $("medCount").textContent = S.meds.length ? S.meds.length + " " + t("medsW") : "";
+  var box = $("medList");
+  if (!S.meds.length){
+    box.innerHTML = '<div class="empty"><b>' + esc(t("noMeds")) + '</b><span>' + esc(t("noMedsB")) + '</span></div>';
+    return;
+  }
+  box.innerHTML = S.meds.map(function(m){
+    var d = medDosesToday(m);
+    var btns = m.times.length ? m.times.map(function(tm, i){
+      var tk = d.taken.indexOf(i) >= 0;
+      return '<button class="dosebtn' + (tk ? " taken" : "") + '" type="button" data-dose="' + m.id + ":" + i + '">' +
+        (tk ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : "") + esc(tm) + '</button>';
+    }).join("") : '<span class="chip plain">' + esc(t("asNeeded")) + '</span>';
+    return '<div class="med"><div class="mic"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7z"/><path d="m8.5 8.5 7 7"/></svg></div>' +
+      '<div class="mmain"><div style="display:flex; gap:8px; align-items:baseline"><b>' + esc(m.name) + '</b><span class="dose">' + esc(m.dose) + '</span></div>' +
+      (m.purpose ? '<div style="font-size:13px; color:var(--muted)">' + esc(m.purpose) + '</div>' : "") +
+      '<div class="times">' + btns + '</div></div>' + delBtn("med", m.id) + '</div>';
+  }).join("");
+}
+function apptRow(a, past){
+  return '<div class="rowitem"><div class="ric"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>' +
+    '<div class="rmain"><b>' + esc(a.title) + '</b><span>' + esc(fmtDT(a.ts)) +
+    (a.withW ? " · " + esc(a.withW) : "") + (a.where ? " · " + esc(a.where) : "") +
+    (a.note ? "<br>" + esc(a.note) : "") + '</span></div>' +
+    '<div class="rval">' + (past ? "" : chip("info", relDay(a.ts))) + '</div>' + delBtn("appt", a.id) + '</div>';
+}
+function renderAppts(){
+  var now = Date.now() - 3600000;
+  var up = S.appts.filter(function(a){ return a.ts >= now; }).sort(function(a,b){ return a.ts - b.ts; });
+  var past = S.appts.filter(function(a){ return a.ts < now; }).sort(function(a,b){ return b.ts - a.ts; });
+  $("apptList").innerHTML = up.length ? up.map(function(a){ return apptRow(a, false); }).join("")
+    : '<div class="empty"><b>' + esc(t("noAppt")) + '</b><span>' + esc(t("noApptB")) + '</span></div>';
+  $("pastList").innerHTML = past.length ? past.map(function(a){ return apptRow(a, true); }).join("")
+    : '<div class="empty"><span>' + esc(t("rNone")) + '</span></div>';
+}
+function renderReport(){
+  var p = S.profile;
+  var age = "";
+  if (p.dob){
+    var d = new Date(p.dob + "T12:00:00"), now = new Date();
+    var a = now.getFullYear() - d.getFullYear();
+    if (now < new Date(now.getFullYear(), d.getMonth(), d.getDate())) a--;
+    age = " · " + a + " " + t("age");
+  }
+  var v = sortedVitals().slice(-8).reverse();
+  var vRows = v.length ? v.map(function(x){
+    var cat = x.sys != null ? t(bpCat(x.sys, x.dia).k) : "—";
+    return "<tr><td>" + esc(fmtDT(x.ts)) + "</td><td>" + (x.sys != null ? x.sys + "/" + x.dia + " (" + esc(cat) + ")" : "—") + "</td><td>" +
+      (x.pulse != null ? x.pulse : "—") + "</td><td>" + (x.glu != null ? x.glu : "—") + "</td><td>" + (x.weight != null ? f1n(x.weight) : "—") + "</td></tr>";
+  }).join("") : '<tr><td colspan="5">' + esc(t("rNone")) + "</td></tr>";
+  var ds = S.dialysis.slice().sort(function(a,b){ return b.date - a.date; }).slice(0, 6);
+  var dRows = ds.length ? ds.map(function(d){
+    var c = dialCalc(d);
+    return "<tr><td>" + esc(fmtDate(d.date)) + "</td><td>" + f1n(d.dry) + "</td><td>" + f1n(d.pre) + "</td><td>" + f1n(d.post) + "</td><td>+" +
+      f1n(c.gain) + " kg (" + f1n(c.pct) + "%)</td><td>" + f1n(c.uf) + " kg</td></tr>";
+  }).join("") : '<tr><td colspan="6">' + esc(t("rNone")) + "</td></tr>";
+  var mRows = S.meds.length ? S.meds.map(function(m){
+    return "<tr><td>" + esc(m.name) + "</td><td>" + esc(m.dose) + "</td><td>" + esc(m.times.join(", ") || t("asNeeded")) + "</td><td>" + esc(m.purpose || "—") + "</td></tr>";
+  }).join("") : '<tr><td colspan="4">' + esc(t("rNone")) + "</td></tr>";
+  var now = Date.now() - 3600000;
+  var up = S.appts.filter(function(a){ return a.ts >= now; }).sort(function(a,b){ return a.ts - b.ts; });
+  var aRows = up.length ? up.map(function(a){
+    return "<tr><td>" + esc(fmtDT(a.ts)) + "</td><td>" + esc(a.title) + "</td><td>" + esc(a.withW || "—") + "</td><td>" + esc(a.where || "—") + "</td></tr>";
+  }).join("") : '<tr><td colspan="4">' + esc(t("rNone")) + "</td></tr>";
+
+  $("reportDoc").innerHTML =
+    '<div class="rhead"><div><h2>' + esc(t("rTitle")) + ' — ' + esc(p.name || "Kiustin") + '</h2>' +
+    '<div style="color:var(--muted); font-size:13.5px">' + esc(t("rGen")) + " " + esc(fmtDT(Date.now())) + '</div></div>' +
+    '<div style="text-align:right; font-size:13.5px; color:var(--muted)">' + (p.dob ? esc(fmtDate(new Date(p.dob + "T12:00:00").getTime())) + esc(age) : "") +
+    (p.blood ? "<br>" + esc(t("pBlood")) + ": <b style='color:var(--ink)'>" + esc(p.blood) + "</b>" : "") + '</div></div>' +
+    '<div class="rsec"><h3>' + esc(t("rProfile")) + '</h3><dl class="kv">' +
+    (p.height ? '<dt>' + esc(t("pHeight")) + '</dt><dd>' + esc(p.height) + ' cm</dd>' : "") +
+    (p.allergy ? '<dt>' + esc(t("pAllergy")) + '</dt><dd>' + esc(p.allergy) + '</dd>' : "") +
+    (p.emergency ? '<dt>' + esc(t("pEmergency")) + '</dt><dd>' + esc(p.emergency) + '</dd>' : "") +
+    (!p.height && !p.allergy && !p.emergency ? '<dt>' + esc(t("rNone")) + '</dt><dd></dd>' : "") + '</dl></div>' +
+    '<div class="rsec"><h3>' + esc(t("rVitals")) + '</h3><div class="tblwrap"><table class="data"><thead><tr><th>' + esc(t("thDate")) + '</th><th>' + esc(t("thBP")) + '</th><th>' + esc(t("pulse")) + '</th><th>' + esc(t("glucose")) + '</th><th>' + esc(t("weight")) + '</th></tr></thead><tbody>' + vRows + '</tbody></table></div></div>' +
+    '<div class="rsec"><h3>' + esc(t("rDial")) + '</h3><div class="tblwrap"><table class="data"><thead><tr><th>' + esc(t("date")) + '</th><th>' + esc(t("dryWeightS")) + '</th><th>' + esc(t("preW")) + '</th><th>' + esc(t("postW")) + '</th><th>' + esc(t("thGain")) + '</th><th>' + esc(t("thUF")) + '</th></tr></thead><tbody>' + dRows + '</tbody></table></div></div>' +
+    '<div class="rsec"><h3>' + esc(t("rMeds")) + '</h3><div class="tblwrap"><table class="data"><thead><tr><th>' + esc(t("medName")) + '</th><th>' + esc(t("dose")) + '</th><th>' + esc(t("timesShort")) + '</th><th>' + esc(t("purposeShort")) + '</th></tr></thead><tbody>' + mRows + '</tbody></table></div></div>' +
+    '<div class="rsec"><h3>' + esc(t("rAppts")) + '</h3><div class="tblwrap"><table class="data"><thead><tr><th>' + esc(t("dateTime")) + '</th><th>' + esc(t("apptWhat")) + '</th><th>' + esc(t("apptWith")) + '</th><th>' + esc(t("apptWhere")) + '</th></tr></thead><tbody>' + aRows + '</tbody></table></div></div>' +
+    '<p class="fineprint">' + esc(t("rDisclaimer")) + '</p>';
+}
+/* =================== Guide content =================== */
+var GUIDE = {
+es:[
+ {tag:"Empezar", title:"Activar tu cuenta y entrar", steps:[
+   "Pide tu código de activación en recepción o búscalo en el resumen impreso de tu última visita (After Visit Summary).",
+   "En el teléfono, descarga la app gratuita «MyChart» y elige tu organización: Rochester Regional Health (MyCare) o UR Medicine (MyChart).",
+   "Crea tu usuario y contraseña con el código de activación; el código vence, así que actívalo pronto.",
+   "Activa la entrada con Face ID o huella: entrarás en segundos y sin teclear la contraseña.",
+   "Si olvidas tu contraseña, usa «¿Olvidaste tu contraseña?» en la pantalla de entrada; nadie del hospital te la pedirá por teléfono."]},
+ {tag:"Resultados", title:"Ver tus laboratorios y resultados", steps:[
+   "Entra al menú «Resultados de pruebas» (Test Results): ahí llegan análisis de sangre, orina y otros estudios, a veces antes de que el médico los comente.",
+   "Toca un resultado para ver tu valor junto al rango de referencia; la flecha o el color indican si está fuera de rango.",
+   "Un valor fuera de rango no siempre es una emergencia: muchos resultados se liberan automáticamente. Espera el comentario de tu equipo o escríbele un mensaje.",
+   "Desde el mismo resultado puedes descargar o imprimir el documento para llevarlo a otra consulta."]},
+ {tag:"Imágenes", title:"Ver imágenes y leer un reporte de ultrasonido", steps:[
+   "Los estudios de imagen (ultrasonido, rayos X, CT, MRI) aparecen en «Resultados» o en la sección de imágenes, con su reporte escrito por el radiólogo.",
+   "Un reporte de ultrasonido tiene cuatro partes: el motivo del estudio, la técnica, los hallazgos órgano por órgano y la «Impresión» final.",
+   "Lee primero la Impresión: es el resumen y la conclusión del especialista. Los hallazgos son el detalle que la respalda.",
+   "Palabras frecuentes: «sin alteraciones» o «unremarkable» = normal; «se recomienda seguimiento» = tu médico decidirá el próximo paso en la cita.",
+   "Las imágenes mismas se pueden ver en muchos portales; si necesitas el estudio en disco o enlace para otro médico, pídelo al departamento de radiología."]},
+ {tag:"Mensajes", title:"Escribirle a tu médico", steps:[
+   "Abre «Mensajes» y elige «Pregunta médica»: selecciona a tu médico o equipo y escribe claro y breve, como un correo corto.",
+   "Puedes adjuntar una foto (una herida, un medicamento) si la app lo permite en tu organización.",
+   "La respuesta típica llega en 1–2 días laborables. Los mensajes quedan guardados en tu historia del portal.",
+   "El portal NO es para emergencias: si es urgente, llama al 911 o a la línea de enfermería de tu clínica."]},
+ {tag:"Citas", title:"Manejar tus citas", steps:[
+   "En «Citas» ves tus próximas visitas con fecha, hora, lugar y el nombre del proveedor.",
+   "Haz el registro anticipado (eCheck-In): confirma tus datos, seguro y formularios desde casa y llega con todo hecho.",
+   "Activa las notificaciones de la app: el portal avisa cambios de horario y resultados nuevos.",
+   "Para cancelar o mover una cita, usa el botón de la propia cita o llama a la oficina: cancelar a tiempo libera el espacio para otro paciente."]},
+ {tag:"Facturas", title:"Ver y pagar tu factura", steps:[
+   "En «Facturación» (Billing) ves tu balance, el detalle por visita y el estado de tus pagos.",
+   "Sin entrar a tu cuenta, la opción «Pagar como invitado» (Pay as Guest) permite pagar con el número de cuenta del estado de cuenta en papel.",
+   "Si el balance es alto, pregunta por planes de pago mensuales sin intereses antes de pagarlo todo: muchos hospitales los ofrecen desde el mismo portal o por teléfono.",
+   "Guarda el recibo de cada pago: queda en el historial de facturación del portal."]}
+],
+en:[
+ {tag:"Getting started", title:"Activate your account & sign in", steps:[
+   "Ask for your activation code at the front desk or find it on the printed summary from your last visit (After Visit Summary).",
+   "On your phone, download the free “MyChart” app and pick your organization: Rochester Regional Health (MyCare) or UR Medicine (MyChart).",
+   "Create your username and password with the activation code; the code expires, so activate it soon.",
+   "Turn on Face ID or fingerprint sign-in: you'll get in within seconds, no typing.",
+   "Forgot your password? Use “Forgot password?” on the sign-in screen; hospital staff will never ask for it by phone."]},
+ {tag:"Results", title:"See your labs & test results", steps:[
+   "Open the “Test Results” menu: blood work, urine tests and other studies land there — sometimes before your doctor comments on them.",
+   "Tap a result to see your value next to the reference range; an arrow or color shows whether it is out of range.",
+   "An out-of-range value is not always an emergency: many results are released automatically. Wait for your team's comment or send them a message.",
+   "From the result itself you can download or print the document to take to another appointment."]},
+ {tag:"Imaging", title:"See images & read an ultrasound report", steps:[
+   "Imaging studies (ultrasound, X-ray, CT, MRI) appear under “Results” or the imaging section, with the radiologist's written report.",
+   "An ultrasound report has four parts: the reason for the study, the technique, the organ-by-organ findings, and the final “Impression.”",
+   "Read the Impression first: it is the specialist's summary and conclusion. The findings are the detail behind it.",
+   "Common words: “unremarkable” = normal; “follow-up recommended” = your doctor will decide the next step at your visit.",
+   "The images themselves can be viewed in many portals; if you need the study on disc or a share link for another doctor, ask the radiology department."]},
+ {tag:"Messages", title:"Message your doctor", steps:[
+   "Open “Messages” and choose the medical question option: pick your doctor or care team and write clearly and briefly, like a short email.",
+   "You can attach a photo (a wound, a medication) if your organization allows it in the app.",
+   "Replies typically arrive within 1–2 business days. Messages are saved in your portal history.",
+   "The portal is NOT for emergencies: if it's urgent, call 911 or your clinic's nurse line."]},
+ {tag:"Appointments", title:"Manage your appointments", steps:[
+   "Under “Appointments” you see upcoming visits with date, time, location and provider name.",
+   "Do the early check-in (eCheck-In): confirm your details, insurance and forms from home and arrive with everything done.",
+   "Turn on app notifications: the portal alerts you about schedule changes and new results.",
+   "To cancel or reschedule, use the button on the appointment itself or call the office: canceling early frees the slot for another patient."]},
+ {tag:"Billing", title:"See & pay your bill", steps:[
+   "Under “Billing” you see your balance, visit-by-visit detail and payment history.",
+   "Without signing in, “Pay as Guest” lets you pay using the account number on your paper statement.",
+   "If the balance is high, ask about monthly interest-free payment plans before paying it all: many hospitals offer them right in the portal or by phone.",
+   "Keep every receipt: it stays in the portal's billing history."]}
+]};
+function renderGuide(){
+  $("guideIntroBox").innerHTML = t("guideIntro");
+  $("guideBody").innerHTML = GUIDE[lang].map(function(g){
+    return '<div class="card"><div class="chead"><div><div class="gtag">' + esc(g.tag) + '</div>' +
+      '<h3 style="margin-top:2px">' + esc(g.title) + '</h3></div></div><div class="cbody" style="padding-top:2px"><ol class="gsteps">' +
+      g.steps.map(function(s){ return '<li><span class="n" aria-hidden="true"></span><span>' + esc(s) + '</span></li>'; }).join("") +
+      '</ol></div></div>';
+  }).join("");
+}
+function renderAll(){
+  saveState();
+  document.querySelectorAll("[data-i18n]").forEach(function(el){ el.textContent = t(el.getAttribute("data-i18n")); });
+  document.documentElement.lang = lang;
+  $("langEs").classList.toggle("on", lang === "es");
+  $("langEn").classList.toggle("on", lang === "en");
+  buildNav(); renderHome(); renderVitals(); renderDialysis(); renderMeds(); renderAppts(); renderReport(); renderGuide();
+}
+
+/* =================== Events =================== */
+document.addEventListener("click", function(e){
+  var nav = e.target.closest("[data-nav]");
+  if (nav){ go(nav.getAttribute("data-nav")); return; }
+  var del = e.target.closest("[data-del]");
+  if (del){
+    var parts = del.getAttribute("data-del").split(":"), kind = parts[0], id = parts[1];
+    if (kind === "vital") S.vitals = S.vitals.filter(function(x){ return x.id !== id; });
+    if (kind === "dial") S.dialysis = S.dialysis.filter(function(x){ return x.id !== id; });
+    if (kind === "med") S.meds = S.meds.filter(function(x){ return x.id !== id; });
+    if (kind === "appt") S.appts = S.appts.filter(function(x){ return x.id !== id; });
+    renderAll(); return;
+  }
+  var dose = e.target.closest("[data-dose]");
+  if (dose){
+    var dp = dose.getAttribute("data-dose").split(":"), mid = dp[0], idx = parseInt(dp[1], 10);
+    var m = S.meds.filter(function(x){ return x.id === mid; })[0];
+    if (m){
+      var key = dayKey();
+      m.taken = m.taken || {}; m.taken[key] = m.taken[key] || [];
+      var pos = m.taken[key].indexOf(idx);
+      if (pos >= 0) m.taken[key].splice(pos, 1); else m.taken[key].push(idx);
+      renderHome(); renderMeds(); saveState();
+    }
+  }
+});
+$("langEs").addEventListener("click", function(){ lang = "es"; renderAll(); });
+$("langEn").addEventListener("click", function(){ lang = "en"; renderAll(); });
+
+function showErr(id, msg){ var e = $(id); e.textContent = msg; e.classList.add("show"); }
+function hideErr(id){ $(id).classList.remove("show"); }
+function numOrNull(id){ var v = $(id).value.trim(); if (v === "") return null; var n = parseFloat(v); return isNaN(n) ? null : n; }
+function nowLocalValue(){
+  var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  return d.toISOString().slice(0, 16);
+}
+function todayValue(){
+  var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  return d.toISOString().slice(0, 10);
+}
+
+$("vitalForm").addEventListener("submit", function(e){
+  e.preventDefault(); hideErr("vitalErr");
+  var sys = numOrNull("vSys"), dia = numOrNull("vDia");
+  var hasBP = sys != null || dia != null;
+  if (hasBP && (sys == null || dia == null || sys <= dia || sys < 60 || dia < 30)){ showErr("vitalErr", t("errBP")); return; }
+  var glu = numOrNull("vGlu"), weight = numOrNull("vWeight"), pulse = numOrNull("vPulse");
+  if (!hasBP && glu == null && weight == null && pulse == null){ showErr("vitalErr", t("errVital")); return; }
+  var when = $("vWhen").value ? new Date($("vWhen").value).getTime() : Date.now();
+  S.vitals.push({ id: nid(), ts: when, sys: sys, dia: dia, pulse: pulse, glu: glu,
+    gluCtx: $("vCtx").value, weight: weight, note: $("vNote").value.trim() });
+  e.target.reset(); $("vWhen").value = nowLocalValue();
+  renderAll();
+});
+$("dialForm").addEventListener("submit", function(e){
+  e.preventDefault(); hideErr("dialErr");
+  var dry = numOrNull("dDry"), pre = numOrNull("dPre"), post = numOrNull("dPost");
+  if (dry == null || pre == null || post == null){ showErr("dialErr", t("errDial")); return; }
+  var date = $("dDate").value ? new Date($("dDate").value + "T12:00:00").getTime() : Date.now();
+  S.dialysis.push({ id: nid(), date: date, dry: dry, pre: pre, post: post,
+    bpPre: $("dBpPre").value.trim(), bpPost: $("dBpPost").value.trim(), note: $("dNote").value.trim() });
+  var keepDry = $("dDry").value;
+  e.target.reset(); $("dDate").value = todayValue(); $("dDry").value = keepDry;
+  renderAll();
+});
+$("medForm").addEventListener("submit", function(e){
+  e.preventDefault(); hideErr("medErr");
+  var name = $("mName").value.trim();
+  if (!name){ showErr("medErr", t("errMed")); return; }
+  var times = $("mTimes").value.split(",").map(function(s){ return s.trim(); }).filter(Boolean);
+  var freq = parseInt($("mFreq").value, 10);
+  if (!times.length && freq > 0){
+    times = freq === 1 ? ["8:00 AM"] : freq === 2 ? ["8:00 AM", "8:00 PM"] : ["8:00 AM", "2:00 PM", "8:00 PM"];
+  }
+  S.meds.push({ id: nid(), name: name, dose: $("mDose").value.trim(), freq: freq, times: times,
+    purpose: $("mPurpose").value.trim(), taken: {} });
+  e.target.reset(); renderAll();
+});
+$("apptForm").addEventListener("submit", function(e){
+  e.preventDefault(); hideErr("apptErr");
+  var title = $("aTitle").value.trim(), when = $("aWhen").value;
+  if (!title || !when){ showErr("apptErr", t("errAppt")); return; }
+  S.appts.push({ id: nid(), title: title, ts: new Date(when).getTime(),
+    withW: $("aWith").value.trim(), where: $("aWhere").value.trim(), note: $("aNote").value.trim() });
+  e.target.reset(); renderAll();
+});
+$("profileForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  S.profile = { name: $("pName").value.trim() || "Kiustin", dob: $("pDob").value,
+    height: $("pHeight").value ? parseFloat($("pHeight").value) : "", blood: $("pBlood").value,
+    allergy: $("pAllergy").value.trim(), emergency: $("pEmergency").value.trim() };
+  renderAll();
+});
+$("btnExport").addEventListener("click", function(){
+  var data = { app:"mi-panel-de-salud", version:1, exportedAt: new Date().toISOString(),
+    profile: S.profile, vitals: S.vitals, dialysis: S.dialysis, meds: S.meds, appts: S.appts };
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "mi-panel-de-salud-copia.json";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+});
+$("importFile").addEventListener("change", function(){
+  var f = this.files && this.files[0];
+  if (!f) return;
+  var rd = new FileReader();
+  rd.onload = function(){
+    var msg = $("importMsg");
+    try {
+      var d = JSON.parse(rd.result);
+      if (!d || d.app !== "mi-panel-de-salud") throw new Error("bad");
+      S.profile = d.profile || S.profile;
+      S.vitals = Array.isArray(d.vitals) ? d.vitals : [];
+      S.dialysis = Array.isArray(d.dialysis) ? d.dialysis : [];
+      S.meds = Array.isArray(d.meds) ? d.meds : [];
+      S.appts = Array.isArray(d.appts) ? d.appts : [];
+      $("pName").value = S.profile.name || ""; $("pDob").value = S.profile.dob || "";
+      $("pHeight").value = S.profile.height || ""; $("pBlood").value = S.profile.blood || "";
+      $("pAllergy").value = S.profile.allergy || ""; $("pEmergency").value = S.profile.emergency || "";
+      if (S.dialysis.length){ var ld = S.dialysis.slice().sort(function(a,b){ return b.date - a.date; })[0]; $("dDry").value = ld.dry; }
+      msg.className = "alert info noprint"; msg.style.display = "flex"; msg.textContent = t("importOk");
+      renderAll();
+    } catch (err) {
+      msg.className = "alert warn noprint"; msg.style.display = "flex"; msg.textContent = t("importBad");
+    }
+  };
+  rd.readAsText(f);
+  this.value = "";
+});
+
+/* =================== Init =================== */
+loadState();
+$("pName").value = S.profile.name || ""; $("pDob").value = S.profile.dob || "";
+$("pHeight").value = S.profile.height || ""; $("pBlood").value = S.profile.blood || "";
+$("pAllergy").value = S.profile.allergy || ""; $("pEmergency").value = S.profile.emergency || "";
+if (S.dialysis.length){ var ld0 = S.dialysis.slice().sort(function(a,b){ return b.date - a.date; })[0]; $("dDry").value = ld0.dry; }
+$("vWhen").value = nowLocalValue();
+$("dDate").value = todayValue();
+renderAll();
+</script>
+</body>
+</html>
