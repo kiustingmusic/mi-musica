@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light" />
+<link rel="icon" href="data:," />
+<title>Matemáticas para Niños — Versión Gratis · Fun Math for Kids — Free</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFF7E6;
+    --ink:#25304A;
+    --ink-soft:#5A6580;
+    --card:#FFFFFF;
+    --line:#F0E3C8;
+    --sun:#FFC93C;
+    --coral:#FF6B6B;
+    --teal:#12B5A5;
+    --blue:#3E92CC;
+    --green:#51B04A;
+    --orange:#FF8A3D;
+    --pink:#F15BB5;
+    --shadow:0 10px 24px rgba(37,48,74,.12);
+    --shadow-sm:0 4px 12px rgba(37,48,74,.10);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Nunito",system-ui,sans-serif;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(255,201,60,.28) 0 90px, transparent 91px),
+      radial-gradient(circle at 88% 18%, rgba(18,181,165,.16) 0 70px, transparent 71px),
+      radial-gradient(circle at 90% 88%, rgba(255,107,107,.14) 0 100px, transparent 101px),
+      var(--bg);
+    color:var(--ink);
+    min-height:100dvh;
+  }
+  h1,h2,h3,.fredoka{font-family:"Fredoka","Nunito",sans-serif}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;min-height:48px}
+  .wrap{max-width:760px;margin:0 auto;padding:18px 16px 40px}
+  .hidden{display:none !important}
+
+  /* ---------- Selector de idioma / Language switcher ---------- */
+  .lang-bar{display:flex;justify-content:center;padding:2px 0 4px}
+  .lang-switch{display:inline-flex;background:var(--card);border:3px solid var(--line);border-radius:999px;padding:5px;gap:5px;box-shadow:var(--shadow-sm)}
+  .lang-switch button{
+    border-radius:999px;padding:10px 22px;font-weight:900;font-size:17px;min-height:52px;min-width:132px;
+    color:var(--ink-soft);transition:background .15s ease,color .15s ease,transform .12s ease;
+  }
+  .lang-switch button:active{transform:scale(.96)}
+  .lang-switch button.active{background:var(--teal);color:#fff;box-shadow:0 3px 0 #0B8A7E}
+  .lang-switch button:not(.active){background:#FFF7E6}
+  @media (max-width:400px){.lang-switch button{min-width:0;padding:10px 16px;font-size:16px}}
+
+  /* ---------- Pantalla de niveles ---------- */
+  .hero{text-align:center;padding:14px 6px 6px}
+  .hero .mascot{font-size:64px;line-height:1;display:inline-block;animation:bob 2.4s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+  .hero h1{font-size:clamp(30px,7vw,44px);font-weight:700;margin:8px 0 4px;letter-spacing:.2px;line-height:1.08}
+  .hero h1 .a{color:var(--coral)} .hero h1 .b{color:var(--teal)} .hero h1 .c{color:var(--orange)}
+  .hero p{margin:0 auto;max-width:520px;color:var(--ink-soft);font-size:17px;font-weight:700;line-height:1.45}
+  .free-pill{
+    display:inline-block;margin-top:12px;background:var(--green);color:#fff;font-family:"Fredoka";font-weight:700;
+    font-size:16px;letter-spacing:.04em;border-radius:999px;padding:7px 20px;box-shadow:0 4px 0 #3C8A35;
+  }
+  .total-stars{
+    display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 8px;max-width:100%;margin-top:14px;background:var(--card);
+    border:2px solid var(--line);border-radius:22px;padding:8px 16px;font-weight:900;font-size:16px;box-shadow:var(--shadow-sm)
+  }
+  .total-stars .st{color:#F5A623;font-size:16px;letter-spacing:1px;white-space:normal;word-break:break-all;line-height:1.3;text-align:center}
+
+  .levels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+  @media (max-width:520px){.levels{grid-template-columns:1fr}}
+  .level-btn{
+    text-align:left;background:var(--card);border-radius:22px;padding:18px 18px 16px;
+    border:3px solid var(--lc,#eee);box-shadow:var(--shadow-sm);display:flex;gap:14px;align-items:flex-start;
+    transition:transform .15s ease, box-shadow .15s ease;min-height:104px;width:100%;
+  }
+  .level-btn:active{transform:scale(.97)}
+  @media (hover:hover){.level-btn:hover{transform:translateY(-3px);box-shadow:var(--shadow)}}
+  .level-btn .badge{
+    flex:0 0 auto;width:58px;height:58px;border-radius:18px;background:var(--lc);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:"Fredoka";font-weight:700;font-size:22px;line-height:1;text-align:center;
+  }
+  .level-btn .badge small{display:block;font-size:11px;font-weight:600}
+  .level-btn h3{margin:2px 0 3px;font-size:20px;font-weight:600}
+  .level-btn p{margin:0;color:var(--ink-soft);font-size:14px;font-weight:700;line-height:1.4}
+  .level-btn .earned{margin-top:6px;font-size:13px;font-weight:900;color:#F5A623;letter-spacing:2px;min-height:16px}
+  .level-btn .earned .none{color:#C6CCDA;letter-spacing:0;font-weight:800}
+
+  .howto{margin-top:22px;background:var(--card);border:2px dashed var(--line);border-radius:20px;padding:16px 18px}
+  .howto h2{font-size:18px;margin:0 0 8px;font-weight:600}
+  .howto ul{margin:0;padding-left:20px;color:var(--ink-soft);font-weight:700;font-size:15px;line-height:1.65}
+
+  /* ---------- Tarjeta PRO (versión completa) ---------- */
+  .pro-card{margin-top:22px;background:#FFFDF4;border:3px solid #F5A623;border-radius:22px;padding:18px;box-shadow:var(--shadow-sm)}
+  .pro-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .pro-head .crown{font-size:34px;line-height:1}
+  .pro-head h2{margin:0;font-size:24px;font-weight:700}
+  .pro-tag{background:#F5A623;color:#fff;font-family:"Fredoka";font-weight:700;font-size:13px;border-radius:999px;padding:3px 12px;letter-spacing:.08em}
+  .pro-card p{color:var(--ink-soft);font-weight:700;font-size:15px;line-height:1.55;margin:8px 0}
+  .pro-card ul{margin:6px 0 4px;padding-left:20px;color:var(--ink-soft);font-weight:700;font-size:15px;line-height:1.6}
+
+  /* ---------- Pantalla de juego ---------- */
+  .topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .back-btn{
+    display:inline-flex;align-items:center;gap:6px;background:var(--card);border:2px solid var(--line);
+    border-radius:999px;padding:8px 16px;font-weight:900;font-size:15px;box-shadow:var(--shadow-sm);min-height:44px;
+  }
+  .chip{
+    display:inline-flex;align-items:center;gap:6px;background:var(--card);border:2px solid var(--line);
+    border-radius:999px;padding:8px 14px;font-weight:900;font-size:15px;box-shadow:var(--shadow-sm);min-height:44px;
+  }
+  .chip.score{color:#B87700;border-color:#FFE1A1;background:#FFF6DE}
+  .chip.streak{color:#D84E2B;border-color:#FFD3C2;background:#FFF0E9}
+  .spacer{flex:1}
+  .progress-track{height:16px;background:#F3E9D2;border-radius:999px;margin:14px 0 18px;overflow:hidden;border:2px solid var(--line)}
+  .progress-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--teal),var(--green));transition:width .45s ease}
+
+  .qcard{background:var(--card);border-radius:26px;box-shadow:var(--shadow);padding:24px 20px 22px;border:3px solid var(--line);position:relative;overflow:hidden}
+  .qcard::before{content:"";position:absolute;inset:0 0 auto 0;height:8px;background:var(--lc,#FFC93C)}
+  .q-topic{font-size:13px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);text-align:center;margin-top:4px}
+  .q-text{font-family:"Fredoka";font-size:clamp(26px,6.4vw,38px);font-weight:600;text-align:center;line-height:1.25;margin:10px 0 4px}
+  .q-visual{text-align:center;font-size:clamp(30px,8vw,44px);line-height:1.5;letter-spacing:6px;padding:8px 4px;word-break:break-all}
+  .q-visual .grp{display:inline-block;margin:0 6px;padding:4px 8px;border-radius:14px;background:#FFF7E6;border:2px dashed var(--line)}
+  .q-visual .op{color:var(--coral);font-family:"Fredoka";font-weight:700;letter-spacing:0}
+  .listen-row{text-align:center;margin-top:6px}
+  .listen-btn{display:inline-flex;align-items:center;gap:8px;background:#EEF6FF;color:#20639B;border:2px solid #CFE6FA;border-radius:999px;padding:8px 18px;font-weight:900;font-size:15px;min-height:44px}
+  .listen-btn svg{width:20px;height:20px;flex:0 0 auto}
+
+  .answers{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+  @media (max-width:400px){.answers{grid-template-columns:1fr}}
+  .ans-btn{
+    background:var(--card);border:3px solid var(--line);border-radius:20px;box-shadow:var(--shadow-sm);
+    font-family:"Fredoka";font-size:clamp(24px,6vw,32px);font-weight:600;padding:18px 10px;min-height:76px;
+    transition:transform .12s ease, border-color .12s ease, background .12s ease;
+  }
+  .ans-btn:active{transform:scale(.96)}
+  @media (hover:hover){.ans-btn:hover{border-color:var(--sun);transform:translateY(-2px)}}
+  .ans-btn.correct{background:#E5F7E2;border-color:var(--green);color:#256B1E;animation:pop .35s ease}
+  .ans-btn.wrong{background:#FFE9E9;border-color:var(--coral);color:#9E2B25;animation:shake .4s ease}
+  .ans-btn.dim{opacity:.45}
+  .ans-btn:disabled{cursor:default}
+  @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.07)}100%{transform:scale(1)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+
+  .feedback{
+    margin-top:18px;border-radius:20px;padding:16px 18px;font-weight:800;font-size:17px;line-height:1.5;
+    display:flex;gap:12px;align-items:flex-start;
+  }
+  .feedback .face{font-size:34px;line-height:1;flex:0 0 auto}
+  .feedback.good{background:#E5F7E2;border:2px solid #BDE3B4;color:#256B1E}
+  .feedback.bad{background:#FFF3E4;border:2px solid #FFD9AE;color:#7A4A12}
+  .next-row{margin-top:16px;text-align:center}
+  .big-btn{
+    display:inline-block;background:var(--coral);color:#fff;font-family:"Fredoka";font-weight:600;font-size:20px;
+    border-radius:999px;padding:14px 34px;box-shadow:0 6px 0 #D84E4E, var(--shadow-sm);min-height:56px;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .big-btn:active{transform:translateY(4px);box-shadow:0 2px 0 #D84E4E}
+  .big-btn.teal{background:var(--teal);box-shadow:0 6px 0 #0B8A7E, var(--shadow-sm)}
+  .big-btn.teal:active{box-shadow:0 2px 0 #0B8A7E}
+  .big-btn.ghost{background:var(--card);color:var(--ink);border:2px solid var(--line);box-shadow:var(--shadow-sm)}
+  a.big-btn{text-decoration:none}
+
+  /* ---------- Pantalla de resultados ---------- */
+  .result-card{background:var(--card);border-radius:28px;box-shadow:var(--shadow);border:3px solid var(--line);padding:30px 22px;text-align:center;margin-top:26px;position:relative;overflow:hidden}
+  .result-card .trophy{font-size:76px;line-height:1;display:inline-block;animation:bob 2.4s ease-in-out infinite}
+  .stars-big{font-size:52px;letter-spacing:8px;margin:8px 0 2px;color:#F5A623;line-height:1.2}
+  .stars-big .off{color:#E4E8F0}
+  .result-card h2{font-size:clamp(28px,6.5vw,38px);margin:6px 0 4px;font-weight:700}
+  .result-card p{color:var(--ink-soft);font-weight:800;font-size:17px;margin:4px 0;line-height:1.5}
+  .result-nums{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px 0 6px}
+  .result-nums .num{background:#FFF7E6;border:2px solid var(--line);border-radius:16px;padding:10px 20px}
+  .result-nums .num b{display:block;font-family:"Fredoka";font-size:28px;font-weight:700}
+  .result-nums .num span{font-size:13px;font-weight:900;color:var(--ink-soft);letter-spacing:.06em;text-transform:uppercase}
+  .result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+
+  .confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
+  .confetti i{position:absolute;top:-4vh;width:11px;height:16px;border-radius:3px;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+
+  .float-points{position:fixed;z-index:60;font-family:"Fredoka";font-weight:700;font-size:30px;color:var(--green);pointer-events:none;animation:rise 1s ease forwards;text-shadow:0 2px 0 #fff}
+  @keyframes rise{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(-70px) scale(1.25)}}
+
+  footer{margin-top:28px;text-align:center;color:var(--ink-soft);font-weight:700;font-size:14px}
+  @media (prefers-reduced-motion: reduce){
+    .hero .mascot,.result-card .trophy{animation:none}
+    .ans-btn.correct,.ans-btn.wrong{animation:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== SELECTOR DE IDIOMA / LANGUAGE ===== -->
+  <div class="lang-bar" role="group" aria-label="Idioma / Language">
+    <div class="lang-switch">
+      <button type="button" id="lang-es" class="active" aria-pressed="true">🇪🇸 Español</button>
+      <button type="button" id="lang-en" aria-pressed="false">🇺🇸 English</button>
+    </div>
+  </div>
+
+  <!-- ===== PANTALLA: NIVELES ===== -->
+  <section id="screen-home">
+    <div class="hero">
+      <span class="mascot" aria-hidden="true">🦉</span>
+      <h1 id="hero-title">Matemáticas <span class="a">Divertidas</span><br><span class="b">para</span> <span class="c">Niños</span></h1>
+      <p id="hero-sub">Elige tu grado y juega: 10 preguntas por ronda, gana estrellas y conviértete en un campeón de los números.</p>
+      <div><span class="free-pill" id="free-pill">🎁 Versión GRATIS</span></div>
+      <div class="total-stars" id="total-stars" aria-live="polite">
+        <span class="st" id="total-stars-icons">☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆</span>
+        <span id="total-stars-text">0 estrellas ganadas</span>
+      </div>
+    </div>
+
+    <div class="levels" id="levels"></div>
+
+    <div class="howto">
+      <h2 id="howto-title">¿Cómo se juega?</h2>
+      <ul id="howto-list">
+        <li>Toca tu grado: <strong>Preescolar, 1.º, 2.º, 3.º, 4.º o 5.º</strong>.</li>
+        <li>Cada ronda tiene <strong>10 preguntas</strong> con 4 respuestas para elegir.</li>
+        <li>Cada acierto vale <strong>10 puntos</strong>; si aciertas varios seguidos, ¡sumas racha!</li>
+        <li>Al final ganas <strong>1, 2 o 3 estrellas</strong> según tus aciertos. Sin castigos: si fallas, el búho te explica y sigues.</li>
+      </ul>
+    </div>
+
+    <!-- ===== VERSIÓN PRO ===== -->
+    <div class="pro-card" id="pro-card">
+      <div class="pro-head"><span class="crown" aria-hidden="true">👑</span><h2 id="pro-title">¿Quieres más preguntas? Versión PRO</h2><span class="pro-tag">PRO</span></div>
+      <p id="pro-desc">Esta es la versión gratis, completa para jugar. La versión PRO trae un banco de preguntas AMPLIADO en cada nivel, con más tipos de preguntas por grado:</p>
+      <ul id="pro-list">
+        <li><strong>Preescolar:</strong> contar hasta 20, el número que falta y las formas.</li>
+        <li><strong>1.º y 2.º:</strong> dobles, par o impar, dinero, la mitad y centenas.</li>
+        <li><strong>3.º y 4.º:</strong> áreas, comparar fracciones, fracciones equivalentes, ángulos y promedios.</li>
+        <li><strong>5.º:</strong> más porcentajes, paréntesis, volumen y decimales.</li>
+      </ul>
+      <p id="pro-note">La versión PRO es un archivo completo para la computadora: <strong>$6.99</strong> en la tienda de Kiustin G.</p>
+      <p style="margin-top:12px"><a class="big-btn teal" id="pro-buy" href="https://kiusting.com" target="_blank" rel="noopener">Ir a la tienda de Kiustin G →</a></p>
+    </div>
+
+    <footer id="footer-text">Un juego de Kiustin G · Para aprender jugando, en casa y en la escuela</footer>
+  </section>
+
+  <!-- ===== PANTALLA: JUEGO ===== -->
+  <section id="screen-game" class="hidden">
+    <div class="topbar">
+      <button class="back-btn" id="btn-back" type="button">← Niveles</button>
+      <span class="chip" id="chip-level">Nivel</span>
+      <span class="spacer"></span>
+      <span class="chip streak" id="chip-streak">🔥 Racha: 0</span>
+      <span class="chip score" id="chip-score">⭐ 0 pts</span>
+    </div>
+    <div class="progress-track" role="progressbar" aria-label="Progreso de la ronda" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="progress">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <div class="qcard" id="qcard">
+      <div class="q-topic" id="q-topic">Tema</div>
+      <div class="q-text" id="q-text">Pregunta</div>
+      <div class="q-visual hidden" id="q-visual"></div>
+      <div class="listen-row">
+        <button class="listen-btn" id="btn-listen" type="button">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="#20639B"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11" stroke="#20639B" stroke-width="2" stroke-linecap="round"/></svg>
+          <span id="listen-label">Escuchar la pregunta</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="answers" id="answers"></div>
+
+    <div class="feedback hidden" id="feedback" role="status"></div>
+    <div class="next-row hidden" id="next-row">
+      <button class="big-btn" id="btn-next" type="button">Siguiente →</button>
+    </div>
+  </section>
+
+  <!-- ===== PANTALLA: RESULTADOS ===== -->
+  <section id="screen-result" class="hidden">
+    <div class="result-card">
+      <span class="trophy" id="result-emoji">🏆</span>
+      <div class="stars-big" id="result-stars">★★★</div>
+      <h2 id="result-title">¡Muy bien!</h2>
+      <p id="result-msg">Completaste la ronda.</p>
+      <div class="result-nums">
+        <div class="num"><b id="result-correct">0/10</b><span id="label-correct">Aciertos</span></div>
+        <div class="num"><b id="result-points">0</b><span id="label-points">Puntos</span></div>
+        <div class="num"><b id="result-best-streak">0</b><span id="label-streak">Mejor racha</span></div>
+      </div>
+      <div class="result-actions">
+        <button class="big-btn teal" id="btn-again" type="button">↻ Jugar otra vez</button>
+        <button class="big-btn ghost" id="btn-levels" type="button">Cambiar de nivel</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="confetti hidden" id="confetti"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ================= Idioma / Language ================= */
+  var LANG="es"; // "es" | "en" — solo durante esta sesión / this session only
+  function S(es,en){ return LANG==="en" ? en : es; }
+
+  var STR={
+    es:{
+      docTitle:"Matemáticas para Niños — Versión Gratis",
+      heroTitle:'Matemáticas <span class="a">Divertidas</span><br><span class="b">para</span> <span class="c">Niños</span>',
+      heroSub:"Elige tu grado y juega: 10 preguntas por ronda, gana estrellas y conviértete en un campeón de los números.",
+      freePill:"🎁 Versión GRATIS",
+      howtoTitle:"¿Cómo se juega?",
+      howto:[
+        'Toca tu grado: <strong>Preescolar, 1.º, 2.º, 3.º, 4.º o 5.º</strong>.',
+        'Cada ronda tiene <strong>10 preguntas</strong> con 4 respuestas para elegir.',
+        'Cada acierto vale <strong>10 puntos</strong>; si aciertas varios seguidos, ¡sumas racha!',
+        'Al final ganas <strong>1, 2 o 3 estrellas</strong> según tus aciertos. Sin castigos: si fallas, el búho te explica y sigues.'
+      ],
+      footer:"Un juego de Kiustin G · Para aprender jugando, en casa y en la escuela",
+      back:"← Niveles",
+      streak:"Racha",
+      listen:"Escuchar la pregunta",
+      next:"Siguiente →",
+      seeResult:"Ver mi resultado 🏆",
+      questionOf:function(i,total){ return "Pregunta "+i+" de "+total; },
+      progressLabel:"Progreso de la ronda",
+      starsTotal:function(n){ return n===1 ? "1 estrella ganada" : n+" estrellas ganadas"; },
+      starsAria:function(n){ return n+" estrellas ganadas en este nivel"; },
+      notPlayed:"Sin jugar todavía",
+      proTitle:"¿Quieres más preguntas? Versión PRO",
+      proDesc:"Esta es la versión gratis, completa para jugar. La versión PRO trae un banco de preguntas AMPLIADO en cada nivel, con más tipos de preguntas por grado:",
+      proList:[
+        '<strong>Preescolar:</strong> contar hasta 20, el número que falta y las formas.',
+        '<strong>1.º y 2.º:</strong> dobles, par o impar, dinero, la mitad y centenas.',
+        '<strong>3.º y 4.º:</strong> áreas, comparar fracciones, fracciones equivalentes, ángulos y promedios.',
+        '<strong>5.º:</strong> más porcentajes, paréntesis, volumen y decimales.'
+      ],
+      proNote:"La versión PRO es un archivo completo para la computadora: $6.99 en la tienda de Kiustin G.",
+      proBuy:"Ir a la tienda de Kiustin G →",
+      praise:["¡Excelente!","¡Muy bien!","¡Eso es!","¡Bravo!","¡Genial!","¡Súper!"],
+      goodAnswer:function(ans){ return "La respuesta es <strong>"+ans+"</strong>. "; },
+      goodStreak:function(n){ return "¡Racha de "+n+"! Esta vale 15 puntos."; },
+      goodPoints:"Sumas 10 puntos.",
+      badStart:"Casi…",
+      badAnswer:function(ans){ return "La respuesta correcta es <strong>"+ans+"</strong>. "; },
+      badDefault:"No pasa nada: equivocarse también es aprender. ¡A la siguiente!",
+      labelCorrect:"Aciertos", labelPoints:"Puntos", labelStreak:"Mejor racha",
+      again:"↻ Jugar otra vez", changeLevel:"Cambiar de nivel",
+      results:[
+        {emoji:"🌱", title:"¡Lo intentaste, y eso cuenta!", msg:function(lv){ return "Todos los campeones empezaron practicando. Vuelve a intentarlo en "+lv+": tú puedes."; }},
+        {emoji:"🥉", title:"¡Buen esfuerzo!", msg:function(lv){ return "Vas por buen camino en "+lv+". Juega otra ronda y verás cómo mejoras."; }},
+        {emoji:"🥈", title:"¡Muy bien hecho!", msg:function(lv){ return "Gran ronda en "+lv+". Un poquito más de práctica y sacas las 3 estrellas."; }},
+        {emoji:"🏆", title:"¡CAMPEÓN DE LOS NÚMEROS!", msg:function(lv){ return "¡Increíble! Casi todo perfecto en "+lv+". Sigue así, estrella."; }}
+      ]
+    },
+    en:{
+      docTitle:"Fun Math for Kids — Free Version",
+      heroTitle:'Fun <span class="a">Math</span><br><span class="b">for</span> <span class="c">Kids</span>',
+      heroSub:"Pick your grade and play: 10 questions per round, earn stars, and become a number champion.",
+      freePill:"🎁 FREE Version",
+      howtoTitle:"How do you play?",
+      howto:[
+        'Tap your grade: <strong>Preschool, 1st, 2nd, 3rd, 4th, or 5th</strong>.',
+        'Each round has <strong>10 questions</strong> with 4 answers to choose from.',
+        'Each correct answer is worth <strong>10 points</strong>; get several in a row to build a streak!',
+        'At the end you earn <strong>1, 2, or 3 stars</strong> for your correct answers. No punishments: if you miss, the owl explains it and you keep going.'
+      ],
+      footer:"A game by Kiustin G · Learn by playing, at home and at school",
+      back:"← Levels",
+      streak:"Streak",
+      listen:"Listen to the question",
+      next:"Next →",
+      seeResult:"See my result 🏆",
+      questionOf:function(i,total){ return "Question "+i+" of "+total; },
+      progressLabel:"Round progress",
+      starsTotal:function(n){ return n===1 ? "1 star earned" : n+" stars earned"; },
+      starsAria:function(n){ return n+" stars earned in this level"; },
+      notPlayed:"Not played yet",
+      proTitle:"Want more questions? PRO Version",
+      proDesc:"This is the free version, complete to play. The PRO version has an EXPANDED question bank in every level, with more question types per grade:",
+      proList:[
+        '<strong>Preschool:</strong> counting to 20, the missing number, and shapes.',
+        '<strong>1st &amp; 2nd:</strong> doubles, even or odd, money, halves, and hundreds.',
+        '<strong>3rd &amp; 4th:</strong> area, comparing fractions, equivalent fractions, angles, and averages.',
+        '<strong>5th:</strong> more percentages, parentheses, volume, and decimals.'
+      ],
+      proNote:"The PRO version is a complete file for the computer: $6.99 in the Kiustin G store.",
+      proBuy:"Go to the Kiustin G store →",
+      praise:["Excellent!","Great job!","That's it!","Bravo!","Awesome!","Super!"],
+      goodAnswer:function(ans){ return "The answer is <strong>"+ans+"</strong>. "; },
+      goodStreak:function(n){ return "Streak of "+n+"! This one is worth 15 points."; },
+      goodPoints:"You earn 10 points.",
+      badStart:"Almost…",
+      badAnswer:function(ans){ return "The correct answer is <strong>"+ans+"</strong>. "; },
+      badDefault:"That's okay: making mistakes is part of learning. On to the next one!",
+      labelCorrect:"Correct", labelPoints:"Points", labelStreak:"Best streak",
+      again:"↻ Play again", changeLevel:"Change level",
+      results:[
+        {emoji:"🌱", title:"You tried, and that counts!", msg:function(lv){ return "Every champion started by practicing. Try again in "+lv+": you can do it."; }},
+        {emoji:"🥉", title:"Good effort!", msg:function(lv){ return "You're on the right track in "+lv+". Play another round and watch yourself improve."; }},
+        {emoji:"🥈", title:"Great job!", msg:function(lv){ return "Great round in "+lv+". A little more practice and you'll get all 3 stars."; }},
+        {emoji:"🏆", title:"NUMBER CHAMPION!", msg:function(lv){ return "Amazing! Almost perfect in "+lv+". Keep it up, star."; }}
+      ]
+    }
+  };
+  function T(){ return STR[LANG]; }
+
+  /* ================= Utilidades ================= */
+  function ri(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+  function shuffle(arr){
+    var a=arr.slice();
+    for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
+    return a;
+  }
+  function fmt(n){
+    if(typeof n==="number" && !Number.isInteger(n)){
+      var s=(Math.round(n*100)/100).toString();
+      return LANG==="es" ? s.replace(".",",") : s;
+    }
+    return String(n);
+  }
+  function makeOptions(correct, spread){
+    var opts=[correct];
+    var tries=0;
+    while(opts.length<4 && tries<80){
+      tries++;
+      var d;
+      if(typeof correct==="string" && correct.indexOf("/")>-1){
+        var parts=correct.split("/"); var a=parseInt(parts[0],10), b=parseInt(parts[1],10);
+        if(Math.random()<0.5){ d=(a+ri(-1,2)||1)+"/"+b; if(parseInt(d.split("/")[0],10)<=0) continue; }
+        else { var nb=b+ri(-1,2); if(nb<2) continue; d=a+"/"+nb; }
+      } else if(typeof correct==="number" && !Number.isInteger(correct)){
+        d=Math.round((correct + (Math.random()<0.5?-1:1)*(ri(1,spread||5)/10))*10)/10;
+      } else {
+        var num = typeof correct==="number" ? correct : parseInt(correct,10);
+        var delta = ri(1, spread||3) * (Math.random()<0.5?-1:1);
+        d = num + delta;
+        if(typeof correct!=="number") d=String(d);
+      }
+      if(d===correct) continue;
+      if(typeof d==="number" && d<1) continue;
+      if(opts.indexOf(d)===-1) opts.push(d);
+    }
+    while(opts.length<4){ var extra=(typeof correct==="number"? correct+opts.length+2 : String(parseInt(correct,10)+opts.length+2)); if(opts.indexOf(extra)===-1) opts.push(extra); }
+    return shuffle(opts);
+  }
+  function repeat(emoji,n){ var s=""; for(var i=0;i<n;i++) s+=emoji; return s; }
+  /* 4 opciones numéricas sin repetir (para distractores calculados a mano) */
+  function uniq4(list, seed){
+    var out=[];
+    list.forEach(function(v){ if(out.indexOf(v)===-1) out.push(v); });
+    var extra=seed+3;
+    while(out.length<4){ if(out.indexOf(extra)===-1) out.push(extra); extra+=2; }
+    return shuffle(out);
+  }
+
+  /* ================= Sonidos (WebAudio) ================= */
+  var audioCtx=null;
+  function beep(freq, t0, dur, type){
+    try{
+      if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+      if(audioCtx.state==="suspended") audioCtx.resume();
+      var o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.type=type||"sine"; o.frequency.value=freq;
+      var start=audioCtx.currentTime+t0;
+      g.gain.setValueAtTime(0.0001,start);
+      g.gain.exponentialRampToValueAtTime(0.22,start+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,start+dur);
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(start); o.stop(start+dur+0.05);
+    }catch(e){}
+  }
+  function sndGood(){ beep(523,0,0.14); beep(659,0.1,0.14); beep(784,0.2,0.22); }
+  function sndBad(){ beep(220,0,0.2,"triangle"); beep(185,0.14,0.26,"triangle"); }
+  function sndWin(){ [523,659,784,1047,784,1047].forEach(function(f,i){ beep(f,i*0.13,0.24); }); }
+  function sndClick(){ beep(660,0,0.07,"square"); }
+
+  /* ================= Voz (leer la pregunta) ================= */
+  var currentSpeakText="";
+  function speak(){
+    try{
+      if(!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      var u=new SpeechSynthesisUtterance(currentSpeakText);
+      var want = LANG==="en" ? "en" : "es";
+      u.lang = LANG==="en" ? "en-US" : "es-ES"; u.rate=0.92; u.pitch=1.05;
+      var voices=window.speechSynthesis.getVoices();
+      for(var i=0;i<voices.length;i++){ if(voices[i].lang && voices[i].lang.indexOf(want)===0){ u.voice=voices[i]; break; } }
+      window.speechSynthesis.speak(u);
+    }catch(e){}
+  }
+
+  /* ================= Generadores de preguntas (bilingües) ================= */
+  var FRUITS=["🍎","🍌","🍊","🍓","🍐","🍇","⭐","🎈","🐶","🐱","🌸","🍪"];
+
+  function qPreK(){
+    var kind=ri(1,5);
+    if(kind===1){
+      var n=ri(1,10), e=pick(FRUITS);
+      return { topic:S("Contar","Counting"), text:S("¿Cuántos hay? Tócalos y cuenta en voz alta.","How many are there? Touch them and count out loud."), visual:repeat(e,n), speak:S("¿Cuántos hay? Cuenta en voz alta.","How many are there? Count out loud."), answer:n, options:makeOptions(n,2) };
+    }
+    if(kind===2){
+      var m=ri(1,10);
+      return { topic:S("Los números","Numbers"), text:S("¿Qué número es este?","What number is this?"), visual:'<span style="font-family:Fredoka;font-weight:700;font-size:64px;color:#FF6B6B">'+m+'</span>', speak:S("¿Qué número es este?","What number is this?"), answer:m, options:makeOptions(m,3) };
+    }
+    if(kind===3){
+      var s=ri(1,8);
+      return { topic:S("La serie","Sequences"), text:S("¿Qué número sigue?","What number comes next?"), visual:'<span style="font-family:Fredoka;font-weight:600;letter-spacing:2px">'+s+" · "+(s+1)+" · "+(s+2)+" · ?</span>", speak:S("¿Qué número sigue después de "+s+", "+(s+1)+", "+(s+2)+"?","What number comes after "+s+", "+(s+1)+", "+(s+2)+"?"), answer:s+3, options:makeOptions(s+3,2) };
+    }
+    if(kind===4){
+      var a=ri(1,4), b=ri(1,5-a); if(b<1)b=1; var em=pick(FRUITS);
+      return { topic:S("Sumar con dibujos","Adding with pictures"), text:S("¿Cuántos hay en total?","How many are there in all?"),
+        visual:'<span class="grp">'+repeat(em,a)+'</span><span class="op">+</span><span class="grp">'+repeat(em,b)+'</span>',
+        speak:S("Si juntas "+a+" y "+b+", ¿cuántos hay en total?","If you put "+a+" and "+b+" together, how many are there in all?"), answer:a+b, options:makeOptions(a+b,2) };
+    }
+    var x=ri(1,9), y=ri(1,9); while(y===x) y=ri(1,9);
+    var mayor=Math.max(x,y);
+    return { topic:S("Comparar","Comparing"), text:S("Un grupo tiene "+x+" y otro tiene "+y+". ¿Cuál número es el MAYOR?","One group has "+x+" and another has "+y+". Which number is BIGGER?"),
+      visual:'<span style="font-family:Fredoka;font-weight:600">'+x+"  🆚  "+y+'</span>',
+      speak:S("Un grupo tiene "+x+" y otro tiene "+y+". ¿Cuál número es el mayor?","One group has "+x+" and another has "+y+". Which number is bigger?"), answer:mayor, options:makeOptions(mayor,3) };
+  }
+
+  function q1(){
+    var kind=ri(1,5);
+    if(kind===1){ var a=ri(2,15), b=ri(2,20-a); return { topic:S("Sumas hasta 20","Addition to 20"), text:S("¿Cuánto es "+a+" + "+b+"?","What is "+a+" + "+b+"?"), answer:a+b, options:makeOptions(a+b,3), speak:S("¿Cuánto es "+a+" más "+b+"?","What is "+a+" plus "+b+"?") }; }
+    if(kind===2){ var c=ri(5,20), d=ri(1,c-1); return { topic:S("Restas hasta 20","Subtraction to 20"), text:S("¿Cuánto es "+c+" − "+d+"?","What is "+c+" − "+d+"?"), answer:c-d, options:makeOptions(c-d,3), speak:S("¿Cuánto es "+c+" menos "+d+"?","What is "+c+" minus "+d+"?") }; }
+    if(kind===3){ var s=ri(1,90); var step=pick([1,1,10]); var ans=s+step*3; return { topic:S("La serie","Sequences"), text:S("¿Qué número sigue?  "+s+", "+(s+step)+", "+(s+step*2)+", ?","What number comes next?  "+s+", "+(s+step)+", "+(s+step*2)+", ?"), answer:ans, options:makeOptions(ans, step===10?10:3), speak:S("¿Qué número sigue en la serie?","What number comes next in the sequence?") }; }
+    if(kind===4){ var x=ri(10,99), y=ri(10,99); while(y===x)y=ri(10,99); var may=Math.max(x,y); return { topic:S("Comparar","Comparing"), text:S("¿Cuál número es MAYOR: "+x+" o "+y+"?","Which number is BIGGER: "+x+" or "+y+"?"), answer:may, options:makeOptions(may,6), speak:S("¿Cuál número es mayor, "+x+" o "+y+"?","Which number is bigger, "+x+" or "+y+"?") }; }
+    var tot=ri(3,12), quedan=ri(1,tot-1);
+    return { topic:S("Problema","Word problem"), text:S("Tenías "+tot+" caramelos y te comiste "+(tot-quedan)+". ¿Cuántos te quedan?","You had "+tot+" candies and you ate "+(tot-quedan)+". How many do you have left?"), answer:quedan, options:makeOptions(quedan,3), speak:S("Tenías "+tot+" caramelos y te comiste "+(tot-quedan)+". ¿Cuántos te quedan?","You had "+tot+" candies and you ate "+(tot-quedan)+". How many do you have left?") };
+  }
+
+  function q2(){
+    var kind=ri(1,5);
+    if(kind===1){ var a=ri(15,89), b=ri(11,95-a); return { topic:S("Sumas hasta 100","Addition to 100"), text:S("¿Cuánto es "+a+" + "+b+"?","What is "+a+" + "+b+"?"), answer:a+b, options:makeOptions(a+b,6), speak:S("¿Cuánto es "+a+" más "+b+"?","What is "+a+" plus "+b+"?") }; }
+    if(kind===2){ var c=ri(30,99), d=ri(11,c-5); return { topic:S("Restas hasta 100","Subtraction to 100"), text:S("¿Cuánto es "+c+" − "+d+"?","What is "+c+" − "+d+"?"), answer:c-d, options:makeOptions(c-d,6), speak:S("¿Cuánto es "+c+" menos "+d+"?","What is "+c+" minus "+d+"?") }; }
+    if(kind===3){ var base=pick([2,5,10]); var mult=ri(2,9); return { topic:S("Multiplicar (inicio)","Multiplication (starter)"), text:S("¿Cuánto es "+base+" × "+mult+"?","What is "+base+" × "+mult+"?"), answer:base*mult, options:makeOptions(base*mult,5), speak:S("¿Cuánto es "+base+" por "+mult+"?","What is "+base+" times "+mult+"?") }; }
+    if(kind===4){ var dec=ri(1,9); var num=dec*10+ri(0,9); return { topic:S("Valor posicional","Place value"), text:S("En el número "+num+", ¿cuántas DECENAS hay?","In the number "+num+", how many TENS are there?"), answer:dec, options:makeOptions(dec,2), speak:S("¿Cuántas decenas hay en ese número?","How many tens are in that number?") }; }
+    var start=pick([2,4,5,10]); var pasos=ri(3,6); var ans=start*(pasos+1);
+    var serie=[]; for(var i=1;i<=pasos;i++) serie.push(start*i);
+    return { topic:S("Contar de "+start+" en "+start,"Counting by "+start+"s"), text:S("¿Qué número sigue?  "+serie.join(", ")+", ?","What number comes next?  "+serie.join(", ")+", ?"), answer:ans, options:makeOptions(ans,start), speak:S("Cuenta de "+start+" en "+start+". ¿Qué número sigue?","Count by "+start+"s. What number comes next?") };
+  }
+
+  function q3(){
+    var kind=ri(1,5);
+    if(kind===1||kind===2){ var a=ri(3,9), b=ri(3,9); return { topic:S("Tablas de multiplicar","Times tables"), text:S("¿Cuánto es "+a+" × "+b+"?","What is "+a+" × "+b+"?"), answer:a*b, options:makeOptions(a*b,7), speak:S("¿Cuánto es "+a+" por "+b+"?","What is "+a+" times "+b+"?") }; }
+    if(kind===3){ var d=ri(2,9), coc=ri(2,9); var dvd=d*coc; return { topic:S("Divisiones","Division"), text:S("¿Cuánto es "+dvd+" ÷ "+d+"?","What is "+dvd+" ÷ "+d+"?"), answer:coc, options:makeOptions(coc,3), speak:S("¿Cuánto es "+dvd+" dividido entre "+d+"?","What is "+dvd+" divided by "+d+"?") }; }
+    if(kind===4){ var a2=ri(120,800), b2=ri(50,900-a2); if(b2<10)b2=37; return { topic:S("Sumas grandes","Big addition"), text:S("¿Cuánto es "+a2+" + "+b2+"?","What is "+a2+" + "+b2+"?"), answer:a2+b2, options:makeOptions(a2+b2,12), speak:S("¿Cuánto es "+a2+" más "+b2+"?","What is "+a2+" plus "+b2+"?") }; }
+    var den=pick([2,3,4,6,8]); var num=ri(1,den-1);
+    var namesEs={2:"un medio",3:"un tercio",4:"un cuarto",6:"un sexto",8:"un octavo"};
+    var namesEn={2:"one half",3:"one third",4:"one quarter",6:"one sixth",8:"one eighth"};
+    return { topic:S("Fracciones","Fractions"), text:S("Si cortas una pizza en "+den+" partes iguales, ¿cómo se escribe UNA parte?","If you cut a pizza into "+den+" equal parts, how do you write ONE part?"), answer:"1/"+den,
+      options:makeOptions("1/"+den), speak:S("Si cortas una pizza en "+den+" partes iguales, una parte se escribe uno sobre "+den+".","If you cut a pizza into "+den+" equal parts, one part is written one over "+den+"."),
+      explain:S("Una parte de "+den+" se escribe 1/"+den+" ("+namesEs[den]+").","One part out of "+den+" is written 1/"+den+" ("+namesEn[den]+").") };
+  }
+
+  function q4(){
+    var kind=ri(1,5);
+    if(kind===1){ var a=ri(13,49), b=ri(3,9); return { topic:S("Multiplicación","Multiplication"), text:S("¿Cuánto es "+a+" × "+b+"?","What is "+a+" × "+b+"?"), answer:a*b, options:makeOptions(a*b,15), speak:S("¿Cuánto es "+a+" por "+b+"?","What is "+a+" times "+b+"?") }; }
+    if(kind===2){ var den=pick([2,3,4,5,6,8,10]); var n1=ri(1,den-1); var queda=den-n1; var n2=ri(1,queda); var res=n1+n2; return { topic:S("Sumar fracciones","Adding fractions"), text:S("¿Cuánto es "+n1+"/"+den+" + "+n2+"/"+den+"?","What is "+n1+"/"+den+" + "+n2+"/"+den+"?"), answer:res+"/"+den, options:makeOptions(res+"/"+den), speak:S("¿Cuánto es "+n1+" sobre "+den+" más "+n2+" sobre "+den+"?","What is "+n1+" over "+den+" plus "+n2+" over "+den+"?"), explain:S("Con el mismo denominador, solo se suman los de arriba: "+n1+" + "+n2+" = "+res+". Resultado: "+res+"/"+den+".","With the same denominator, just add the top numbers: "+n1+" + "+n2+" = "+res+". Answer: "+res+"/"+den+".") }; }
+    if(kind===3){ var d1=ri(11,89)/10, d2=ri(11,89)/10; var sum=Math.round((d1+d2)*10)/10; return { topic:S("Decimales","Decimals"), text:S("¿Cuánto es "+fmt(d1)+" + "+fmt(d2)+"?","What is "+fmt(d1)+" + "+fmt(d2)+"?"), answer:sum, options:makeOptions(sum,5), speak:S("¿Cuánto es "+fmt(d1)+" más "+fmt(d2)+"?","What is "+fmt(d1)+" plus "+fmt(d2)+"?"), explain:S("Suma los decimales alineando la coma: "+fmt(d1)+" + "+fmt(d2)+" = "+fmt(sum)+".","Add the decimals lining up the decimal point: "+fmt(d1)+" + "+fmt(d2)+" = "+fmt(sum)+".") }; }
+    if(kind===4){ var l=ri(3,12), w=ri(2,9); return { topic:S("Perímetro","Perimeter"), text:S("Un rectángulo mide "+l+" cm de largo y "+w+" cm de ancho. ¿Cuál es su perímetro?","A rectangle is "+l+" cm long and "+w+" cm wide. What is its perimeter?"), answer:2*(l+w), options:makeOptions(2*(l+w),6), speak:S("Un rectángulo mide "+l+" centímetros de largo y "+w+" de ancho. ¿Cuál es su perímetro?","A rectangle is "+l+" centimeters long and "+w+" wide. What is its perimeter?"), explain:S("Perímetro = "+l+" + "+w+" + "+l+" + "+w+" = "+(2*(l+w))+" cm.","Perimeter = "+l+" + "+w+" + "+l+" + "+w+" = "+(2*(l+w))+" cm.") }; }
+    var dd=ri(3,9), cc=ri(11,29); var dv=dd*cc; return { topic:S("Divisiones","Division"), text:S("¿Cuánto es "+dv+" ÷ "+dd+"?","What is "+dv+" ÷ "+dd+"?"), answer:cc, options:makeOptions(cc,4), speak:S("¿Cuánto es "+dv+" dividido entre "+dd+"?","What is "+dv+" divided by "+dd+"?") };
+  }
+
+  function q5(){
+    var kind=ri(1,5);
+    if(kind===1){ var den=pick([4,5,6,8,10]); var n1=ri(1,den-1), n2=ri(1,den-1); var res=n1+n2; var txt=res+"/"+den; var exp=S("Se suman los numeradores: "+n1+" + "+n2+" = "+res+", y el denominador se queda igual: "+den+".","Add the numerators: "+n1+" + "+n2+" = "+res+", and the denominator stays the same: "+den+"."); if(res===den){ txt="1"; exp=S(""+n1+" + "+n2+" = "+res+", y "+res+"/"+den+" es igual a 1 entero.",""+n1+" + "+n2+" = "+res+", and "+res+"/"+den+" equals 1 whole."); } if(res>den){ var ent=Math.floor(res/den), resto=res%den; txt = resto===0? String(ent) : ent+" "+resto+"/"+den; exp=S(""+n1+" + "+n2+" = "+res+". Como "+res+"/"+den+" es más de un entero, equivale a "+txt+".",""+n1+" + "+n2+" = "+res+". Since "+res+"/"+den+" is more than one whole, it equals "+txt+"."); var opts=shuffle([txt, res+"/"+den, (res+1)+"/"+den, n1+"/"+(den+n2)]); return { topic:S("Sumar fracciones","Adding fractions"), text:S("¿Cuánto es "+n1+"/"+den+" + "+n2+"/"+den+"?","What is "+n1+"/"+den+" + "+n2+"/"+den+"?"), answer:txt, options:opts, speak:S("¿Cuánto es "+n1+" sobre "+den+" más "+n2+" sobre "+den+"?","What is "+n1+" over "+den+" plus "+n2+" over "+den+"?"), explain:exp }; } return { topic:S("Sumar fracciones","Adding fractions"), text:S("¿Cuánto es "+n1+"/"+den+" + "+n2+"/"+den+"?","What is "+n1+"/"+den+" + "+n2+"/"+den+"?"), answer:txt, options:makeOptions(txt), speak:S("¿Cuánto es "+n1+" sobre "+den+" más "+n2+" sobre "+den+"?","What is "+n1+" over "+den+" plus "+n2+" over "+den+"?"), explain:exp }; }
+    if(kind===2){ var base=pick([20,40,50,60,80,100,200]); var pct=pick([10,25,50]); var ans=base*pct/100; return { topic:S("Porcentajes","Percentages"), text:S("¿Cuánto es el "+pct+"% de "+base+"?","What is "+pct+"% of "+base+"?"), answer:ans, options:makeOptions(ans,6), speak:S("¿Cuánto es el "+pct+" por ciento de "+base+"?","What is "+pct+" percent of "+base+"?"), explain:S("El "+pct+"% de "+base+" es "+ans+": divide "+base+" entre 100 y multiplica por "+pct+".",pct+"% of "+base+" is "+ans+": divide "+base+" by 100 and multiply by "+pct+".") }; }
+    if(kind===3){ var a=ri(2,9), b=ri(2,9), c=ri(2,20); var ans2=a+b*c; var wrong=(a+b)*c; var opts2=uniq4([ans2, wrong, a*b+c, ans2+ri(2,6)], ans2); return { topic:S("Orden de operaciones","Order of operations"), text:S("¿Cuánto es "+a+" + "+b+" × "+c+"?","What is "+a+" + "+b+" × "+c+"?"), answer:ans2, options:opts2, speak:S("¿Cuánto es "+a+" más "+b+" por "+c+"?","What is "+a+" plus "+b+" times "+c+"?"), explain:S("Primero se multiplica: "+b+" × "+c+" = "+(b*c)+". Después se suma: "+a+" + "+(b*c)+" = "+ans2+".","Multiply first: "+b+" × "+c+" = "+(b*c)+". Then add: "+a+" + "+(b*c)+" = "+ans2+".") }; }
+    if(kind===4){ var precio=Math.round(ri(15,95))/10; var cant=ri(2,6); var tot=Math.round(precio*cant*10)/10; return { topic:S("Problema con dinero","Money problem"), text:S("Un juguete cuesta $"+fmt(precio)+". ¿Cuánto cuestan "+cant+" juguetes?","A toy costs $"+fmt(precio)+". How much do "+cant+" toys cost?"), answer:tot, options:makeOptions(tot,8), speak:S("Un juguete cuesta "+fmt(precio)+" dólares. ¿Cuánto cuestan "+cant+" juguetes?","A toy costs "+fmt(precio)+" dollars. How much do "+cant+" toys cost?"), explain:S("Multiplica: "+fmt(precio)+" × "+cant+" = $"+fmt(tot)+".","Multiply: "+fmt(precio)+" × "+cant+" = $"+fmt(tot)+".") }; }
+    var dd=pick([3,4,5,6,8]); var coc=ri(12,48); var dv=dd*coc; return { topic:S("Divisiones grandes","Big division"), text:S("¿Cuánto es "+dv+" ÷ "+dd+"?","What is "+dv+" ÷ "+dd+"?"), answer:coc, options:makeOptions(coc,6), speak:S("¿Cuánto es "+dv+" dividido entre "+dd+"?","What is "+dv+" divided by "+dd+"?") };
+  }
+
+  /* ================= Niveles (bilingües) ================= */
+  var LEVELS=[
+    { id:"prek", color:"#F15BB5", gen:qPreK,
+      name:{es:"Preescolar",en:"Preschool"}, ages:{es:"3 a 5 años",en:"Ages 3 to 5"}, badge:{es:"Pre",en:"PreK"},
+      desc:{es:"Contar objetos, conocer los números del 1 al 10 y comparar.",en:"Count objects, learn numbers 1 to 10, and compare."} },
+    { id:"g1", color:"#FF6B6B", gen:q1,
+      name:{es:"1.º Grado",en:"1st Grade"}, ages:{es:"6 a 7 años",en:"Ages 6 to 7"}, badge:{es:"1.º",en:"1st"},
+      desc:{es:"Sumas y restas hasta 20, series y problemas cortos.",en:"Addition and subtraction to 20, sequences, and short word problems."} },
+    { id:"g2", color:"#FF8A3D", gen:q2,
+      name:{es:"2.º Grado",en:"2nd Grade"}, ages:{es:"7 a 8 años",en:"Ages 7 to 8"}, badge:{es:"2.º",en:"2nd"},
+      desc:{es:"Sumas y restas hasta 100, decenas y primeras multiplicaciones.",en:"Addition and subtraction to 100, tens, and first multiplications."} },
+    { id:"g3", color:"#51B04A", gen:q3,
+      name:{es:"3.º Grado",en:"3rd Grade"}, ages:{es:"8 a 9 años",en:"Ages 8 to 9"}, badge:{es:"3.º",en:"3rd"},
+      desc:{es:"Tablas de multiplicar, divisiones y fracciones sencillas.",en:"Times tables, division, and simple fractions."} },
+    { id:"g4", color:"#12B5A5", gen:q4,
+      name:{es:"4.º Grado",en:"4th Grade"}, ages:{es:"9 a 10 años",en:"Ages 9 to 10"}, badge:{es:"4.º",en:"4th"},
+      desc:{es:"Fracciones, decimales, perímetro y multiplicaciones grandes.",en:"Fractions, decimals, perimeter, and big multiplications."} },
+    { id:"g5", color:"#3E92CC", gen:q5,
+      name:{es:"5.º Grado",en:"5th Grade"}, ages:{es:"10 a 11 años",en:"Ages 10 to 11"}, badge:{es:"5.º",en:"5th"},
+      desc:{es:"Porcentajes, orden de operaciones y problemas con dinero.",en:"Percentages, order of operations, and money problems."} }
+  ];
+  function lvName(l){ return l.name[LANG]; }
+
+  /* ================= Estado (solo en esta sesión) ================= */
+  var starsByLevel={}; LEVELS.forEach(function(l){ starsByLevel[l.id]=0; });
+  var state={ level:null, qIndex:0, total:10, score:0, correct:0, streak:0, bestStreak:0, current:null, locked:false };
+
+  var $=function(id){ return document.getElementById(id); };
+  var elHome=$("screen-home"), elGame=$("screen-game"), elResult=$("screen-result");
+
+  /* ================= Idioma: aplicar a toda la interfaz ================= */
+  function applyLang(){
+    var t=T();
+    document.documentElement.lang = LANG;
+    document.title = t.docTitle;
+    $("lang-es").classList.toggle("active", LANG==="es");
+    $("lang-en").classList.toggle("active", LANG==="en");
+    $("lang-es").setAttribute("aria-pressed", LANG==="es" ? "true" : "false");
+    $("lang-en").setAttribute("aria-pressed", LANG==="en" ? "true" : "false");
+    $("hero-title").innerHTML=t.heroTitle;
+    $("hero-sub").textContent=t.heroSub;
+    $("free-pill").textContent=t.freePill;
+    $("howto-title").textContent=t.howtoTitle;
+    $("howto-list").innerHTML=t.howto.map(function(li){ return "<li>"+li+"</li>"; }).join("");
+    $("footer-text").textContent=t.footer;
+    $("btn-back").textContent=t.back;
+    $("listen-label").textContent=t.listen;
+    $("label-correct").textContent=t.labelCorrect;
+    $("label-points").textContent=t.labelPoints;
+    $("label-streak").textContent=t.labelStreak;
+    $("btn-again").textContent=t.again;
+    $("btn-levels").textContent=t.changeLevel;
+    $("pro-title").textContent=t.proTitle;
+    $("pro-desc").textContent=t.proDesc;
+    $("pro-list").innerHTML=t.proList.map(function(li){ return "<li>"+li+"</li>"; }).join("");
+    $("pro-note").textContent=t.proNote;
+    $("pro-buy").textContent=t.proBuy;
+    $("progress").setAttribute("aria-label", t.progressLabel);
+    if(state.level) $("chip-level").textContent=lvName(state.level);
+    $("chip-streak").textContent="🔥 "+t.streak+": "+state.streak;
+    $("chip-score").textContent="⭐ "+state.score+" pts";
+    if(!$("next-row").classList.contains("hidden")){
+      $("btn-next").textContent = state.qIndex+1>=state.total ? t.seeResult : t.next;
+    }
+    renderLevels();
+    // Si hay una ronda terminada visible, retraducir el resultado
+    if(!elResult.classList.contains("hidden") && state.level) finishRoundText();
+  }
+  function setLang(l){
+    if(LANG===l) return;
+    LANG=l;
+    try{ window.speechSynthesis.cancel(); }catch(e){}
+    sndClick();
+    // Si se cambia el idioma a mitad de partida, se genera una pregunta nueva en ese idioma
+    var inGame = !elGame.classList.contains("hidden");
+    applyLang();
+    if(inGame && state.level) nextQuestion();
+  }
+
+  /* ================= Construir tarjetas de nivel ================= */
+  function starStr(n){ var s=""; for(var i=0;i<3;i++) s+= i<n ? "★" : "☆"; return s; }
+  function renderLevels(){
+    var t=T();
+    var wrap=$("levels"); wrap.innerHTML="";
+    LEVELS.forEach(function(l){
+      var b=document.createElement("button");
+      b.type="button"; b.className="level-btn"; b.style.setProperty("--lc", l.color);
+      var earned = starsByLevel[l.id]>0
+        ? '<div class="earned" aria-label="'+t.starsAria(starsByLevel[l.id])+'">'+starStr(starsByLevel[l.id])+'</div>'
+        : '<div class="earned"><span class="none">'+t.notPlayed+'</span></div>';
+      b.innerHTML='<span class="badge">'+l.badge[LANG]+'</span><span><h3>'+l.name[LANG]+' <span style="color:var(--ink-soft);font-size:14px;font-weight:800">· '+l.ages[LANG]+'</span></h3><p>'+l.desc[LANG]+'</p>'+earned+'</span>';
+      b.addEventListener("click", function(){ sndClick(); startRound(l); });
+      wrap.appendChild(b);
+    });
+    var total=0; LEVELS.forEach(function(l){ total+=starsByLevel[l.id]; });
+    $("total-stars-text").textContent = t.starsTotal(total);
+    var icons=""; for(var i=0;i<18;i++) icons+= i<total ? "★" : "☆";
+    $("total-stars-icons").textContent=icons;
+  }
+
+  /* ================= Flujo del juego ================= */
+  function show(el){ [elHome,elGame,elResult].forEach(function(s){ s.classList.add("hidden"); }); el.classList.remove("hidden"); window.scrollTo({top:0,behavior:"smooth"}); }
+
+  function startRound(level){
+    state.level=level; state.qIndex=0; state.score=0; state.correct=0; state.streak=0; state.bestStreak=0;
+    $("chip-level").textContent=lvName(level);
+    $("qcard").style.setProperty("--lc", level.color);
+    show(elGame);
+    nextQuestion();
+  }
+
+  function nextQuestion(){
+    state.locked=false;
+    state.current = state.level.gen();
+    var q=state.current, t=T();
+    $("q-topic").textContent=q.topic+" · "+t.questionOf(state.qIndex+1, state.total);
+    $("q-text").textContent=q.text;
+    var vis=$("q-visual");
+    if(q.visual){ vis.innerHTML=q.visual; vis.classList.remove("hidden"); } else { vis.innerHTML=""; vis.classList.add("hidden"); }
+    currentSpeakText=q.speak||q.text;
+    $("chip-score").textContent="⭐ "+state.score+" pts";
+    $("chip-streak").textContent="🔥 "+t.streak+": "+state.streak;
+    var pct=(state.qIndex/state.total)*100;
+    $("progress-fill").style.width=pct+"%";
+    $("progress").setAttribute("aria-valuenow", state.qIndex);
+    $("feedback").classList.add("hidden");
+    $("next-row").classList.add("hidden");
+
+    var ansWrap=$("answers"); ansWrap.innerHTML="";
+    q.options.forEach(function(opt){
+      var b=document.createElement("button");
+      b.type="button"; b.className="ans-btn"; b.textContent=fmt(opt);
+      b.addEventListener("click", function(ev){ answer(b, opt, ev); });
+      ansWrap.appendChild(b);
+    });
+  }
+
+  function answer(btn, opt, ev){
+    if(state.locked) return;
+    state.locked=true;
+    var q=state.current, t=T();
+    var isGood = String(opt)===String(q.answer);
+    var buttons=document.querySelectorAll(".ans-btn");
+    buttons.forEach(function(b){
+      b.disabled=true;
+      if(b.textContent===fmt(q.answer)) b.classList.add("correct");
+      else if(b===btn && !isGood) b.classList.add("wrong");
+      else b.classList.add("dim");
+    });
+    var fb=$("feedback"); fb.classList.remove("hidden");
+    if(isGood){
+      sndGood();
+      state.correct++; state.streak++; if(state.streak>state.bestStreak) state.bestStreak=state.streak;
+      var pts = state.streak>=3 ? 15 : 10;
+      state.score+=pts;
+      fb.className="feedback good";
+      fb.innerHTML='<span class="face">🎉</span><span><strong>'+pick(t.praise)+'</strong> '+t.goodAnswer(fmt(q.answer))+(state.streak>=3 ? t.goodStreak(state.streak) : t.goodPoints)+(q.explain ? "<br>"+q.explain : "")+'</span>';
+      floatPoints("+"+pts, ev);
+    } else {
+      sndBad();
+      state.streak=0;
+      fb.className="feedback bad";
+      fb.innerHTML='<span class="face">🦉</span><span><strong>'+t.badStart+'</strong> '+t.badAnswer(fmt(q.answer))+(q.explain ? q.explain : t.badDefault)+'</span>';
+    }
+    $("chip-score").textContent="⭐ "+state.score+" pts";
+    $("chip-streak").textContent="🔥 "+t.streak+": "+state.streak;
+    $("progress-fill").style.width=((state.qIndex+1)/state.total)*100+"%";
+    $("progress").setAttribute("aria-valuenow", state.qIndex+1);
+    $("btn-next").textContent = state.qIndex+1>=state.total ? t.seeResult : t.next;
+    $("next-row").classList.remove("hidden");
+    $("btn-next").focus({preventScroll:true});
+  }
+
+  function floatPoints(txt, ev){
+    if(!ev) return;
+    var s=document.createElement("span");
+    s.className="float-points"; s.textContent=txt;
+    s.style.left=(ev.clientX-16)+"px"; s.style.top=(ev.clientY-44)+"px";
+    document.body.appendChild(s);
+    setTimeout(function(){ s.remove(); }, 1000);
+  }
+
+  function roundStars(){ var c=state.correct; return c>=9 ? 3 : (c>=7 ? 2 : (c>=5 ? 1 : 0)); }
+  function finishRoundText(){
+    var stars=roundStars(), t=T();
+    var r=t.results[stars];
+    $("result-emoji").textContent=r.emoji;
+    var ss=""; for(var i=0;i<3;i++) ss+= i<stars ? "★" : '<span class="off">★</span>';
+    $("result-stars").innerHTML=ss;
+    $("result-title").textContent=r.title;
+    $("result-msg").textContent=r.msg(lvName(state.level));
+    $("result-correct").textContent=state.correct+"/"+state.total;
+    $("result-points").textContent=state.score;
+    $("result-best-streak").textContent=state.bestStreak;
+  }
+  function finishRound(){
+    var stars=roundStars();
+    if(stars>starsByLevel[state.level.id]) starsByLevel[state.level.id]=stars;
+    finishRoundText();
+    renderLevels();
+    show(elResult);
+    if(stars>=2){ sndWin(); confetti(); } else { sndGood(); }
+  }
+
+  function confetti(){
+    var box=$("confetti"); box.innerHTML=""; box.classList.remove("hidden");
+    var colors=["#FF6B6B","#FFC93C","#12B5A5","#3E92CC","#51B04A","#F15BB5","#FF8A3D"];
+    for(var i=0;i<70;i++){
+      var p=document.createElement("i");
+      p.style.left=Math.random()*100+"vw";
+      p.style.background=pick(colors);
+      p.style.animationDuration=(1.6+Math.random()*1.8)+"s";
+      p.style.animationDelay=(Math.random()*0.5)+"s";
+      p.style.transform="rotate("+(Math.random()*360)+"deg)";
+      box.appendChild(p);
+    }
+    setTimeout(function(){ box.classList.add("hidden"); box.innerHTML=""; }, 4200);
+  }
+
+  /* ================= Eventos ================= */
+  $("lang-es").addEventListener("click", function(){ setLang("es"); });
+  $("lang-en").addEventListener("click", function(){ setLang("en"); });
+  $("btn-next").addEventListener("click", function(){
+    sndClick();
+    state.qIndex++;
+    if(state.qIndex>=state.total) finishRound(); else nextQuestion();
+  });
+  $("btn-back").addEventListener("click", function(){ sndClick(); try{ window.speechSynthesis.cancel(); }catch(e){} renderLevels(); show(elHome); });
+  $("btn-again").addEventListener("click", function(){ sndClick(); startRound(state.level); });
+  $("btn-levels").addEventListener("click", function(){ sndClick(); renderLevels(); show(elHome); });
+  $("btn-listen").addEventListener("click", function(){ speak(); });
+
+  applyLang();
+})();
+</script>
+</body>
+</html>
