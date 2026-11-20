@@ -1,0 +1,30 @@
+{
+  "name": "Dialysis Tech Coach — Práctica CCHT",
+  "short_name": "Dialysis Coach",
+  "description": "Práctica gratuita para el examen CCHT: 32 preguntas originales de escenario con explicación bilingüe (inglés/español), estudio por bloques y dominios y mini simulación con las proporciones oficiales NNCC. Por Kiustin G.",
+  "lang": "es",
+  "start_url": "/app/dialysis-tech-coach/",
+  "scope": "/app/dialysis-tech-coach/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0C0C0E",
+  "theme_color": "#0C0C0E",
+  "icons": [
+    {
+      "src": "/app/dialysis-tech-coach/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/app/dialysis-tech-coach/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/app/dialysis-tech-coach/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
