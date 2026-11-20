@@ -34,5 +34,17 @@
         "47:96:8B:3B:2A:24:5F:47:80:9E:16:6E:C5:E8:12:F6:66:CD:F8:A3:A7:A1:01:E2:0C:BA:6E:32:15:9D:D7:02"
       ]
     }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.kiusting.rutaenfermeria",
+      "sha256_cert_fingerprints": [
+        "8E:33:41:30:9B:F5:7B:23:1B:42:33:81:D2:0E:34:E2:6B:2F:6D:AD:A5:63:F4:2F:D2:55:09:61:F2:F5:3F:BA"
+      ]
+    }
   }
 ]
