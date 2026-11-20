@@ -46,5 +46,17 @@
         "8E:33:41:30:9B:F5:7B:23:1B:42:33:81:D2:0E:34:E2:6B:2F:6D:AD:A5:63:F4:2F:D2:55:09:61:F2:F5:3F:BA"
       ]
     }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.kiusting.dialysistechcoach",
+      "sha256_cert_fingerprints": [
+        "FC:46:F0:D3:4D:5B:DC:59:C1:91:B2:20:F1:55:57:33:9D:3D:43:80:58:ED:47:B2:A9:2E:0A:FC:B4:51:18:96"
+      ]
+    }
   }
 ]
