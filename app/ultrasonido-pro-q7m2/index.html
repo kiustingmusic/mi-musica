@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="data:," />
+    <title>Quiz Ultrasonido RDMS</title>
+    <style>
+      button, [role="button"] { min-height: 2.75rem; }
+      * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+      :root{
+        --cream:#FFF6E3; --cream2:#FFEDCB;
+        --teal:#0E7C86; --teal-d:#07545D; --teal-l:#22A9B8;
+        --gold:#F5B93F; --gold-d:#CE8A0B;
+        --ink:#173F45; --ink-soft:#47666B;
+        --card:#FFFDF6;
+        --good:#1E9E6A; --good-d:#147A50;
+        --bad:#D9534F; --bad-d:#B03A36;
+        --line:#EAD9B8;
+        --shadow:0 10px 24px rgba(120,84,10,.14), 0 2px 6px rgba(120,84,10,.10);
+      }
+      html,body{ margin:0; padding:0; }
+      body{
+        font-family: ui-rounded, "SF Pro Rounded", "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+        color:var(--ink);
+        background:
+          radial-gradient(560px 300px at 110% -60px, rgba(245,185,63,.35), rgba(245,185,63,0) 70%),
+          radial-gradient(640px 340px at -140px 18%, rgba(34,169,184,.22), rgba(34,169,184,0) 70%),
+          radial-gradient(700px 380px at 50% 115%, rgba(14,124,134,.14), rgba(14,124,134,0) 70%),
+          linear-gradient(180deg, var(--cream) 0%, var(--cream2) 100%);
+        background-attachment: fixed;
+        min-height:100vh;
+      }
+      .wrap{ max-width:860px; margin:0 auto; padding:18px 16px 48px; }
+
+      /* ---------- Top bar ---------- */
+      .topbar{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+      .brand{ display:flex; align-items:center; gap:12px; flex:1 1 auto; min-width:210px; }
+      .badge{
+        width:52px; height:52px; flex:0 0 52px; border-radius:16px;
+        background:linear-gradient(160deg, var(--teal-l) 0%, var(--teal) 55%, var(--teal-d) 100%);
+        box-shadow: inset 0 2px 3px rgba(255,255,255,.55), inset 0 -4px 6px rgba(0,0,0,.22), 0 8px 16px rgba(7,84,93,.30);
+        display:flex; align-items:center; justify-content:center;
+      }
+      .badge svg{ width:32px; height:32px; }
+      .brand h1{ font-size:1.28rem; line-height:1.12; margin:0; letter-spacing:.2px; }
+      .brand h1 .gold{ color:var(--gold-d); }
+      .brand p{ margin:2px 0 0; font-size:.82rem; color:var(--ink-soft); font-weight:600; }
+      .controls{ display:flex; gap:8px; align-items:center; }
+      .ctl{
+        border:1px solid var(--line); cursor:pointer; color:var(--ink);
+        background:linear-gradient(180deg,#FFFFFF 0%, #FFF3D9 100%);
+        box-shadow: inset 0 2px 2px rgba(255,255,255,.9), inset 0 -3px 4px rgba(206,138,11,.14), 0 4px 10px rgba(120,84,10,.14);
+        border-radius:999px; padding:8px 14px; font:inherit; font-weight:800; font-size:.9rem;
+        min-width:48px;
+      }
+      .ctl:active{ transform:translateY(1px); }
+      .ctl.lang b{ color:var(--teal-d); }
+      .ctl.lang span{ color:#B7A67F; }
+
+      /* ---------- Summary strip ---------- */
+      .summary{
+        margin-top:16px; background:var(--card); border:1px solid var(--line); border-radius:20px;
+        box-shadow:var(--shadow); padding:14px 16px;
+        display:flex; gap:14px; align-items:center; flex-wrap:wrap;
+      }
+      .summary .big{ font-size:1.05rem; font-weight:800; }
+      .summary .sub{ font-size:.82rem; color:var(--ink-soft); font-weight:600; }
+      .meter{ flex:1 1 180px; }
+      .meter .track{ height:14px; border-radius:999px; background:#F1E3C2; box-shadow: inset 0 2px 4px rgba(120,84,10,.25); overflow:hidden; }
+      .meter .fill{ height:100%; width:0%; border-radius:999px;
+        background:linear-gradient(180deg,#FFD97A 0%, var(--gold) 55%, var(--gold-d) 100%);
+        box-shadow: inset 0 2px 2px rgba(255,255,255,.6);
+        transition:width .6s ease; }
+      .meter .lbl{ font-size:.78rem; font-weight:700; color:var(--ink-soft); margin-top:5px; }
+      .note{ margin-top:12px; font-size:.88rem; color:var(--ink-soft); font-weight:600; }
+      .note b{ color:var(--teal-d); }
+
+      /* ---------- Level cards ---------- */
+      .grid{ display:grid; grid-template-columns:1fr; gap:14px; margin-top:16px; }
+      @media (min-width:640px){ .grid{ grid-template-columns:1fr 1fr; } }
+      .lvl{
+        position:relative; text-align:left; width:100%; cursor:pointer; font:inherit; color:var(--ink);
+        background:linear-gradient(180deg,#FFFFFF 0%, var(--card) 60%, #FFF6DF 100%);
+        border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow);
+        padding:16px 16px 14px; display:flex; gap:14px; align-items:flex-start;
+        transition:transform .12s ease;
+      }
+      .lvl:not(:disabled):active{ transform:scale(.985); }
+      .lvl:disabled{ cursor:not-allowed; }
+      .lvl .num{
+        width:54px; height:54px; flex:0 0 54px; border-radius:50%;
+        background:linear-gradient(160deg, var(--teal-l), var(--teal) 60%, var(--teal-d));
+        color:#fff; font-size:1.35rem; font-weight:900;
+        display:flex; align-items:center; justify-content:center;
+        box-shadow: inset 0 3px 4px rgba(255,255,255,.5), inset 0 -5px 7px rgba(0,0,0,.25), 0 6px 12px rgba(7,84,93,.30);
+        text-shadow:0 1px 2px rgba(0,0,0,.25);
+      }
+      .lvl.locked .num{ background:linear-gradient(160deg,#C9C2B2,#A79E88 60%,#8D8471); box-shadow: inset 0 3px 4px rgba(255,255,255,.5), inset 0 -5px 7px rgba(0,0,0,.2), 0 6px 12px rgba(90,80,50,.25); }
+      .lvl .info{ flex:1 1 auto; min-width:0; }
+      .lvl h2{ margin:0; font-size:1.04rem; line-height:1.2; padding-right:56px; }
+      .lvl .tag{ margin:3px 0 0; font-size:.83rem; color:var(--ink-soft); font-weight:600; line-height:1.35; }
+      .lvl .row{ display:flex; align-items:center; gap:10px; margin-top:9px; flex-wrap:wrap; }
+      .stars{ font-size:1.05rem; letter-spacing:2px; color:var(--gold-d); }
+      .stars .off{ color:#DECFA6; }
+      .best{ font-size:.78rem; font-weight:800; color:var(--teal-d); background:#E4F4F3; border:1px solid #BFE3DF; padding:3px 9px; border-radius:999px; }
+      .locktag{ font-size:.78rem; font-weight:800; color:#8D8471; background:#F0EAD8; border:1px solid var(--line); padding:3px 9px; border-radius:999px; display:inline-flex; align-items:center; gap:5px; }
+      .locktag svg{ width:12px; height:12px; }
+      .lvl .exam{ position:absolute; top:12px; right:14px; font-size:.66rem; font-weight:900; letter-spacing:.8px; color:var(--gold-d); }
+
+      .foot{ margin-top:22px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+      .foot .sig{ font-size:.8rem; color:var(--ink-soft); font-weight:700; }
+      .reset{ background:none; border:none; cursor:pointer; font:inherit; font-size:.82rem; font-weight:800; color:var(--bad-d); padding:10px 12px; border-radius:12px; }
+      .reset.armed{ background:#FBE3E1; }
+
+      /* ---------- Quiz ---------- */
+      .hidden{ display:none !important; }
+      .qhead{ display:flex; align-items:center; gap:10px; margin-top:6px; }
+      .back{
+        border:1px solid var(--line); cursor:pointer; font:inherit; font-weight:800; color:var(--teal-d);
+        background:linear-gradient(180deg,#FFFFFF,#FFF3D9); border-radius:999px; padding:8px 14px;
+        box-shadow: inset 0 2px 2px rgba(255,255,255,.9), 0 4px 10px rgba(120,84,10,.12);
+      }
+      .qhead .ttl{ font-weight:900; font-size:1rem; }
+      .qhead .cnt{ margin-left:auto; font-weight:800; color:var(--ink-soft); font-size:.9rem; white-space:nowrap; }
+      .qtrack{ height:14px; border-radius:999px; background:#F1E3C2; box-shadow: inset 0 2px 4px rgba(120,84,10,.25); overflow:hidden; margin-top:12px; }
+      .qfill{ height:100%; width:0%; border-radius:999px;
+        background:linear-gradient(180deg,#3FC3CF, var(--teal) 60%, var(--teal-d));
+        box-shadow: inset 0 2px 2px rgba(255,255,255,.55); transition:width .45s ease; }
+      .qcard{
+        margin-top:16px; background:linear-gradient(180deg,#FFFFFF, var(--card) 70%, #FFF8E6);
+        border:1px solid var(--line); border-radius:24px; box-shadow:var(--shadow); padding:20px 18px;
+      }
+      .qcard .q{ font-size:1.13rem; line-height:1.45; font-weight:700; margin:0; }
+      .opts{ display:grid; gap:11px; margin-top:18px; }
+      .opt{
+        display:flex; align-items:center; gap:12px; text-align:left; width:100%; cursor:pointer; font:inherit;
+        color:var(--ink); font-weight:600; font-size:1rem; line-height:1.35;
+        background:linear-gradient(180deg,#FFFFFF,#FFF9EA);
+        border:2px solid var(--line); border-radius:16px; padding:12px 14px;
+        box-shadow: inset 0 2px 2px rgba(255,255,255,.95), 0 3px 8px rgba(120,84,10,.08);
+        transition:transform .1s ease, border-color .1s ease;
+      }
+      .opt:not(:disabled):active{ transform:scale(.99); }
+      .opt .chip{
+        width:34px; height:34px; flex:0 0 34px; border-radius:50%;
+        background:linear-gradient(160deg, var(--teal-l), var(--teal) 60%, var(--teal-d));
+        color:#fff; font-weight:900; display:flex; align-items:center; justify-content:center; font-size:.95rem;
+        box-shadow: inset 0 2px 3px rgba(255,255,255,.5), inset 0 -3px 4px rgba(0,0,0,.22);
+      }
+      .opt:disabled{ cursor:default; opacity:1; }
+      .opt.correct{ border-color:var(--good); background:linear-gradient(180deg,#EAFaf2,#DDF5E8); }
+      .opt.correct .chip{ background:linear-gradient(160deg,#35C788, var(--good) 60%, var(--good-d)); }
+      .opt.wrong{ border-color:var(--bad); background:linear-gradient(180deg,#FDEEED,#FADFDE); }
+      .opt.wrong .chip{ background:linear-gradient(160deg,#E87B76, var(--bad) 60%, var(--bad-d)); }
+      .opt.dim{ opacity:.55; }
+      .fb{ margin-top:16px; border-radius:16px; padding:14px 16px; font-size:.97rem; line-height:1.5; }
+      .fb.good{ background:#E7F7EE; border:1px solid #B7E6CC; }
+      .fb.bad{ background:#FDEEED; border:1px solid #F3C2C0; }
+      .fb .verdict{ font-weight:900; font-size:1.02rem; }
+      .fb.good .verdict{ color:var(--good-d); }
+      .fb.bad .verdict{ color:var(--bad-d); }
+      .fb .expl{ margin-top:6px; color:var(--ink); }
+      .fb .expl b{ color:var(--teal-d); }
+      .nextrow{ margin-top:16px; display:flex; justify-content:flex-end; }
+      .btn{
+        border:none; cursor:pointer; font:inherit; font-weight:900; font-size:1rem; color:#fff;
+        background:linear-gradient(180deg,#2FB3C0, var(--teal) 55%, var(--teal-d));
+        border-radius:999px; padding:13px 26px; min-height:50px;
+        box-shadow: inset 0 2px 3px rgba(255,255,255,.55), inset 0 -4px 6px rgba(0,0,0,.22), 0 8px 16px rgba(7,84,93,.28);
+        text-shadow:0 1px 2px rgba(0,0,0,.2);
+      }
+      .btn:active{ transform:translateY(1px); }
+      .btn.gold{ background:linear-gradient(180deg,#FFD97A, var(--gold) 55%, var(--gold-d)); color:#5C3D02; text-shadow:0 1px 1px rgba(255,255,255,.5); box-shadow: inset 0 2px 3px rgba(255,255,255,.7), inset 0 -4px 6px rgba(120,70,0,.25), 0 8px 16px rgba(206,138,11,.30); }
+      .btn.ghost{ background:linear-gradient(180deg,#FFFFFF,#FFF3D9); color:var(--teal-d); border:1px solid var(--line); text-shadow:none; box-shadow: inset 0 2px 2px rgba(255,255,255,.9), 0 4px 10px rgba(120,84,10,.12); }
+
+      /* ---------- Results ---------- */
+      .result{
+        margin-top:16px; text-align:center; background:linear-gradient(180deg,#FFFFFF, var(--card) 70%, #FFF6DF);
+        border:1px solid var(--line); border-radius:26px; box-shadow:var(--shadow); padding:28px 20px 24px;
+      }
+      .result .trophy{ width:86px; height:86px; margin:0 auto 8px; border-radius:50%;
+        background:linear-gradient(160deg,#FFE08F, var(--gold) 55%, var(--gold-d));
+        display:flex; align-items:center; justify-content:center;
+        box-shadow: inset 0 3px 5px rgba(255,255,255,.75), inset 0 -6px 9px rgba(120,70,0,.28), 0 10px 20px rgba(206,138,11,.35); }
+      .result .trophy svg{ width:46px; height:46px; }
+      .result h2{ margin:6px 0 2px; font-size:1.5rem; }
+      .result .score{ font-size:1.05rem; font-weight:800; color:var(--ink-soft); }
+      .result .stars{ font-size:2rem; letter-spacing:6px; margin:10px 0 4px; }
+      .result .msg{ font-size:.98rem; color:var(--ink-soft); font-weight:600; line-height:1.5; max-width:46ch; margin:6px auto 0; }
+      .result .btns{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:20px; }
+
+      #confetti{ position:fixed; inset:0; pointer-events:none; z-index:60; }
+      @media (prefers-reduced-motion: reduce){
+        .meter .fill, .qfill{ transition:none; }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="confetti" width="0" height="0"></canvas>
+    <div class="wrap">
+
+      <!-- ================= HOME ================= -->
+      <section id="view-home">
+        <div class="topbar">
+          <div class="brand">
+            <div class="badge" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none"><path d="M6 30c4-9 8-13 12-13 3 0 4 3 6 6 1.6 2.4 3 4 5 4 3 0 5-3 7-8" stroke="#FFE9B0" stroke-width="3.4" stroke-linecap="round"/><path d="M6 38c5-6 9-8 13-8 3.4 0 5 2.4 7 4.6 1.4 1.6 2.8 2.4 4.4 2.4 2.6 0 4.8-2 6.6-5" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity=".85"/><circle cx="38" cy="11" r="4.4" fill="#F5B93F" stroke="#FFF3D0" stroke-width="1.6"/></svg>
+            </div>
+            <div>
+              <h1>Quiz Ultrasonido <span class="gold">RDMS</span></h1>
+              <p id="brand-sub">Práctica SPI + OB/GYN · Kiustin G</p>
+            </div>
+          </div>
+          <div class="controls">
+            <button class="ctl lang" id="btn-lang" type="button" aria-label="Language / Idioma"><b id="lang-cur">ES</b> <span>|</span> <span id="lang-alt">EN</span></button>
+            <button class="ctl" id="btn-sound" type="button" aria-label="Sonido / Sound">🔊</button>
+          </div>
+        </div>
+
+        <div class="summary">
+          <div>
+            <div class="big" id="sum-stars">⭐ 0 / 18</div>
+            <div class="sub" id="sum-levels">0 de 6 niveles aprobados</div>
+          </div>
+          <div class="meter">
+            <div class="track"><div class="fill" id="sum-fill"></div></div>
+            <div class="lbl" id="sum-lbl">Tu ruta: SPI → OB/GYN</div>
+          </div>
+        </div>
+
+        <p class="note" id="home-note">Preguntas <b>en inglés</b>, como el examen real de ARDMS · Explicaciones <b>en español</b> · Apruebas cada nivel con <b>70% o más</b> y desbloqueas el siguiente.</p>
+
+        <div class="grid" id="level-grid"></div>
+
+        <div class="foot">
+          <span class="sig">Kiustin G · Salud PRO</span>
+          <button class="reset" id="btn-reset" type="button">Borrar mi progreso</button>
+        </div>
+      </section>
+
+      <!-- ================= QUIZ ================= -->
+      <section id="view-quiz" class="hidden">
+        <div class="qhead">
+          <button class="back" id="btn-back" type="button">← <span id="back-lbl">Niveles</span></button>
+          <span class="ttl" id="q-level-name"></span>
+          <span class="cnt" id="q-count"></span>
+        </div>
+        <div class="qtrack"><div class="qfill" id="q-fill"></div></div>
+        <div class="qcard">
+          <p class="q" id="q-text"></p>
+          <div class="opts" id="q-opts"></div>
+          <div class="fb hidden" id="q-fb">
+            <div class="verdict" id="q-verdict"></div>
+            <div class="expl" id="q-expl"></div>
+          </div>
+          <div class="nextrow">
+            <button class="btn hidden" id="btn-next" type="button">Siguiente →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= RESULT ================= -->
+      <section id="view-result" class="hidden">
+        <div class="result">
+          <div class="trophy" id="res-trophy" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none"><path d="M14 6h20v10a10 10 0 0 1-20 0V6Z" fill="#FFF7DD" stroke="#8A5E04" stroke-width="2"/><path d="M14 10H7a7 7 0 0 0 7 7M34 10h7a7 7 0 0 1-7 7" stroke="#8A5E04" stroke-width="2.4" stroke-linecap="round"/><path d="M24 26v6M17 40h14M21 32h6l1.4 8H19.6L21 32Z" fill="#FFF7DD" stroke="#8A5E04" stroke-width="2" stroke-linejoin="round"/><path d="M24 11l1.7 3.4 3.8.6-2.7 2.7.6 3.8L24 19.7l-3.4 1.8.6-3.8-2.7-2.7 3.8-.6L24 11Z" fill="#F5B93F"/></svg>
+          </div>
+          <h2 id="res-title">¡Nivel aprobado!</h2>
+          <div class="score" id="res-score"></div>
+          <div class="stars" id="res-stars"></div>
+          <p class="msg" id="res-msg"></p>
+          <div class="btns">
+            <button class="btn ghost" id="btn-res-home" type="button">Niveles</button>
+            <button class="btn" id="btn-res-retry" type="button">Repetir nivel</button>
+            <button class="btn gold hidden" id="btn-res-next" type="button">Siguiente nivel →</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+<script>
+"use strict";
+/* ============================================================
+   Quiz Ultrasonido RDMS — Kiustin G
+   Preguntas 100% originales, escritas desde el temario público
+   de ARDMS (SPI + OB/GYN). Preguntas en inglés (examen real),
+   explicaciones en español.
+   ============================================================ */
+var LEVELS = [
+{
+  exam:"SPI", es:"Física del ultrasonido I", en:"Ultrasound Physics I",
+  tag_es:"Ondas, frecuencia, longitud de onda, velocidad, impedancia y atenuación",
+  tag_en:"Waves, frequency, wavelength, speed, impedance and attenuation",
+  qs:[
+    { q:"What is the average propagation speed of sound in soft tissue?",
+      o:["330 m/s","1,450 m/s","1,540 m/s","4,080 m/s"], a:2,
+      x:"Los equipos de ultrasonido calibran todas las distancias usando <b>1,540 m/s</b>, el promedio del tejido blando. Como referencia: la grasa anda cerca de 1,450 m/s y el hueso cerca de 4,080 m/s." },
+    { q:"A sound wave has a period of 0.2 microseconds. What is its frequency?",
+      o:["0.5 MHz","2 MHz","5 MHz","20 MHz"], a:2,
+      x:"Frecuencia y período son recíprocos: <b>f = 1 / T</b>. Entonces 1 ÷ 0.2 µs = <b>5 MHz</b>. Si sube la frecuencia, baja el período." },
+    { q:"What is the wavelength of a 5 MHz sound wave traveling in soft tissue?",
+      o:["0.31 mm","0.77 mm","1.54 mm","3.08 mm"], a:0,
+      x:"Longitud de onda: <b>λ = c / f</b> = 1,540 m/s ÷ 5,000,000 Hz = <b>0.31 mm</b>. A mayor frecuencia, menor longitud de onda y mejor detalle." },
+    { q:"Which parameter is determined ONLY by the sound source and does NOT change when the wave enters a different medium?",
+      o:["Propagation speed","Wavelength","Frequency","Period and wavelength"], a:2,
+      x:"La <b>frecuencia la fija la fuente</b> (el transductor) y no cambia entre medios. La velocidad la determina el medio, y la longitud de onda depende de ambas." },
+    { q:"Acoustic impedance is calculated by multiplying which two values?",
+      o:["Frequency × wavelength","Density × propagation speed","Speed × period","Density ÷ speed"], a:1,
+      x:"Impedancia acústica: <b>Z = densidad × velocidad de propagación</b>, y se mide en Rayls. Es el valor que decide cuánta energía se refleja en cada interfase." },
+    { q:"A sound beam reaches a boundary between two tissues whose acoustic impedances are very different. Compared with a boundary of similar impedances, the reflected echo will be:",
+      o:["Weaker","Stronger","Unchanged","Completely refracted"], a:1,
+      x:"A <b>mayor diferencia de impedancia, mayor reflexión</b>. Por eso la interfase tejido–aire refleja casi el 100% y necesitamos gel: para eliminar el aire entre el transductor y la piel." },
+    { q:"Refraction of an ultrasound beam occurs when the beam:",
+      o:["Strikes a boundary at an oblique angle and the two media have different propagation speeds","Strikes a boundary perpendicular to its surface","Is completely absorbed by the tissue","Doubles its frequency in the tissue"], a:0,
+      x:"La <b>refracción</b> es la desviación del haz al cruzar oblicuamente entre medios con velocidades distintas (ley de Snell). Puede producir artefactos de posición, como estructuras duplicadas o desplazadas." },
+    { q:"In soft tissue, attenuation is approximately:",
+      o:["0.05 dB/cm/MHz","0.5 dB/cm/MHz","5 dB/cm/MHz","50 dB/cm/MHz"], a:1,
+      x:"Regla práctica del examen: la atenuación en tejido blando es de ≈ <b>0.5 dB/cm por cada MHz</b>. Aumenta con la frecuencia y con la distancia recorrida; por eso los transductores de alta frecuencia penetran menos." },
+    { q:"If the amplitude of a sound wave is doubled, its intensity will increase by a factor of:",
+      o:["2","4","8","10"], a:1,
+      x:"La intensidad es proporcional al <b>cuadrado de la amplitud</b>: si la amplitud se duplica (×2), la intensidad se multiplica por 2² = <b>4</b>." },
+    { q:"An increase of 3 dB in the intensity of a sound beam means the intensity has:",
+      o:["Increased by half","Doubled","Tripled","Increased tenfold"], a:1,
+      x:"En decibelios: <b>+3 dB ≈ el doble</b> de intensidad, +10 dB = diez veces más, y −3 dB = la mitad. Es una escala logarítmica, no lineal." }
+  ]
+},
+{
+  exam:"SPI", es:"Física II e instrumentación", en:"Physics II & Instrumentation",
+  tag_es:"Transductores, resolución, TGC, ganancia, rango dinámico, armónicas y artefactos",
+  tag_en:"Transducers, resolution, TGC, gain, dynamic range, harmonics and artifacts",
+  qs:[
+    { q:"The piezoelectric effect in most clinical ultrasound transducers is produced by which material?",
+      o:["Copper","Aluminum","Tungsten powder","Lead zirconate titanate (PZT)"], a:3,
+      x:"El cristal estándar es el <b>PZT</b> (titanato zirconato de plomo): convierte energía eléctrica en vibración (sonido) y la vibración de regreso en señal eléctrica. El tungsteno se usa en el material de respaldo, no como cristal." },
+    { q:"Axial (longitudinal) resolution improves when:",
+      o:["The spatial pulse length becomes shorter","The beam becomes wider","The frequency decreases","The pulse repetition frequency increases"], a:0,
+      x:"Resolución axial = <b>longitud del pulso espacial ÷ 2</b>. Pulso más corto (mayor frecuencia, cristal bien amortiguado) = mejor resolución axial. No depende de la profundidad." },
+    { q:"Lateral resolution is best at which location along the beam?",
+      o:["At the face of the transducer","In the focal zone","In the far field (Fraunhofer zone)","It is the same everywhere"], a:1,
+      x:"En la <b>zona focal</b> el haz es más estrecho, y la resolución lateral equivale al ancho del haz: haz estrecho = mejor resolución lateral." },
+    { q:"What is the purpose of time gain compensation (TGC)?",
+      o:["To increase the transmitted frequency with depth","To compensate for the attenuation of echoes returning from greater depths","To move the focal zone deeper","To eliminate Doppler aliasing"], a:1,
+      x:"El <b>TGC</b> amplifica de forma selectiva los ecos profundos, que llegan más débiles por la atenuación, para que el brillo de la imagen sea uniforme a todas las profundidades." },
+    { q:"Dynamic range describes:",
+      o:["The range of depths the system can image","The number of focal zones available","The ratio of the largest to the smallest signal the system can process","The range of frequencies in one pulse"], a:2,
+      x:"El <b>rango dinámico</b> es la razón entre la señal más grande y la más pequeña que el sistema maneja, en dB. Al comprimirlo (rango estrecho) la imagen gana contraste; al ampliarlo se ven más tonos de gris." },
+    { q:"Tissue harmonic imaging forms its image primarily by:",
+      o:["Transmitting two pulses of opposite polarity","Receiving echoes at twice the transmitted (fundamental) frequency","Increasing the output power of the transducer","Using a lower pulse repetition frequency"], a:1,
+      x:"Las <b>armónicas</b> se generan dentro del propio tejido al propagarse la onda. El equipo escucha el segundo armónico (2× la frecuencia fundamental), lo que reduce artefactos y mejora el contraste, sobre todo en pacientes difíciles." },
+    { q:"Multiple, equally spaced bright lines appearing deep to a strong reflector, resembling a ladder, are characteristic of which artifact?",
+      o:["Acoustic shadowing","Reverberation","Mirror image","Posterior enhancement"], a:1,
+      x:"La <b>reverberación</b> ocurre cuando el eco rebota varias veces entre dos reflectores fuertes (o entre el reflector y el transductor); cada viaje extra dibuja otra línea a igual distancia." },
+    { q:"Posterior acoustic enhancement is most commonly seen deep to which structure?",
+      o:["A bone","A calcification","A gas collection","A fluid-filled cyst"], a:3,
+      x:"El líquido atenúa muy poco, así que el haz llega <b>más fuerte</b> a los tejidos detrás del quiste y estos se ven más brillantes: es el refuerzo acústico posterior, signo clásico de estructura quística." },
+    { q:"The backing (damping) material of a transducer serves mainly to:",
+      o:["Shorten the pulse, improving axial resolution","Increase the beam width","Raise the operating frequency","Eliminate harmonic signals"], a:0,
+      x:"El material de respaldo <b>amortigua</b> la vibración del cristal: pulso más corto, mejor resolución axial y mayor ancho de banda. El costo es menor sensibilidad." },
+    { q:"A mirror image artifact is produced when sound reflects off:",
+      o:["A small cyst","A strong, smooth reflector such as the diaphragm","Moving red blood cells","The skin line only"], a:1,
+      x:"En el artefacto de <b>imagen en espejo</b>, un reflector fuerte y liso (clásico: el diafragma) actúa como espejo y dibuja una copia de la estructura al otro lado del reflector." }
+  ]
+},
+{
+  exam:"SPI", es:"Doppler y hemodinámica", en:"Doppler & Hemodynamics",
+  tag_es:"Efecto Doppler, aliasing y Nyquist, ángulo de insonación, índices RI, PI y S/D",
+  tag_en:"Doppler effect, aliasing and Nyquist, insonation angle, RI, PI and S/D indices",
+  qs:[
+    { q:"The Doppler shift is directly proportional to all of the following EXCEPT:",
+      o:["Blood cell velocity","Transmitted frequency","Cosine of the insonation angle","Propagation speed of sound"], a:3,
+      x:"La ecuación Doppler: <b>fD = 2 · f₀ · v · cos θ ÷ c</b>. La velocidad del sonido (c) está en el denominador: es inversamente proporcional, por eso es la excepción." },
+    { q:"For accurate spectral Doppler velocity measurements, the angle between the beam and the direction of flow should be:",
+      o:["90 degrees","120 degrees","60 degrees or less","Angle correction is never needed"], a:2,
+      x:"A 90° el coseno es cero y no hay desplazamiento Doppler. Se recomienda trabajar a <b>60° o menos</b>, porque a ángulos mayores un pequeño error de alineación produce un gran error en la velocidad calculada." },
+    { q:"Aliasing in pulsed-wave Doppler occurs when the Doppler shift exceeds:",
+      o:["The pulse repetition frequency","One-half of the pulse repetition frequency (the Nyquist limit)","Twice the transmitted frequency","The wall filter setting"], a:1,
+      x:"El <b>límite de Nyquist = PRF ÷ 2</b>. Si el desplazamiento Doppler lo supera, la señal se «envuelve» (wrap-around): los picos sistólicos aparecen cortados y dibujados debajo de la línea base." },
+    { q:"Which of the following adjustments will NOT help reduce aliasing?",
+      o:["Increasing the PRF (velocity scale)","Shifting the baseline","Using a lower-frequency transducer","Increasing the wall filter"], a:3,
+      x:"El <b>filtro de pared</b> elimina señales de baja frecuencia (movimiento de paredes y tejidos); no corrige el aliasing. Para el aliasing: subir la escala/PRF, mover la línea base, bajar la frecuencia o usar onda continua." },
+    { q:"Continuous-wave (CW) Doppler differs from pulsed-wave Doppler because CW:",
+      o:["Has better depth (range) resolution","Cannot detect high velocities","Uses one crystal that alternates sending and receiving","Has no practical Nyquist limit but cannot localize where the signal comes from"], a:3,
+      x:"La <b>onda continua</b> usa dos elementos (uno transmite, otro recibe sin parar): mide velocidades muy altas sin aliasing, pero suma todo lo que hay a lo largo del haz — ambigüedad de rango, no sabe la profundidad." },
+    { q:"The resistive index (RI) is calculated as:",
+      o:["(PSV − EDV) ÷ PSV","PSV ÷ EDV","(PSV − EDV) ÷ mean velocity","EDV ÷ PSV"], a:0,
+      x:"<b>RI = (velocidad sistólica pico − velocidad diastólica final) ÷ velocidad sistólica pico</b>. Ojo con las otras: PSV ÷ EDV es la razón S/D, y con la velocidad media en el denominador sería el índice de pulsatilidad (PI)." },
+    { q:"In a color Doppler image, the displayed colors primarily represent:",
+      o:["The peak systolic velocity in each pixel","The mean velocity and direction of flow relative to the transducer","The blood pressure gradient","Whether flow is arterial or venous"], a:1,
+      x:"El color codifica la <b>velocidad media y la dirección</b> del flujo respecto al transductor. Rojo = hacia y azul = alejándose es solo la convención del mapa (BART); el operador puede invertirla." },
+    { q:"Power Doppler is more sensitive to weak, slow flow than color Doppler because it displays:",
+      o:["A higher pulse repetition frequency","The amplitude (power) of the Doppler signal rather than the frequency shift","Flow direction with more colors","The exact peak velocity"], a:1,
+      x:"El <b>Doppler de potencia</b> (energía/amplitud) suma la fuerza de la señal: detecta flujo lento y débil, casi no sufre aliasing, pero no da dirección ni velocidad." },
+    { q:"Spectral broadening of the Doppler waveform is most associated with:",
+      o:["Laminar flow","Turbulent flow","Very low gain","A sample volume that is too small"], a:1,
+      x:"El <b>ensanchamiento espectral</b> (la ventana bajo la curva se «rellena») indica flujo turbulento: muchas velocidades y direcciones distintas a la vez, típico después de una estenosis." },
+    { q:"A wall filter set too high during spectral Doppler will cause:",
+      o:["Aliasing of the systolic peak","Loss of low-velocity flow signals, such as diastolic flow","Increased sensitivity to slow flow","A mirror image artifact"], a:1,
+      x:"El filtro de pared corta las frecuencias bajas. Si está muy alto, <b>borra el flujo lento real</b> — por ejemplo, puede simular ausencia de flujo diastólico que sí existe." }
+  ]
+},
+{
+  exam:"SPI", es:"Seguridad y bioefectos", en:"Safety & Bioeffects",
+  tag_es:"ALARA, índices MI y TI, efectos térmicos y mecánicos, control de calidad",
+  tag_en:"ALARA, MI and TI indices, thermal and mechanical effects, quality control",
+  qs:[
+    { q:"The ALARA principle requires the sonographer to keep the patient's ultrasound exposure:",
+      o:["As high as needed for a bright image","As Low As Reasonably Achievable while still obtaining diagnostic information","At maximum output for the shortest preset","Constant for every type of exam"], a:1,
+      x:"<b>ALARA</b>: la exposición más baja razonablemente posible que aún dé la información diagnóstica — menor potencia de salida y menor tiempo de examen (dwell time) que puedas." },
+    { q:"The Mechanical Index (MI) is an on-screen indicator of the likelihood of:",
+      o:["Tissue heating","Mechanical bioeffects such as cavitation","Electrical interference","Image degradation"], a:1,
+      x:"El <b>MI</b> estima los efectos mecánicos (cavitación): MI = presión de rarefacción pico ÷ raíz cuadrada de la frecuencia. A menor frecuencia y mayor presión, mayor MI." },
+    { q:"The Thermal Index (TI) is best defined as an estimate of:",
+      o:["The exact temperature of the scanned tissue","The potential temperature rise in tissue from the acoustic output","The room temperature correction factor","The maximum pressure in the beam"], a:1,
+      x:"El <b>TI</b> es la razón entre la potencia emitida y la potencia que elevaría el tejido 1 °C en condiciones modelo. Variantes: TIS (tejido blando), TIB (hueso en el foco) y TIC (craneal)." },
+    { q:"What is the maximum Mechanical Index permitted by the FDA for diagnostic ultrasound (non-ophthalmic)?",
+      o:["0.5","1.0","1.9","5.0"], a:2,
+      x:"El límite de la FDA para el <b>MI es 1.9</b> (el límite oftálmico es mucho menor). Dato de examen clásico, junto al límite de intensidad deratada Ispta.3 de 720 mW/cm²." },
+    { q:"Which imaging mode typically delivers the highest temporal-average intensity to a fixed tissue location?",
+      o:["B-mode","M-mode","Color Doppler","Spectral (pulsed-wave) Doppler"], a:3,
+      x:"En el <b>Doppler espectral</b> el haz se queda fijo sobre una sola línea (el volumen de muestra) durante segundos: esa exposición estacionaria produce la mayor intensidad promedio temporal. Por eso en OB se usa con prudencia en el primer trimestre." },
+    { q:"Cavitation refers to:",
+      o:["Heating of tissue by absorption","The formation and oscillation of gas bubbles in a sound field","Reflection of sound at a bone surface","Loss of transducer crystals over time"], a:1,
+      x:"La <b>cavitación</b> es el comportamiento de burbujas de gas bajo el campo acústico: pueden oscilar (estable) o colapsar violentamente (inercial). Es el efecto detrás del índice mecánico." },
+    { q:"During a first-trimester obstetric scan, which action best follows ALARA?",
+      o:["Raise output power first and adjust gain later","Use the lowest output power that gives a diagnostic image and minimize dwell time over the embryo","Keep spectral Doppler on the embryo to document the heart for several minutes","Freeze the image only at the end of the exam"], a:1,
+      x:"Primero <b>bajar la salida</b> y compensar con ganancia del receptor si hace falta; limitar el tiempo sobre el embrión y usar Doppler espectral solo el tiempo imprescindible, prefiriendo modo M para documentar la frecuencia cardíaca." },
+    { q:"Which device is used to measure the acoustic pressure output of an ultrasound transducer?",
+      o:["A tissue-equivalent phantom","A hydrophone","A thermocouple array","A Doppler flow phantom"], a:1,
+      x:"El <b>hidrófono</b> es un micrófono miniatura calibrado que mide la presión acústica en agua. Los fantomas sirven para el control de calidad de la imagen, no para medir la salida." },
+    { q:"A tissue-equivalent quality-assurance phantom is used to evaluate:",
+      o:["The acoustic output power of the system","System performance such as image uniformity, sensitivity, and distance measurement accuracy","The patient's radiation dose","Only the color Doppler scale"], a:1,
+      x:"El <b>control de calidad con fantoma</b> detecta elementos del transductor muertos o débiles, fallos de uniformidad, errores de medición de distancia y pérdida de sensibilidad del sistema." },
+    { q:"Which statement about bioeffects of diagnostic ultrasound is correct?",
+      o:["Ultrasound is proven to be completely risk-free at any output level","Thermal effects cannot occur with diagnostic equipment","No adverse effects have been confirmed in humans at diagnostic levels, but prudent use following ALARA is still recommended","MI and TI do not need to be monitored during obstetric exams"], a:2,
+      x:"La posición tipo AIUM: <b>no se han confirmado efectos adversos en humanos</b> a niveles diagnósticos sin agentes de contraste, pero la ausencia de daño confirmado no elimina la prudencia: ALARA y vigilar MI/TI, sobre todo en obstetricia." }
+  ]
+},
+{
+  exam:"OB/GYN", es:"OB/GYN I — Primer trimestre", en:"OB/GYN I — First Trimester",
+  tag_es:"Saco gestacional, CRL, actividad cardíaca, ectópico, embarazo anembrionario y hematoma subcoriónico",
+  tag_en:"Gestational sac, CRL, cardiac activity, ectopic pregnancy, anembryonic pregnancy and subchorionic hematoma",
+  qs:[
+    { q:"With transvaginal ultrasound, an intrauterine gestational sac is usually first visualized at approximately:",
+      o:["3 weeks of gestation","4.5 to 5 weeks of gestation","7 weeks of gestation","9 weeks of gestation"], a:1,
+      x:"Por vía <b>transvaginal</b> el saco gestacional se ve alrededor de las <b>4.5–5 semanas</b>; por vía transabdominal, cerca de las 5.5–6 semanas." },
+    { q:"The most accurate sonographic measurement for dating a pregnancy in the first trimester is:",
+      o:["Mean sac diameter","Yolk sac diameter","Crown-rump length (CRL)","Biparietal diameter"], a:2,
+      x:"El <b>CRL</b> (longitud cráneo-caudal) data el embarazo con una precisión de ±5–7 días: es la medición de edad gestacional más exacta de todo el embarazo." },
+    { q:"Using transvaginal ultrasound criteria for pregnancy failure, cardiac activity should always be present when the crown-rump length measures at least:",
+      o:["2 mm","5 mm","7 mm","15 mm"], a:2,
+      x:"Con <b>CRL ≥ 7 mm sin actividad cardíaca</b>, el criterio es diagnóstico de embarazo fallido (criterios tipo SRU). Por debajo de 7 mm sin latido, se repite el estudio en 7–10 días." },
+    { q:"The discriminatory hCG level for transvaginal ultrasound — above which an intrauterine pregnancy should be visualized — is approximately:",
+      o:["500 mIU/mL","1,000 mIU/mL","3,500 mIU/mL","25,000 mIU/mL"], a:2,
+      x:"La zona discriminatoria transvaginal se cita hoy en ≈ <b>3,500 mIU/mL</b> (valor conservador). Con β-hCG por encima y útero vacío, hay que sospechar embarazo ectópico." },
+    { q:"The first structure that appears inside the gestational sac is the:",
+      o:["Embryo","Yolk sac","Amnion","Placenta"], a:1,
+      x:"El <b>saco vitelino</b> (yolk sac) es la primera estructura dentro del saco gestacional; su presencia confirma que es un saco verdadero y no un pseudosaco." },
+    { q:"A subchorionic hematoma is best described sonographically as:",
+      o:["A round anechoic mass inside the ovary","A crescent-shaped collection between the chorion and the uterine wall","A cystic structure behind the uterus","Thickening of the endometrium"], a:1,
+      x:"El <b>hematoma subcoriónico</b> es una colección en forma de media luna que despega el corion de la pared uterina; es una causa frecuente de sangrado del primer trimestre." },
+    { q:"A mean sac diameter of 25 mm or more with no embryo is diagnostic of:",
+      o:["A normal early pregnancy","An ectopic pregnancy","An anembryonic pregnancy (pregnancy failure)","A complete molar pregnancy"], a:2,
+      x:"<b>MSD ≥ 25 mm sin embrión</b> = criterio diagnóstico de embarazo anembrionario («huevo huero», blighted ovum), es decir, embarazo fallido, sin necesidad de repetir el estudio." },
+    { q:"The most common implantation site of an ectopic pregnancy is:",
+      o:["The ovary","The cervix","The ampullary portion of the fallopian tube","The abdominal cavity"], a:2,
+      x:"La mayoría de los ectópicos (alrededor del 70%) son <b>ampulares</b>, dentro de la trompa. El intersticial/cornual es raro pero de los más peligrosos por su rotura tardía y sangrado mayor." },
+    { q:"In a patient with a suspected ectopic pregnancy, an intrauterine fluid collection WITHOUT a yolk sac or double decidual sign is most likely a:",
+      o:["True gestational sac","Pseudosac","Corpus luteum cyst","Blighted ovum"], a:1,
+      x:"El <b>pseudosaco</b> es líquido dentro de la cavidad endometrial por la reacción decidual del ectópico; puede aparecer hasta en ~10–20% de los ectópicos. No tiene saco vitelino ni signo de doble decidua: no lo confundas con embarazo intrauterino." },
+    { q:"Nuchal translucency measurement is performed during which gestational window?",
+      o:["8 to 10 weeks (CRL 25–44 mm)","11 weeks to 13 weeks 6 days (CRL 45–84 mm)","16 to 18 weeks","20 to 22 weeks"], a:1,
+      x:"La <b>translucencia nucal</b> se mide con CRL de <b>45–84 mm (11 a 13+6 semanas)</b>, en corte sagital medio estricto, con el feto en posición neutra. Fuera de esa ventana la medición no es válida para el cribado." }
+  ]
+},
+{
+  exam:"OB/GYN", es:"OB/GYN II — 2.º/3.er trimestre y ginecología", en:"OB/GYN II — 2nd/3rd Trimester & Gynecology",
+  tag_es:"Biometría (BPD, HC, AC, FL), placenta previa, líquido amniótico, masas ováricas, DIU y endometrio",
+  tag_en:"Biometry (BPD, HC, AC, FL), placenta previa, amniotic fluid, ovarian masses, IUD and endometrium",
+  qs:[
+    { q:"The biparietal diameter (BPD) is measured in a transverse plane of the fetal head that includes:",
+      o:["The cerebellum and cisterna magna","The orbits","The thalami and the cavum septi pellucidi","The stomach and umbilical vein"], a:2,
+      x:"El plano correcto del DBP es el <b>transtalámico</b>: tálamos, cavum septi pellucidi y la línea media (falx). En ese mismo plano se mide la circunferencia cefálica; el plano del cerebelo sirve para la cisterna magna, no para el DBP." },
+    { q:"Which fetal biometric parameter best reflects fetal nutritional status and carries the most weight in estimating fetal weight?",
+      o:["Biparietal diameter","Head circumference","Femur length","Abdominal circumference"], a:3,
+      x:"La <b>circunferencia abdominal</b> refleja el tamaño del hígado fetal y sus reservas de glucógeno: es la medida más sensible al estado nutricional y la de mayor peso en las fórmulas de peso estimado." },
+    { q:"Placenta previa is diagnosed when the placenta:",
+      o:["Is implanted on the posterior uterine wall","Covers the internal cervical os","Lies with its edge within 2 cm of the internal os","Is located in the fundus"], a:1,
+      x:"<b>Previa = cubre el orificio cervical interno</b>. Si el borde placentario está a menos de 2 cm del orificio sin cubrirlo, es placenta de inserción baja (low-lying). En el tercer trimestre se confirma por vía transvaginal." },
+    { q:"Oligohydramnios, using the amniotic fluid index (AFI), is defined as an AFI of:",
+      o:["5 cm or less","10 cm or less","18 cm or more","24 cm or more"], a:0,
+      x:"<b>AFI ≤ 5 cm = oligohidramnios</b>; AFI ≥ 24–25 cm = polihidramnios. El rango normal aproximado es 5–25 cm (muchas tablas citan 8–18 como zona central)." },
+    { q:"A normal single deepest vertical pocket of amniotic fluid measures:",
+      o:["0 to 1 cm","2 to 8 cm","9 to 12 cm","15 to 20 cm"], a:1,
+      x:"El <b>bolsillo vertical máximo normal es de 2 a 8 cm</b>. Menos de 2 cm sugiere oligohidramnios y más de 8 cm, polihidramnios; es el método preferido en embarazos múltiples." },
+    { q:"A normally positioned intrauterine device (IUD) appears sonographically as:",
+      o:["An anechoic cystic structure in the endometrium","A highly echogenic linear structure within the endometrial canal at the uterine fundus","A hypoechoic mass in the myometrium","A calcified round mass in the cervix"], a:1,
+      x:"El DIU bien colocado se ve como una estructura <b>lineal muy ecogénica en el fondo uterino</b>, a veces con sombra posterior. Si no se encuentra, hay que descartar expulsión, malposición o perforación." },
+    { q:"In a postmenopausal patient WITH vaginal bleeding, endometrial sampling is generally recommended when the endometrial thickness exceeds:",
+      o:["4 mm","10 mm","15 mm","20 mm"], a:0,
+      x:"Con sangrado posmenopáusico, un endometrio de <b>más de 4 mm</b> (algunas guías usan 5 mm) requiere biopsia para descartar patología; ≤ 4 mm tiene un alto valor predictivo negativo para cáncer." },
+    { q:"Which set of features describes a simple ovarian cyst?",
+      o:["Thick irregular walls, solid components and internal vascularity","Anechoic contents, thin smooth wall and posterior acoustic enhancement","Internal echoes with a fluid-fluid level and septations","A solid echogenic mass with acoustic shadowing"], a:1,
+      x:"Quiste simple: <b>anecoico, pared fina y lisa, refuerzo acústico posterior</b>, sin componentes sólidos ni flujo en su interior. Cualquiera de las otras descripciones obliga a caracterizar mejor la masa." },
+    { q:"An echogenic Rokitansky nodule and the «tip of the iceberg» sign are characteristic of which ovarian mass?",
+      o:["Endometrioma","Corpus luteum cyst","Serous cystadenoma","Mature cystic teratoma (dermoid)"], a:3,
+      x:"El <b>teratoma quístico maduro (dermoide)</b> contiene grasa, pelo y a veces dientes: de ahí el nódulo ecogénico de Rokitansky, las líneas y puntos brillantes («dot-dash») y la punta del iceberg que atenúa el haz." },
+    { q:"For an accurate femur length (FL) measurement, the calipers are placed along:",
+      o:["The full femur including the distal epiphysis","The ossified diaphysis only, excluding the epiphyseal cartilage","The femur plus the tibia","The curved outer surface of the bone"], a:1,
+      x:"La <b>longitud femoral se mide solo en la diáfisis osificada</b>, de extremo a extremo del hueso visible; incluir la epífisis (cartílago no osificado) sobrestima la edad gestacional." }
+  ]
+}
+];
+
+/* ================= I18N (interfaz) ================= */
+var I18N = {
+  es:{
+    sub:"Práctica SPI + OB/GYN · Kiustin G",
+    note:"Preguntas <b>en inglés</b>, como el examen real de ARDMS · Explicaciones <b>en español</b> · Apruebas cada nivel con <b>70% o más</b> y desbloqueas el siguiente.",
+    approved:function(a,b){ return a + " de " + b + " niveles aprobados"; },
+    route:"Tu ruta: SPI → OB/GYN",
+    best:function(p){ return "Récord: " + p + "%"; },
+    locked:"Bloqueado",
+    lockHint:"Aprueba el nivel anterior con 70% o más",
+    back:"Niveles",
+    qOf:function(a,b){ return "Pregunta " + a + " de " + b; },
+    next:"Siguiente →",
+    finish:"Ver resultado →",
+    correct:"¡Correcto!",
+    wrong:"No es esa — la respuesta correcta está marcada en verde.",
+    explLbl:"Explicación: ",
+    passT:"¡Nivel aprobado!",
+    failT:"Casi… a repasar",
+    scoreLine:function(c,t,p){ return "Acertaste " + c + " de " + t + " · " + p + "%"; },
+    passMsg:function(n){ return "Superaste el 70%. El nivel " + n + " quedó desbloqueado. ¡A seguir, futuro RDMS!"; },
+    passMsgLast:"Superaste el 70% en el último nivel. Completaste la ruta SPI + OB/GYN de esta versión. ¡A seguir practicando!",
+    failMsg:"Necesitas 70% o más para aprobar y desbloquear el siguiente nivel. Lee las explicaciones y repite el nivel: así se fija el conocimiento.",
+    home:"Niveles",
+    retry:"Repetir nivel",
+    nextLvl:"Siguiente nivel →",
+    reset:"Borrar mi progreso",
+    resetArm:"¿Seguro? Toca otra vez para borrar",
+    resetDone:"Progreso borrado"
+  },
+  en:{
+    sub:"SPI + OB/GYN Practice · Kiustin G",
+    note:"Questions <b>in English</b>, like the real ARDMS exam · Explanations <b>in Spanish</b> · Pass each level with <b>70% or more</b> to unlock the next one.",
+    approved:function(a,b){ return a + " of " + b + " levels passed"; },
+    route:"Your path: SPI → OB/GYN",
+    best:function(p){ return "Best: " + p + "%"; },
+    locked:"Locked",
+    lockHint:"Pass the previous level with 70% or more",
+    back:"Levels",
+    qOf:function(a,b){ return "Question " + a + " of " + b; },
+    next:"Next →",
+    finish:"See result →",
+    correct:"Correct!",
+    wrong:"Not that one — the correct answer is marked in green.",
+    explLbl:"Explanation: ",
+    passT:"Level passed!",
+    failT:"So close… review time",
+    scoreLine:function(c,t,p){ return "You got " + c + " of " + t + " · " + p + "%"; },
+    passMsg:function(n){ return "You scored above 70%. Level " + n + " is now unlocked. Keep going, future RDMS!"; },
+    passMsgLast:"You passed the final level with 70% or more. You completed the SPI + OB/GYN path in this version. Keep practicing!",
+    failMsg:"You need 70% or more to pass and unlock the next level. Read the explanations and retry the level — that is how the knowledge sticks.",
+    home:"Levels",
+    retry:"Retry level",
+    nextLvl:"Next level →",
+    reset:"Erase my progress",
+    resetArm:"Sure? Tap again to erase",
+    resetDone:"Progress erased"
+  }
+};
+
+/* ================= Estado / guardado ================= */
+var SAVE_KEY = "kgsono_save_v1";
+var save = { stars:{}, best:{}, lang:"es", sound:true };
+try{
+  var raw = localStorage.getItem(SAVE_KEY);
+  if(raw){ var p = JSON.parse(raw); if(p && typeof p === "object"){
+    save.stars = p.stars || {}; save.best = p.best || {};
+    save.lang = (p.lang === "en") ? "en" : "es";
+    save.sound = (p.sound !== false);
+  }}
+}catch(e){}
+function persist(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(save)); }catch(e){} }
+function t(){ return I18N[save.lang]; }
+function isUnlocked(i){ return i === 0 || (save.best[i] || 0) >= 70; } /* best indexado por nivel-1 */
+function starsFor(pct){ return pct >= 90 ? 3 : pct >= 80 ? 2 : pct >= 70 ? 1 : 0; }
+function starStr(n){ var s = ""; for(var i=0;i<3;i++){ s += '<span class="' + (i < n ? "" : "off") + '">★</span>'; } return s; }
+
+/* ================= Audio (WebAudio) ================= */
+var AC = null;
+function ac(){ if(!save.sound) return null; try{
+  if(!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+  if(AC.state === "suspended") AC.resume();
+  return AC;
+}catch(e){ return null; } }
+function tone(freq, t0, dur, type, vol){
+  var ctx = ac(); if(!ctx) return;
+  var o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = type || "triangle"; o.frequency.value = freq;
+  var s = ctx.currentTime + t0;
+  g.gain.setValueAtTime(0.0001, s);
+  g.gain.exponentialRampToValueAtTime(vol || 0.16, s + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, s + dur);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(s); o.stop(s + dur + 0.05);
+}
+function sndGood(){ tone(660, 0, .12, "triangle", .15); tone(990, .09, .18, "triangle", .15); }
+function sndBad(){ tone(196, 0, .22, "sawtooth", .07); tone(147, .05, .26, "sawtooth", .06); }
+function fanfare(){
+  if(!save.sound) return;
+  var seq = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5, 1318.5];
+  for(var i=0;i<seq.length;i++) tone(seq[i], i * 0.13, 0.34, "triangle", 0.17);
+  tone(261.6, 0, .9, "sine", .08); tone(392, 0, .9, "sine", .06);
+}
+
+/* ================= Confeti ================= */
+function confetti(){
+  var cv = document.getElementById("confetti"), ctx = cv.getContext("2d");
+  var W = window.innerWidth, H = window.innerHeight;
+  cv.width = W; cv.height = H;
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var N = reduced ? 30 : 130;
+  var colors = ["#0E7C86","#22A9B8","#F5B93F","#CE8A0B","#FFFFFF","#7ED3DC"];
+  var parts = [];
+  for(var i=0;i<N;i++){
+    parts.push({ x: Math.random()*W, y: -20 - Math.random()*H*0.35,
+      w: 6 + Math.random()*7, h: 8 + Math.random()*9,
+      vy: 2 + Math.random()*3.2, vx: -1.2 + Math.random()*2.4,
+      rot: Math.random()*Math.PI, vr: -0.12 + Math.random()*0.24,
+      c: colors[i % colors.length] });
+  }
+  var start = null;
+  function frame(ts){
+    if(!start) start = ts;
+    var el = ts - start;
+    ctx.clearRect(0,0,W,H);
+    var alive = false;
+    for(var j=0;j<parts.length;j++){
+      var p = parts[j];
+      p.x += p.vx + Math.sin((el/300) + j) * 0.6;
+      p.y += p.vy; p.rot += p.vr;
+      if(p.y < H + 30) alive = true;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.c; ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h * (0.4 + Math.abs(Math.sin(el/180 + j)) * 0.6));
+      ctx.restore();
+    }
+    if(alive && el < 4200) requestAnimationFrame(frame);
+    else { ctx.clearRect(0,0,W,H); cv.width = 0; cv.height = 0; }
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ================= Vistas ================= */
+var $ = function(id){ return document.getElementById(id); };
+function show(view){
+  $("view-home").classList.toggle("hidden", view !== "home");
+  $("view-quiz").classList.toggle("hidden", view !== "quiz");
+  $("view-result").classList.toggle("hidden", view !== "result");
+  window.scrollTo(0,0);
+}
+
+function renderHome(){
+  var L = t();
+  $("brand-sub").textContent = L.sub;
+  $("home-note").innerHTML = L.note;
+  $("lang-cur").textContent = save.lang.toUpperCase();
+  $("lang-alt").textContent = save.lang === "es" ? "EN" : "ES";
+  $("btn-sound").textContent = save.sound ? "🔊" : "🔇";
+  $("btn-reset").textContent = L.reset;
+  $("btn-reset").classList.remove("armed");
+  $("back-lbl").textContent = L.back;
+
+  var totalStars = 0, passed = 0;
+  LEVELS.forEach(function(lv, i){
+    totalStars += save.stars[i+1] || 0;
+    if((save.best[i+1] || 0) >= 70) passed++;
+  });
+  $("sum-stars").textContent = "⭐ " + totalStars + " / " + (LEVELS.length * 3);
+  $("sum-levels").textContent = L.approved(passed, LEVELS.length);
+  $("sum-lbl").textContent = L.route;
+  $("sum-fill").style.width = (passed / LEVELS.length * 100) + "%";
+
+  var grid = $("level-grid"); grid.innerHTML = "";
+  LEVELS.forEach(function(lv, i){
+    var unlocked = isUnlocked(i);
+    var best = save.best[i+1] || 0;
+    var stars = save.stars[i+1] || 0;
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "lvl" + (unlocked ? "" : " locked");
+    btn.disabled = !unlocked;
+    var name = save.lang === "es" ? lv.es : lv.en;
+    var tag = save.lang === "es" ? lv.tag_es : lv.tag_en;
+    var lockSvg = '<svg viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2.5" fill="#8D8471"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="#8D8471" stroke-width="2.4"/></svg>';
+    var foot = unlocked
+      ? '<span class="stars">' + starStr(stars) + '</span>' + (best ? '<span class="best">' + L.best(best) + '</span>' : '')
+      : '<span class="locktag">' + lockSvg + L.locked + '</span><span class="best" style="background:#F6F0DC;border-color:var(--line);color:#8D8471">' + L.lockHint + '</span>';
+    btn.innerHTML =
+      '<span class="exam">' + lv.exam + '</span>' +
+      '<span class="num">' + (i+1) + '</span>' +
+      '<span class="info"><h2>' + name + '</h2><p class="tag">' + tag + '</p>' +
+      '<span class="row">' + foot + '</span></span>';
+    if(unlocked) btn.addEventListener("click", function(){ startLevel(i); });
+    grid.appendChild(btn);
+  });
+}
+
+/* ================= Quiz ================= */
+var cur = { level:0, idx:0, score:0, answered:false, order:[] };
+function shuffle(arr){
+  var a = arr.slice();
+  for(var i=a.length-1;i>0;i--){ var j = Math.floor(Math.random()*(i+1)); var tmp=a[i]; a[i]=a[j]; a[j]=tmp; }
+  return a;
+}
+function startLevel(i){
+  cur.level = i; cur.idx = 0; cur.score = 0; cur.answered = false;
+  cur.order = shuffle(LEVELS[i].qs.map(function(_, k){ return k; }));
+  show("quiz");
+  renderQuestion();
+}
+function renderQuestion(){
+  var L = t(), lv = LEVELS[cur.level];
+  var q = lv.qs[cur.order[cur.idx]];
+  $("q-level-name").textContent = (save.lang === "es" ? lv.es : lv.en);
+  $("q-count").textContent = L.qOf(cur.idx + 1, lv.qs.length);
+  $("q-fill").style.width = (cur.idx / lv.qs.length * 100) + "%";
+  $("q-text").textContent = q.q;
+  $("q-fb").classList.add("hidden");
+  $("btn-next").classList.add("hidden");
+
+  /* Mezclar opciones recordando cuál es la correcta */
+  var opts = q.o.map(function(txt, k){ return { txt: txt, ok: k === q.a }; });
+  opts = shuffle(opts);
+  var box = $("q-opts"); box.innerHTML = "";
+  var letters = ["A","B","C","D"];
+  opts.forEach(function(op, k){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "opt";
+    b.innerHTML = '<span class="chip">' + letters[k] + '</span><span>' + op.txt + '</span>';
+    b.addEventListener("click", function(){ answer(b, op.ok, q); });
+    box.appendChild(b);
+  });
+  cur.answered = false;
+}
+function answer(btn, ok, q){
+  if(cur.answered) return;
+  cur.answered = true;
+  var L = t();
+  var buttons = $("q-opts").querySelectorAll(".opt");
+  buttons.forEach(function(b, k){
+    b.disabled = true;
+    if(b !== btn) b.classList.add("dim");
+  });
+  /* Marcar la correcta recorriendo los botones por su texto */
+  buttons.forEach(function(b){
+    var span = b.querySelector("span:last-child");
+    if(span && span.textContent === q.o[q.a]){ b.classList.add("correct"); b.classList.remove("dim"); }
+  });
+  btn.classList.remove("dim");
+  if(ok){ btn.classList.add("correct"); cur.score++; sndGood(); }
+  else { btn.classList.add("wrong"); sndBad(); }
+  var fb = $("q-fb");
+  fb.className = "fb " + (ok ? "good" : "bad");
+  $("q-verdict").textContent = ok ? L.correct : L.wrong;
+  $("q-expl").innerHTML = "<b>" + L.explLbl + "</b>" + q.x;
+  var last = cur.idx === LEVELS[cur.level].qs.length - 1;
+  var nb = $("btn-next");
+  nb.textContent = last ? L.finish : L.next;
+  nb.classList.remove("hidden");
+  $("q-fill").style.width = ((cur.idx + 1) / LEVELS[cur.level].qs.length * 100) + "%";
+}
+function nextQuestion(){
+  if(cur.idx < LEVELS[cur.level].qs.length - 1){ cur.idx++; renderQuestion(); }
+  else finishLevel();
+}
+function finishLevel(){
+  var L = t(), total = LEVELS[cur.level].qs.length;
+  var pct = Math.round(cur.score / total * 100);
+  var passed = pct >= 70;
+  var n = cur.level + 1;
+  if(pct > (save.best[n] || 0)) save.best[n] = pct;
+  var st = starsFor(pct);
+  if(st > (save.stars[n] || 0)) save.stars[n] = st;
+  persist();
+
+  $("res-title").textContent = passed ? L.passT : L.failT;
+  $("res-score").textContent = L.scoreLine(cur.score, total, pct);
+  $("res-stars").innerHTML = starStr(st);
+  $("res-trophy").style.opacity = passed ? "1" : ".35";
+  $("res-trophy").style.filter = passed ? "" : "grayscale(1)";
+  var hasNext = cur.level < LEVELS.length - 1;
+  $("res-msg").textContent = passed ? (hasNext ? L.passMsg(n + 1) : L.passMsgLast) : L.failMsg;
+  $("btn-res-home").textContent = L.home;
+  $("btn-res-retry").textContent = L.retry;
+  var bn = $("btn-res-next");
+  bn.textContent = L.nextLvl;
+  bn.classList.toggle("hidden", !(passed && hasNext));
+  show("result");
+  if(passed){ fanfare(); confetti(); }
+}
+
+/* ================= Controles ================= */
+$("btn-next").addEventListener("click", nextQuestion);
+$("btn-back").addEventListener("click", function(){ renderHome(); show("home"); });
+$("btn-res-home").addEventListener("click", function(){ renderHome(); show("home"); });
+$("btn-res-retry").addEventListener("click", function(){ startLevel(cur.level); });
+$("btn-res-next").addEventListener("click", function(){ startLevel(cur.level + 1); });
+$("btn-lang").addEventListener("click", function(){
+  save.lang = save.lang === "es" ? "en" : "es"; persist(); renderHome();
+});
+$("btn-sound").addEventListener("click", function(){
+  save.sound = !save.sound; persist();
+  $("btn-sound").textContent = save.sound ? "🔊" : "🔇";
+  if(save.sound) sndGood();
+});
+var resetTimer = null;
+$("btn-reset").addEventListener("click", function(){
+  var b = $("btn-reset"), L = t();
+  if(!b.classList.contains("armed")){
+    b.classList.add("armed"); b.textContent = L.resetArm;
+    resetTimer = setTimeout(function(){ b.classList.remove("armed"); b.textContent = L.reset; }, 3500);
+    return;
+  }
+  clearTimeout(resetTimer);
+  save.stars = {}; save.best = {}; persist();
+  b.classList.remove("armed"); b.textContent = L.resetDone;
+  renderHome();
+  setTimeout(function(){ $("btn-reset").textContent = t().reset; }, 1800);
+});
+
+renderHome();
+show("home");
+</script>
+  </body>
+</html>
