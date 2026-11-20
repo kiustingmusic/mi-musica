@@ -171,6 +171,16 @@
   .result-card .trophy{font-size:76px;line-height:1;display:inline-block;animation:bob 2.4s ease-in-out infinite}
   .stars-big{font-size:52px;letter-spacing:8px;margin:8px 0 2px;color:#F5A623;line-height:1.2}
   .stars-big .off{color:#E4E8F0}
+
+  .stars-big .st{display:inline-block;animation:starpop .55s cubic-bezier(.2,2.2,.4,1) both}
+  .stars-big .st.glow{text-shadow:0 0 18px rgba(245,166,35,.8),0 3px 0 rgba(0,0,0,.08)}
+  @keyframes starpop{0%{transform:scale(0) rotate(-40deg);opacity:0}70%{transform:scale(1.45) rotate(8deg);opacity:1}100%{transform:scale(1) rotate(0)}}
+  .record-badge{display:inline-block;margin-top:10px;background:linear-gradient(90deg,#FFC93C,#FF8A3D);color:#5B3000;font-family:"Fredoka";font-weight:700;font-size:19px;padding:8px 20px;border-radius:999px;box-shadow:0 6px 0 rgba(0,0,0,.12);animation:badgein .6s cubic-bezier(.2,2.2,.4,1) both}
+  @keyframes badgein{from{transform:scale(0) rotate(-8deg);opacity:0}to{transform:scale(1) rotate(-2deg);opacity:1}}
+  .result-card .trophy.dance{animation:trophydance 1.1s ease-in-out 2}
+  @keyframes trophydance{0%,100%{transform:rotate(0) scale(1)}25%{transform:rotate(-10deg) scale(1.12)}50%{transform:rotate(9deg) scale(1.18) translateY(-6px)}75%{transform:rotate(-6deg) scale(1.1)}}
+  .confetti b{position:absolute;top:-4vh;font-size:22px;animation:fall linear forwards}
+  @media (prefers-reduced-motion: reduce){ .stars-big .st,.record-badge,.result-card .trophy.dance{animation:none} }
   .result-card h2{font-size:clamp(28px,6.5vw,38px);margin:6px 0 4px;font-weight:700}
   .result-card p{color:var(--ink-soft);font-weight:800;font-size:17px;margin:4px 0;line-height:1.5}
   .result-nums{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px 0 6px}
@@ -284,6 +294,7 @@
     <div class="result-card">
       <span class="trophy" id="result-emoji">🏆</span>
       <div class="stars-big" id="result-stars">★★★</div>
+      <div><span id="record-badge" class="record-badge hidden">🏅 ¡Nuevo récord!</span></div>
       <h2 id="result-title">¡Muy bien!</h2>
       <p id="result-msg">Completaste la ronda.</p>
       <div class="result-nums">
@@ -332,6 +343,7 @@
       questionOf:function(i,total){ return "Pregunta "+i+" de "+total; },
       progressLabel:"Progreso de la ronda",
       starsTotal:function(n){ return n===1 ? "1 estrella ganada" : n+" estrellas ganadas"; },
+      record:"¡Nuevo récord!",
       starsAria:function(n){ return n+" estrellas ganadas en este nivel"; },
       notPlayed:"Sin jugar todavía",
       proTitle:"¿Quieres más preguntas? Versión PRO",
@@ -381,6 +393,7 @@
       questionOf:function(i,total){ return "Question "+i+" of "+total; },
       progressLabel:"Round progress",
       starsTotal:function(n){ return n===1 ? "1 star earned" : n+" stars earned"; },
+        record:"New record!",
       starsAria:function(n){ return n+" stars earned in this level"; },
       notPlayed:"Not played yet",
       proTitle:"Want more questions? PRO Version",
@@ -480,7 +493,33 @@
   }
   function sndGood(){ beep(523,0,0.14); beep(659,0.1,0.14); beep(784,0.2,0.22); }
   function sndBad(){ beep(220,0,0.2,"triangle"); beep(185,0.14,0.26,"triangle"); }
-  function sndWin(){ [523,659,784,1047,784,1047].forEach(function(f,i){ beep(f,i*0.13,0.24); }); }
+  function note(freq, t0, dur, type, vol){
+    try{
+      if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+      if(audioCtx.state==="suspended") audioCtx.resume();
+      var o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.type=type||"triangle"; o.frequency.value=freq;
+      var start=audioCtx.currentTime+t0;
+      g.gain.setValueAtTime(0.0001,start);
+      g.gain.exponentialRampToValueAtTime(vol||0.2,start+0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001,start+dur);
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(start); o.stop(start+dur+0.05);
+    }catch(e){}
+  }
+  /* Fanfarria de nivel superado: melodia alegre + bajo + acorde final si es perfecta */
+  function sndFanfare(big){
+    var mel=[523,659,784,1047,988,1047,1175,1319,1175,1047,784,880,1047];
+    var times=[0,.13,.26,.39,.58,.71,.84,.97,1.10,1.23,1.42,1.55,1.68];
+    mel.forEach(function(f,i){ note(f, times[i], i===mel.length-1 ? .5 : .22, "triangle", .2); });
+    [262,196,220,175,196,262].forEach(function(f,i){ note(f, i*.26, .24, "sine", .12); });
+    if(big){
+      [523,659,784,1047].forEach(function(f){ note(f, 1.95, .85, "triangle", .15); });
+      [1319,1568].forEach(function(f,i){ note(f, 2.0+i*.12, .5, "sine", .1); });
+    }
+  }
+  function sndWin(){ sndFanfare(false); }
+  function sndStar(i){ note([880,1109,1319][i]||1319, 0, .3, "sine", .18); }
   function sndClick(){ beep(660,0,0.07,"square"); }
 
   /* ================= Voz (leer la pregunta) ================= */
@@ -767,7 +806,8 @@
     var stars=roundStars(), t=T();
     var r=t.results[stars];
     $("result-emoji").textContent=r.emoji;
-    var ss=""; for(var i=0;i<3;i++) ss+= i<stars ? "★" : '<span class="off">★</span>';
+    $("record-badge").classList.add("hidden");
+    var ss=""; for(var i=0;i<3;i++) ss+= '<span class="st'+(i<stars ? " glow" : " off")+'" style="animation-delay:'+(0.25+i*0.38)+'s">★</span>';
     $("result-stars").innerHTML=ss;
     $("result-title").textContent=r.title;
     $("result-msg").textContent=r.msg(lvName(state.level));
@@ -777,26 +817,54 @@
   }
   function finishRound(){
     var stars=roundStars();
-    if(stars>starsByLevel[state.level.id]) starsByLevel[state.level.id]=stars;
+    var improved = stars>starsByLevel[state.level.id];
+    if(improved) starsByLevel[state.level.id]=stars;
     finishRoundText();
     renderLevels();
     show(elResult);
-    if(stars>=2){ sndWin(); confetti(); } else { sndGood(); }
+    celebrate(stars, improved);
   }
 
-  function confetti(){
+  function celebrate(stars, improved){
+    var t=T();
+    if(improved && stars>0){
+      var b=$("record-badge"); b.textContent="\U0001F3C5 "+t.record; b.classList.remove("hidden");
+    }
+    var em=$("result-emoji");
+    em.classList.remove("dance"); void em.offsetWidth; em.classList.add("dance");
+    setTimeout(function(){ em.classList.remove("dance"); }, 2500);
+    for(var i=0;i<stars;i++){ (function(k){ setTimeout(function(){ sndStar(k); }, 250+k*380); })(i); }
+    if(stars>=3){ sndFanfare(true); confetti(true); }
+    else if(stars===2){ sndFanfare(false); confetti(false); }
+    else if(stars===1){ sndGood(); confetti(false); }
+    else { sndGood(); }
+  }
+
+
+  function confetti(big){
     var box=$("confetti"); box.innerHTML=""; box.classList.remove("hidden");
     var colors=["#FF6B6B","#FFC93C","#12B5A5","#3E92CC","#51B04A","#F15BB5","#FF8A3D"];
-    for(var i=0;i<70;i++){
+    var n = big ? 120 : 75;
+    for(var i=0;i<n;i++){
       var p=document.createElement("i");
       p.style.left=Math.random()*100+"vw";
       p.style.background=pick(colors);
-      p.style.animationDuration=(1.6+Math.random()*1.8)+"s";
-      p.style.animationDelay=(Math.random()*0.5)+"s";
+      if(Math.random()<0.3) p.style.borderRadius="50%";
+      p.style.animationDuration=(1.8+Math.random()*2.0)+"s";
+      p.style.animationDelay=(Math.random()*(big?0.9:0.5))+"s";
       p.style.transform="rotate("+(Math.random()*360)+"deg)";
       box.appendChild(p);
     }
-    setTimeout(function(){ box.classList.add("hidden"); box.innerHTML=""; }, 4200);
+    var emojis=["\u2B50","\U0001F389","\u2728","\U0001F38A","\U0001F31F"];
+    for(var j=0;j<(big?16:8);j++){
+      var b=document.createElement("b");
+      b.textContent=pick(emojis);
+      b.style.left=Math.random()*100+"vw";
+      b.style.animationDuration=(2.2+Math.random()*1.8)+"s";
+      b.style.animationDelay=(Math.random()*0.7)+"s";
+      box.appendChild(b);
+    }
+    setTimeout(function(){ box.classList.add("hidden"); box.innerHTML=""; }, big?5600:4600);
   }
 
   /* ================= Eventos ================= */
