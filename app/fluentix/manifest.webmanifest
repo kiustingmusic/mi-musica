@@ -1,0 +1,30 @@
+{
+  "name": "Fluentix — Aprende inglés desde cero",
+  "short_name": "Fluentix",
+  "description": "Aprende inglés desde cero (nivel A1): lecciones con reglas en español, vocabulario, frases para hablar, audio y práctica de pronunciación. Suma XP y mantén tu racha diaria. Por Kiustin G.",
+  "lang": "es",
+  "start_url": "/app/fluentix/",
+  "scope": "/app/fluentix/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#17122B",
+  "theme_color": "#7C5CFF",
+  "icons": [
+    {
+      "src": "/app/fluentix/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/app/fluentix/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/app/fluentix/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

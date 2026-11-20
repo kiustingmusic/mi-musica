@@ -10,5 +10,17 @@
         "6F:2C:EA:82:AF:75:BC:2F:23:F1:BB:69:10:8C:57:E7:CB:8D:85:55:AC:6F:A3:2D:6C:A7:EA:43:F0:14:02:3C"
       ]
     }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.kiusting.fluentix",
+      "sha256_cert_fingerprints": [
+        "D8:EF:FF:8F:56:7F:0F:0D:6D:6C:49:50:77:E4:E0:A5:98:16:BE:0B:20:71:1A:D0:85:60:66:7F:26:AC:3C:13"
+      ]
+    }
   }
 ]
