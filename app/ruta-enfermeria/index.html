@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b5fa5" />
+<link rel="manifest" href="/app/ruta-enfermeria/manifest.webmanifest" />
+<link rel="icon" href="/app/ruta-enfermeria/icon-192.png" />
+<link rel="apple-touch-icon" href="/app/ruta-enfermeria/icon-192.png" />
+
+<title>Ruta Enfermería — Inglés para Kiustin G</title>
+<style>
+  :root{
+    --azul:#0b5fa5; --azul-osc:#084a82; --verde:#178a4c; --verde-cl:#e6f4ec;
+    --rojo:#c0392b; --rojo-cl:#fdecea; --gris:#5b6b7a; --fondo:#f2f6fb;
+    --tarjeta:#ffffff; --borde:#d5e0ec; --amarillo:#fff7e0;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html{font-size:19px;}
+  body{margin:0; font-family:"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+       background:var(--fondo); color:#16324a; line-height:1.45;}
+  header{background:linear-gradient(135deg,var(--azul),#0e7cc4); color:#fff;
+         padding:22px 18px 18px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,.2);}
+  header h1{margin:0; font-size:1.55rem; letter-spacing:.3px;}
+  header p{margin:6px 0 0; font-size:1rem; opacity:.92;}
+  .racha{display:inline-block; margin-top:10px; background:rgba(255,255,255,.18);
+         padding:6px 14px; border-radius:20px; font-weight:600; font-size:.95rem;}
+  main{max-width:860px; margin:0 auto; padding:18px 14px 50px;}
+  .vista{display:none;}
+  .vista.activa{display:block; animation:aparece .25s ease;}
+  @keyframes aparece{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+  .barra-fondo{background:#dce7f2; border-radius:12px; height:22px; overflow:hidden; margin:10px 0 4px;}
+  .barra{background:linear-gradient(90deg,var(--verde),#2fbf71); height:100%; width:0%;
+         transition:width .5s ease; border-radius:12px;}
+  .etiqueta-progreso{font-weight:700; color:var(--azul-osc); text-align:center; margin-top:2px;}
+  .grid-modulos{display:grid; grid-template-columns:1fr; gap:16px; margin-top:18px;}
+  @media(min-width:640px){ .grid-modulos{grid-template-columns:1fr 1fr;} }
+  .modulo{background:var(--tarjeta); border:2px solid var(--borde); border-radius:16px;
+          padding:20px; cursor:pointer; transition:.15s; box-shadow:0 2px 6px rgba(11,95,165,.07);}
+  .modulo:hover{border-color:var(--azul); transform:translateY(-2px);}
+  .modulo h2{margin:0 0 6px; font-size:1.25rem; color:var(--azul-osc);}
+  .modulo p{margin:0 0 12px; color:var(--gris); font-size:.98rem;}
+  .modulo .estado{font-weight:700; font-size:.95rem; color:var(--verde);}
+  .btn{display:inline-block; border:none; cursor:pointer; border-radius:12px;
+       padding:15px 26px; font-size:1.05rem; font-weight:700; background:var(--azul); color:#fff;
+       transition:.15s; text-align:center;}
+  .btn:hover{background:var(--azul-osc);}
+  .btn.verde{background:var(--verde);} .btn.verde:hover{background:#116a39;}
+  .btn.gris{background:#8296a8;} .btn.gris:hover{background:#677d90;}
+  .btn.rojo-suave{background:#e8eef4; color:var(--azul-osc);} .btn.rojo-suave:hover{background:#d8e4ef;}
+  .btn:disabled{opacity:.45; cursor:not-allowed;}
+  .btn-volver{background:none; border:none; color:var(--azul); font-size:1.05rem; font-weight:700;
+              cursor:pointer; padding:8px 0; margin-bottom:6px;}
+  .tarjeta{background:var(--tarjeta); border:2px solid var(--borde); border-radius:16px;
+           padding:22px; margin-bottom:16px; box-shadow:0 2px 6px rgba(11,95,165,.06);}
+  .leccion{background:var(--amarillo); border:2px solid #f0dfa0; border-radius:14px;
+           padding:16px 18px; margin-bottom:16px;}
+  .leccion h3{margin:0 0 6px; color:#8a6d00; font-size:1.1rem;}
+  .leccion p{margin:0; font-size:1rem;}
+  .pregunta{font-size:1.22rem; font-weight:700; margin:4px 0 16px;}
+  .opcion{display:block; width:100%; text-align:left; margin:0 0 10px; padding:15px 16px;
+          font-size:1.08rem; border:2px solid var(--borde); border-radius:12px; background:#fbfdff;
+          cursor:pointer; transition:.12s;}
+  .opcion:hover{border-color:var(--azul);}
+  .opcion.bien{border-color:var(--verde); background:var(--verde-cl); font-weight:700;}
+  .opcion.mal{border-color:var(--rojo); background:var(--rojo-cl);}
+  .opcion:disabled{cursor:default; opacity:.92;}
+  .explica{display:none; border-radius:12px; padding:14px 16px; margin:12px 0; font-size:1rem;}
+  .explica.bien{display:block; background:var(--verde-cl); border:2px solid var(--verde);}
+  .explica.mal{display:block; background:var(--rojo-cl); border:2px solid var(--rojo);}
+  .contador{color:var(--gris); font-weight:600; font-size:.95rem; margin-bottom:8px;}
+  /* Flashcards */
+  .flash-escena{perspective:1200px; margin:6px auto 14px; max-width:520px;}
+  .flash{position:relative; width:100%; height:250px; cursor:pointer;
+         transform-style:preserve-3d; transition:transform .5s;}
+  .flash.volteada{transform:rotateY(180deg);}
+  .flash .cara{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center;
+        justify-content:center; border-radius:18px; padding:20px; text-align:center;
+        backface-visibility:hidden; -webkit-backface-visibility:hidden; border:3px solid var(--azul);}
+  .flash .frente{background:#eaf3fc;}
+  .flash .atras{background:var(--verde-cl); border-color:var(--verde); transform:rotateY(180deg);}
+  .flash .termino{font-size:1.7rem; font-weight:800; color:var(--azul-osc);}
+  .flash .traduccion{font-size:1.55rem; font-weight:800; color:#0d5c31;}
+  .flash .cat{font-size:.85rem; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+        color:var(--gris); margin-bottom:8px;}
+  .flash .toca{margin-top:10px; font-size:.9rem; color:var(--gris);}
+  .fila-botones{display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin:12px 0;}
+  .fila-botones .btn{flex:1; min-width:150px;}
+  /* Diálogos */
+  .dialogo-linea{margin:0 0 12px; font-size:1.1rem;}
+  .dialogo-linea .quien{font-weight:800; color:var(--azul-osc);}
+  .hueco{display:inline-block; min-width:110px; text-align:center; padding:2px 10px; margin:0 2px;
+         border-bottom:3px solid var(--azul); font-weight:800; color:var(--azul-osc);
+         background:#eef5fc; border-radius:6px 6px 0 0;}
+  .hueco.bien{border-color:var(--verde); color:#0d5c31; background:var(--verde-cl);}
+  .hueco.mal{border-color:var(--rojo); color:var(--rojo); background:var(--rojo-cl);}
+  .huecos-opciones{background:#f7fafd; border:2px dashed var(--borde); border-radius:12px;
+         padding:12px 14px; margin:0 0 14px;}
+  .huecos-opciones .titulo-hueco{font-weight:700; margin:0 0 8px; color:var(--gris); font-size:.95rem;}
+  .chip{border:2px solid var(--azul); background:#fff; color:var(--azul-osc); border-radius:20px;
+        padding:9px 18px; font-size:1rem; font-weight:700; cursor:pointer; margin:0 8px 8px 0;}
+  .chip:hover{background:#eaf3fc;}
+  .chip.elegida{background:var(--azul); color:#fff;}
+  .nota{background:#eef5fc; border-left:6px solid var(--azul); border-radius:8px;
+        padding:12px 16px; margin:14px 0; font-size:1rem;}
+  /* Simulacro */
+  .reloj{position:sticky; top:8px; z-index:5; background:#16324a; color:#fff; text-align:center;
+         font-size:1.3rem; font-weight:800; padding:10px; border-radius:12px; margin-bottom:14px;}
+  .reloj.poco{background:var(--rojo);}
+  .lectura{background:#fffdf5; border:2px solid #eadfbe; border-radius:14px; padding:16px 18px;
+           margin-bottom:16px; font-size:1.08rem;}
+  .error-item{border:2px solid var(--rojo); background:var(--rojo-cl); border-radius:12px;
+         padding:12px 16px; margin-bottom:10px; font-size:1rem;}
+  .puntaje{font-size:2.1rem; font-weight:800; text-align:center; color:var(--azul-osc);}
+  .nivel{font-size:1.25rem; font-weight:800; text-align:center; color:var(--verde); margin:6px 0 12px;}
+  .oculto{display:none !important;}
+  footer{text-align:center; color:var(--gris); font-size:.9rem; padding:0 16px 26px;}
+  .escuchar{padding:9px 16px; font-size:.98rem; border-radius:10px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🩺 Ruta Enfermería</h1>
+  <p>Inglés para Kiustin G — ESOL Placement (MCC) + Inglés de Enfermería</p>
+  <div class="racha" id="racha">🔥 Racha: 0 días</div>
+</header>
+
+<main>
+  <!-- ============ PANTALLA PRINCIPAL ============ -->
+  <section id="vista-inicio" class="vista activa">
+    <div class="tarjeta">
+      <div class="etiqueta-progreso">Tu progreso general</div>
+      <div class="barra-fondo"><div class="barra" id="barra-general"></div></div>
+      <div class="etiqueta-progreso" id="texto-general">0%</div>
+      <p style="text-align:center; color:var(--gris); margin:8px 0 0;">
+        Tu progreso se guarda solo en este navegador. Estudia un poco cada día. 💪</p>
+    </div>
+    <div class="grid-modulos">
+      <div class="modulo" onclick="abrirModulo('gramatica')">
+        <h2>📘 Módulo 1 · ESOL Placement</h2>
+        <p>La gramática que pide Monroe Community College: tiempos verbales, artículos,
+           preposiciones, comparativos, modales y preguntas. Mini-lección + práctica.</p>
+        <div class="estado" id="estado-gramatica">Sin empezar</div>
+      </div>
+      <div class="modulo" onclick="abrirModulo('tarjetas')">
+        <h2>🗂️ Módulo 2 · Vocabulario</h2>
+        <p>Tarjetas de enfermería y medicina: síntomas, signos vitales, medicamentos,
+           departamentos del hospital y un bloque especial de DIÁLISIS.</p>
+        <div class="estado" id="estado-tarjetas">Sin empezar</div>
+      </div>
+      <div class="modulo" onclick="abrirModulo('dialogos')">
+        <h2>💬 Módulo 3 · Comunicación clínica</h2>
+        <p>Diálogos reales con el paciente: admisión, dolor, signos vitales, alta,
+           SBAR y cómo tranquilizar. Completa los huecos.</p>
+        <div class="estado" id="estado-dialogos">Sin empezar</div>
+      </div>
+      <div class="modulo" onclick="abrirModulo('simulacro')">
+        <h2>⏱️ Módulo 4 · Simulacro de examen</h2>
+        <p>25 preguntas con reloj: gramática, lectura y vocabulario médico.
+           Al final recibes tu puntaje y tu nivel estimado.</p>
+        <div class="estado" id="estado-simulacro">Sin intentos todavía</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MÓDULO 1: GRAMÁTICA ============ -->
+  <section id="vista-gramatica" class="vista">
+    <button class="btn-volver" onclick="volverInicio()">⬅ Volver al inicio</button>
+    <h2 style="margin:4px 0 10px;">📘 Módulo 1 · ESOL Placement — Gramática</h2>
+    <div id="gramatica-zona"></div>
+  </section>
+
+  <!-- ============ MÓDULO 2: TARJETAS ============ -->
+  <section id="vista-tarjetas" class="vista">
+    <button class="btn-volver" onclick="volverInicio()">⬅ Volver al inicio</button>
+    <h2 style="margin:4px 0 10px;">🗂️ Módulo 2 · Vocabulario de enfermería</h2>
+    <div id="tarjetas-zona"></div>
+  </section>
+
+  <!-- ============ MÓDULO 3: DIÁLOGOS ============ -->
+  <section id="vista-dialogos" class="vista">
+    <button class="btn-volver" onclick="volverInicio()">⬅ Volver al inicio</button>
+    <h2 style="margin:4px 0 10px;">💬 Módulo 3 · Comunicación clínica</h2>
+    <div id="dialogos-zona"></div>
+  </section>
+
+  <!-- ============ MÓDULO 4: SIMULACRO ============ -->
+  <section id="vista-simulacro" class="vista">
+    <button class="btn-volver" onclick="volverInicio()">⬅ Volver al inicio</button>
+    <h2 style="margin:4px 0 10px;">⏱️ Módulo 4 · Simulacro de examen</h2>
+    <div id="simulacro-zona"></div>
+  </section>
+</main>
+
+<footer>Ruta Enfermería — Inglés para Kiustin G · Funciona sin internet · Tu progreso vive en este navegador</footer>
+
+<script>
+"use strict";
+/* ================= UTILIDADES Y PROGRESO ================= */
+var CLAVE = "rutaEnfermeriaKiustin_v1";
+var P = cargar();
+function cargar(){
+  try{
+    var d = JSON.parse(localStorage.getItem(CLAVE));
+    if(d && typeof d === "object") return d;
+  }catch(e){}
+  return {
+    gramatica:{indice:0, aciertos:0, respondidas:0, terminado:false},
+    tarjetas:{conocidas:{}},
+    dialogos:{indice:0, completados:{}, aciertos:0},
+    simulacro:{ultimo:null, mejor:0, intentos:0},
+    racha:{ultimoDia:"", dias:0}
+  };
+}
+function guardar(){ try{ localStorage.setItem(CLAVE, JSON.stringify(P)); }catch(e){} }
+function $(id){ return document.getElementById(id); }
+function escuchaOK(){ return ("speechSynthesis" in window); }
+function hablar(texto){
+  if(!escuchaOK()) return;
+  try{
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(texto);
+    u.lang = "en-US"; u.rate = 0.92;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+function botonEscuchar(texto){
+  if(!escuchaOK()) return "";
+  var t = texto.replace(/'/g, "&#39;");
+  return "<button class='btn gris escuchar' onclick=\"hablar('" + t + "')\">🔊 Escuchar</button>";
+}
+function hoyStr(){
+  var d = new Date();
+  return d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+}
+function actualizarRacha(){
+  var hoy = hoyStr();
+  if(P.racha.ultimoDia === hoy) return;
+  var ayer = new Date(); ayer.setDate(ayer.getDate()-1);
+  var ayerStr = ayer.getFullYear() + "-" + (ayer.getMonth()+1) + "-" + ayer.getDate();
+  if(P.racha.ultimoDia === ayerStr){ P.racha.dias += 1; }
+  else{ P.racha.dias = 1; }
+  P.racha.ultimoDia = hoy;
+  guardar();
+}
+function mostrarVista(id){
+  var vistas = document.querySelectorAll(".vista");
+  for(var i=0;i<vistas.length;i++) vistas[i].classList.remove("activa");
+  $(id).classList.add("activa");
+  window.scrollTo(0,0);
+}
+function abrirModulo(m){
+  if(m === "gramatica"){ mostrarVista("vista-gramatica"); pintarGramatica(); }
+  if(m === "tarjetas"){ mostrarVista("vista-tarjetas"); iniciarTarjetas(); }
+  if(m === "dialogos"){ mostrarVista("vista-dialogos"); pintarDialogo(); }
+  if(m === "simulacro"){ mostrarVista("vista-simulacro"); pintarSimulacroInicio(); }
+}
+function volverInicio(){ pintarInicio(); mostrarVista("vista-inicio"); }
+function pintarInicio(){
+  $("racha").textContent = "🔥 Racha: " + P.racha.dias + (P.racha.dias === 1 ? " día" : " días");
+  var g = P.gramatica.respondidas ? Math.round(100 * P.gramatica.aciertos / GQ.length) : 0;
+  // Progreso gramatica = preguntas respondidas correctamente sobre el total
+  var gProg = Math.round(100 * P.gramatica.aciertos / GQ.length);
+  var conocidas = Object.keys(P.tarjetas.conocidas).length;
+  var tProg = Math.round(100 * conocidas / FC.length);
+  var dHechos = Object.keys(P.dialogos.completados).length;
+  var dProg = Math.round(100 * dHechos / DLG.length);
+  var sProg = P.simulacro.ultimo === null ? 0 : Math.round(P.simulacro.ultimo);
+  var total = Math.round((gProg + tProg + dProg + sProg) / 4);
+  $("barra-general").style.width = total + "%";
+  $("texto-general").textContent = total + "%";
+  $("estado-gramatica").textContent = P.gramatica.terminado
+    ? "✅ Completado — " + P.gramatica.aciertos + "/" + GQ.length + " aciertos"
+    : (P.gramatica.respondidas ? "En curso — " + P.gramatica.aciertos + " aciertos de " + P.gramatica.respondidas + " respondidas"
+                               : "Sin empezar — " + GQ.length + " preguntas");
+  $("estado-tarjetas").textContent = conocidas
+    ? "En curso — sabes " + conocidas + " de " + FC.length + " palabras" : "Sin empezar — " + FC.length + " tarjetas";
+  $("estado-dialogos").textContent = dHechos
+    ? "En curso — " + dHechos + " de " + DLG.length + " diálogos completos" : "Sin empezar — " + DLG.length + " diálogos";
+  $("estado-simulacro").textContent = P.simulacro.ultimo === null
+    ? "Sin intentos todavía"
+    : "Último puntaje: " + P.simulacro.ultimo + "% · Mejor: " + P.simulacro.mejor + "% · Intentos: " + P.simulacro.intentos;
+}
+
+/* ================= MÓDULO 1 · GRAMÁTICA ESOL ================= */
+var TEMAS = {
+  presente:{nombre:"Presente (hábitos y ahora)", leccion:"<b>Present Simple</b> = hábitos y rutinas: <i>She works every day.</i> Con <b>he/she/it</b> el verbo lleva <b>-s</b> (he work<b>s</b>). <b>Present Continuous</b> = lo que pasa AHORA: <i>am/is/are + verbo-ing</i> (The nurse <b>is taking</b> his pressure now). Palabras clave de ahora: <i>now, right now, look!, listen!</i>"},
+  pasado:{nombre:"Pasado", leccion:"<b>Past Simple</b> = acciones terminadas: <i>yesterday, last night, two hours ago</i>. Verbos regulares: <b>-ed</b> (check<b>ed</b>). Irregulares frecuentes: go→<b>went</b>, give→<b>gave</b>, feel→<b>felt</b>, break→<b>broke</b>, take→<b>took</b>. Con <i>did</i> el verbo vuelve a su forma base: <i>Did you take…?</i>"},
+  futuro:{nombre:"Futuro", leccion:"<b>Will</b> = decisiones, promesas y predicciones: <i>It will rain.</i> <b>Going to</b> = planes ya decididos: <i>I am going to study nursing.</i> Después de <i>will</i> y de <i>going to</i> el verbo va en forma base, sin cambios: <i>will start, going to be</i>."},
+  perfecto:{nombre:"Present Perfect", leccion:"<b>Have/has + participio</b>: <i>I have worked here since 2023.</i> <b>Since</b> = desde un momento exacto (2023, Monday). <b>For</b> = durante un período (for three years). <b>Already</b> = ya (frases positivas). <b>Ever</b> = alguna vez (en preguntas)."},
+  articulos:{nombre:"Artículos (a / an / the)", leccion:"<b>A</b> = un/una (antes de consonante): <i>a nurse</i>. <b>An</b> = antes de vocal o h muda: <i>an X-ray, an hour</i>. <b>The</b> = el/la específico, único o ya mencionado: <i>the sun, the doctor (ese doctor)</i>. Sin artículo con idiomas, deportes y comidas en general."},
+  preposiciones:{nombre:"Preposiciones (in / on / at)", leccion:"<b>At</b> = horas exactas y noche: <i>at 7:30, at night</i>. <b>On</b> = días y fechas, calles y superficies: <i>on Monday, on Long Pond Road, on the table</i>. <b>In</b> = meses, años, estaciones y lugares cerrados: <i>in 1972, in July, in the morning</i>."},
+  comparativos:{nombre:"Comparativos", leccion:"Para comparar dos cosas: adjetivo + <b>-er than</b>: <i>colder than, stronger than</i>. Adjetivos largos: <b>more</b> + adjetivo (<i>more dangerous</i>). Irregulares: good→<b>better</b>, bad→<b>worse</b>. Nunca combines: ✗ <i>more stronger</i>."},
+  modales:{nombre:"Verbos modales (can / must / should)", leccion:"<b>Can</b> = poder/saber hacer. <b>Must</b> = obligación fuerte; <b>must not (mustn't)</b> = prohibido. <b>Should</b> = consejo (deberías). <b>Could</b> = pedir favor con cortesía: <i>Could you help me, please?</i> Después del modal, el verbo va en forma base: <i>must walk</i> (✗ must walks)."},
+  preguntas:{nombre:"Formación de preguntas", leccion:"Con <b>do/does</b> + forma base: <i>Where do you live? Does she have diabetes?</i> (con <i>does</i>, el verbo pierde la -s). Preguntas de información: <b>What</b> = qué, <b>Where</b> = dónde, <b>When</b> = cuándo, <b>What time</b> = a qué hora, <b>How</b> = cómo."},
+  orden:{nombre:"Orden de la oración", leccion:"El orden básico en inglés NO se mueve como en español: <b>Sujeto + Verbo + Objeto</b>: <i>The nurse helps the patient.</i> Los adverbios de frecuencia (always, never, usually) van <b>antes</b> del verbo principal, pero <b>después</b> de <i>am/is/are</i>: <i>He always arrives on time. / I am never late.</i>"}
+};
+var GQ = [
+  {t:"presente", q:"She ___ to work by bus every day.", o:["go","goes","going","gone"], a:1, e:"Con he/she/it el verbo lleva -s: she GOES. Es un hábito (every day) → Present Simple."},
+  {t:"presente", q:"Look! The patient ___ from the wound.", o:["bleeds","is bleeding","bleed","bled"], a:1, e:"“Look!” indica que pasa AHORA → Present Continuous: is bleeding."},
+  {t:"presente", q:"I ___ drink coffee in the morning.", o:["usually","am usually","usually am","use"], a:0, e:"El adverbio de frecuencia va antes del verbo principal: I usually drink."},
+  {t:"presente", q:"He ___ in the dialysis unit.", o:["work","works","working","worked"], a:1, e:"He → el verbo lleva -s: works."},
+  {t:"presente", q:"Right now, the nurse ___ the patient's blood pressure.", o:["takes","take","is taking","took"], a:2, e:"Right now (ahora mismo) → is taking (Present Continuous)."},
+  {t:"presente", q:"They ___ TV at the moment.", o:["watch","watches","is watching","are watching"], a:3, e:"They + ahora → are watching (are porque es plural)."},
+  {t:"pasado", q:"Yesterday, the doctor ___ the lab results.", o:["checks","checked","check","checking"], a:1, e:"Yesterday = pasado terminado → checked (verbo regular con -ed)."},
+  {t:"pasado", q:"The patient ___ very sick last night.", o:["feel","feels","felt","feeling"], a:2, e:"Feel es irregular: feel → felt. Last night = anoche."},
+  {t:"pasado", q:"We ___ the medication two hours ago.", o:["give","gave","gives","given"], a:1, e:"Give es irregular: give → gave. “Two hours ago” = hace dos horas."},
+  {t:"pasado", q:"She ___ her leg in 2020.", o:["break","breaks","broke","broken"], a:2, e:"Break es irregular: break → broke. Broken es el participio (se usa con have)."},
+  {t:"pasado", q:"Did you ___ your medicine this morning?", o:["took","takes","take","taken"], a:2, e:"Después de DID el verbo vuelve a su forma base: Did you TAKE…?"},
+  {t:"futuro", q:"Tomorrow, we ___ the treatment at 8 a.m.", o:["will start","starts","started","starting"], a:0, e:"Plan para mañana → will start (will + forma base)."},
+  {t:"futuro", q:"I think it ___ rain later.", o:["will","is","was","rains"], a:0, e:"Predicción con “I think” → will rain."},
+  {t:"futuro", q:"He is going to ___ a nurse.", o:["is","be","being","was"], a:1, e:"Después de going to va la forma base: going to BE."},
+  {t:"perfecto", q:"I have worked at this clinic ___ 2023.", o:["for","since","from","ago"], a:1, e:"SINCE + momento exacto (2023, el lunes, enero). FOR sería con duración: for three years."},
+  {t:"perfecto", q:"She has ___ finished her shift.", o:["ever","already","yet","since"], a:1, e:"ALREADY = ya, en frases positivas con Present Perfect."},
+  {t:"perfecto", q:"Have you ___ taken this medicine before?", o:["ever","already","since","for"], a:0, e:"EVER = alguna vez, se usa en preguntas con Present Perfect."},
+  {t:"perfecto", q:"The treatment has lasted ___ three hours.", o:["since","for","ago","at"], a:1, e:"FOR + duración (three hours, two days, a week)."},
+  {t:"articulos", q:"She is ___ nurse at Fresenius.", o:["an","a","the","(sin artículo)"], a:1, e:"Nurse empieza con consonante y es “una” enfermera cualquiera → A nurse."},
+  {t:"articulos", q:"___ sun is very strong today.", o:["A","An","The","(sin artículo)"], a:2, e:"El sol es único → THE sun."},
+  {t:"articulos", q:"The patient needs ___ X-ray of his chest.", o:["a","an","the","(sin artículo)"], a:1, e:"X-ray suena como vocal (“eks”) → AN X-ray."},
+  {t:"articulos", q:"I have an appointment with ___ doctor at 10.", o:["a","an","the","(sin artículo)"], a:2, e:"Es UN doctor específico (el de la cita) → THE doctor."},
+  {t:"preposiciones", q:"Your appointment is ___ Monday.", o:["in","on","at","of"], a:1, e:"Días de la semana → ON (on Monday, on Friday)."},
+  {t:"preposiciones", q:"The treatment starts ___ 7:30 in the morning.", o:["in","on","at","by"], a:2, e:"Horas exactas → AT (at 7:30). Partes del día → in the morning."},
+  {t:"preposiciones", q:"He was born ___ 1972.", o:["in","on","at","of"], a:0, e:"Años y meses → IN (in 1972, in July)."},
+  {t:"preposiciones", q:"The clinic is ___ Long Pond Road.", o:["in","at","on","to"], a:2, e:"Calles y avenidas en EE. UU. → ON (on Long Pond Road)."},
+  {t:"preposiciones", q:"Please put the chart ___ the table.", o:["in","on","at","under"], a:1, e:"Sobre una superficie → ON the table."},
+  {t:"comparativos", q:"Today he feels ___ than yesterday.", o:["more good","better","gooder","best"], a:1, e:"Good es irregular: good → BETTER (mejor). Nunca “gooder” ni “more good”."},
+  {t:"comparativos", q:"This medicine is ___ than the other one.", o:["more strong","stronger","strongest","strong"], a:1, e:"Adjetivo corto → stronger than. “More strong” y “strongest” no comparan entre dos."},
+  {t:"comparativos", q:"Rochester is ___ than Miami in winter.", o:["colder","more cold","coldest","cold"], a:0, e:"Frío en invierno: Rochester is COLDER than Miami. Adjetivo corto + -er."},
+  {t:"comparativos", q:"Walking is ___ than running for his knee.", o:["more safer","safer","safest","safe"], a:1, e:"Safe → safer. No se usa “more safer”: una sola forma de comparativo."},
+  {t:"modales", q:"You ___ smoke inside the hospital.", o:["must not","must","should to","can to"], a:0, e:"Prohibido → MUST NOT (mustn't). Fumar en el hospital está prohibido."},
+  {t:"modales", q:"The patient ___ walk a little every day. It is good advice.", o:["should","shoulds","must to","can to"], a:0, e:"Consejo → SHOULD + forma base (should walk)."},
+  {t:"modales", q:"___ you help me with this patient, please?", o:["Could","Must","Should to","Do to"], a:0, e:"Petición cortés → COULD you help me, please?"},
+  {t:"modales", q:"He ___ lift heavy objects after his surgery.", o:["must not","must to","not must","doesn't must"], a:0, e:"Prohibición médica → must not lift. Después del modal, forma base."},
+  {t:"modales", q:"She ___ speak English and Spanish. She is bilingual.", o:["can","cans","can to","is can"], a:0, e:"Capacidad → CAN + forma base (can speak)."},
+  {t:"preguntas", q:"___ does the treatment start? — At seven.", o:["What time","Where","Who","How many"], a:0, e:"La respuesta es una hora → WHAT TIME (¿a qué hora?)."},
+  {t:"preguntas", q:"Where ___ you live?", o:["does","do","is","are"], a:1, e:"You → DO. “Where do you live?”"},
+  {t:"preguntas", q:"___ is your pain, from 0 to 10?", o:["How many","What","How strong","Who"], a:2, e:"Para intensidad del dolor: HOW STRONG is your pain? (¿qué tan fuerte es tu dolor?)."},
+  {t:"preguntas", q:"Does she ___ diabetes?", o:["has","have","having","had"], a:1, e:"Con DOES el verbo va en forma base: Does she HAVE diabetes?"},
+  {t:"orden", q:"Elige la oración correcta:", o:["He always arrives on time.","He arrives always on time.","Always he arrives on time.","He on time arrives always."], a:0, e:"Always va antes del verbo principal: He ALWAYS arrives on time."},
+  {t:"orden", q:"Elige la oración correcta:", o:["Helps the nurse the patient every day.","The nurse helps the patient every day.","The patient helps the nurse every day every.","Every day helps the nurse patient the."], a:1, e:"Sujeto + verbo + objeto: The nurse helps the patient every day."},
+  {t:"orden", q:"Elige la oración correcta:", o:["I never am late.","I am never late.","Never I am late.","I late never am."], a:1, e:"Con am/is/are el adverbio va DESPUÉS: I am NEVER late."}
+];
+var temaActual = "";
+function pintarGramatica(){
+  var z = $("gramatica-zona");
+  var g = P.gramatica;
+  if(g.indice >= GQ.length){
+    z.innerHTML = "<div class='tarjeta'><div class='puntaje'>" + g.aciertos + " / " + GQ.length + "</div>"
+      + "<div class='nivel'>🎉 ¡Terminaste el Módulo 1!</div>"
+      + "<p style='text-align:center;'>Respondiste las " + GQ.length + " preguntas de gramática. "
+      + "Puedes repetirlo cuando quieras para subir tu puntaje.</p>"
+      + "<div class='fila-botones'><button class='btn verde' onclick='reiniciarGramatica()'>🔁 Repetir módulo</button>"
+      + "<button class='btn gris' onclick='volverInicio()'>⬅ Inicio</button></div></div>";
+    return;
+  }
+  var item = GQ[g.indice];
+  var html = "";
+  if(item.t !== temaActual){
+    temaActual = item.t;
+    html += "<div class='leccion'><h3>📖 Mini-lección · " + TEMAS[item.t].nombre + "</h3><p>" + TEMAS[item.t].leccion + "</p></div>";
+  }
+  html += "<div class='tarjeta'><div class='contador'>Pregunta " + (g.indice+1) + " de " + GQ.length
+    + " · Tema: " + TEMAS[item.t].nombre + " · Aciertos: " + g.aciertos + "</div>";
+  html += "<div class='pregunta'>" + item.q + "</div><div id='g-opciones'>";
+  for(var i=0;i<item.o.length;i++){
+    html += "<button class='opcion' onclick='responderGramatica(" + i + ")'>" + item.o[i] + "</button>";
+  }
+  html += "</div><div class='explica' id='g-explica'></div>"
+    + "<div class='fila-botones'><button class='btn oculto' id='g-siguiente' onclick='siguienteGramatica()'>Siguiente ➡</button></div></div>";
+  z.innerHTML = html;
+}
+function responderGramatica(i){
+  var g = P.gramatica;
+  var item = GQ[g.indice];
+  var botones = document.querySelectorAll("#g-opciones .opcion");
+  var bien = (i === item.a);
+  for(var j=0;j<botones.length;j++){
+    botones[j].disabled = true;
+    if(j === item.a) botones[j].classList.add("bien");
+    else if(j === i && !bien) botones[j].classList.add("mal");
+  }
+  g.respondidas += 1;
+  if(bien) g.aciertos += 1;
+  var ex = $("g-explica");
+  ex.className = "explica " + (bien ? "bien" : "mal");
+  ex.innerHTML = (bien ? "✅ <b>¡Correcto!</b> " : "❌ <b>Casi.</b> La respuesta es: <b>" + item.o[item.a] + "</b>. ") + item.e;
+  $("g-siguiente").classList.remove("oculto");
+  guardar();
+}
+function siguienteGramatica(){
+  P.gramatica.indice += 1;
+  if(P.gramatica.indice >= GQ.length){ P.gramatica.terminado = true; }
+  guardar();
+  pintarGramatica();
+}
+function reiniciarGramatica(){
+  P.gramatica = {indice:0, aciertos:0, respondidas:0, terminado:false};
+  temaActual = "";
+  guardar();
+  pintarGramatica();
+}
+</script>
+
+<script>
+"use strict";
+/* ================= MÓDULO 2 · FLASHCARDS DE VOCABULARIO ================= */
+var FC = [
+  /* --- Cuerpo y órganos --- */
+  {en:"heart", es:"el corazón", cat:"Cuerpo y órganos"},
+  {en:"lungs", es:"los pulmones", cat:"Cuerpo y órganos"},
+  {en:"kidneys", es:"los riñones", cat:"Cuerpo y órganos"},
+  {en:"liver", es:"el hígado", cat:"Cuerpo y órganos"},
+  {en:"brain", es:"el cerebro", cat:"Cuerpo y órganos"},
+  {en:"stomach", es:"el estómago", cat:"Cuerpo y órganos"},
+  {en:"skin", es:"la piel", cat:"Cuerpo y órganos"},
+  {en:"blood", es:"la sangre", cat:"Cuerpo y órganos"},
+  {en:"bone", es:"el hueso", cat:"Cuerpo y órganos"},
+  {en:"muscle", es:"el músculo", cat:"Cuerpo y órganos"},
+  /* --- Síntomas --- */
+  {en:"fever", es:"fiebre", cat:"Síntomas"},
+  {en:"cough", es:"tos", cat:"Síntomas"},
+  {en:"pain", es:"dolor", cat:"Síntomas"},
+  {en:"nausea", es:"náuseas", cat:"Síntomas"},
+  {en:"dizziness", es:"mareo", cat:"Síntomas"},
+  {en:"shortness of breath", es:"falta de aire / dificultad para respirar", cat:"Síntomas"},
+  {en:"swelling", es:"hinchazón", cat:"Síntomas"},
+  {en:"fatigue", es:"cansancio / fatiga", cat:"Síntomas"},
+  {en:"headache", es:"dolor de cabeza", cat:"Síntomas"},
+  {en:"bleeding", es:"sangrado", cat:"Síntomas"},
+  {en:"itching", es:"picazón", cat:"Síntomas"},
+  {en:"cramps", es:"calambres", cat:"Síntomas"},
+  {en:"chest pain", es:"dolor en el pecho", cat:"Síntomas"},
+  /* --- Signos vitales --- */
+  {en:"blood pressure", es:"presión arterial / tensión", cat:"Signos vitales"},
+  {en:"heart rate (pulse)", es:"frecuencia cardíaca (pulso)", cat:"Signos vitales"},
+  {en:"temperature", es:"temperatura", cat:"Signos vitales"},
+  {en:"respiratory rate", es:"frecuencia respiratoria", cat:"Signos vitales"},
+  {en:"oxygen saturation", es:"saturación de oxígeno", cat:"Signos vitales"},
+  {en:"weight", es:"peso", cat:"Signos vitales"},
+  {en:"height", es:"estatura / altura", cat:"Signos vitales"},
+  /* --- Dolor --- */
+  {en:"pain scale", es:"escala del dolor (0 a 10)", cat:"Dolor"},
+  {en:"sharp pain", es:"dolor punzante / agudo", cat:"Dolor"},
+  {en:"dull pain", es:"dolor sordo", cat:"Dolor"},
+  {en:"burning sensation", es:"ardor / sensación de quemazón", cat:"Dolor"},
+  {en:"throbbing pain", es:"dolor pulsátil (late)", cat:"Dolor"},
+  /* --- Medicamentos --- */
+  {en:"painkiller", es:"analgésico (calmante)", cat:"Medicamentos"},
+  {en:"antibiotic", es:"antibiótico", cat:"Medicamentos"},
+  {en:"insulin", es:"insulina", cat:"Medicamentos"},
+  {en:"dose", es:"dosis", cat:"Medicamentos"},
+  {en:"prescription", es:"receta médica", cat:"Medicamentos"},
+  {en:"side effect", es:"efecto secundario", cat:"Medicamentos"},
+  {en:"tablet (pill)", es:"tableta / pastilla", cat:"Medicamentos"},
+  {en:"injection", es:"inyección", cat:"Medicamentos"},
+  /* --- Departamentos --- */
+  {en:"emergency room (ER)", es:"sala de emergencias", cat:"Departamentos"},
+  {en:"intensive care unit (ICU)", es:"unidad de cuidados intensivos", cat:"Departamentos"},
+  {en:"laboratory", es:"laboratorio", cat:"Departamentos"},
+  {en:"pharmacy", es:"farmacia", cat:"Departamentos"},
+  {en:"radiology", es:"radiología / rayos X", cat:"Departamentos"},
+  {en:"operating room (surgery)", es:"quirófano (cirugía)", cat:"Departamentos"},
+  {en:"outpatient clinic", es:"clínica ambulatoria / consulta externa", cat:"Departamentos"},
+  {en:"waiting room", es:"sala de espera", cat:"Departamentos"},
+  /* --- DIÁLISIS (bloque especial) --- */
+  {en:"hemodialysis", es:"hemodiálisis", cat:"Diálisis"},
+  {en:"dialysis machine", es:"máquina de diálisis", cat:"Diálisis"},
+  {en:"vascular access", es:"acceso vascular", cat:"Diálisis"},
+  {en:"fistula", es:"fístula", cat:"Diálisis"},
+  {en:"graft", es:"injerto (acceso vascular)", cat:"Diálisis"},
+  {en:"catheter", es:"catéter", cat:"Diálisis"},
+  {en:"fluid overload", es:"sobrecarga de líquidos", cat:"Diálisis"},
+  {en:"dry weight", es:"peso seco", cat:"Diálisis"},
+  {en:"ultrafiltration", es:"ultrafiltración (sacar líquido)", cat:"Diálisis"},
+  {en:"blood flow rate", es:"flujo de sangre de la máquina (Qb)", cat:"Diálisis"},
+  {en:"dialysate", es:"dializado / líquido de diálisis", cat:"Diálisis"},
+  {en:"potassium", es:"potasio", cat:"Diálisis"},
+  {en:"phosphorus", es:"fósforo", cat:"Diálisis"},
+  {en:"fluid restriction", es:"restricción de líquidos", cat:"Diálisis"},
+  {en:"diet", es:"dieta", cat:"Diálisis"},
+  {en:"treatment time", es:"tiempo de tratamiento", cat:"Diálisis"},
+  {en:"needle", es:"aguja", cat:"Diálisis"},
+  {en:"cannulation", es:"canulación / punción del acceso", cat:"Diálisis"},
+  {en:"heparin", es:"heparina", cat:"Diálisis"},
+  {en:"low blood pressure (hypotension)", es:"presión baja (hipotensión)", cat:"Diálisis"}
+];
+var colaTarjetas = [];
+var tarjetaActual = -1;
+var tarjetaVolteada = false;
+function iniciarTarjetas(){
+  colaTarjetas = [];
+  for(var i=0;i<FC.length;i++){
+    if(!P.tarjetas.conocidas[i]) colaTarjetas.push(i);
+  }
+  tarjetaActual = colaTarjetas.length ? colaTarjetas[0] : -1;
+  tarjetaVolteada = false;
+  pintarTarjeta();
+}
+function pintarTarjeta(){
+  var z = $("tarjetas-zona");
+  var conocidas = Object.keys(P.tarjetas.conocidas).length;
+  var html = "<div class='tarjeta'><div class='contador'>Sabes " + conocidas + " de " + FC.length
+    + " palabras · Quedan " + colaTarjetas.length + " en la cola</div>"
+    + "<div class='barra-fondo'><div class='barra' style='width:" + Math.round(100*conocidas/FC.length) + "%'></div></div>";
+  if(tarjetaActual === -1){
+    html += "<div class='puntaje'>🎉 " + conocidas + " / " + FC.length + "</div>"
+      + "<div class='nivel'>¡Ya te sabes todas las tarjetas de esta ronda!</div>"
+      + "<p style='text-align:center;'>Si quieres repasar todo otra vez, reinicia las tarjetas.</p>"
+      + "<div class='fila-botones'><button class='btn verde' onclick='reiniciarTarjetas()'>🔁 Repasar todas</button>"
+      + "<button class='btn gris' onclick='volverInicio()'>⬅ Inicio</button></div>";
+  } else {
+    var c = FC[tarjetaActual];
+    html += "<div class='flash-escena'><div class='flash" + (tarjetaVolteada ? " volteada" : "") + "' id='flash' onclick='voltearTarjeta()'>"
+      + "<div class='cara frente'><div class='cat'>" + c.cat + "</div>"
+      + "<div class='termino'>" + c.en + "</div>"
+      + "<div class='toca'>👆 Toca la tarjeta para ver el significado</div></div>"
+      + "<div class='cara atras'><div class='cat'>" + c.cat + "</div>"
+      + "<div class='traduccion'>" + c.es + "</div>"
+      + "<div class='termino' style='font-size:1.05rem; margin-top:8px;'>" + c.en + "</div></div>"
+      + "</div></div>"
+      + "<div class='fila-botones'>" + botonEscuchar(c.en)
+      + "<button class='btn rojo-suave' onclick='tarjetaRepetir()'>🔁 Repetir</button>"
+      + "<button class='btn verde' onclick='tarjetaLaSe()'>✅ La sé</button></div>"
+      + "<p style='text-align:center; color:var(--gris);'>Escucha la palabra, dilo en voz alta y después marca si la sabes.</p>";
+  }
+  html += "</div>";
+  z.innerHTML = html;
+}
+function voltearTarjeta(){
+  tarjetaVolteada = !tarjetaVolteada;
+  var f = $("flash");
+  if(f) f.classList.toggle("volteada", tarjetaVolteada);
+}
+function avanzarTarjeta(){
+  colaTarjetas.shift();
+  tarjetaActual = colaTarjetas.length ? colaTarjetas[0] : -1;
+  tarjetaVolteada = false;
+  pintarTarjeta();
+}
+function tarjetaLaSe(){
+  if(tarjetaActual === -1) return;
+  P.tarjetas.conocidas[tarjetaActual] = true;
+  guardar();
+  avanzarTarjeta();
+}
+function tarjetaRepetir(){
+  if(tarjetaActual === -1) return;
+  colaTarjetas.push(colaTarjetas.shift());
+  tarjetaActual = colaTarjetas[0];
+  tarjetaVolteada = false;
+  pintarTarjeta();
+}
+function reiniciarTarjetas(){
+  P.tarjetas.conocidas = {};
+  guardar();
+  iniciarTarjetas();
+}
+</script>
+
+<script>
+"use strict";
+/* ================= MÓDULO 3 · DIÁLOGOS CLÍNICOS ================= */
+/* En cada línea, ____ marca un hueco. Los huecos se numeran en orden. */
+var DLG = [
+  {titulo:"1 · Entrevista de admisión (Admission Interview)",
+   contexto:"Saludas al paciente y pides sus datos básicos.",
+   lineas:[
+     {quien:"Tú", en:"Good morning. My name is Kiustin. I am a nursing student. What is your full ____?"},
+     {quien:"Paciente", en:"My name is Robert Miller."},
+     {quien:"Tú", en:"Thank you, Mr. Miller. What is your date of ____?"},
+     {quien:"Paciente", en:"March 5th, 1960."},
+     {quien:"Tú", en:"And what brings you to the hospital ____?"}
+   ],
+   huecos:[
+     {o:["name","age","room"], a:0, porque:"full NAME = nombre completo."},
+     {o:["born","birth","day"], a:1, porque:"date of BIRTH = fecha de nacimiento (se dice así en admisión)."},
+     {o:["please","yesterday","today"], a:2, porque:"what brings you TODAY = qué lo trae hoy."}
+   ],
+   nota:"💡 “What brings you in today?” es LA frase de admisión en EE. UU. para preguntar el motivo de la visita."},
+  {titulo:"2 · Evaluación del dolor (Pain Assessment)",
+   contexto:"Preguntas dónde duele, cuánto duele y desde cuándo.",
+   lineas:[
+     {quien:"Tú", en:"Tell me about your pain. Where exactly does it ____?"},
+     {quien:"Paciente", en:"Here, in my lower back."},
+     {quien:"Tú", en:"How would you ____ your pain, from 0 to 10?"},
+     {quien:"Paciente", en:"About a 7. It started two days ago."},
+     {quien:"Tú", en:"When did the pain ____ exactly?"}
+   ],
+   huecos:[
+     {o:["hurts","hurt","hurting"], a:1, porque:"does it HURT = forma base después de does."},
+     {o:["pay","count","rate"], a:2, porque:"RATE your pain = calificar el dolor; así se pregunta la escala 0–10."},
+     {o:["start","starts","started to"], a:0, porque:"did + forma base: When did the pain START?"}
+   ],
+   nota:"💡 Valorar el dolor = pain assessment. La escala 0–10 se documenta siempre en la nota clínica."},
+  {titulo:"3 · Explicando los signos vitales (Vital Signs)",
+   contexto:"Vas a medir la presión arterial y necesitas que el paciente coopere.",
+   lineas:[
+     {quien:"Tú", en:"Now I am going to take your blood ____."},
+     {quien:"Paciente", en:"Okay, no problem."},
+     {quien:"Tú", en:"Please roll up your ____ and keep your arm still."},
+     {quien:"Tú", en:"Good. Now relax and take a deep ____."}
+   ],
+   huecos:[
+     {o:["pressure","press","pressing"], a:0, porque:"blood PRESSURE = presión arterial (sustantivo)."},
+     {o:["shirt","sleeve","sleeves"], a:1, porque:"roll up your SLEEVE = súbete la manga."},
+     {o:["breathe","breath","air"], a:2, porque:"take a deep BREATH = respira profundo (breath = el aire que entra; breathe = el verbo)."}
+   ],
+   nota:"💡 BREATH (sustantivo) vs BREATHE (verbo): “Take a deep breath” / “Breathe slowly”."},
+  {titulo:"4 · Instrucciones de alta (Discharge Instructions)",
+   contexto:"El paciente se va a casa. Le explicas el medicamento y las señales de alerta.",
+   lineas:[
+     {quien:"Tú", en:"Take one tablet ____ a day, always with food."},
+     {quien:"Paciente", en:"Okay, morning and night."},
+     {quien:"Tú", en:"Exactly. And if the fever comes back, ____ the clinic right away."},
+     {quien:"Tú", en:"You also need to drink plenty of ____ and rest at home."}
+   ],
+   huecos:[
+     {o:["two","twice","second"], a:1, porque:"TWICE a day = dos veces al día (once, twice, three times)."},
+     {o:["call","calls","calling"], a:0, porque:"Imperativo: verbo en forma base → CALL the clinic."},
+     {o:["sugar","salt","fluids"], a:2, porque:"plenty of FLUIDS = muchos líquidos; es la frase estándar del alta."}
+   ],
+   nota:"💡 Al alta siempre se dice qué hacer SI algo empeora: “If the fever comes back, call the clinic.”"},
+  {titulo:"5 · Reporte SBAR por teléfono",
+   contexto:"Llamas a la enfermera para reportar un cambio en tu paciente de diálisis.",
+   lineas:[
+     {quien:"Tú", en:"Hello, this is Kiustin, the dialysis technician, calling about Mr. Lee in Room 204."},
+     {quien:"Tú", en:"S — Situation: He ____ his dialysis treatment at 7 a.m."},
+     {quien:"Tú", en:"B — Background: He is 68 years old and has kidney failure."},
+     {quien:"Tú", en:"A — Assessment: His blood pressure is ____ and he feels dizzy."},
+     {quien:"Tú", en:"R — Recommendation: I recommend that the nurse ____ him right away."}
+   ],
+   huecos:[
+     {o:["start","started","starting"], a:1, porque:"Pasado simple: He STARTED his treatment at 7 a.m."},
+     {o:["dropping","drop","drops"], a:0, porque:"is DROPPING = está bajando (presente continuo para algo que está pasando)."},
+     {o:["sees","see","seeing"], a:1, porque:"Después de “I recommend that…”, el verbo va en forma base: that the nurse SEE him."}
+   ],
+   nota:"💡 SBAR = Situation, Background, Assessment, Recommendation. Es el formato oficial de reporte en hospitales de EE. UU."},
+  {titulo:"6 · Tranquilizar al paciente (Calming the Patient)",
+   contexto:"El paciente está nervioso antes de un procedimiento.",
+   lineas:[
+     {quien:"Paciente", en:"I am very nervous about this procedure."},
+     {quien:"Tú", en:"I understand how you feel. Everything is going to be ____."},
+     {quien:"Tú", en:"If you need anything, press the call ____ next to your bed."},
+     {quien:"Tú", en:"I will stay here ____ you until you feel calm."}
+   ],
+   huecos:[
+     {o:["fine","fined","find"], a:0, porque:"Everything is going to be FINE = todo va a estar bien."},
+     {o:["bell","button","light"], a:1, porque:"call BUTTON = el botón de llamada junto a la cama."},
+     {o:["of","at","with"], a:2, porque:"stay WITH you = quedarme contigo / a tu lado."}
+   ],
+   nota:"💡 Frases que calman: “I understand.” “Take your time.” “I am right here with you.”"},
+  {titulo:"7 · Antes del tratamiento de diálisis",
+   contexto:"Recibes a tu paciente de diálisis: peso, ganancia de líquido y lavado del acceso.",
+   lineas:[
+     {quien:"Tú", en:"Good morning, Mrs. Garcia. First, I need to check your ____."},
+     {quien:"Paciente", en:"Good morning, Kiustin."},
+     {quien:"Tú", en:"How much fluid did you gain since your last ____?"},
+     {quien:"Paciente", en:"About two kilos, I think."},
+     {quien:"Tú", en:"Before we start, please wash your ____ arm with soap and water."}
+   ],
+   huecos:[
+     {o:["weight","wait","weigh"], a:0, porque:"check your WEIGHT = pesarte (weight = peso, sustantivo)."},
+     {o:["treated","treatment","treat"], a:1, porque:"since your last TREATMENT = desde tu último tratamiento."},
+     {o:["right","left","access"], a:2, porque:"ACCESS arm = el brazo del acceso vascular (fístula o injerto)."}
+   ],
+   nota:"💡 En diálisis SIEMPRE: peso primero, comparar con el peso seco (dry weight) y lavar el acceso antes de canular."},
+  {titulo:"8 · Explicando un medicamento",
+   contexto:"Le entregas el medicamento al paciente y le das las indicaciones.",
+   lineas:[
+     {quien:"Tú", en:"This medicine helps control your ____."},
+     {quien:"Paciente", en:"How often do I take it?"},
+     {quien:"Tú", en:"Take one pill every eight ____."},
+     {quien:"Tú", en:"And remember: do not take more than the ____ dose."}
+   ],
+   huecos:[
+     {o:["pains","pain","painful"], a:0, porque:"control your PAIN = controlar el dolor (sustantivo sin -s)."},
+     {o:["hours","hour","hourly"], a:1, porque:"every eight HOURS = cada ocho horas."},
+     {o:["recommends","recommendation","recommended"], a:2, porque:"the RECOMMENDED dose = la dosis recomendada (adjetivo)."}
+   ],
+   nota:"💡 “Every eight hours” = q8h en las órdenes médicas. “Do not take more than…” es la advertencia estándar."},
+  {titulo:"9 · Revisión de síntomas (Review of Symptoms)",
+   contexto:"Preguntas rápidas para detectar cambios en el paciente.",
+   lineas:[
+     {quien:"Tú", en:"Do you feel ____ right now?"},
+     {quien:"Paciente", en:"A little, when I stand up."},
+     {quien:"Tú", en:"Have you had a fever or a ____ this week?"},
+     {quien:"Paciente", en:"No fever, thank God."},
+     {quien:"Tú", en:"Are you allergic to any ____?"}
+   ],
+   huecos:[
+     {o:["dizziness","dizzy","dizzies"], a:1, porque:"feel DIZZY = sentirse mareado (adjetivo después de feel)."},
+     {o:["cough","coughs","coughing"], a:1, porque:"a COUGH = tos (sustantivo): a fever or a cough."},
+     {o:["medicined","medicine's","medicines"], a:2, porque:"allergic to any MEDICINES = alérgico a algún medicamento."}
+   ],
+   nota:"💡 La alergia se pregunta SIEMPRE antes de dar un medicamento: “Are you allergic to any medicines?”"},
+  {titulo:"10 · Programando la próxima cita",
+   contexto:"La recepcionista confirma la próxima cita del paciente.",
+   lineas:[
+     {quien:"Recepción", en:"Your next appointment is on ____ at 9 a.m."},
+     {quien:"Paciente", en:"Friday? Perfect."},
+     {quien:"Recepción", en:"Please arrive 15 minutes ____, and bring your insurance ____."}
+   ],
+   huecos:[
+     {o:["Yesterday","Friday","Night"], a:1, porque:"La cita es en el futuro: on FRIDAY (los días van con ON y con mayúscula)."},
+     {o:["late","soon","early"], a:2, porque:"arrive EARLY = llega temprano."},
+     {o:["card","car","care"], a:0, porque:"insurance CARD = la tarjeta del seguro médico."}
+   ],
+   nota:"💡 En EE. UU. siempre piden dos cosas en recepción: insurance card y photo ID."},
+  {titulo:"11 · Calambre durante la diálisis",
+   contexto:"A tu paciente le da un calambre en la pierna en pleno tratamiento.",
+   lineas:[
+     {quien:"Paciente", en:"Kiustin, I have a cramp in my leg!"},
+     {quien:"Tú", en:"I will lower the fluid removal right away. Let me help you ____ your leg."},
+     {quien:"Paciente", en:"Ah, that feels better."},
+     {quien:"Tú", en:"Cramps can happen when we remove fluid too ____."}
+   ],
+   huecos:[
+     {o:["stretch","stretches","stretched"], a:0, porque:"help you STRETCH = ayudarte a estirar (forma base después de help you)."},
+     {o:["faster","fast","fastest"], a:1, porque:"too FAST = demasiado rápido (adverbio simple después de too)."}
+   ],
+   nota:"💡 Ante un calambre: bajar la ultrafiltración, estirar el músculo y avisar a la enfermera si no cede."},
+  {titulo:"12 · Contestando el teléfono de la unidad",
+   contexto:"Suena el teléfono de la unidad de diálisis y contestas tú.",
+   lineas:[
+     {quien:"Tú", en:"Hello, this is the dialysis unit. How can I ____ you?"},
+     {quien:"Llamada", en:"Hi, I need to know if Mr. Lee finished his treatment."},
+     {quien:"Tú", en:"One moment, please. Let me ____ his chart."}
+   ],
+   huecos:[
+     {o:["help","helps","helping"], a:0, porque:"How can I HELP you? = ¿en qué puedo ayudarle? (modal + forma base)."},
+     {o:["checks","checked","check"], a:2, porque:"Let me CHECK = déjeme revisar (let me + forma base)."}
+   ],
+   nota:"💡 Al contestar: saluda, di la unidad y ofrece ayuda: “Dialysis unit, how can I help you?”"}
+];
+var dlgSel = {};
+var dlgComprobado = false;
+function pintarDialogo(){
+  dlgSel = {};
+  dlgComprobado = false;
+  var z = $("dialogos-zona");
+  var idx = P.dialogos.indice;
+  var d = DLG[idx];
+  var hechos = Object.keys(P.dialogos.completados).length;
+  var html = "<div class='tarjeta'><div class='contador'>Diálogo " + (idx+1) + " de " + DLG.length
+    + " · Completados: " + hechos + (P.dialogos.completados[idx] ? " · ✅ Ya completado" : "") + "</div>"
+    + "<h3 style='margin:4px 0 4px; color:var(--azul-osc);'>" + d.titulo + "</h3>"
+    + "<p style='color:var(--gris); margin:0 0 14px;'>" + d.contexto + "</p>";
+  var k = 0;
+  var textosIngles = [];
+  for(var i=0;i<d.lineas.length;i++){
+    var linea = d.lineas[i];
+    var partes = linea.en.split("____");
+    var lineaHtml = "";
+    for(var j=0;j<partes.length;j++){
+      lineaHtml += partes[j];
+      if(j < partes.length-1){
+        lineaHtml += "<span class='hueco' id='hueco-" + k + "'>______</span>";
+        k++;
+      }
+    }
+    textosIngles.push(linea.en.replace(/____/g, "..."));
+    html += "<p class='dialogo-linea'><span class='quien'>" + linea.quien + ":</span> " + lineaHtml + "</p>";
+  }
+  if(escuchaOK()){
+    window._dlgTextos = textosIngles;
+    html += "<div class='fila-botones'><button class='btn gris escuchar' onclick='escucharDialogo()'>🔊 Escuchar el diálogo</button></div>";
+  }
+  html += "<div id='dlg-opciones'>";
+  for(var b=0;b<d.huecos.length;b++){
+    html += "<div class='huecos-opciones'><p class='titulo-hueco'>Hueco " + (b+1) + " — toca la palabra correcta:</p>";
+    for(var o=0;o<d.huecos[b].o.length;o++){
+      html += "<button class='chip' id='chip-" + b + "-" + o + "' onclick='elegirHueco(" + b + "," + o + ")'>" + d.huecos[b].o[o] + "</button>";
+    }
+    html += "</div>";
+  }
+  html += "</div><div class='explica' id='dlg-resultado'></div>"
+    + "<div class='fila-botones'>"
+    + "<button class='btn gris' onclick='dialogoAnterior()'>⬅ Anterior</button>"
+    + "<button class='btn' onclick='comprobarDialogo()'>✔ Comprobar</button>"
+    + "<button class='btn verde oculto' id='dlg-siguiente' onclick='dialogoSiguiente()'>Siguiente ➡</button>"
+    + "</div><div class='nota'>" + d.nota + "</div></div>";
+  z.innerHTML = html;
+}
+function escucharDialogo(){
+  if(!window._dlgTextos) return;
+  for(var i=0;i<window._dlgTextos.length;i++){
+    (function(txt, delay){
+      setTimeout(function(){ hablar(txt); }, delay);
+    })(window._dlgTextos[i], i * 2600);
+  }
+}
+function elegirHueco(b, o){
+  dlgSel[b] = o;
+  var d = DLG[P.dialogos.indice];
+  var span = $("hueco-" + b);
+  if(span){ span.textContent = d.huecos[b].o[o]; span.className = "hueco"; }
+  for(var i=0;i<d.huecos[b].o.length;i++){
+    var chip = $("chip-" + b + "-" + i);
+    if(chip) chip.classList.toggle("elegida", i === o);
+  }
+  var r = $("dlg-resultado");
+  if(r){ r.className = "explica"; r.style.display = "none"; }
+  dlgComprobado = false;
+}
+function comprobarDialogo(){
+  var d = DLG[P.dialogos.indice];
+  var faltan = 0, bien = 0;
+  for(var b=0;b<d.huecos.length;b++){
+    if(dlgSel[b] === undefined) faltan++;
+    else if(dlgSel[b] === d.huecos[b].a) bien++;
+  }
+  var r = $("dlg-resultado");
+  if(faltan > 0){
+    r.className = "explica mal"; r.style.display = "block";
+    r.innerHTML = "⚠️ Te faltan <b>" + faltan + "</b> hueco(s). Elige una palabra en cada hueco y vuelve a comprobar.";
+    return;
+  }
+  dlgComprobado = true;
+  var mensajes = [];
+  for(var k=0;k<d.huecos.length;k++){
+    var correcto = (dlgSel[k] === d.huecos[k].a);
+    var span = $("hueco-" + k);
+    if(span) span.className = "hueco " + (correcto ? "bien" : "mal");
+    if(!correcto) mensajes.push("Hueco " + (k+1) + ": era <b>" + d.huecos[k].o[d.huecos[k].a] + "</b> — " + d.huecos[k].porque);
+  }
+  if(bien === d.huecos.length){
+    P.dialogos.completados[P.dialogos.indice] = true;
+    P.dialogos.aciertos += 1;
+    guardar();
+    r.className = "explica bien"; r.style.display = "block";
+    r.innerHTML = "✅ <b>¡Diálogo completo y correcto!</b> Léelo en voz alta una vez más para practicar la pronunciación.";
+    $("dlg-siguiente").classList.remove("oculto");
+  } else {
+    r.className = "explica mal"; r.style.display = "block";
+    r.innerHTML = "❌ Tienes <b>" + bien + " de " + d.huecos.length + "</b> bien. Corrige los huecos en rojo:<br>" + mensajes.join("<br>");
+  }
+}
+function dialogoSiguiente(){
+  P.dialogos.indice = (P.dialogos.indice + 1) % DLG.length;
+  guardar();
+  pintarDialogo();
+}
+function dialogoAnterior(){
+  P.dialogos.indice = (P.dialogos.indice - 1 + DLG.length) % DLG.length;
+  guardar();
+  pintarDialogo();
+}
+</script>
+
+<script>
+"use strict";
+/* ================= MÓDULO 4 · SIMULACRO DE EXAMEN ================= */
+var LECTURA_TEXTO = "<b>Read the text / Lee el texto:</b><br><br>"
+  + "Mr. James Carter is 70 years old. He has kidney failure, so he goes to the dialysis clinic "
+  + "three times a week: on Mondays, Wednesdays, and Fridays. His treatment takes four hours. "
+  + "Today he arrived at 7 a.m. Before the treatment, the technician checked his weight and his "
+  + "blood pressure. During the treatment, Mr. Carter felt dizzy because his blood pressure was low. "
+  + "The technician stopped the fluid removal and told the nurse. After a few minutes, Mr. Carter felt better.";
+var MOCK = [
+  {q:"Maria ___ in a hospital in Rochester.", o:["work","works","working","worked"], a:1, e:"She/Maria → el verbo lleva -s: works.", tag:"Gramática"},
+  {q:"I ___ my keys yesterday at the clinic.", o:["lose","loses","lost","losing"], a:2, e:"Yesterday → pasado: lose → LOST (irregular).", tag:"Gramática"},
+  {q:"They ___ to the clinic tomorrow morning.", o:["will go","goes","went","gone"], a:0, e:"Tomorrow → futuro: will go.", tag:"Gramática"},
+  {q:"He has lived in Rochester ___ two years.", o:["since","for","ago","from"], a:1, e:"FOR + duración (two years). Since sería con un momento: since 2024.", tag:"Gramática"},
+  {q:"___ apple a day keeps the doctor away.", o:["A","An","The","(sin artículo)"], a:1, e:"Apple empieza con vocal → AN apple.", tag:"Gramática"},
+  {q:"This treatment is ___ than the last one.", o:["more short","shorter","shortest","short"], a:1, e:"Comparativo de adjetivo corto: shorter than.", tag:"Gramática"},
+  {q:"You look tired. You ___ rest after the treatment.", o:["should","shoulds","must to","can to"], a:0, e:"Consejo → SHOULD + forma base.", tag:"Gramática"},
+  {q:"___ did you start dialysis? — Two years ago.", o:["Where","Who","When","How many"], a:2, e:"La respuesta es un tiempo → WHEN (¿cuándo?).", tag:"Gramática"},
+  {q:"She ___ her medicine at 9 p.m. every night.", o:["take","takes","taking","took"], a:1, e:"Rutina con she → takes.", tag:"Gramática"},
+  {q:"If you feel sick, ___ me right away.", o:["calls","calling","call","called"], a:2, e:"Imperativo: forma base → CALL me.", tag:"Gramática"},
+  {q:"The patients ___ in the waiting room right now.", o:["is waiting","waits","are waiting","wait yesterday"], a:2, e:"Plural + ahora: ARE WAITING.", tag:"Gramática"},
+  {q:"Did he ___ the doctor yesterday?", o:["saw","sees","see","seen"], a:2, e:"Después de DID, forma base: Did he SEE…?", tag:"Gramática"},
+  {q:"My blood pressure is ___ today than yesterday.", o:["more low","lowest","low","lower"], a:3, e:"Comparar dos días → LOWER than (adjetivo corto + -er).", tag:"Gramática"},
+  {q:"We ___ never been to this hospital before.", o:["has","have","having","does"], a:1, e:"We → HAVE: We have never been…", tag:"Gramática"},
+  {lectura:true, q:"How often does Mr. Carter go to the dialysis clinic?", o:["Every day","Twice a week","Three times a week","Once a month"], a:2, e:"El texto dice: three times a week (lunes, miércoles y viernes).", tag:"Lectura"},
+  {lectura:true, q:"What did the technician check before the treatment?", o:["His temperature and his pulse","His weight and his blood pressure","His medicine and his chart","His arm and his leg"], a:1, e:"El texto: “checked his weight and his blood pressure”.", tag:"Lectura"},
+  {lectura:true, q:"Why did Mr. Carter feel dizzy during the treatment?", o:["Because he was hungry","Because his blood pressure was high","Because his blood pressure was low","Because the treatment was long"], a:2, e:"El texto: “he felt dizzy because his blood pressure was low”.", tag:"Lectura"},
+  {q:"What does “prescription” mean?", o:["radiografía","receta médica","presión arterial","sala de espera"], a:1, e:"Prescription = receta médica.", tag:"Vocabulario"},
+  {q:"What does “swelling” mean?", o:["mareo","tos","hinchazón","fiebre"], a:2, e:"Swelling = hinchazón.", tag:"Vocabulario"},
+  {q:"How do you say “presión arterial” in English?", o:["blood pressure","heart rate","body temperature","oxygen level"], a:0, e:"Presión arterial = BLOOD PRESSURE.", tag:"Vocabulario"},
+  {q:"A fistula is used for…", o:["taking X-rays","measuring temperature","dialysis access","giving insulin"], a:2, e:"La fístula es un acceso vascular para diálisis.", tag:"Vocabulario clínico"},
+  {q:"What does “side effect” mean?", o:["efecto secundario","dosis correcta","receta nueva","cita médica"], a:0, e:"Side effect = efecto secundario.", tag:"Vocabulario"},
+  {q:"The department for emergencies is the…", o:["pharmacy","laboratory","waiting room","emergency room"], a:3, e:"Emergencias = EMERGENCY ROOM (ER).", tag:"Vocabulario"},
+  {q:"Nurse: “How would you rate your pain?” — The patient answers:", o:["On Monday.","In my left arm.","About a six.","Yes, please."], a:2, e:"La pregunta pide un número de la escala: “About a six” (como un seis).", tag:"Comunicación"},
+  {q:"Choose the correct sentence:", o:["She don't have allergies.","She doesn't has allergies.","She doesn't have allergies.","She not have allergies."], a:2, e:"Con doesn't el verbo va en forma base: She doesn't HAVE allergies.", tag:"Gramática"}
+];
+var SIM = {activo:false, idx:0, resp:[], restante:0, timer:null};
+function pintarSimulacroInicio(){
+  detenerReloj();
+  SIM.activo = false;
+  var z = $("simulacro-zona");
+  var s = P.simulacro;
+  z.innerHTML = "<div class='tarjeta'>"
+    + "<p style='font-size:1.1rem;'>El simulacro tiene <b>" + MOCK.length + " preguntas</b> y <b>20 minutos</b> de reloj, "
+    + "como una prueba real: gramática, una lectura corta con comprensión y vocabulario médico.</p>"
+    + (s.ultimo === null ? "" : "<p>📊 Último puntaje: <b>" + s.ultimo + "%</b> · Mejor puntaje: <b>" + s.mejor + "%</b> · Intentos: <b>" + s.intentos + "</b></p>")
+    + "<div class='fila-botones'><button class='btn verde' onclick='empezarSimulacro()'>▶ Empezar simulacro</button></div>"
+    + "<p style='color:var(--gris);'>Consejo: no te quedes pegado en una pregunta. Marca una respuesta y sigue; al final revisas tus errores con la explicación.</p></div>";
+}
+function empezarSimulacro(){
+  SIM.activo = true; SIM.idx = 0; SIM.resp = [];
+  for(var i=0;i<MOCK.length;i++) SIM.resp.push(-1);
+  SIM.restante = 20 * 60;
+  pintarSimPregunta();
+  SIM.timer = setInterval(function(){
+    SIM.restante -= 1;
+    var r = $("reloj");
+    if(r){
+      r.textContent = "⏱ " + formatoTiempo(SIM.restante);
+      if(SIM.restante <= 120) r.classList.add("poco");
+    }
+    if(SIM.restante <= 0){ terminarSimulacro(true); }
+  }, 1000);
+}
+function formatoTiempo(s){
+  if(s < 0) s = 0;
+  var m = Math.floor(s/60), ss = s % 60;
+  return m + ":" + (ss < 10 ? "0" : "") + ss;
+}
+function detenerReloj(){ if(SIM.timer){ clearInterval(SIM.timer); SIM.timer = null; } }
+function pintarSimPregunta(){
+  var z = $("simulacro-zona");
+  var item = MOCK[SIM.idx];
+  var respondidas = 0;
+  for(var i=0;i<SIM.resp.length;i++) if(SIM.resp[i] >= 0) respondidas++;
+  var html = "<div class='reloj" + (SIM.restante <= 120 ? " poco" : "") + "' id='reloj'>⏱ " + formatoTiempo(SIM.restante) + "</div>"
+    + "<div class='tarjeta'><div class='contador'>Pregunta " + (SIM.idx+1) + " de " + MOCK.length
+    + " · " + item.tag + " · Respondidas: " + respondidas + "</div>";
+  if(item.lectura) html += "<div class='lectura'>" + LECTURA_TEXTO + "</div>";
+  html += "<div class='pregunta'>" + item.q + "</div>";
+  for(var j=0;j<item.o.length;j++){
+    var elegida = (SIM.resp[SIM.idx] === j) ? " elegida" : "";
+    html += "<button class='opcion chip-opcion" + elegida + "' style='" + (elegida ? "border-color:var(--azul); background:#eaf3fc; font-weight:700;" : "") + "' onclick='responderSim(" + j + ")'>" + item.o[j] + "</button>";
+  }
+  html += "<div class='fila-botones'>"
+    + "<button class='btn gris' onclick='simAnterior()' " + (SIM.idx === 0 ? "disabled" : "") + ">⬅ Anterior</button>"
+    + (SIM.idx < MOCK.length-1
+        ? "<button class='btn' onclick='simSiguiente()'>Siguiente ➡</button>"
+        : "<button class='btn verde' onclick='terminarSimulacro(false)'>✔ Terminar examen</button>")
+    + "</div>"
+    + (SIM.idx < MOCK.length-1 ? "<div class='fila-botones'><button class='btn rojo-suave' onclick='terminarSimulacro(false)'>Terminar examen ahora</button></div>" : "")
+    + "</div>";
+  z.innerHTML = html;
+}
+function responderSim(j){ SIM.resp[SIM.idx] = j; pintarSimPregunta(); }
+function simSiguiente(){ if(SIM.idx < MOCK.length-1){ SIM.idx++; pintarSimPregunta(); } }
+function simAnterior(){ if(SIM.idx > 0){ SIM.idx--; pintarSimPregunta(); } }
+function terminarSimulacro(porTiempo){
+  detenerReloj();
+  SIM.activo = false;
+  var bien = 0, errores = [];
+  for(var i=0;i<MOCK.length;i++){
+    if(SIM.resp[i] === MOCK[i].a) bien++;
+    else errores.push(i);
+  }
+  var pct = Math.round(100 * bien / MOCK.length);
+  P.simulacro.ultimo = pct;
+  P.simulacro.intentos += 1;
+  if(pct > P.simulacro.mejor) P.simulacro.mejor = pct;
+  guardar();
+  var nivel, consejo;
+  if(pct < 45){ nivel = "Nivel estimado: ESOL inicial"; consejo = "Vas empezando. Sigue con el Módulo 1 y las tarjetas todos los días: la base se construye con repetición."; }
+  else if(pct < 65){ nivel = "Nivel estimado: ESOL intermedio bajo"; consejo = "Ya tienes base. Refuerza los temas donde fallaste y repite el simulacro en unos días."; }
+  else if(pct < 85){ nivel = "Nivel estimado: ESOL intermedio"; consejo = "¡Buen nivel! Pulsa los detalles (artículos, present perfect) y practica los diálogos en voz alta."; }
+  else { nivel = "Nivel estimado: ESOL intermedio-alto"; consejo = "¡Excelente! Estás listo para rendir bien en el ESOL de MCC. Mantén la racha con los diálogos clínicos."; }
+  var z = $("simulacro-zona");
+  var html = "<div class='tarjeta'>"
+    + (porTiempo ? "<p style='text-align:center; font-weight:700; color:var(--rojo);'>⏰ Se acabó el tiempo.</p>" : "")
+    + "<div class='puntaje'>" + pct + "%</div>"
+    + "<div class='nivel'>" + nivel + "</div>"
+    + "<p style='text-align:center;'>Acertaste <b>" + bien + " de " + MOCK.length + "</b> preguntas.</p>"
+    + "<p style='text-align:center;'>" + consejo + "</p>"
+    + "<div class='fila-botones'><button class='btn verde' onclick='empezarSimulacro()'>🔁 Hacer otro simulacro</button>"
+    + "<button class='btn gris' onclick='volverInicio()'>⬅ Inicio</button></div></div>";
+  if(errores.length){
+    html += "<div class='tarjeta'><h3 style='margin-top:0;'>📝 Revisa tus errores (" + errores.length + ")</h3>";
+    for(var k=0;k<errores.length;k++){
+      var it = MOCK[errores[k]];
+      var tuya = SIM.resp[errores[k]] >= 0 ? it.o[SIM.resp[errores[k]]] : "(sin responder)";
+      html += "<div class='error-item'><b>Pregunta " + (errores[k]+1) + ":</b> " + it.q + "<br>"
+        + "Tu respuesta: <b>" + tuya + "</b><br>"
+        + "Respuesta correcta: <b>" + it.o[it.a] + "</b><br>"
+        + "💡 " + it.e + "</div>";
+    }
+    html += "</div>";
+  } else {
+    html += "<div class='tarjeta'><div class='nivel'>🏆 ¡Sin errores! Puntaje perfecto.</div></div>";
+  }
+  z.innerHTML = html;
+  window.scrollTo(0,0);
+}
+/* Si sale del simulacro a mitad, el reloj se detiene */
+var _volverInicioOriginal = volverInicio;
+volverInicio = function(){
+  detenerReloj();
+  SIM.activo = false;
+  _volverInicioOriginal();
+};
+
+/* ================= ARRANQUE ================= */
+actualizarRacha();
+pintarInicio();
+</script>
+</body>
+</html>
