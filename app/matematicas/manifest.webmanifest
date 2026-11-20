@@ -1,0 +1,17 @@
+{
+  "name": "Matemáticas Divertidas para Niños",
+  "short_name": "Matemáticas",
+  "description": "Juego de matemáticas para niños de preescolar a 5.º grado: rondas de 10 preguntas, estrellas, medallas y mucha diversión. Bilingüe español/inglés. Por Kiustin G.",
+  "lang": "es",
+  "start_url": "/app/matematicas/",
+  "scope": "/app/matematicas/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF7E6",
+  "theme_color": "#12B5A5",
+  "icons": [
+    { "src": "/app/matematicas/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/app/matematicas/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/app/matematicas/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
