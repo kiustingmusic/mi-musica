@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.kiusting.matematicas",
+      "sha256_cert_fingerprints": [
+        "6F:2C:EA:82:AF:75:BC:2F:23:F1:BB:69:10:8C:57:E7:CB:8D:85:55:AC:6F:A3:2D:6C:A7:EA:43:F0:14:02:3C"
+      ]
+    }
+  }
+]
