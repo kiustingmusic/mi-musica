@@ -22,5 +22,17 @@
         "D8:EF:FF:8F:56:7F:0F:0D:6D:6C:49:50:77:E4:E0:A5:98:16:BE:0B:20:71:1A:D0:85:60:66:7F:26:AC:3C:13"
       ]
     }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.kiusting.calculadoraobstetrica",
+      "sha256_cert_fingerprints": [
+        "47:96:8B:3B:2A:24:5F:47:80:9E:16:6E:C5:E8:12:F6:66:CD:F8:A3:A7:A1:01:E2:0C:BA:6E:32:15:9D:D7:02"
+      ]
+    }
   }
 ]

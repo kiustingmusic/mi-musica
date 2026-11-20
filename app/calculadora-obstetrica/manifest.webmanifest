@@ -1,0 +1,30 @@
+{
+  "name": "Calculadora Obstétrica — Kiustin G",
+  "short_name": "Calculadora Obstétrica",
+  "description": "Calculadora de embarazo bilingüe (español/inglés): fecha probable de parto por última regla (regla de Naegele) o por ecografía, edad gestacional, progreso y trimestres. No guarda datos. Por Kiustin G.",
+  "lang": "es",
+  "start_url": "/app/calculadora-obstetrica/",
+  "scope": "/app/calculadora-obstetrica/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FDF7FA",
+  "theme_color": "#C2437E",
+  "icons": [
+    {
+      "src": "/app/calculadora-obstetrica/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/app/calculadora-obstetrica/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/app/calculadora-obstetrica/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
