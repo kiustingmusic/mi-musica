@@ -179,6 +179,21 @@
   @keyframes trophydance{0%,100%{transform:rotate(0) scale(1)}25%{transform:rotate(-10deg) scale(1.12)}50%{transform:rotate(9deg) scale(1.18) translateY(-6px)}75%{transform:rotate(-6deg) scale(1.1)}}
   .confetti b{position:absolute;top:-4vh;font-size:22px;animation:fall linear forwards}
   @media (prefers-reduced-motion: reduce){ .stars-big .st,.record-badge,.result-card .trophy.dance{animation:none} }
+
+  .medals-wrap{margin:20px auto 4px;max-width:660px}
+  .medals-head{font-family:"Fredoka";font-size:21px;margin:0 0 8px;text-align:center}
+  .medals-shelf{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .medal{display:flex;flex-direction:column;align-items:center;gap:2px;width:88px;padding:10px 4px;background:var(--card);border:2px dashed var(--line);border-radius:16px;font-size:30px;opacity:.38;filter:grayscale(1)}
+  .medal small{font-size:11px;font-weight:900;color:var(--ink-soft);text-align:center;line-height:1.25}
+  .medal.got{opacity:1;filter:none;border:2px solid #F5A623;background:#FFF7E6;box-shadow:0 4px 0 rgba(245,166,35,.35)}
+  .medal-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#2B2118;color:#FFE9B8;font-family:"Fredoka";font-size:18px;text-align:center;padding:14px 22px;border-radius:18px;box-shadow:0 12px 30px rgba(0,0,0,.35);z-index:80;max-width:88vw}
+  .medal-toast.show{animation:toastin .5s cubic-bezier(.2,2.2,.4,1) both}
+  @keyframes toastin{from{opacity:0;transform:translateX(-50%) translateY(30px) scale(.8)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}
+  .feedback .face{display:inline-block;animation:facepop .5s cubic-bezier(.2,2.2,.4,1) both}
+  @keyframes facepop{0%{transform:scale(0) rotate(-30deg)}70%{transform:scale(1.35) rotate(6deg)}100%{transform:scale(1) rotate(0)}}
+  .ans-btn.shake{animation:shake .4s ease}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}}
+  @media (prefers-reduced-motion: reduce){ .medal-toast.show,.feedback .face,.ans-btn.shake{animation:none} }
   .result-card h2{font-size:clamp(28px,6.5vw,38px);margin:6px 0 4px;font-weight:700}
   .result-card p{color:var(--ink-soft);font-weight:800;font-size:17px;margin:4px 0;line-height:1.5}
   .result-nums{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px 0 6px}
@@ -209,6 +224,7 @@
     <div class="lang-switch">
       <button type="button" id="lang-es" class="active" aria-pressed="true">🇪🇸 Español</button>
       <button type="button" id="lang-en" aria-pressed="false">🇺🇸 English</button>
+      <button type="button" id="btn-sound" aria-pressed="true" title="Sonido / Sound">🔊</button>
     </div>
   </div>
 
@@ -221,6 +237,10 @@
       <div class="total-stars" id="total-stars" aria-live="polite">
         <span class="st" id="total-stars-icons">☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆</span>
         <span id="total-stars-text">0 estrellas ganadas</span>
+      </div>
+      <div class="medals-wrap">
+        <h2 class="medals-head" id="medals-head">🏆 Mis medallas</h2>
+        <div class="medals-shelf" id="medals-shelf"></div>
       </div>
     </div>
 
@@ -309,6 +329,8 @@
 
 </div>
 
+<div id="medal-toast" class="medal-toast hidden" role="status"></div>
+
 <div class="confetti hidden" id="confetti"></div>
 
 <script>
@@ -342,6 +364,7 @@
       progressLabel:"Progreso de la ronda",
       starsTotal:function(n){ return n===1 ? "1 estrella ganada" : n+" estrellas ganadas"; },
       record:"¡Nuevo récord!",
+      medalsTitle:"🏆 Mis medallas", newMedal:"¡Medalla nueva!",
       starsAria:function(n){ return n+" estrellas ganadas en este nivel"; },
       notPlayed:"Sin jugar todavía",
       proTitle:"Modo PRO",
@@ -387,6 +410,7 @@
       progressLabel:"Round progress",
       starsTotal:function(n){ return n===1 ? "1 star earned" : n+" stars earned"; },
         record:"New record!",
+        medalsTitle:"🏆 My medals", newMedal:"New medal!",
       starsAria:function(n){ return n+" stars earned in this level"; },
       notPlayed:"Not played yet",
       proTitle:"PRO Mode",
@@ -465,7 +489,9 @@
 
   /* ================= Sonidos (WebAudio) ================= */
   var audioCtx=null;
+  var soundOn=true;
   function beep(freq, t0, dur, type){
+    if(!soundOn) return;
     try{
       if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
       if(audioCtx.state==="suspended") audioCtx.resume();
@@ -482,6 +508,7 @@
   function sndGood(){ beep(523,0,0.14); beep(659,0.1,0.14); beep(784,0.2,0.22); }
   function sndBad(){ beep(220,0,0.2,"triangle"); beep(185,0.14,0.26,"triangle"); }
   function note(freq, t0, dur, type, vol){
+    if(!soundOn) return;
     try{
       if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
       if(audioCtx.state==="suspended") audioCtx.resume();
@@ -508,12 +535,108 @@
   }
   function sndWin(){ sndFanfare(false); }
   function sndStar(i){ note([880,1109,1319][i]||1319, 0, .3, "sine", .18); }
+  /* ================= Progreso guardado + medallas + extras ================= */
+  var SAVE_KEY="kgmathpro_save_v1";
+  var MEDALS=[
+    {id:"first", icon:"\U0001F949", es:"Primera estrella", en:"First star"},
+    {id:"perfect", icon:"\U0001F3C5", es:"Ronda perfecta", en:"Perfect round"},
+    {id:"fire", icon:"\U0001F525", es:"Racha de fuego", en:"On fire"},
+    {id:"ten", icon:"\u2B50", es:"10 estrellas", en:"10 stars"},
+    {id:"explorer", icon:"\U0001F393", es:"Explorador total", en:"Total explorer"},
+    {id:"champion", icon:"\U0001F451", es:"\u00A1Campe\u00F3n total!", en:"Grand champion!"}
+  ];
+  var medalsEarned=[];
+  function allStarMaps(){ return [starsByLevel, starsByLevelPro]; }
+  function totalStars(){ var s=0; allStarMaps().forEach(function(m){ for(var k in m) s+=m[k]; }); return s; }
+  function saveProgress(){
+    try{
+      var data={ medals:medalsEarned, sound:soundOn };
+      allStarMaps().forEach(function(m,i){ data["m"+i]=m; });
+      localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+    }catch(e){}
+  }
+  function loadProgress(){
+    try{
+      var raw=localStorage.getItem(SAVE_KEY); if(!raw) return;
+      var data=JSON.parse(raw);
+      allStarMaps().forEach(function(m,i){ var src=data["m"+i]||{}; for(var k in m){ if(typeof src[k]==="number") m[k]=src[k]; } });
+      if(data.medals) medalsEarned=data.medals;
+      if(data.sound===false){ soundOn=false; var b=$("btn-sound"); if(b){ b.textContent="\U0001F507"; b.setAttribute("aria-pressed","false"); } }
+    }catch(e){}
+  }
+  function medalName(m){ return LANG==="en" ? m.en : m.es; }
+  function renderMedals(){
+    var shelf=$("medals-shelf"); if(!shelf) return;
+    var t=T();
+    shelf.innerHTML = MEDALS.map(function(m){
+      var got = medalsEarned.indexOf(m.id)>-1;
+      return '<span class="medal'+(got?" got":"")+'">'+m.icon+'<small>'+medalName(m)+'</small></span>';
+    }).join("");
+    var head=$("medals-head"); if(head) head.textContent=t.medalsTitle;
+  }
+  function checkMedals(roundStarsNow){
+    var anyStar=false, allOne=true, allThree=true;
+    allStarMaps().forEach(function(m){ for(var k in m){ if(m[k]>0) anyStar=true; if(m[k]<1) allOne=false; if(m[k]<3) allThree=false; } });
+    var fresh=[];
+    function award(id){ if(medalsEarned.indexOf(id)===-1){ medalsEarned.push(id); fresh.push(id); } }
+    if(anyStar) award("first");
+    if(roundStarsNow>=3) award("perfect");
+    if(state.bestStreak>=5) award("fire");
+    if(totalStars()>=10) award("ten");
+    if(allOne) award("explorer");
+    if(allThree) award("champion");
+    if(fresh.length){
+      saveProgress();
+      var names=fresh.map(function(id){ var mm=MEDALS.filter(function(x){ return x.id===id; })[0]; return mm.icon+" "+medalName(mm); });
+      setTimeout(function(){ showMedalToast(names); }, 2400);
+    }
+    renderMedals();
+  }
+  function showMedalToast(names){
+    var t=T(), toast=$("medal-toast"); if(!toast) return;
+    toast.innerHTML="\U0001F3C6 <strong>"+t.newMedal+"</strong><br>"+names.join(" \u00B7 ");
+    toast.classList.remove("hidden"); toast.classList.remove("show"); void toast.offsetWidth; toast.classList.add("show");
+    sndFanfare(false);
+    setTimeout(function(){ toast.classList.add("hidden"); }, 4600);
+  }
+  function starBurst(ev){
+    if(!ev) return;
+    try{
+      for(var i=0;i<7;i++){
+        var s=document.createElement("span");
+        s.textContent = i%2 ? "\u2B50" : "\u2728";
+        s.style.cssText="position:fixed;z-index:70;pointer-events:none;font-size:"+(13+Math.random()*10)+"px;left:"+(ev.clientX-8)+"px;top:"+(ev.clientY-8)+"px";
+        document.body.appendChild(s);
+        var ang=Math.random()*Math.PI*2, dist=44+Math.random()*54;
+        s.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:"translate("+(Math.cos(ang)*dist)+"px,"+(Math.sin(ang)*dist-24)+"px) scale(.4)",opacity:0}],{duration:650+Math.random()*250,easing:"cubic-bezier(.2,.8,.3,1)"});
+        (function(el){ setTimeout(function(){ el.remove(); }, 950); })(s);
+      }
+    }catch(e){}
+  }
+  function sndCombo(streak){
+    var scale=[523,587,659,784,880,1047,1175,1319];
+    var i=Math.min(streak, scale.length-1);
+    note(scale[i], 0, .18, "triangle", .2);
+    note(scale[i]*1.5, .07, .22, "sine", .1);
+    if(streak>=4) note(scale[i]*2, .12, .26, "sine", .08);
+  }
+  function praiseSpeak(){
+    try{
+      if(!soundOn || !("speechSynthesis" in window)) return;
+      var t=T(); var r=t.results[roundStars()];
+      var u=new SpeechSynthesisUtterance(r.title);
+      u.lang = LANG==="en" ? "en-US" : "es-ES"; u.rate=0.95; u.pitch=1.1;
+      window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
+    }catch(e){}
+  }
+
   function sndClick(){ beep(660,0,0.07,"square"); }
 
   /* ================= Voz (leer la pregunta) ================= */
   var currentSpeakText="";
   function speak(){
     try{
+      if(!soundOn) return;
       if(!("speechSynthesis" in window)) return;
       window.speechSynthesis.cancel();
       var u=new SpeechSynthesisUtterance(currentSpeakText);
@@ -818,6 +941,7 @@
     $("progress-fill").style.width=pct+"%";
     $("progress").setAttribute("aria-valuenow", state.qIndex);
     $("feedback").classList.add("hidden");
+    try{ if($("q-text").animate) $("q-text").animate([{transform:"scale(.9)",opacity:.25},{transform:"scale(1)",opacity:1}],{duration:300,easing:"ease-out"}); }catch(e){}
     $("next-row").classList.add("hidden");
 
     var ansWrap=$("answers"); ansWrap.innerHTML="";
@@ -843,15 +967,15 @@
     });
     var fb=$("feedback"); fb.classList.remove("hidden");
     if(isGood){
-      sndGood();
+      sndCombo(state.streak);
       state.correct++; state.streak++; if(state.streak>state.bestStreak) state.bestStreak=state.streak;
       var pts = state.streak>=3 ? 15 : 10;
       state.score+=pts;
       fb.className="feedback good";
       fb.innerHTML='<span class="face">🎉</span><span><strong>'+pick(t.praise)+'</strong> '+t.goodAnswer(fmt(q.answer))+(state.streak>=3 ? t.goodStreak(state.streak) : t.goodPoints)+(q.explain ? "<br>"+q.explain : "")+'</span>';
-      floatPoints("+"+pts, ev);
+      floatPoints("+"+pts, ev); starBurst(ev);
     } else {
-      sndBad();
+      sndBad(); btn.classList.add("shake");
       state.streak=0;
       fb.className="feedback bad";
       fb.innerHTML='<span class="face">🦉</span><span><strong>'+t.badStart+'</strong> '+t.badAnswer(fmt(q.answer))+(q.explain ? q.explain : t.badDefault)+'</span>';
@@ -898,6 +1022,8 @@
     renderProLevels();
     show(elResult);
     celebrate(stars, improved);
+    checkMedals(stars);
+    saveProgress();
   }
 
   function celebrate(stars, improved){
@@ -905,6 +1031,7 @@
     if(improved && stars>0){
       var b=$("record-badge"); b.textContent="\U0001F3C5 "+t.record; b.classList.remove("hidden");
     }
+    setTimeout(praiseSpeak, 500);
     var em=$("result-emoji");
     em.classList.remove("dance"); void em.offsetWidth; em.classList.add("dance");
     setTimeout(function(){ em.classList.remove("dance"); }, 2500);
@@ -945,6 +1072,7 @@
   /* ================= Eventos ================= */
   $("lang-es").addEventListener("click", function(){ setLang("es"); });
   $("lang-en").addEventListener("click", function(){ setLang("en"); });
+  $("btn-sound").addEventListener("click", function(){ soundOn=!soundOn; this.textContent=soundOn?"🔊":"🔇"; this.setAttribute("aria-pressed", soundOn?"true":"false"); if(soundOn) sndClick(); saveProgress(); });
   $("btn-next").addEventListener("click", function(){
     sndClick();
     state.qIndex++;
@@ -962,7 +1090,10 @@
   $("btn-levels").addEventListener("click", function(){ sndClick(); renderLevels(); show(elHome); });
   $("btn-listen").addEventListener("click", function(){ speak(); });
 
+  loadProgress();
+  renderMedals();
   applyLang();
+  renderMedals();
 })();
 </script>
 </body>
