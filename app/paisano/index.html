@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Paisano — Amigos y citas para cubanos y latinos en USA</title>
+<meta name="description" content="Paisano: conoce amigos y encuentra citas con cubanos y latinos en Estados Unidos. Por Kiustin G.">
+<style>
+:root{
+  --teal:#07332f; --teal2:#0b4f46; --gold:#f2b33d; --coral:#ff6b5e; --pink:#ff4d6d;
+  --bg:#f6f3ee; --card:#ffffff; --ink:#1d2321; --muted:#6b7572; --line:#e7e0d4;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--teal);color:var(--ink)}
+#app{max-width:480px;margin:0 auto;background:var(--bg);min-height:100dvh;display:flex;flex-direction:column;position:relative;box-shadow:0 0 40px rgba(0,0,0,.45)}
+header{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;padding:14px 18px 12px;position:sticky;top:0;z-index:30}
+header .row{display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:26px;font-weight:800;letter-spacing:.3px}
+.logo span{color:var(--gold)}
+.tag{font-size:12.5px;opacity:.85;margin-top:2px}
+.badge18{background:var(--pink);color:#fff;font-size:11px;font-weight:700;border-radius:20px;padding:4px 9px}
+main{flex:1;padding:14px 14px 86px;overflow-y:auto}
+.view{display:none}
+.view.on{display:block}
+h2.sec{font-size:19px;margin:4px 2px 10px}
+/* filtros */
+.filters{display:flex;gap:8px;margin-bottom:12px}
+.filters select{flex:1;padding:10px;border:1.5px solid var(--line);border-radius:12px;background:#fff;font-size:14px;color:var(--ink)}
+/* tarjeta de perfil */
+.pcard{background:var(--card);border-radius:22px;overflow:hidden;box-shadow:0 10px 28px rgba(7,51,47,.16);border:1px solid var(--line)}
+.pcard .photo{position:relative;height:380px;background:#ccc}
+.pcard .photo img{width:100%;height:100%;object-fit:cover;display:block}
+.pcard .photo .grad{position:absolute;inset:auto 0 0 0;height:55%;background:linear-gradient(transparent,rgba(0,0,0,.72))}
+.pcard .who{position:absolute;left:16px;right:16px;bottom:12px;color:#fff;z-index:2}
+.pcard .who .nm{font-size:27px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.4)}
+.pcard .who .ct{font-size:14.5px;opacity:.95}
+.intent{position:absolute;top:12px;left:12px;z-index:2;background:rgba(255,255,255,.94);color:var(--teal);font-weight:700;font-size:12.5px;border-radius:20px;padding:6px 11px}
+.intent.citas{background:var(--pink);color:#fff}
+.intent.ambos{background:var(--gold);color:#4a3200}
+.pbody{padding:14px 16px 16px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.chip{background:#eef6f3;border:1.5px solid #cfe5dc;color:var(--teal2);font-size:12.5px;font-weight:600;border-radius:16px;padding:5px 10px}
+.bio{font-size:14.5px;line-height:1.45;color:#333}
+.actions{display:flex;gap:14px;justify-content:center;margin:16px 0 4px}
+.abtn{width:64px;height:64px;border-radius:50%;border:none;font-size:27px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center}
+.abtn.pass{background:#fff;color:#999;border:1.5px solid var(--line)}
+.abtn.like{background:linear-gradient(135deg,var(--pink),var(--coral));color:#fff}
+.abtn:active{transform:scale(.93)}
+.empty{background:#fff;border:1.5px dashed var(--line);border-radius:18px;padding:28px 20px;text-align:center;color:var(--muted);font-size:15px;line-height:1.5}
+.empty b{color:var(--ink)}
+.btn{display:block;width:100%;background:linear-gradient(135deg,var(--teal2),var(--teal));color:#fff;border:none;border-radius:14px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;margin-top:12px}
+.btn.gold{background:linear-gradient(135deg,var(--gold),#e09a1f);color:#3a2800}
+.btn.ghost{background:#fff;color:var(--teal);border:1.5px solid var(--line)}
+/* matches */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mcell{background:#fff;border-radius:18px;overflow:hidden;border:1px solid var(--line);cursor:pointer;box-shadow:0 4px 14px rgba(7,51,47,.08)}
+.mcell img{width:100%;height:150px;object-fit:cover;display:block}
+.mcell .mi{padding:9px 11px}
+.mcell .mi b{font-size:15px}
+.mcell .mi div{font-size:12.5px;color:var(--muted)}
+/* chat lista */
+.crow{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:11px 13px;margin-bottom:9px;cursor:pointer}
+.crow img{width:52px;height:52px;border-radius:50%;object-fit:cover}
+.crow .cb{flex:1;min-width:0}
+.crow .cb b{font-size:15.5px}
+.crow .cb p{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* conversacion */
+#chatView .msgs{display:flex;flex-direction:column;gap:8px;padding-bottom:8px}
+.msg{max-width:78%;padding:10px 13px;border-radius:18px;font-size:14.5px;line-height:1.4}
+.msg.them{background:#fff;border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:6px}
+.msg.me{background:linear-gradient(135deg,var(--teal2),var(--teal));color:#fff;align-self:flex-end;border-bottom-right-radius:6px}
+.chatbar{display:flex;gap:8px;position:sticky;bottom:74px;background:var(--bg);padding:8px 0}
+.chatbar input{flex:1;padding:12px 14px;border:1.5px solid var(--line);border-radius:24px;font-size:15px;background:#fff}
+.chatbar button{background:var(--pink);color:#fff;border:none;border-radius:50%;width:46px;height:46px;font-size:19px;cursor:pointer}
+.sugs{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 8px}
+.sug{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:6px 11px;font-size:13px;cursor:pointer;color:var(--teal2);font-weight:600}
+.backlink{color:var(--teal2);font-weight:700;font-size:14.5px;cursor:pointer;margin-bottom:10px;display:inline-block}
+/* perfil form */
+.fld{margin-bottom:12px}
+.fld label{display:block;font-size:13.5px;font-weight:700;margin-bottom:5px;color:var(--teal)}
+.fld input,.fld select,.fld textarea{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:12px;font-size:15px;background:#fff;font-family:inherit}
+.pick{display:flex;flex-wrap:wrap;gap:6px}
+.pick .chip{cursor:pointer}
+.pick .chip.sel{background:var(--teal2);color:#fff;border-color:var(--teal2)}
+.stats{display:flex;gap:10px;margin:14px 0}
+.stat{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;text-align:center;padding:12px 4px}
+.stat b{font-size:21px;color:var(--teal)}
+.stat div{font-size:12px;color:var(--muted)}
+.note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:14px;text-align:center}
+/* nav */
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid var(--line);display:flex;z-index:40;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:none;border:none;padding:9px 0 7px;font-size:11px;color:var(--muted);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:600}
+nav button .ic{font-size:21px}
+nav button.on{color:var(--pink)}
+nav .nbadge{background:var(--pink);color:#fff;border-radius:10px;font-size:10px;padding:1px 6px;margin-left:4px}
+/* overlays */
+.overlay{position:fixed;inset:0;background:rgba(4,32,28,.88);z-index:100;display:none;align-items:center;justify-content:center;padding:22px}
+.overlay.on{display:flex}
+.sheet{background:#fff;border-radius:24px;padding:28px 24px;max-width:400px;width:100%;text-align:center}
+.sheet h2{font-size:23px;margin-bottom:10px}
+.sheet p{font-size:15px;line-height:1.55;color:#444}
+.sheet .big{font-size:52px;margin-bottom:8px}
+.sheet img.mphoto{width:110px;height:110px;border-radius:50%;object-fit:cover;border:4px solid var(--gold);margin:6px 0 10px}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <div class="row">
+    <div>
+      <div class="logo">Paisano<span>.</span></div>
+      <div class="tag">Amigos y citas · Cubanos y latinos en USA</div>
+    </div>
+    <div class="badge18">18+</div>
+  </div>
+</header>
+<main>
+  <!-- DESCUBRIR -->
+  <section class="view on" id="v-discover">
+    <div class="filters">
+      <select id="fCity"></select>
+      <select id="fIntent">
+        <option value="">Busca: todo</option>
+        <option value="amigos">Amigos</option>
+        <option value="citas">Citas</option>
+        <option value="ambos">Amigos y citas</option>
+      </select>
+    </div>
+    <div id="deck"></div>
+  </section>
+
+  <!-- MATCHES -->
+  <section class="view" id="v-matches">
+    <h2 class="sec">Tus matches</h2>
+    <div id="mgrid" class="mgrid"></div>
+    <div id="mempty"></div>
+  </section>
+
+  <!-- CHATS -->
+  <section class="view" id="v-chats">
+    <h2 class="sec">Conversaciones</h2>
+    <div id="clist"></div>
+    <div id="cempty"></div>
+  </section>
+
+  <!-- CONVERSACIÓN -->
+  <section class="view" id="v-chat">
+    <span class="backlink" id="chatBack">← Volver</span>
+    <h2 class="sec" id="chatTitle"></h2>
+    <div class="sugs" id="sugs"></div>
+    <div class="msgs" id="msgs"></div>
+    <div class="chatbar">
+      <input id="chatInput" type="text" placeholder="Escribe un mensaje..." maxlength="300">
+      <button id="chatSend" aria-label="Enviar">➤</button>
+    </div>
+  </section>
+
+  <!-- PERFIL -->
+  <section class="view" id="v-profile">
+    <h2 class="sec">Tu perfil</h2>
+    <div class="fld"><label>Tu nombre</label><input id="pName" type="text" maxlength="30" placeholder="Ej: Yamila"></div>
+    <div class="fld"><label>Tu edad</label><input id="pAge" type="number" min="18" max="99" placeholder="18+"></div>
+    <div class="fld"><label>Tu ciudad</label><select id="pCity"></select></div>
+    <div class="fld"><label>¿Qué buscas?</label>
+      <select id="pIntent">
+        <option value="amigos">Hacer amigos</option>
+        <option value="citas">Citas</option>
+        <option value="ambos" selected>Amigos y citas</option>
+      </select>
+    </div>
+    <div class="fld"><label>Tus intereses</label><div class="pick" id="pInterests"></div></div>
+    <div class="fld"><label>Cuéntalo en una frase</label><textarea id="pBio" rows="2" maxlength="140" placeholder="Ej: Cubana en Miami, me encanta bailar y la playa."></textarea></div>
+    <button class="btn gold" id="pSave">Guardar mi perfil</button>
+    <div class="stats">
+      <div class="stat"><b id="stLikes">0</b><div>Me gusta dados</div></div>
+      <div class="stat"><b id="stMatches">0</b><div>Matches</div></div>
+      <div class="stat"><b id="stChats">0</b><div>Chats</div></div>
+    </div>
+    <button class="btn ghost" id="pReset">Reiniciar la demo</button>
+    <p class="note">Paisano es una comunidad solo para mayores de 18 años. Cuídate: no compartas dinero ni datos personales con desconocidos y reporta cualquier perfil sospechoso.</p>
+  </section>
+</main>
+
+<nav>
+  <button data-v="discover" class="on"><span class="ic">🔥</span>Descubrir</button>
+  <button data-v="matches"><span class="ic">💛</span>Matches<span class="nbadge" id="matchBadge" style="display:none"></span></button>
+  <button data-v="chats"><span class="ic">💬</span>Chats</button>
+  <button data-v="profile"><span class="ic">👤</span>Perfil</button>
+</nav>
+</div>
+
+<!-- AGE GATE -->
+<div class="overlay on" id="ageGate">
+  <div class="sheet">
+    <div class="big">🌴</div>
+    <h2>Bienvenido a Paisano</h2>
+    <p>La comunidad para <b>cubanos y latinos en USA</b> que quieren hacer amigos o encontrar una cita.</p>
+    <p style="margin-top:10px">Esta app es <b>solo para mayores de 18 años</b>.</p>
+    <button class="btn" id="ageYes">Tengo 18 años o más — Entrar</button>
+    <button class="btn ghost" id="ageNo">Salir</button>
+    <p class="note">Versión de demostración: los perfiles que verás son de ejemplo. Muy pronto abrimos el registro real.</p>
+  </div>
+</div>
+
+<!-- MATCH -->
+<div class="overlay" id="matchPop">
+  <div class="sheet">
+    <div class="big">🎉</div>
+    <h2>¡Es un match!</h2>
+    <img class="mphoto" id="matchPhoto" alt="">
+    <p id="matchText"></p>
+    <button class="btn gold" id="matchChat">Enviar un mensaje</button>
+    <button class="btn ghost" id="matchClose">Seguir buscando</button>
+  </div>
+</div>
+
+<script>
+const CITIES = ["Miami, FL","Hialeah, FL","Tampa, FL","Orlando, FL","Houston, TX","Dallas, TX","Nueva York, NY","Rochester, NY","Los Ángeles, CA","Las Vegas, NV","Atlanta, GA","Chicago, IL","Union City, NJ","Louisville, KY"];
+const INTERESTS = ["Salsa","Reparto","Playa","Béisbol","Cocina cubana","Viajes","Gimnasio","Fe y familia","Negocios","Cine","Dominó","Pesca","Bailar","Leer","Fútbol","Música en vivo"];
+const PROFILES = [
+ {id:1,name:"Yamila",age:29,city:"Miami, FL",miles:3,intent:"ambos",photo:"https://randomuser.me/api/portraits/women/68.jpg",interests:["Salsa","Playa","Cocina cubana"],bio:"Cubana de La Habana, 4 años en Miami. Si no estoy bailando, estoy cocinando.",likesYou:true},
+ {id:2,name:"Reinier",age:34,city:"Houston, TX",miles:8,intent:"citas",photo:"https://randomuser.me/api/portraits/men/32.jpg",interests:["Béisbol","Gimnasio","Negocios"],bio:"De Camagüey. Trabajo en construcción y los domingos no me pierdo un juego.",likesYou:false},
+ {id:3,name:"Dayana",age:26,city:"Tampa, FL",miles:5,intent:"amigos",photo:"https://randomuser.me/api/portraits/women/44.jpg",interests:["Viajes","Cine","Playa"],bio:"Holguinera recién llegada. Busco amigas para conocer la ciudad y tomar café.",likesYou:true},
+ {id:4,name:"Yusniel",age:31,city:"Orlando, FL",miles:12,intent:"ambos",photo:"https://randomuser.me/api/portraits/men/75.jpg",interests:["Dominó","Pesca","Música en vivo"],bio:"Santiaguero. Viernes de dominó y sábado de pesca, ¿quién se apunta?",likesYou:false},
+ {id:5,name:"Lisandra",age:38,city:"Hialeah, FL",miles:2,intent:"citas",photo:"https://randomuser.me/api/portraits/women/17.jpg",interests:["Fe y familia","Leer","Cocina cubana"],bio:"Madre, enfermera y soñadora. Busco conversación buena y planes tranquilos.",likesYou:true},
+ {id:6,name:"Osvaldo",age:45,city:"Nueva York, NY",miles:20,intent:"ambos",photo:"https://randomuser.me/api/portraits/men/52.jpg",interests:["Béisbol","Negocios","Viajes"],bio:"De Banes, Holguín. 20 años en NY y sigo siendo el mismo guajiro de siempre.",likesYou:false},
+ {id:7,name:"Melissa",age:24,city:"Las Vegas, NV",miles:6,intent:"ambos",photo:"https://randomuser.me/api/portraits/women/26.jpg",interests:["Bailar","Reparto","Cine"],bio:"Pinareña con mucha energía. Me gusta salir, reír y conocer gente nueva.",likesYou:true},
+ {id:8,name:"Frank",age:40,city:"Dallas, TX",miles:15,intent:"citas",photo:"https://randomuser.me/api/portraits/men/85.jpg",interests:["Gimnasio","Fútbol","Cocina cubana"],bio:"Habanero. Entreno fuerte, cocino mejor. Busco algo serio, sin juegos.",likesYou:false},
+ {id:9,name:"Yadira",age:33,city:"Rochester, NY",miles:4,intent:"amigos",photo:"https://randomuser.me/api/portraits/women/33.jpg",interests:["Fe y familia","Música en vivo","Leer"],bio:"Cubana en Rochester. Aquí el invierno es largo: buenos amigos lo calientan.",likesYou:true},
+ {id:10,name:"Lázaro",age:52,city:"Union City, NJ",miles:9,intent:"ambos",photo:"https://randomuser.me/api/portraits/men/41.jpg",interests:["Dominó","Béisbol","Pesca"],bio:"Matancero. Ya crié a mis hijos; ahora quiero compañía para lo bueno de la vida.",likesYou:false}
+];
+const REPLIES = [
+ "¡Hola! Qué bueno que escribiste 😊 ¿De qué parte de Cuba eres?",
+ "Jaja, me caes bien. ¿Y qué haces por aquí, buscas amigos o algo más?",
+ "Yo llevo un tiempo en esta ciudad y todavía sigo conociendo lugares. ¿Conoces algún lugar cubano bueno por aquí?",
+ "Los fines de semana me gusta salir a bailar. ¿Te gusta la salsa?",
+ "Cuéntame más de ti, ¿a qué te dedicas?",
+ "Me encantó tu perfil. ¿Tomamos un café un día de estos y conversamos en persona?"
+];
+const SUGS = ["Hola, ¿cómo estás?","¿De qué parte eres?","¿Qué buscas por aquí?","¿Te gusta bailar salsa?"];
+
+let S = JSON.parse(localStorage.getItem('paisano_v1')||'null') || {
+  adult:false, seen:[], likes:[], matches:[], chats:{}, profile:{name:"",age:"",city:"Miami, FL",intent:"ambos",interests:[],bio:""}, lastMatch:null
+};
+function save(){ localStorage.setItem('paisano_v1', JSON.stringify(S)); }
+const $ = id => document.getElementById(id);
+const prof = id => PROFILES.find(p=>p.id===id);
+const intentTxt = i => i==='citas'?'Busca citas':(i==='amigos'?'Busca amigos':'Amigos y citas');
+
+/* ---------- navegación ---------- */
+function show(v){
+  document.querySelectorAll('.view').forEach(s=>s.classList.remove('on'));
+  $('v-'+v).classList.add('on');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on', b.dataset.v===v || (v==='chat'&&b.dataset.v==='chats')));
+  if(v==='matches') renderMatches();
+  if(v==='chats') renderChats();
+  if(v==='profile') renderStats();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.v));
+
+/* ---------- filtros ---------- */
+function fillCities(sel, all){
+  sel.innerHTML = (all?'<option value="">Todas las ciudades</option>':'') + CITIES.map(c=>`<option>${c}</option>`).join('');
+}
+fillCities($('fCity'), true); fillCities($('pCity'), false);
+$('fCity').onchange = renderDeck; $('fIntent').onchange = renderDeck;
+
+/* ---------- descubrir ---------- */
+function deckList(){
+  const fc = $('fCity').value, fi = $('fIntent').value;
+  return PROFILES.filter(p=>!S.seen.includes(p.id) && (!fc||p.city===fc) && (!fi||p.intent===fi||p.intent==='ambos'));
+}
+function renderDeck(){
+  const list = deckList(), d = $('deck');
+  if(!list.length){
+    d.innerHTML = `<div class="empty"><b>Se acabaron los perfiles por ahora.</b><br>Prueba con otra ciudad o reinicia la demo desde tu perfil para verlos de nuevo.</div>`;
+    return;
+  }
+  const p = list[0];
+  d.innerHTML = `
+  <div class="pcard">
+    <div class="photo">
+      <img src="${p.photo}" alt="Foto de ${p.name}">
+      <div class="intent ${p.intent}">${intentTxt(p.intent)}</div>
+      <div class="grad"></div>
+      <div class="who">
+        <div class="nm">${p.name}, ${p.age}</div>
+        <div class="ct">📍 ${p.city} · a ${p.miles} millas</div>
+      </div>
+    </div>
+    <div class="pbody">
+      <div class="chips">${p.interests.map(i=>`<span class="chip">${i}</span>`).join('')}</div>
+      <p class="bio">${p.bio}</p>
+      <div class="actions">
+        <button class="abtn pass" id="bPass" aria-label="Pasar">✕</button>
+        <button class="abtn like" id="bLike" aria-label="Me gusta">♥</button>
+      </div>
+    </div>
+  </div>`;
+  $('bPass').onclick = ()=>{ S.seen.push(p.id); save(); renderDeck(); };
+  $('bLike').onclick = ()=>{
+    S.seen.push(p.id); S.likes.push(p.id);
+    if(p.likesYou && !S.matches.includes(p.id)){
+      S.matches.push(p.id); S.lastMatch = p.id;
+      if(!S.chats[p.id]) S.chats[p.id] = [{from:'them',text:`¡Hola! Soy ${p.name}. Vi que hicimos match, ¡qué alegría! ¿De dónde eres?`}];
+      save(); renderDeck(); openMatch(p);
+    } else { save(); renderDeck(); }
+    updateBadge();
+  };
+}
+function openMatch(p){
+  $('matchPhoto').src = p.photo;
+  $('matchText').innerHTML = `A <b>${p.name}</b> también le gustaste.<br>Ya pueden conversar.`;
+  $('matchPop').classList.add('on');
+}
+$('matchClose').onclick = ()=>$('matchPop').classList.remove('on');
+$('matchChat').onclick = ()=>{ $('matchPop').classList.remove('on'); openChat(S.lastMatch); };
+function updateBadge(){
+  const b = $('matchBadge');
+  b.style.display = S.matches.length ? 'inline-block' : 'none';
+  b.textContent = S.matches.length || '';
+}
+
+/* ---------- matches ---------- */
+function renderMatches(){
+  const g = $('mgrid'), e = $('mempty');
+  if(!S.matches.length){
+    g.innerHTML=''; e.innerHTML = `<div class="empty"><b>Todavía no tienes matches.</b><br>Dale ♥ a los perfiles que te gusten en Descubrir: cuando el gusto es mutuo, aparece aquí.</div>`;
+    return;
+  }
+  e.innerHTML='';
+  g.innerHTML = S.matches.map(id=>{ const p=prof(id); return `
+    <div class="mcell" onclick="openChat(${id})">
+      <img src="${p.photo}" alt="Foto de ${p.name}">
+      <div class="mi"><b>${p.name}, ${p.age}</b><div>📍 ${p.city}</div></div>
+    </div>`; }).join('');
+}
+
+/* ---------- chats ---------- */
+function renderChats(){
+  const ids = Object.keys(S.chats).map(Number);
+  const c = $('clist'), e = $('cempty');
+  if(!ids.length){
+    c.innerHTML=''; e.innerHTML = `<div class="empty"><b>Sin conversaciones todavía.</b><br>Cuando tengas un match, aquí podrás chatear.</div>`;
+    return;
+  }
+  e.innerHTML='';
+  c.innerHTML = ids.map(id=>{ const p=prof(id), msgs=S.chats[id], last=msgs[msgs.length-1]; return `
+    <div class="crow" onclick="openChat(${id})">
+      <img src="${p.photo}" alt="Foto de ${p.name}">
+      <div class="cb"><b>${p.name}</b><p>${last.from==='me'?'Tú: ':''}${last.text}</p></div>
+    </div>`; }).join('');
+}
+let currentChat = null, replyIdx = 0;
+function openChat(id){
+  currentChat = id; show('chat');
+  const p = prof(id);
+  $('chatTitle').textContent = p.name + ', ' + p.age + ' · ' + p.city;
+  $('sugs').innerHTML = SUGS.map(s=>`<span class="sug">${s}</span>`).join('');
+  document.querySelectorAll('.sug').forEach(el=>el.onclick=()=>{ $('chatInput').value = el.textContent; sendMsg(); });
+  renderMsgs();
+}
+function renderMsgs(){
+  const m = $('msgs');
+  m.innerHTML = (S.chats[currentChat]||[]).map(x=>`<div class="msg ${x.from}">${x.text}</div>`).join('');
+  m.scrollIntoView(false);
+}
+function sendMsg(){
+  const inp = $('chatInput'), t = inp.value.trim();
+  if(!t || currentChat===null) return;
+  S.chats[currentChat].push({from:'me', text:t.replace(/</g,'&lt;')}); inp.value=''; save(); renderMsgs();
+  setTimeout(()=>{
+    const r = REPLIES[replyIdx % REPLIES.length]; replyIdx++;
+    S.chats[currentChat].push({from:'them', text:r}); save(); renderMsgs();
+  }, 1300);
+}
+$('chatSend').onclick = sendMsg;
+$('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendMsg(); });
+$('chatBack').onclick = ()=>show('chats');
+
+/* ---------- perfil ---------- */
+const pickBox = $('pInterests');
+pickBox.innerHTML = INTERESTS.map(i=>`<span class="chip" data-i="${i}">${i}</span>`).join('');
+pickBox.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{
+  const i = ch.dataset.i, ix = S.profile.interests.indexOf(i);
+  if(ix>=0){ S.profile.interests.splice(ix,1); ch.classList.remove('sel'); }
+  else { S.profile.interests.push(i); ch.classList.add('sel'); }
+});
+function loadProfile(){
+  const p = S.profile;
+  $('pName').value=p.name||''; $('pAge').value=p.age||''; $('pCity').value=p.city||'Miami, FL';
+  $('pIntent').value=p.intent||'ambos'; $('pBio').value=p.bio||'';
+  pickBox.querySelectorAll('.chip').forEach(ch=>ch.classList.toggle('sel', p.interests.includes(ch.dataset.i)));
+}
+$('pSave').onclick = ()=>{
+  const age = parseInt($('pAge').value||'0',10);
+  if(age && age < 18){ alert('Paisano es solo para mayores de 18 años.'); return; }
+  S.profile = { name:$('pName').value.trim(), age:$('pAge').value, city:$('pCity').value, intent:$('pIntent').value, interests:S.profile.interests, bio:$('pBio').value.trim() };
+  save(); renderStats(); alert('¡Perfil guardado! Ya puedes ir a Descubrir.');
+};
+function renderStats(){
+  $('stLikes').textContent = S.likes.length;
+  $('stMatches').textContent = S.matches.length;
+  $('stChats').textContent = Object.keys(S.chats).length;
+  updateBadge();
+}
+$('pReset').onclick = ()=>{
+  if(confirm('¿Reiniciar la demo? Se borran tus likes, matches y chats de ejemplo.')){
+    const adult = S.adult; S = {adult, seen:[], likes:[], matches:[], chats:{}, profile:{name:"",age:"",city:"Miami, FL",intent:"ambos",interests:[],bio:""}, lastMatch:null};
+    save(); loadProfile(); renderStats(); renderDeck(); show('discover');
+  }
+};
+
+/* ---------- edad ---------- */
+if(S.adult) $('ageGate').classList.remove('on');
+$('ageYes').onclick = ()=>{ S.adult = true; save(); $('ageGate').classList.remove('on'); };
+$('ageNo').onclick = ()=>{ document.querySelector('.sheet p').innerHTML = 'Lo sentimos, Paisano es solo para adultos. ¡Vuelve cuando cumplas 18!'; $('ageYes').style.display='none'; $('ageNo').style.display='none'; };
+
+loadProfile(); renderDeck(); renderStats(); updateBadge();
+</script>
+</body>
+</html>
