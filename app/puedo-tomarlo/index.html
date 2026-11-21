@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>¿Puedo tomarlo? / Can I Take It? — Guía para pacientes de diálisis · Kiustin G</title>
+<meta name="description" content="Guía bilingüe con semáforo para pacientes de diálisis: qué medicamentos y alimentos se pueden, se limitan o se evitan. Educación de salud por Kiustin G.">
+<style>
+:root{
+  --teal:#07332f; --teal2:#0b4f46; --gold:#f2b33d; --gold2:#e09a1f;
+  --bg:#f6f3ee; --card:#ffffff; --ink:#1d2321; --muted:#6b7572; --line:#e7e0d4;
+  --ok:#1d9d63; --okbg:#e7f6ee; --warn:#c07f00; --warnbg:#fdf3e0; --no:#cf3527; --nobg:#fdecea;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--teal);color:var(--ink)}
+#app{max-width:480px;margin:0 auto;background:var(--bg);min-height:100dvh;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(0,0,0,.45)}
+header{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;padding:16px 18px 14px;position:sticky;top:0;z-index:30;border-bottom:3px solid var(--gold)}
+header .row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.logo{font-size:25px;font-weight:800;line-height:1.15;letter-spacing:.2px}
+.logo span{color:var(--gold)}
+.tag{font-size:13px;opacity:.88;margin-top:3px;line-height:1.4}
+.byline{font-size:12px;opacity:.75;margin-top:5px}
+.langtog{display:flex;background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.35);border-radius:22px;overflow:hidden;flex-shrink:0}
+.langtog button{background:none;border:none;color:#fff;font-size:14px;font-weight:800;padding:8px 14px;cursor:pointer}
+.langtog button.on{background:var(--gold);color:#3a2800}
+main{flex:1;padding:14px 14px 40px}
+.searchbox{background:#fff;border:2px solid var(--teal2);border-radius:18px;display:flex;align-items:center;gap:9px;padding:6px 8px 6px 16px;box-shadow:0 8px 22px rgba(7,51,47,.13)}
+.searchbox .ic{font-size:21px}
+.searchbox input{flex:1;border:none;outline:none;font-size:18px;font-family:inherit;color:var(--ink);min-width:0;background:none}
+.searchbox input::placeholder{color:#9aa5a1;font-size:16.5px}
+.searchbox button{background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;color:#3a2800;font-weight:800;font-size:14.5px;border-radius:12px;padding:11px 14px;cursor:pointer}
+.popular{display:flex;flex-wrap:wrap;gap:6px;margin:10px 2px 2px}
+.popular span{font-size:12.5px;color:var(--muted);font-weight:700;padding:6px 2px}
+.pchip{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:6px 11px;font-size:13.5px;cursor:pointer;color:var(--teal2);font-weight:700}
+.disc{background:linear-gradient(135deg,#fff8ea,#fdf3e0);border:1.5px solid var(--gold);border-radius:16px;padding:13px 15px;font-size:14.5px;line-height:1.5;color:#5c4300;margin:14px 0 4px}
+.disc b{color:#8a5f00}
+.tabs{display:flex;gap:7px;margin:16px 0 6px;flex-wrap:wrap}
+.tabs button{flex:1;min-width:100px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 6px;font-size:15px;font-weight:800;color:var(--teal);cursor:pointer;font-family:inherit}
+.tabs button.on{background:linear-gradient(135deg,var(--teal2),var(--teal));color:#fff;border-color:var(--teal)}
+h2.sec{font-size:20px;margin:20px 2px 4px;color:var(--teal)}
+h3.sub{font-size:15.5px;margin:14px 2px 8px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.4px}
+.card{background:var(--card);border-radius:18px;border:1px solid var(--line);border-left:8px solid #ccc;box-shadow:0 5px 16px rgba(7,51,47,.08);padding:14px 15px 11px;margin-bottom:10px}
+.card.ok{border-left-color:var(--ok)} .card.warn{border-left-color:var(--gold2)} .card.no{border-left-color:var(--no)}
+.card .top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.light{font-size:15px;font-weight:800;border-radius:20px;padding:5px 12px;white-space:nowrap}
+.light.ok{background:var(--okbg);color:var(--ok)} .light.warn{background:var(--warnbg);color:var(--warn)} .light.no{background:var(--nobg);color:var(--no)}
+.card .nm{font-size:19px;font-weight:800;line-height:1.25}
+.card .ex{font-size:16px;line-height:1.5;color:#333}
+.card .ft{font-size:12.5px;color:var(--muted);line-height:1.45;margin-top:9px;border-top:1px dashed var(--line);padding-top:8px}
+.rule{background:linear-gradient(135deg,#fff,#fffaf0);border:1.5px solid var(--gold);border-radius:18px;padding:14px 15px;margin-bottom:10px;display:flex;gap:12px;box-shadow:0 5px 16px rgba(7,51,47,.07)}
+.rule .num{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#3a2800;font-weight:800;font-size:19px;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rule .tx{font-size:16px;line-height:1.5}
+.rule .tx b{color:var(--teal)}
+.empty{background:#fff;border:1.5px dashed var(--line);border-radius:18px;padding:24px 18px;text-align:center;color:var(--muted);font-size:15.5px;line-height:1.55}
+.empty b{color:var(--ink)}
+.legend{display:flex;gap:7px;margin:12px 0 0;flex-wrap:wrap}
+.legend div{flex:1;min-width:100px;text-align:center;font-size:13.5px;font-weight:800;border-radius:12px;padding:9px 4px}
+.legend .ok{background:var(--okbg);color:var(--ok)} .legend .warn{background:var(--warnbg);color:var(--warn)} .legend .no{background:var(--nobg);color:var(--no)}
+footer{padding:6px 18px 30px;text-align:center}
+footer .brand{font-size:14px;font-weight:800;color:var(--teal)}
+footer .note{font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:6px}
+.reshead{font-size:15px;color:var(--muted);font-weight:700;margin:16px 2px 10px}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <div class="row">
+    <div>
+      <div class="logo" id="hTitle">¿Puedo <span>tomarlo?</span></div>
+      <div class="tag" id="hTag">Guía con semáforo para pacientes de diálisis</div>
+      <div class="byline" id="hBy">Educación de salud · Kiustin G, técnico de diálisis y preceptor</div>
+    </div>
+    <div class="langtog">
+      <button id="btnES" class="on" onclick="setLang('es')">ES</button>
+      <button id="btnEN" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="searchbox">
+    <span class="ic">🔎</span>
+    <input id="q" type="search" autocomplete="off" oninput="onSearch()">
+    <button onclick="onSearch(true)" id="btnGo">Buscar</button>
+  </div>
+  <div class="popular" id="popular"></div>
+
+  <div class="disc" id="discMain"></div>
+
+  <div class="legend">
+    <div class="ok" id="lgOk">✅ Se puede</div>
+    <div class="warn" id="lgWarn">⚠️ Pregunta / limita</div>
+    <div class="no" id="lgNo">❌ Evita</div>
+  </div>
+
+  <div id="results"></div>
+
+  <div id="browse">
+    <div class="tabs">
+      <button data-tab="all" class="on" onclick="setTab('all')" id="tabAll">Todo</button>
+      <button data-tab="med" onclick="setTab('med')" id="tabMed">💊 Medicamentos</button>
+      <button data-tab="food" onclick="setTab('food')" id="tabFood">🥗 Alimentos</button>
+      <button data-tab="rules" onclick="setTab('rules')" id="tabRules">⭐ Reglas de oro</button>
+    </div>
+    <div id="browseBody"></div>
+  </div>
+</main>
+<footer>
+  <div class="brand">Kiustin G · Salud PRO</div>
+  <div class="note" id="footNote"></div>
+</footer>
+</div>
+
+<script>
+/* ============ TEXTOS DE INTERFAZ ============ */
+const UI = {
+  es:{
+    title:'¿Puedo <span>tomarlo?</span>', tag:'Guía con semáforo para pacientes de diálisis',
+    by:'Educación de salud · Kiustin G, técnico de diálisis y preceptor',
+    ph:'Escribe un medicamento o alimento…', go:'Buscar', popular:'Frecuentes:',
+    disc:'<b>⚠️ Guía educativa solamente.</b> Esto no es consejo médico. Cada paciente es distinto: confirma siempre con <b>tu nefrólogo y tu equipo de diálisis</b> antes de tomar un medicamento nuevo o cambiar tu alimentación.',
+    lgOk:'✅ Se puede', lgWarn:'⚠️ Pregunta / limita', lgNo:'❌ Evita',
+    tabAll:'Todo', tabMed:'💊 Medicamentos', tabFood:'🥗 Alimentos', tabRules:'⭐ Reglas de oro',
+    secMed:'💊 Medicamentos', secFood:'🥗 Alimentos', secRules:'⭐ Reglas de oro',
+    subK:'Limita · Potasio alto', subP:'Limita · Fósforo alto', subNa:'Cuidado · Sal (sodio) y líquidos', subSafe:'Generalmente seguros', subProt:'Proteína · ¡Importante!',
+    ok:'✅ Se puede', warn:'⚠️ Pregunta / limita', no:'❌ Evita',
+    cardFoot:'Guía educativa: confirma siempre con tu nefrólogo y tu equipo de diálisis.',
+    resFor:'Resultados para', noRes:'No encontré', noRes2:'en la guía. <b>Si no aparece aquí, no significa que se pueda:</b> pregunta a tu equipo de diálisis antes de tomarlo o comerlo.',
+    foot:'Contenido educativo basado en guías públicas para pacientes de diálisis (estilo NKF/KDOQI). No sustituye el consejo de tu nefrólogo.'
+  },
+  en:{
+    title:'Can I <span>take it?</span>', tag:'Traffic-light guide for dialysis patients',
+    by:'Health education · Kiustin G, dialysis technician & preceptor',
+    ph:'Type a medication or food…', go:'Search', popular:'Popular:',
+    disc:'<b>⚠️ Educational guide only.</b> This is not medical advice. Every patient is different: always confirm with <b>your nephrologist and your dialysis team</b> before taking a new medication or changing your diet.',
+    lgOk:'✅ Generally OK', lgWarn:'⚠️ Ask / limit', lgNo:'❌ Avoid',
+    tabAll:'All', tabMed:'💊 Medications', tabFood:'🥗 Foods', tabRules:'⭐ Golden rules',
+    secMed:'💊 Medications', secFood:'🥗 Foods', secRules:'⭐ Golden rules',
+    subK:'Limit · High potassium', subP:'Limit · High phosphorus', subNa:'Watch · Salt (sodium) & fluids', subSafe:'Generally safer', subProt:'Protein · Important!',
+    ok:'✅ Generally OK', warn:'⚠️ Ask / limit', no:'❌ Avoid',
+    cardFoot:'Educational guide: always confirm with your nephrologist and your dialysis team.',
+    resFor:'Results for', noRes:'I could not find', noRes2:'in the guide. <b>If it is not listed here, that does not mean it is OK:</b> ask your dialysis team before taking or eating it.',
+    foot:'Educational content based on public patient-education guidelines for dialysis patients (NKF/KDOQI style). It does not replace your nephrologist\u2019s advice.'
+  }
+};
+
+/* ============ DATOS ============ */
+/* l: ok | warn | no · g: med | k | p | na | safe | prot */
+const ITEMS = [
+/* ---------- MEDICAMENTOS ---------- */
+{c:'med',g:'med',l:'no',
+ es:'Ibuprofeno, naproxeno y otros antiinflamatorios (AINE)',en:'Ibuprofen, naproxen & other NSAIDs',
+ a:'advil motrin aleve voltaren diclofenaco antiinflamatorio dolor ibuprofen naproxen nsaids',
+ des:'Dañan la función renal que te queda y aumentan el riesgo de sangrado y de potasio alto. No los tomes sin preguntar primero a tu equipo de diálisis.',
+ den:'They harm your remaining kidney function and raise the risk of bleeding and high potassium. Do not take them without asking your dialysis team first.'},
+{c:'med',g:'med',l:'no',
+ es:'Laxantes y antiácidos con magnesio o fosfatos',en:'Laxatives & antacids with magnesium or phosphates',
+ a:'leche de magnesia milk of magnesia fleet enema laxante laxative antiacido antacid magnesio magnesium fosfato phosphate estreñimiento constipation',
+ des:'La leche de magnesia, los enemas tipo Fleet y productos parecidos cargan magnesio y fosfato, que se acumulan cuando los riñones no funcionan. Evítalos.',
+ den:'Milk of magnesia, Fleet-type enemas and similar products load magnesium and phosphate, which build up when the kidneys fail. Avoid them.'},
+{c:'med',g:'med',l:'no',
+ es:'Suplementos de potasio y sal «light» / sustitutos de sal',en:'Potassium supplements & “light” salt / salt substitutes',
+ a:'potasio potassium nosalt sal light sustituto de sal salt substitute suplemento klor-con',
+ des:'La sal «light» y los sustitutos de sal son potasio puro, y el potasio alto es peligroso para el corazón en diálisis. No los uses.',
+ den:'“Light” salt and salt substitutes are pure potassium, and high potassium is dangerous for the heart on dialysis. Do not use them.'},
+{c:'med',g:'med',l:'no',
+ es:'Remedios herbales, tes y vitaminas no recetadas',en:'Herbal remedies, teas & non-prescribed vitamins',
+ a:'hierbas herbal te remedio natural suplementos supplements vitaminas vitamins multivitamina multivitamin',
+ des:'Muchos remedios «naturales» y suplementos contienen potasio o fósforo escondido, o interfieren con tus medicamentos. Pregunta antes de tomar cualquiera.',
+ den:'Many “natural” remedies and supplements contain hidden potassium or phosphorus, or interfere with your medicines. Ask before taking any of them.'},
+{c:'med',g:'med',l:'warn',
+ es:'Acetaminofén (Tylenol)',en:'Acetaminophen (Tylenol)',
+ a:'tylenol paracetamol acetaminophen fiebre dolor fever pain',
+ des:'Suele ser el analgésico preferido en diálisis, pero solo dentro del límite diario que te ponga tu equipo. No pases la dosis.',
+ den:'It is usually the preferred pain reliever on dialysis, but only within the daily limit your team sets. Do not exceed the dose.'},
+{c:'med',g:'med',l:'warn',
+ es:'Aspirina y medicamentos nuevos de otro médico o dentista',en:'Aspirin & new prescriptions from another doctor or dentist',
+ a:'aspirina aspirin aspirina dentista dentist receta nueva new prescription otro medico',
+ des:'Solo si tu nefrólogo lo sabe. Avisa siempre a todo médico y dentista que estás en diálisis antes de aceptar una receta nueva.',
+ den:'Only if your nephrologist knows. Always tell every doctor and dentist that you are on dialysis before accepting a new prescription.'},
+{c:'med',g:'med',l:'ok',
+ es:'Aglutinantes de fósforo (sevelamer, acetato de calcio…)',en:'Phosphate binders (sevelamer, calcium acetate…)',
+ a:'sevelamer renvela acetato de calcio calcium acetate phoslo aglutinante binder fosforo phosphorus quelante',
+ des:'Se toman CON la comida, exactamente como te los recetaron: solo funcionan mezclados con los alimentos para atrapar el fósforo.',
+ den:'Take them WITH food, exactly as prescribed: they only work when mixed with your meals to trap phosphorus.'},
+{c:'med',g:'med',l:'ok',
+ es:'Vitamina renal recetada',en:'Prescribed renal vitamin',
+ a:'vitamina renal renal vitamin nephrovite renvite dialyvite',
+ des:'Solo la vitamina renal específica que te recetó tu nefrólogo. Las multivitaminas normales no son para pacientes de diálisis.',
+ den:'Only the specific renal vitamin your nephrologist prescribed. Regular multivitamins are not made for dialysis patients.'},
+
+/* ---------- ALIMENTOS: POTASIO ALTO ---------- */
+{c:'food',g:'k',l:'no',es:'Banana / guineo',en:'Banana',
+ a:'guineo platano fruta banana cambur',
+ des:'Muy alto en potasio. En diálisis el potasio se acumula y puede afectar el corazón: limítalo o evítalo según tu equipo.',
+ den:'Very high in potassium. On dialysis potassium builds up and can affect the heart: limit or avoid it as your team advises.'},
+{c:'food',g:'k',l:'no',es:'Naranja y jugo de naranja',en:'Orange & orange juice',
+ a:'naranja jugo orange juice china',
+ des:'Altos en potasio, y el jugo además cuenta como líquido. Mejor evítalos o tómalos solo si tu equipo lo aprueba.',
+ den:'High in potassium, and the juice also counts as fluid. Best to avoid them or have them only if your team approves.'},
+{c:'food',g:'k',l:'no',es:'Melón',en:'Melon',
+ a:'melon cantaloupe sandia watermelon',
+ des:'Alto en potasio y con mucho líquido. Limítalo según las indicaciones de tu equipo.',
+ den:'High in potassium and full of fluid. Limit it as your team advises.'},
+{c:'food',g:'k',l:'no',es:'Aguacate',en:'Avocado',
+ a:'aguacate avocado guacamole',
+ des:'Muy alto en potasio, aunque sea una grasa «buena». En diálisis hay que limitarlo mucho o evitarlo.',
+ den:'Very high in potassium, even though it is a “good” fat. On dialysis it must be strictly limited or avoided.'},
+{c:'food',g:'k',l:'no',es:'Tomate',en:'Tomato',
+ a:'tomate tomato salsa de tomate catsup ketchup',
+ des:'Alto en potasio, también en salsas y jugos de tomate. Úsalo en cantidades pequeñas.',
+ den:'High in potassium, including tomato sauces and juices. Use only small amounts.'},
+{c:'food',g:'k',l:'no',es:'Papa',en:'Potato',
+ a:'papa potato patata pure fritas french fries',
+ des:'Muy alta en potasio. Si tu equipo lo permite, en porción pequeña y remojada/hervida para bajarle el potasio.',
+ den:'Very high in potassium. If your team allows it, keep portions small and soak/boil it to lower the potassium.'},
+{c:'food',g:'k',l:'no',es:'Plátano (maduro o verde)',en:'Plantain',
+ a:'platano maduro verde plantain tostones mofongo',
+ des:'Alto en potasio, frito o hervido. Es de los alimentos que más hay que limitar en diálisis.',
+ den:'High in potassium, fried or boiled. It is one of the foods that must be limited most on dialysis.'},
+{c:'food',g:'k',l:'no',es:'Frijoles en grandes cantidades',en:'Beans in large amounts',
+ a:'frijoles beans habichuelas lentejas lentils garbanzos chickpeas',
+ des:'Tienen bastante potasio y fósforo. No tienes que eliminarlos del todo, pero sí cuidar la porción y la frecuencia.',
+ den:'They carry a good amount of potassium and phosphorus. You may not need to cut them out completely, but watch portion and frequency.'},
+
+/* ---------- ALIMENTOS: FÓSFORO ALTO ---------- */
+{c:'food',g:'p',l:'no',es:'Refrescos de cola oscuros',en:'Dark cola sodas',
+ a:'coca cola pepsi refresco soda cola gaseosa',
+ des:'Llevan ácido fosfórico: fósforo que se absorbe completo y se acumula en la sangre. Evítalos.',
+ den:'They contain phosphoric acid: phosphorus that is fully absorbed and builds up in the blood. Avoid them.'},
+{c:'food',g:'p',l:'no',es:'Queso',en:'Cheese',
+ a:'queso cheese',
+ des:'Alto en fósforo (y en sal). Limítalo a porciones pequeñas y ocasionales.',
+ den:'High in phosphorus (and salt). Limit it to small, occasional portions.'},
+{c:'food',g:'p',l:'no',es:'Nueces y semillas',en:'Nuts & seeds',
+ a:'nueces nuts almendras almonds mani peanuts semillas seeds',
+ des:'Altas en fósforo y potasio. En diálisis se limitan mucho.',
+ den:'High in phosphorus and potassium. They are strictly limited on dialysis.'},
+{c:'food',g:'p',l:'no',es:'Mantequilla de maní',en:'Peanut butter',
+ a:'mantequilla de mani peanut butter crema de cacahuate',
+ des:'Alta en fósforo y potasio. Limítala a cantidades muy pequeñas.',
+ den:'High in phosphorus and potassium. Limit it to very small amounts.'},
+{c:'food',g:'p',l:'no',es:'Comida procesada con aditivos de fosfato',en:'Processed foods with phosphate additives',
+ a:'fosfato phosphate fos procesado processed salchicha nuggets comida congelada frozen meals aditivo additive',
+ des:'Si en los ingredientes dice «fos…» (fosfato, ácido fosfórico), ese fósforo se absorbe casi completo. Lee las etiquetas y evítalos.',
+ den:'If the ingredients say “phos…” (phosphate, phosphoric acid), that phosphorus is absorbed almost completely. Read labels and avoid them.'},
+{c:'food',g:'p',l:'no',es:'Vísceras (hígado, riñón, sesos)',en:'Organ meats (liver, kidney, brain)',
+ a:'higado higadillo liver visceras organ meats riñon sesos mollejas',
+ des:'Muy altas en fósforo. Mejor evitarlas en diálisis.',
+ den:'Very high in phosphorus. Best avoided on dialysis.'},
+
+/* ---------- SAL Y LÍQUIDOS ---------- */
+{c:'food',g:'na',l:'warn',es:'Embutidos y fiambres',en:'Cold cuts & deli meats',
+ a:'embutidos jamon ham salami mortadela bologna fiambres cold cuts deli salchicha sausage jamonada',
+ des:'Cargados de sal (y a menudo de fosfatos). La sal da sed, sube la presión y hace que tomes más líquido del permitido.',
+ den:'Loaded with salt (and often phosphates). Salt makes you thirsty, raises blood pressure and makes you drink more fluid than allowed.'},
+{c:'food',g:'na',l:'warn',es:'Sopas enlatadas',en:'Canned soups',
+ a:'sopa enlatada canned soup lata ramen maruchan',
+ des:'Mucha sal y cuentan como líquido. Limítalas; las sopas caseras sin sal añadida son mejor opción si tu equipo lo aprueba.',
+ den:'Lots of salt, and they count as fluid. Limit them; homemade soups without added salt are a better option if your team approves.'},
+{c:'food',g:'na',l:'warn',es:'Comida rápida',en:'Fast food',
+ a:'comida rapida fast food hamburguesa burger pizza tacos restaurante restaurant',
+ des:'Casi siempre alta en sal, fósforo y potasio. Déjala para ocasiones muy raras y porciones pequeñas.',
+ den:'Almost always high in salt, phosphorus and potassium. Save it for very rare occasions and small portions.'},
+{c:'food',g:'na',l:'warn',es:'Snacks salados',en:'Salty snacks',
+ a:'papitas chips pretzel galletas saladas crackers snacks salados palomitas popcorn',
+ des:'La sal escondida da mucha sed y te pasa del límite de líquido. Limítalos.',
+ den:'Hidden salt makes you very thirsty and pushes you over your fluid limit. Limit them.'},
+{c:'food',g:'na',l:'warn',es:'Ojo: los líquidos escondidos',en:'Watch out: hidden fluids',
+ a:'liquido fluid hielo ice gelatina gelatin helado ice cream sopa soup sed thirst agua water limite limit',
+ des:'El hielo, las sopas, la gelatina y el helado también cuentan como líquido. Todo suma dentro de tu límite diario.',
+ den:'Ice, soups, gelatin and ice cream also count as fluid. Everything adds up toward your daily limit.'},
+
+/* ---------- GENERALMENTE SEGUROS ---------- */
+{c:'food',g:'safe',l:'ok',es:'Manzana',en:'Apple',a:'manzana apple',
+ des:'Generalmente segura en porciones normales: baja en potasio.',den:'Generally safe in normal portions: low in potassium.'},
+{c:'food',g:'safe',l:'ok',es:'Uvas',en:'Grapes',a:'uvas grapes',
+ des:'Generalmente seguras en porciones normales: bajas en potasio.',den:'Generally safe in normal portions: low in potassium.'},
+{c:'food',g:'safe',l:'ok',es:'Piña',en:'Pineapple',a:'piña pina pineapple',
+ des:'Generalmente segura en porciones normales: más baja en potasio que otras frutas tropicales.',den:'Generally safe in normal portions: lower in potassium than other tropical fruits.'},
+{c:'food',g:'safe',l:'ok',es:'Bayas (fresas, arándanos, moras)',en:'Berries (strawberries, blueberries)',
+ a:'fresa fresas arandanos berries strawberry blueberry mora frambuesa',
+ des:'Generalmente seguras en porciones normales: bajas en potasio.',den:'Generally safe in normal portions: low in potassium.'},
+{c:'food',g:'safe',l:'ok',es:'Arroz blanco',en:'White rice',a:'arroz blanco white rice',
+ des:'Generalmente seguro y buena base para tus comidas dentro de tu plan.',den:'Generally safe and a good base for your meals within your plan.'},
+{c:'food',g:'safe',l:'ok',es:'Pasta',en:'Pasta',a:'pasta espagueti spaghetti fideos noodles macarrones',
+ des:'Generalmente segura en porciones normales. Cuida las salsas de tomate y queso, que sí hay que limitar.',den:'Generally safe in normal portions. Watch tomato and cheese sauces, which do need limiting.'},
+{c:'food',g:'safe',l:'ok',es:'Repollo',en:'Cabbage',a:'repollo col cabbage',
+ des:'Generalmente seguro: bajo en potasio.',den:'Generally safe: low in potassium.'},
+{c:'food',g:'safe',l:'ok',es:'Pepino',en:'Cucumber',a:'pepino cucumber',
+ des:'Generalmente seguro: bajo en potasio.',den:'Generally safe: low in potassium.'},
+{c:'food',g:'safe',l:'ok',es:'Habichuelas verdes (vainitas)',en:'Green beans',a:'habichuelas verdes vainitas ejotes green beans',
+ des:'Generalmente seguras en porciones normales: más bajas en potasio que los frijoles secos.',den:'Generally safe in normal portions: lower in potassium than dried beans.'},
+{c:'food',g:'safe',l:'ok',es:'Maíz',en:'Corn',a:'maiz corn elote',
+ des:'Generalmente seguro en porciones normales.',den:'Generally safe in normal portions.'},
+
+/* ---------- PROTEÍNA ---------- */
+{c:'food',g:'prot',l:'ok',es:'Pollo',en:'Chicken',a:'pollo chicken',
+ des:'Proteína importante: en diálisis necesitas MÁS proteína que antes, no menos. El pollo es una de las mejores fuentes.',den:'Important protein: on dialysis you need MORE protein than before, not less. Chicken is one of the best sources.'},
+{c:'food',g:'prot',l:'ok',es:'Pescado',en:'Fish',a:'pescado fish salmon tilapia atun tuna',
+ des:'Proteína importante para mantener el músculo y la albúmina. Inclúyelo en tus comidas.',den:'Important protein to keep up muscle and albumin. Include it in your meals.'},
+{c:'food',g:'prot',l:'ok',es:'Huevos',en:'Eggs',a:'huevo huevos eggs clara',
+ des:'Proteína de alta calidad y económica. En diálisis la proteína no se restringe como antes de la diálisis.',den:'High-quality, affordable protein. On dialysis, protein is not restricted the way it was before dialysis.'},
+{c:'food',g:'prot',l:'ok',es:'Carne de res',en:'Beef',a:'carne de res beef carne roja steak bistec',
+ des:'Buena fuente de proteína y hierro. En porciones normales dentro de tu plan, ayuda a mantener la albúmina.',den:'A good source of protein and iron. In normal portions within your plan, it helps keep albumin up.'}
+];
+
+/* ============ REGLAS DE ORO ============ */
+const RULES = [
+ {es:'<b>Nunca empieces</b> un medicamento, vitamina o remedio nuevo sin preguntar antes a tu equipo de diálisis.',
+  en:'<b>Never start</b> a new medicine, vitamin or remedy without asking your dialysis team first.'},
+ {es:'Los <b>aglutinantes de fósforo</b> van <b>con la comida</b>: sin comida, no funcionan.',
+  en:'<b>Phosphate binders</b> go <b>with food</b>: without food, they do not work.'},
+ {es:'<b>Lee las etiquetas:</b> vigila el potasio, los aditivos con «fos/phos» y el sodio.',
+  en:'<b>Read labels:</b> watch for potassium, “phos” additives and sodium.'},
+ {es:'<b>Ante la duda, pregunta.</b> Para eso está tu equipo: más vale preguntar que lamentar.',
+  en:'<b>When in doubt, ask.</b> That is what your team is for: better to ask than to regret.'}
+];
+
+/* ============ LÓGICA ============ */
+let lang = localStorage.getItem('pt-lang') || 'es';
+let tab = 'all';
+
+const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+
+function cardHTML(it){
+  const u = UI[lang];
+  return `<div class="card ${it.l}">
+    <div class="top"><span class="light ${it.l}">${u[it.l]}</span></div>
+    <div class="nm">${lang==='es'?it.es:it.en}</div>
+    <div class="ex">${lang==='es'?it.des:it.den}</div>
+    <div class="ft">⚠️ ${u.cardFoot}</div>
+  </div>`;
+}
+function groupHTML(g, title){
+  const items = ITEMS.filter(i=>i.g===g);
+  if(!items.length) return '';
+  return (title?`<h3 class="sub">${title}</h3>`:'') + items.map(cardHTML).join('');
+}
+function renderBrowse(){
+  const u = UI[lang]; let h = '';
+  if(tab==='all' || tab==='med'){
+    h += `<h2 class="sec">${u.secMed}</h2>` + groupHTML('med','');
+  }
+  if(tab==='all' || tab==='food'){
+    h += `<h2 class="sec">${u.secFood}</h2>`
+       + groupHTML('k', u.subK) + groupHTML('p', u.subP) + groupHTML('na', u.subNa)
+       + groupHTML('safe', u.subSafe) + groupHTML('prot', u.subProt);
+  }
+  if(tab==='all' || tab==='rules'){
+    h += `<h2 class="sec">${u.secRules}</h2>` + RULES.map((r,i)=>
+      `<div class="rule"><div class="num">${i+1}</div><div class="tx">${lang==='es'?r.es:r.en}</div></div>`).join('');
+  }
+  document.getElementById('browseBody').innerHTML = h;
+}
+function onSearch(fromBtn){
+  const raw = document.getElementById('q').value.trim();
+  const res = document.getElementById('results');
+  const q = norm(raw);
+  if(q.length < 2){ res.innerHTML=''; document.getElementById('browse').style.display=''; return; }
+  const hits = ITEMS.filter(it => norm(it.es+' '+it.en+' '+it.a).includes(q)
+    || q.split(/\s+/).every(w => w.length<3 || norm(it.es+' '+it.en+' '+it.a).includes(w)));
+  document.getElementById('browse').style.display='none';
+  if(!hits.length){
+    res.innerHTML = `<div class="reshead">${UI[lang].resFor} “${raw}”:</div>
+      <div class="empty">🔍 ${UI[lang].noRes} “<b>${raw}</b>” ${UI[lang].noRes2}<br><br>⚠️ ${UI[lang].cardFoot}</div>`;
+    return;
+  }
+  res.innerHTML = `<div class="reshead">${UI[lang].resFor} “${raw}”:</div>` + hits.map(cardHTML).join('');
+}
+function setTab(t){
+  tab = t;
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on', b.dataset.tab===t));
+  renderBrowse();
+}
+function quickSearch(txt){
+  document.getElementById('q').value = txt; onSearch(true);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function applyLang(){
+  const u = UI[lang];
+  document.documentElement.lang = lang;
+  document.getElementById('hTitle').innerHTML = u.title;
+  document.getElementById('hTag').textContent = u.tag;
+  document.getElementById('hBy').textContent = u.by;
+  document.getElementById('q').placeholder = u.ph;
+  document.getElementById('btnGo').textContent = u.go;
+  document.getElementById('discMain').innerHTML = u.disc;
+  document.getElementById('lgOk').textContent = u.lgOk;
+  document.getElementById('lgWarn').textContent = u.lgWarn;
+  document.getElementById('lgNo').textContent = u.lgNo;
+  document.getElementById('tabAll').textContent = u.tabAll;
+  document.getElementById('tabMed').textContent = u.tabMed;
+  document.getElementById('tabFood').textContent = u.tabFood;
+  document.getElementById('tabRules').textContent = u.tabRules;
+  document.getElementById('footNote').textContent = u.foot;
+  document.getElementById('btnES').classList.toggle('on', lang==='es');
+  document.getElementById('btnEN').classList.toggle('on', lang==='en');
+  const pops = lang==='es' ? ['Tylenol','Banana','Ibuprofeno','Queso','Pollo','Sal light']
+                           : ['Tylenol','Banana','Ibuprofen','Cheese','Chicken','Light salt'];
+  document.getElementById('popular').innerHTML = `<span>${u.popular}</span>` +
+    pops.map(p=>`<button class="pchip" onclick="quickSearch('${p}')">${p}</button>`).join('');
+  renderBrowse();
+  if(document.getElementById('q').value.trim().length >= 2) onSearch();
+}
+function setLang(l){ lang = l; localStorage.setItem('pt-lang', l); applyLang(); }
+applyLang();
+</script>
+</body>
+</html>
