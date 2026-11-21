@@ -89,8 +89,20 @@ create policy "reports_insert" on public.reports for insert to authenticated wit
 drop policy if exists "blocks_all" on public.blocks;
 create policy "blocks_all" on public.blocks for all to authenticated using (auth.uid() = blocker) with check (auth.uid() = blocker);
 
+-- ---------- PERMISOS DE API (proyectos nuevos: hay que otorgarlos) ----------
+grant usage on schema public to anon, authenticated, service_role;
+grant select, insert, update, delete on public.profiles, public.likes, public.messages, public.reports, public.blocks to authenticated;
+grant select on public.profiles, public.likes, public.messages, public.reports, public.blocks to anon;
+grant all on all sequences in schema public to authenticated, service_role;
+
 -- ---------- CHAT EN VIVO ----------
-alter publication supabase_realtime add table public.messages;
+-- (En proyectos nuevos el realtime ya viene activo: si ya es miembro, se ignora)
+do $$
+begin
+  alter publication supabase_realtime add table public.messages;
+exception when duplicate_object then
+  null;
+end $$;
 
 -- ---------- FOTOS (Storage) ----------
 insert into storage.buckets (id, name, public) values ('photos', 'photos', true)
