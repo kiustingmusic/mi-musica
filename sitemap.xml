@@ -651,4 +651,75 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
+  <url>
+    <loc>https://kiusting.com/articulos</loc>
+    <lastmod>2026-11-22</lastmod>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/articulos/guia-dialisis-pacientes-nuevos</loc>
+    <lastmod>2026-11-22</lastmod>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/articulos/como-leer-tus-laboratorios</loc>
+    <lastmod>2026-11-22</lastmod>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/articulos/de-banes-a-rochester</loc>
+    <lastmod>2026-11-22</lastmod>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/articulos/cocina-cubana-de-madre</loc>
+    <lastmod>2026-11-22</lastmod>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/articulos/como-encargar-una-cancion</loc>
+    <lastmod>2026-11-22</lastmod>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/articulos/reparto-salsa-y-fusion</loc>
+    <lastmod>2026-11-22</lastmod>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/en/articles</loc>
+    <lastmod>2026-11-22</lastmod>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/en/articles/dialysis-guide-new-patients</loc>
+    <lastmod>2026-11-22</lastmod>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/en/articles/how-to-read-your-labs</loc>
+    <lastmod>2026-11-22</lastmod>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/en/articles/from-banes-to-rochester</loc>
+    <lastmod>2026-11-22</lastmod>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/en/articles/cuban-cooking-mothers-book</loc>
+    <lastmod>2026-11-22</lastmod>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/en/articles/how-to-order-a-custom-song</loc>
+    <lastmod>2026-11-22</lastmod>
+  </url>
+
+  <url>
+    <loc>https://kiusting.com/en/articles/reparto-salsa-and-fusion</loc>
+    <lastmod>2026-11-22</lastmod>
+  </url>
+
 </urlset>
