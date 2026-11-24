@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<link rel="icon" href="data:," />
+<meta name="theme-color" content="#0c0c0f" />
+<meta name="description" content="Estilos Kiustin G — Pelados, estilos y moda actual. Elige tu corte y muéstraselo a tu barbero. / Haircuts, styles and current fashion by Kiustin G." />
+<title>Estilos PRO · Kiustin G</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0c0f; --card:#16161c; --card2:#1d1d24; --line:#2a2a33;
+    --ink:#f3efe4; --soft:#b7b1a1; --gold:#c9a24b; --gold2:#e8cb7d; --red:#e4574f;
+    --shadow:0 14px 34px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Inter",system-ui,sans-serif;color:var(--ink);min-height:100dvh;
+    background:
+      radial-gradient(700px 340px at 85% -60px, rgba(201,162,75,.16), transparent 70%),
+      radial-gradient(600px 300px at 8% 0, rgba(201,162,75,.08), transparent 70%),
+      var(--bg);
+  }
+  h1,h2,h3,.serif{font-family:"Playfair Display",Georgia,serif}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  .wrap{max-width:880px;margin:0 auto;padding:16px 14px 46px}
+  .hidden{display:none !important}
+
+  .lang-bar{display:flex;justify-content:flex-end;padding:2px 0 0}
+  .lang-switch{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px;gap:4px}
+  .lang-switch button{border-radius:999px;padding:8px 18px;font-weight:800;font-size:14px;min-height:40px;color:var(--soft)}
+  .lang-switch button.active{background:var(--gold);color:#171205}
+
+  .hero{text-align:center;padding:10px 4px 4px}
+  .brand{letter-spacing:.42em;font-weight:800;font-size:13px;color:var(--gold);text-transform:uppercase}
+  .hero h1{font-size:clamp(44px,11vw,68px);margin:6px 0 2px;line-height:1;font-weight:800}
+  .hero .sub{color:var(--soft);font-size:16px;line-height:1.5;max-width:560px;margin:8px auto 0}
+  .pill{display:inline-block;margin-top:12px;border:1px solid var(--gold);color:var(--gold2);
+    font-weight:800;font-size:13px;letter-spacing:.14em;border-radius:999px;padding:6px 16px;text-transform:uppercase}
+  .pill.pro{background:var(--gold);color:#171205}
+
+  .tabs{position:sticky;top:0;z-index:30;display:flex;gap:8px;overflow-x:auto;padding:12px 2px 10px;
+    background:linear-gradient(var(--bg) 78%, transparent);scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--soft);
+    border-radius:999px;padding:10px 16px;font-weight:700;font-size:14.5px;min-height:44px;white-space:nowrap}
+  .tab.active{background:var(--gold);border-color:var(--gold);color:#171205}
+  .tab .cnt{opacity:.75;font-weight:600;font-size:12.5px}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+  @media (min-width:640px){.grid{grid-template-columns:1fr 1fr 1fr}}
+  .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;text-align:left;padding:0;width:100%}
+  .card:active{transform:scale(.985)}
+  .card .ph{position:relative;aspect-ratio:1/1;overflow:hidden;background:#22222a}
+  .card.wide .ph{aspect-ratio:3/2}
+  .card img{width:100%;height:100%;object-fit:cover;display:block}
+  .card.locked img{filter:blur(8px) brightness(.68);transform:scale(1.08)}
+  .lockbadge{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;
+    text-shadow:0 2px 12px rgba(0,0,0,.8)}
+  .probadge{position:absolute;left:10px;top:10px;background:var(--gold);color:#171205;font-weight:800;font-size:11px;
+    letter-spacing:.1em;border-radius:999px;padding:4px 10px}
+  .heart{position:absolute;right:8px;top:8px;width:42px;height:42px;border-radius:50%;background:rgba(10,10,14,.55);
+    color:#fff;font-size:21px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
+  .heart.on{color:var(--red)}
+  .card .nm{padding:11px 12px 13px;font-weight:700;font-size:15.5px;line-height:1.3}
+  .card .nm small{display:block;color:var(--soft);font-weight:600;font-size:12px;margin-top:2px}
+  .empty{grid-column:1/-1;text-align:center;color:var(--soft);padding:34px 18px;line-height:1.6}
+
+  .procard{margin-top:30px;background:linear-gradient(160deg,#1c1a13,#121216 55%);border:1px solid var(--gold);
+    border-radius:22px;padding:22px 20px;box-shadow:var(--shadow)}
+  .procard.pulse{animation:pulse 1s ease}
+  @keyframes pulse{0%,100%{box-shadow:var(--shadow)}30%{box-shadow:0 0 0 5px rgba(201,162,75,.45)}}
+  .procard h2{margin:0 0 4px;font-size:27px}
+  .procard .price{color:var(--gold2);font-weight:800;font-size:19px}
+  .procard ul{margin:14px 0 4px;padding:0;list-style:none}
+  .procard li{padding:7px 0 7px 28px;position:relative;color:var(--ink);line-height:1.45;font-size:15.5px;border-bottom:1px dashed rgba(201,162,75,.22)}
+  .procard li:last-child{border-bottom:none}
+  .procard li::before{content:"✦";position:absolute;left:4px;color:var(--gold)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--gold);color:#171205;
+    font-weight:800;font-size:16.5px;border-radius:14px;padding:15px 22px;min-height:54px;width:100%;margin-top:14px;text-decoration:none}
+  .btn.ghost{background:transparent;border:1px solid var(--gold);color:var(--gold2)}
+
+  .section{margin-top:34px}
+  .section h2{font-size:26px;margin:0 0 6px}
+  .section .intro{color:var(--soft);line-height:1.55;margin:0 0 12px;font-size:15.5px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:10px 16px;font-weight:700;font-size:14.5px;min-height:44px;color:var(--soft)}
+  .chip.active{background:var(--gold);color:#171205;border-color:var(--gold)}
+  .facebox{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}
+  .facebox .row{margin:0 0 10px;line-height:1.55;font-size:15.5px}
+  .facebox .lab{color:var(--gold);font-weight:800;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:2px}
+  .recs{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .rec{display:flex;align-items:center;gap:10px;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:6px 12px 6px 6px;font-weight:700;font-size:14px}
+  .rec img{width:44px;height:44px;border-radius:10px;object-fit:cover}
+
+  .trow{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px}
+  .trow .t1{color:var(--gold2);font-weight:800;font-size:15px;margin-bottom:3px}
+  .trow .t2,.trow .t3{color:var(--ink);line-height:1.5;font-size:15px}
+  .trow .t3{color:var(--soft)}
+  .phrase{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin-bottom:8px;line-height:1.55}
+  .phrase .es{font-weight:700;font-size:15.5px}
+  .phrase .en{color:var(--soft);font-size:15px;margin-top:3px}
+  .phrase .tag{color:var(--gold);font-size:11px;font-weight:800;letter-spacing:.1em}
+
+  footer{margin-top:40px;text-align:center;color:var(--soft);font-size:13.5px;line-height:1.7}
+  footer .sign{color:var(--gold2);font-weight:700}
+  footer a{color:var(--gold2)}
+
+  .backdrop{position:fixed;inset:0;background:rgba(4,4,6,.72);z-index:60;display:flex;align-items:flex-end;justify-content:center}
+  @media (min-width:640px){.backdrop{align-items:center;padding:18px}}
+  .sheet{background:#141419;border:1px solid var(--line);width:100%;max-width:620px;max-height:92dvh;overflow-y:auto;
+    border-radius:22px 22px 0 0;box-shadow:var(--shadow)}
+  @media (min-width:640px){.sheet{border-radius:22px}}
+  .sheet .ph{position:relative;aspect-ratio:16/10;overflow:hidden;background:#22222a}
+  .sheet .ph img{width:100%;height:100%;object-fit:cover}
+  .sheet .body{padding:18px 20px 24px}
+  .sheet h3{font-family:"Playfair Display",serif;font-size:29px;margin:0 0 4px;line-height:1.15}
+  .field{margin-top:13px;line-height:1.55;font-size:15.5px}
+  .field .lab{color:var(--gold);font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:2px}
+  .phrasebox{margin-top:16px;border:1px solid var(--gold);border-radius:16px;padding:14px 16px;background:rgba(201,162,75,.07)}
+  .phrasebox .lab{color:var(--gold2);font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+  .phrasebox .pes{font-weight:700;font-size:16.5px;line-height:1.5;margin-top:6px}
+  .phrasebox .pen{color:var(--soft);font-size:15.5px;line-height:1.5;margin-top:5px}
+  .sheet .x{position:absolute;right:10px;top:10px;width:44px;height:44px;border-radius:50%;background:rgba(10,10,14,.6);color:#fff;font-size:20px;z-index:2}
+  .sheet .heart{top:10px;right:64px}
+
+  .barber{position:fixed;inset:0;background:#000;z-index:80;display:flex;flex-direction:column}
+  .barber .bimg{flex:1;min-height:0}
+  .barber .bimg img{width:100%;height:100%;object-fit:cover;display:block}
+  .barber .binfo{padding:18px 20px calc(20px + env(safe-area-inset-bottom));background:linear-gradient(transparent,#000 30%)}
+  .barber h3{font-family:"Playfair Display",serif;font-size:clamp(38px,10vw,58px);margin:0;line-height:1.05}
+  .barber .bp{font-size:18px;line-height:1.5;margin-top:10px;font-weight:600}
+  .barber .bp.en{color:var(--soft);font-weight:500}
+  .barber .hint{margin-top:12px;color:var(--gold2);font-size:13.5px;letter-spacing:.04em}
+  .barber .x{position:absolute;right:12px;top:calc(12px + env(safe-area-inset-top));width:48px;height:48px;border-radius:50%;
+    background:rgba(10,10,14,.65);color:#fff;font-size:22px;z-index:2}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="lang-bar">
+    <div class="lang-switch" role="group" aria-label="Idioma / Language">
+      <button id="lang-es" type="button">ES</button>
+      <button id="lang-en" type="button">EN</button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="brand">Kiustin&nbsp;G</div>
+    <h1 id="hero-title">Estilos</h1>
+    <p class="sub" id="hero-sub"></p>
+    <span class="pill" id="hero-pill"></span>
+  </div>
+
+  <nav class="tabs" id="tabs"></nav>
+  <main class="grid" id="grid"></main>
+
+  <section class="procard hidden" id="procard"></section>
+  <div id="extras"></div>
+
+  <footer>
+    <div class="sign">— Kiustin G · El Doctor del Ritmo 🇨🇺</div>
+    <div id="foot-note"></div>
+    <div><a href="https://kiusting.com">kiusting.com</a></div>
+  </footer>
+</div>
+
+<div class="backdrop hidden" id="backdrop">
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<div class="barber hidden" id="barber"></div>
+
+<script>
+"use strict";
+/* =====================================================================
+   CONFIGURACIÓN — Kiustin: cuando publiques «Estilos PRO» en Payhip,
+   pega aquí el enlace del producto (ej. "https://payhip.com/b/XXXXX").
+   Si queda vacío, el botón de compra de la versión gratis NO se muestra.
+   ===================================================================== */
+const PAYHIP_PRO_URL = "";
+const MODE = "pro";              // "free" | "pro"
+const IMG_BASE = "../estilos/img/";       // carpeta de imágenes según la versión
+const DATA = {"styles": [{"id": "french_crop", "cat": "hombres", "img": "h_french_crop.jpg", "free": true, "es": {"n": "French Crop", "a": "Rostros ovalados, entradas suaves y frente amplia.", "b": "Flequillo corto texturizado, laterales bajos o medios.", "c": "Retoque cada 3 a 5 semanas; cera mate o polvo texturizante."}, "en": {"n": "French Crop", "a": "Oval faces, soft hairlines and wider foreheads.", "b": "A short textured fringe with low or mid sides.", "c": "A touch-up every 3 to 5 weeks; matte wax or texturizing powder."}}, {"id": "taper_fade", "cat": "hombres", "img": "h_taper_fade.jpg", "free": true, "es": {"n": "Taper Fade", "a": "Quien quiere verse limpio sin rapar demasiado.", "b": "Degradado suave en patilla y nuca, parte superior natural.", "c": "Perfilado cada 2 a 4 semanas."}, "en": {"n": "Taper Fade", "a": "Anyone who wants a clean look without shaving too much.", "b": "A soft fade at the sideburns and neckline with a natural top.", "c": "A lineup every 2 to 4 weeks."}}, {"id": "burst_fade", "cat": "hombres", "img": "h_burst_fade.jpg", "free": true, "es": {"n": "Burst Fade", "a": "Cabello rizado, ondulado o con volumen arriba.", "b": "Degradado semicircular alrededor de la oreja.", "c": "Mantener los laterales limpios y definir los rizos con crema ligera."}, "en": {"n": "Burst Fade", "a": "Curly, wavy hair or volume on top.", "b": "A semicircular fade around the ear.", "c": "Keep the sides clean and define curls with a light cream."}}, {"id": "buzz_cut", "cat": "hombres", "img": "h_buzz_cut.jpg", "free": false, "es": {"n": "Buzz Cut", "a": "Rostros marcados, estilo militar o bajo mantenimiento.", "b": "Número uniforme o degradado corto con línea natural.", "c": "Retoque frecuente; protector solar en el cuero cabelludo."}, "en": {"n": "Buzz Cut", "a": "Strong features, a military style or low maintenance.", "b": "One even clipper length or a short fade with a natural line.", "c": "Frequent touch-ups; sunscreen on the scalp."}}, {"id": "soft_mullet", "cat": "hombres", "img": "h_soft_mullet.jpg", "free": false, "es": {"n": "Soft Mullet", "a": "Personalidad creativa y cabello con textura.", "b": "Laterales limpios, capas atrás sin exceso de dramatismo.", "c": "Texturizar las puntas; recortar la nuca para que no pese."}, "en": {"n": "Soft Mullet", "a": "A creative personality and textured hair.", "b": "Clean sides with layers at the back, without too much drama.", "c": "Texturize the ends; trim the nape so it does not get heavy."}}, {"id": "curtains", "cat": "hombres", "img": "h_curtains.jpg", "free": false, "es": {"n": "Curtains", "a": "Cabello medio, lacio u ondulado, look juvenil.", "b": "Raya al centro o abierta, capas frontales con movimiento.", "c": "Secador suave y crema ligera."}, "en": {"n": "Curtains", "a": "Medium, straight or wavy hair and a youthful look.", "b": "A center or open part with front layers that move.", "c": "A gentle blow-dry and a light cream."}}, {"id": "slick_back", "cat": "hombres", "img": "h_slick_back.jpg", "free": false, "es": {"n": "Slick Back Moderno", "a": "El profesional elegante y el cabello medio.", "b": "Parte superior peinada hacia atrás, laterales controlados.", "c": "Pomada ligera; evitar el efecto casco."}, "en": {"n": "Modern Slick Back", "a": "An elegant professional look and medium hair.", "b": "The top combed back with controlled sides.", "c": "A light pomade; avoid the helmet effect."}}, {"id": "rizos_definidos", "cat": "hombres", "img": "b_rizo_barba.jpg", "free": false, "es": {"n": "Rizos Definidos con Degradado", "a": "El cabello rizo y afro que busca forma sin perder volumen.", "b": "Degradado bajo o medio que respete el rizo; la forma de arriba se corta en seco.", "c": "Definir con crema o gel sobre el cabello mojado y no tocar mientras seca; refrescar con spray de agua; retoque del degradado cada 2 a 3 semanas."}, "en": {"n": "Defined Curls with a Fade", "a": "Curly and afro hair that wants shape without losing volume.", "b": "A low or mid fade that respects the curl; the top shape is cut dry.", "c": "Define with cream or gel on wet hair and do not touch it while it dries; refresh with a water spray; fade touch-up every 2 to 3 weeks."}}, {"id": "bob_recto", "cat": "mujeres", "img": "m_bob_recto.jpg", "free": true, "es": {"n": "Bob Recto", "a": "Cuello visible, mandíbula definida y estilo elegante.", "b": "Línea limpia a la altura del mentón o del cuello.", "c": "Brillo, plancha suave y puntas pulidas."}, "en": {"n": "Blunt Bob", "a": "A visible neck, a defined jawline and an elegant style.", "b": "A clean line at chin or neck length.", "c": "Shine, a gentle flat iron and polished ends."}}, {"id": "lob", "cat": "mujeres", "img": "m_lob.jpg", "free": true, "es": {"n": "Lob", "a": "Casi todos los rostros; ideal si no quieres el pelo muy corto.", "b": "Largo entre la clavícula y el hombro, capas invisibles.", "c": "Ondas suaves o liso natural."}, "en": {"n": "Lob", "a": "Almost every face; ideal if you do not want very short hair.", "b": "Length between the collarbone and the shoulder, with invisible layers.", "c": "Soft waves or a natural straight finish."}}, {"id": "shag", "cat": "mujeres", "img": "m_shag.jpg", "free": true, "es": {"n": "Shag", "a": "Cabello con textura, movimiento y volumen.", "b": "Capas marcadas, flequillo ligero y acabado despeinado.", "c": "Spray texturizante; no sobrepulir."}, "en": {"n": "Shag", "a": "Hair with texture, movement and volume.", "b": "Strong layers, a light fringe and an undone finish.", "c": "Texturizing spray; do not over-polish."}}, {"id": "capas_largas", "cat": "mujeres", "img": "m_capas_largas.jpg", "free": false, "es": {"n": "Capas Largas", "a": "Rostros redondos o cabello denso.", "b": "Capas alrededor del rostro y movimiento en las puntas.", "c": "Mascarilla semanal y corte de puntas regular."}, "en": {"n": "Long Layers", "a": "Round faces or dense hair.", "b": "Layers around the face and movement at the ends.", "c": "A weekly mask and regular end trims."}}, {"id": "pixie", "cat": "mujeres", "img": "m_pixie.jpg", "free": false, "es": {"n": "Pixie Moderno", "a": "Rasgos expresivos y estilo seguro.", "b": "Nuca corta, parte superior texturizada.", "c": "Retoque cada 4 a 6 semanas."}, "en": {"n": "Modern Pixie", "a": "Expressive features and a confident style.", "b": "A short nape with a textured top.", "c": "A touch-up every 4 to 6 weeks."}}, {"id": "flequillo_cortina", "cat": "mujeres", "img": "m_flequillo_cortina.jpg", "free": false, "es": {"n": "Flequillo Cortina", "a": "Frente amplia, rostro alargado o un cambio sin perder largo.", "b": "Flequillo abierto con capas frontales.", "c": "Secar hacia afuera con cepillo redondo."}, "en": {"n": "Curtain Bangs", "a": "A wider forehead, a longer face, or a change without losing length.", "b": "An open fringe with front layers.", "c": "Blow-dry outward with a round brush."}}, {"id": "ondas_naturales", "cat": "mujeres", "img": "m_ondas_naturales.jpg", "free": false, "es": {"n": "Ondas Naturales", "a": "Un look fresco, de playa o urbano.", "b": "Capas suaves que no rompan demasiado la forma.", "c": "Crema de peinar y difusor si hace falta."}, "en": {"n": "Natural Waves", "a": "A fresh, beachy or urban look.", "b": "Soft layers that do not break the shape too much.", "c": "A styling cream and a diffuser if needed."}}, {"id": "degradado_infantil", "cat": "ninos", "img": "n_degradado_infantil.jpg", "free": true, "es": {"n": "Degradado Infantil", "a": "Niños activos; perfecto para la foto escolar y el calor.", "b": "Degradado medio y suave; sin líneas marcadas si es su primer corte.", "c": "Retoque cada 3 a 4 semanas; peinar solo con los dedos o un cepillo suave."}, "en": {"n": "Kids' Fade", "a": "Active kids; perfect for school photos and hot weather.", "b": "A medium, soft fade; no sharp lines if it is his first haircut.", "c": "A touch-up every 3 to 4 weeks; style with fingers or a soft brush only."}}, {"id": "rizos_nino", "cat": "ninos", "img": "n_rizos_nino.jpg", "free": true, "es": {"n": "Rizos Definidos (niño)", "a": "Cabello rizo y afro infantil con volumen natural.", "b": "Corte en seco, con forma redondeada; nunca estirar el rizo para medir.", "c": "Crema de peinar infantil; desenredar en mojado y con los dedos; retoque de forma cada 6 a 8 semanas."}, "en": {"n": "Defined Curls (boys)", "a": "Children's curly and afro hair with natural volume.", "b": "A dry cut with a rounded shape; never stretch the curl to measure it.", "c": "A kids' styling cream; detangle on wet hair with fingers; shape touch-up every 6 to 8 weeks."}}, {"id": "trenzas_nina", "cat": "ninos", "img": "n_trenzas_nina.jpg", "free": true, "es": {"n": "Trenzas con Cuentas (niña)", "a": "Cabello rizo y afro; protege el cabello y dura semanas.", "b": "Trenzas sin tensión en la raíz y cuentas ligeras.", "c": "Hidratar el cuero cabelludo 2 o 3 veces por semana; duran de 2 a 4 semanas; dormir con gorro de satén."}, "en": {"n": "Braids with Beads (girls)", "a": "Curly and afro hair; protects the hair and lasts for weeks.", "b": "Braids with no tension at the roots and lightweight beads.", "c": "Moisturize the scalp 2 or 3 times a week; they last 2 to 4 weeks; sleep with a satin bonnet."}}, {"id": "bob_nina", "cat": "ninos", "img": "n_bob_nina.jpg", "free": false, "es": {"n": "Bob para Niña", "a": "Cabello lacio u ondulado; se peina en minutos.", "b": "Bob a la altura de la barbilla con flequillo suave.", "c": "Recortar las puntas cada 6 a 8 semanas; cepillo suave y nada de calor diario."}, "en": {"n": "Bob for Girls", "a": "Straight or wavy hair; it styles in minutes.", "b": "A chin-length bob with soft bangs.", "c": "Trim the ends every 6 to 8 weeks; a soft brush and no daily heat."}}, {"id": "clasico_raya", "cat": "ninos", "img": "n_clasico_raya.jpg", "free": false, "es": {"n": "Clásico con Raya (niño)", "a": "Eventos, fotos familiares y niños que se peinan rápido.", "b": "Raya lateral natural, laterales con tijera o degradado bajo.", "c": "Retoque cada 4 semanas; peinar con agua y peine, o un gel suave sin alcohol."}, "en": {"n": "Classic Side Part (boys)", "a": "Events, family photos and kids who style their hair fast.", "b": "A natural side part, with scissor-cut or low-fade sides.", "c": "A touch-up every 4 weeks; style with water and a comb, or a gentle alcohol-free gel."}}, {"id": "barba_corta", "cat": "barba", "img": "b_barba_corta.jpg", "free": true, "es": {"n": "Barba Corta Perfilada", "a": "Rostro redondo o mandíbula suave.", "b": "Línea limpia en la mejilla y el cuello.", "c": ""}, "en": {"n": "Short Shaped Beard", "a": "A round face or a softer jawline.", "b": "A clean line on the cheek and neck.", "c": ""}}, {"id": "degradado_barba", "cat": "barba", "img": "b_degradado_barba.jpg", "free": true, "es": {"n": "Degradado con Barba", "a": "Cortes con degradado y cabello rizado.", "b": "Unir patilla y barba sin salto brusco.", "c": ""}, "en": {"n": "Fade with a Beard", "a": "Fade haircuts and curly hair.", "b": "Blend the sideburn into the beard with no harsh jump.", "c": ""}}, {"id": "afeitado_limpio", "cat": "barba", "img": "b_afeitado_limpio.jpg", "free": true, "es": {"n": "Afeitado Limpio", "a": "El profesional, el clima cálido o la piel sensible.", "b": "Toalla caliente para abrir el poro e hidratar antes y después.", "c": ""}, "en": {"n": "Clean Shave", "a": "Professionals, hot climates or sensitive skin.", "b": "A hot towel to open the pores, and moisturize before and after.", "c": ""}}, {"id": "bigote", "cat": "barba", "img": "b_bigote.jpg", "free": false, "es": {"n": "Bigote Moderno", "a": "Un estilo clásico actualizado.", "b": "Controlar el largo sobre el labio.", "c": ""}, "en": {"n": "Modern Mustache", "a": "An updated classic style.", "b": "Control the length above the lip.", "c": ""}}, {"id": "cejas_contorno", "cat": "barba", "img": "b_cejas_contorno.jpg", "free": false, "es": {"n": "Cejas y Contorno", "a": "Cualquier estilo cuidado.", "b": "Limpieza natural, sin cambiar demasiado la expresión.", "c": ""}, "en": {"n": "Brows and Lineup", "a": "Any well-kept style.", "b": "A natural cleanup that does not change the expression too much.", "c": ""}}, {"id": "barba_madura", "cat": "barba", "img": "b_barba_madura.jpg", "free": false, "es": {"n": "Barba Madura", "a": "Cabello y barba con canas que buscan distinción.", "b": "Lucir el gris con orgullo; matizar solo si amarillea y suavizar con aceite de barba.", "c": ""}, "en": {"n": "Mature Beard", "a": "Gray hair and beards that want distinction.", "b": "Wear the gray with pride; tone only if it yellows, and soften with beard oil.", "c": ""}}, {"id": "caramelo", "cat": "color", "img": "c_caramelo_miel.jpg", "free": true, "es": {"n": "Caramelo / Miel", "a": "Cálido, luminoso y favorecedor.", "b": "", "c": "Medio; matizar cuando se apague."}, "en": {"n": "Caramel / Honey", "a": "Warm, luminous and flattering.", "b": "", "c": "Medium; tone it when it fades."}}, {"id": "chocolate", "cat": "color", "img": "c_chocolate.jpg", "free": true, "es": {"n": "Chocolate Brillante", "a": "Elegante y saludable.", "b": "", "c": "Bajo a medio."}, "en": {"n": "Glossy Chocolate", "a": "Elegant and healthy.", "b": "", "c": "Low to medium."}}, {"id": "cobrizo", "cat": "color", "img": "c_cobrizo.jpg", "free": true, "es": {"n": "Cobrizo Suave", "a": "Moderno y llamativo sin exceso.", "b": "", "c": "Alto; protege el color del sol y del calor."}, "en": {"n": "Soft Copper", "a": "Modern and eye-catching without going over the top.", "b": "", "c": "High; protect the color from sun and heat."}}, {"id": "balayage", "cat": "color", "img": "c_balayage.jpg", "free": false, "es": {"n": "Balayage Natural", "a": "Dimensión y luz en las puntas.", "b": "", "c": "Medio; ideal para crecer sin línea dura."}, "en": {"n": "Natural Balayage", "a": "Dimension and light at the ends.", "b": "", "c": "Medium; ideal for growing out with no harsh line."}}, {"id": "rubio", "cat": "color", "img": "c_rubio.jpg", "free": false, "es": {"n": "Rubio Limpio", "a": "Impacto y frescura.", "b": "", "c": "Alto; requiere matiz e hidratación profunda."}, "en": {"n": "Clean Blonde", "a": "Impact and freshness.", "b": "", "c": "High; needs toning and deep hydration."}}, {"id": "fantasia", "cat": "color", "img": "c_fantasia.jpg", "free": false, "es": {"n": "Fantasía Discreta", "a": "Azul, rosa o violeta en mechones.", "b": "", "c": "Alto; mejor en zonas pequeñas."}, "en": {"n": "Discreet Fantasy", "a": "Blue, pink or violet in a few strands.", "b": "", "c": "High; best in small sections."}}, {"id": "gris_elegante", "cat": "color", "img": "c_gris_elegante.jpg", "free": false, "es": {"n": "Gris Elegante", "a": "Canas con brillo y distinción.", "b": "", "c": "Bajo; champú matizante violeta una vez por semana para evitar tonos amarillos."}, "en": {"n": "Elegant Gray", "a": "Gray hair with shine and distinction.", "b": "", "c": "Low; a violet toning shampoo once a week prevents yellow tones."}}, {"id": "plate_moda", "cat": "looks", "img": "plate_moda.jpg", "free": true, "plate": true, "es": {"n": "Moda Actual en el Mundo", "a": "Sastrería moderna, streetwear limpio, monocromo, denim, noche elegante y accesorios: las tendencias que combinan con tu corte.", "b": "", "c": ""}, "en": {"n": "Current Fashion Around the World", "a": "Modern tailoring, clean streetwear, monochrome, denim, elegant night looks and accessories: the trends that match your cut.", "b": "", "c": ""}}, {"id": "plate_looks", "cat": "looks", "img": "plate_looks.jpg", "free": true, "plate": true, "es": {"n": "Looks Completos Listos para Usar", "a": "Combinaciones actuales para trabajo, salida, calle, verano, noche y eventos: el look entero, no solo el pelo.", "b": "", "c": ""}, "en": {"n": "Complete Ready-to-Wear Looks", "a": "Current combinations for work, going out, street, summer, night and events: the whole look, not just the hair.", "b": "", "c": ""}}], "cats": [{"id": "hombres", "es": "Hombres", "en": "Men"}, {"id": "mujeres", "es": "Mujeres", "en": "Women"}, {"id": "ninos", "es": "Niños", "en": "Kids"}, {"id": "barba", "es": "Barba y arreglo", "en": "Beard & Grooming"}, {"id": "color", "es": "Color", "en": "Color"}, {"id": "looks", "es": "Looks", "en": "Looks"}], "phrases": [["Quiero mantener el largo arriba, pero limpiar laterales y nuca.", "I want to keep the length on top, but clean up the sides and the neckline."], ["Hazme el degradado natural, no demasiado marcado.", "Give me a natural fade, not too sharp or high-contrast."], ["Quiero textura, no que quede plano.", "I want texture, not a flat finish."], ["Adáptalo a mi tipo de cabello y dime cómo peinarlo en casa.", "Adapt it to my hair type and show me how to style it at home."], ["No quiero perder mucho largo; solo forma y movimiento.", "I don't want to lose much length; just shape and movement."], ["Quiero un estilo actual, pero que me sirva para trabajar.", "I want a current style, but one that still works for my job."], ["Enséñame dónde quedará el flequillo antes de cortar demasiado.", "Show me where the fringe will fall before you cut too much."], ["¿Qué producto debo usar y cada cuánto debo retocarlo?", "What product should I use, and how often should I get it touched up?"], ["Mi cabello es rizado: córtalo en seco para ver la forma real.", "My hair is curly: please cut it dry so we can see the real shape."], ["Quiero definir los rizos sin que se vean mojados ni duros.", "I want defined curls without a wet or crunchy look."]], "kit": [[{"es": "Textura masculina", "en": "Men's texture"}, {"es": "Polvo texturizante o cera mate.", "en": "Texturizing powder or matte wax."}, {"es": "Usar poco producto y repartir con los dedos.", "en": "Use a little product and spread it with your fingers."}], [{"es": "Rizos definidos", "en": "Defined curls"}, {"es": "Crema de peinar o gel ligero.", "en": "Styling cream or a light gel."}, {"es": "Aplicar con el cabello húmedo y no tocar mientras seca.", "en": "Apply on damp hair and do not touch it while it dries."}], [{"es": "Cabello afro o muy rizo", "en": "Afro or very curly hair"}, {"es": "Crema densa o manteca capilar y aceite ligero.", "en": "A rich cream or hair butter plus a light oil."}, {"es": "Sellar la hidratación; desenredar solo en mojado, con los dedos o un peine de dientes anchos.", "en": "Seal in moisture; detangle only on wet hair, with fingers or a wide-tooth comb."}], [{"es": "Rizos entre lavados", "en": "Curls between washes"}, {"es": "Spray de agua con acondicionador sin enjuague.", "en": "A water spray with leave-in conditioner."}, {"es": "Refresca la forma sin frizz y sin volver a lavar.", "en": "Refreshes the shape with no frizz and no new wash."}], [{"es": "Dormir sin frizz", "en": "Frizz-free sleep"}, {"es": "Gorro o funda de satén.", "en": "A satin bonnet or pillowcase."}, {"es": "Protege rizos, trenzas y alisados del roce de la almohada.", "en": "Protects curls, braids and straightened hair from pillow friction."}], [{"es": "Bob o lob pulido", "en": "Polished bob or lob"}, {"es": "Protector térmico y sérum.", "en": "Heat protectant and serum."}, {"es": "Plancha suave, sin quemar las puntas.", "en": "A gentle flat iron; do not burn the ends."}], [{"es": "Color teñido", "en": "Colored hair"}, {"es": "Champú para color y mascarilla.", "en": "Color-safe shampoo and a mask."}, {"es": "Evitar el agua muy caliente.", "en": "Avoid very hot water."}], [{"es": "Barba", "en": "Beard"}, {"es": "Aceite ligero y cepillo de barba.", "en": "A light oil and a beard brush."}, {"es": "Limpiar el cuello cada pocos días.", "en": "Clean up the neckline every few days."}], [{"es": "Volumen natural", "en": "Natural volume"}, {"es": "Spray de raíz o mousse.", "en": "Root spray or mousse."}, {"es": "Secar levantando la raíz.", "en": "Dry while lifting the roots."}]], "looks": [[{"es": "Trabajo moderno", "en": "Modern work"}, {"es": "Blazer, camisa limpia, pantalón recto y zapato simple.", "en": "A blazer, a clean shirt, straight trousers and simple shoes."}, {"es": "Taper fade, slick back, bob o lob.", "en": "Taper fade, slick back, bob or lob."}], [{"es": "Salida casual", "en": "Casual outing"}, {"es": "Jean oscuro, camiseta buena, chaqueta ligera y perfume suave.", "en": "Dark jeans, a good T-shirt, a light jacket and a soft fragrance."}, {"es": "French crop, ondas naturales, capas largas.", "en": "French crop, natural waves, long layers."}], [{"es": "Cita de noche", "en": "Date night"}, {"es": "Negro, textura satinada o cuero suave, accesorio medido.", "en": "Black, satin texture or soft leather, one measured accessory."}, {"es": "Slick back, bob recto, ondas pulidas.", "en": "Slick back, blunt bob, polished waves."}], [{"es": "Verano elegante", "en": "Elegant summer"}, {"es": "Lino, colores claros, sandalia o mocasín limpio.", "en": "Linen, light colors, clean sandals or loafers."}, {"es": "Buzz cut, lob, flequillo cortina.", "en": "Buzz cut, lob, curtain bangs."}], [{"es": "Streetwear limpio", "en": "Clean streetwear"}, {"es": "Hoodie, cargo o jogger, tenis y bolso cruzado.", "en": "A hoodie, cargos or joggers, sneakers and a crossbody bag."}, {"es": "Burst fade, rizos definidos, shag.", "en": "Burst fade, defined curls, shag."}], [{"es": "Evento formal", "en": "Formal event"}, {"es": "Traje actualizado, vestido negro o sastrería femenina.", "en": "An updated suit, a black dress or women's tailoring."}, {"es": "Barba perfilada, pixie, recogido pulido.", "en": "Shaped beard, pixie, polished updo."}]], "moda": [[{"es": "Sastrería moderna", "en": "Modern tailoring"}, {"es": "Blazer amplio con pantalón limpio o jean oscuro.", "en": "A relaxed blazer with clean trousers or dark jeans."}, {"es": "Bob, slick back, taper fade.", "en": "Bob, slick back, taper fade."}], [{"es": "Streetwear limpio", "en": "Clean streetwear"}, {"es": "Hoodie, cargos, tenis y colores neutros.", "en": "A hoodie, cargos, sneakers and neutral colors."}, {"es": "Buzz cut, burst fade, ondas naturales.", "en": "Buzz cut, burst fade, natural waves."}], [{"es": "Monocromo", "en": "Monochrome"}, {"es": "Una sola familia de color de pies a cabeza.", "en": "One color family from head to toe."}, {"es": "Pixie, bob, French crop.", "en": "Pixie, bob, French crop."}], [{"es": "Denim por capas", "en": "Layered denim"}, {"es": "Chaqueta y pantalón de mezclilla con distintas intensidades.", "en": "A denim jacket and jeans in different washes."}, {"es": "Mullet suave, capas largas.", "en": "Soft mullet, long layers."}], [{"es": "Noche elegante", "en": "Elegant night"}, {"es": "Negro, satinado, silueta definida y accesorios medidos.", "en": "Black, satin, a defined silhouette and measured accessories."}, {"es": "Slick back, ondas, lob.", "en": "Slick back, waves, lob."}], [{"es": "Accesorios protagonistas", "en": "Statement accessories"}, {"es": "Pañuelo, broche, gafas, perlas o charm como punto focal.", "en": "A scarf, brooch, glasses, pearls or a charm as the focal point."}, {"es": "Cortes simples que dejen lucir el detalle.", "en": "Simple cuts that let the detail shine."}]], "faces": [{"id": "ovalado", "es": {"face": "Ovalado", "suits": "Casi todos los cortes; jugar con la textura.", "avoid": "No tapar demasiado el rostro."}, "en": {"face": "Oval", "suits": "Almost every cut; play with texture.", "avoid": "Covering the face too much."}, "rec": ["french_crop", "taper_fade", "bob_recto", "lob"]}, {"id": "redondo", "es": {"face": "Redondo", "suits": "Volumen arriba, laterales controlados, capas largas.", "avoid": "Evitar mucho volumen a los lados."}, "en": {"face": "Round", "suits": "Volume on top, controlled sides, long layers.", "avoid": "Too much volume at the sides."}, "rec": ["burst_fade", "capas_largas", "barba_corta"]}, {"id": "cuadrado", "es": {"face": "Cuadrado", "suits": "Textura suave, ondas, flequillo ligero.", "avoid": "Evitar líneas demasiado rígidas si endurecen los rasgos."}, "en": {"face": "Square", "suits": "Soft texture, waves, a light fringe.", "avoid": "Lines that are too rigid and harden the features."}, "rec": ["ondas_naturales", "flequillo_cortina", "curtains"]}, {"id": "alargado", "es": {"face": "Alargado", "suits": "Flequillo, capas medias, volumen lateral moderado.", "avoid": "No exagerar la altura arriba."}, "en": {"face": "Long", "suits": "A fringe, mid-length layers, moderate side volume.", "avoid": "Too much height on top."}, "rec": ["flequillo_cortina", "curtains", "lob"]}, {"id": "corazon", "es": {"face": "Corazón", "suits": "Capas alrededor de la mandíbula, lob, curtains.", "avoid": "No concentrar todo el volumen en la frente."}, "en": {"face": "Heart", "suits": "Layers around the jaw, lob, curtains.", "avoid": "Concentrating all the volume at the forehead."}, "rec": ["lob", "curtains", "capas_largas"]}], "age": [[{"es": "Joven urbano", "en": "Young urban"}, {"es": "Burst fade, mullet suave, shag, flequillo cortina.", "en": "Burst fade, soft mullet, shag, curtain bangs."}, {"es": "Streetwear limpio, denim, accesorios.", "en": "Clean streetwear, denim, accessories."}], [{"es": "Profesional", "en": "Professional"}, {"es": "Taper fade, slick back, bob, lob.", "en": "Taper fade, slick back, bob, lob."}, {"es": "Sastrería moderna, monocromo.", "en": "Modern tailoring, monochrome."}], [{"es": "Maduro elegante", "en": "Elegant mature"}, {"es": "Capas suaves, pixie pulido, barba corta.", "en": "Soft layers, a polished pixie, a short beard."}, {"es": "Colores neutros, telas con caída.", "en": "Neutral colors, fabrics with drape."}], [{"es": "Bajo mantenimiento", "en": "Low maintenance"}, {"es": "Buzz cut, lob, capas largas, ondas naturales.", "en": "Buzz cut, lob, long layers, natural waves."}, {"es": "Básicos de calidad y zapatos cómodos.", "en": "Quality basics and comfortable shoes."}]]};
+
+const STR = {
+  es: {
+    heroSub: "Pelados, estilos y moda actual. Elige tu corte, guárdalo en favoritos y muéstraselo a tu barbero.",
+    pillFree: "Versión gratis", pillPro: "Versión PRO · Todo desbloqueado",
+    favs: "Favoritos", noFavs: "Todavía no tienes favoritos.<br>Toca el corazón ♥ en cualquier estilo para guardarlo aquí.",
+    open: "Ver ficha", proTag: "PRO",
+    labSuits: "A quién favorece", labAsk: "Cómo pedirlo", labKey: "Clave del acabado",
+    labEffect: "Efecto", labUpkeep: "Mantenimiento",
+    forBarber: "Para tu barbero · For your barber",
+    showBarber: "📸 Muéstrale a tu barbero",
+    barberHint: "Muestra esta pantalla en la barbería · Show this screen at the barbershop",
+    close: "Cerrar",
+    proTitle: "Estilos PRO — el catálogo completo",
+    proPrice: "$7.99 · pago único",
+    proList: [
+      "Los 33 estilos completos, cada uno con su foto y su ficha",
+      "Guía interactiva: qué te queda según la forma de tu rostro",
+      "Las 10 frases para tu barbero en español y en inglés",
+      "Kit de mantenimiento completo, producto por producto",
+      "Looks por ocasión y tendencias de moda actual",
+      "Modo «muéstrale a tu barbero» en todos los estilos"
+    ],
+    proBtn: "Quiero la versión PRO — $7.99",
+    proLocked: "Este estilo está en la versión PRO",
+    guideT: "¿Qué me queda según mi rostro?",
+    guideIntro: "Toca la forma de tu rostro y mira qué te favorece, qué debes cuidar y los estilos recomendados.",
+    gSuits: "Te favorece", gAvoid: "Cuidado con",
+    phrasesT: "Frases para tu barbero",
+    phrasesIntro: "En español y en inglés, listas para usar en cualquier barbería o salón de Estados Unidos.",
+    kitT: "Kit de mantenimiento",
+    kitIntro: "El producto correcto para cada necesidad, con el consejo de uso.",
+    kitCols: ["Necesidad", "Producto útil", "Consejo"],
+    looksT: "Looks por ocasión",
+    looksIntro: "El look completo listo para usar: ropa y el cabello que combina.",
+    looksCols: ["Ocasión", "Look recomendado", "Cabello que combina"],
+    modaT: "Moda actual en el mundo",
+    modaCols: ["Tendencia", "Cómo usarla", "Funciona con"],
+    ageT: "Estilo según tu edad y tu vida",
+    ageCols: ["Perfil", "Cortes recomendados", "Moda que acompaña"],
+    footNote: "Las fotos son referencias editoriales de inspiración; cada estilo se adapta a tu cabello, tu rostro y tu rutina."
+  },
+  en: {
+    heroSub: "Haircuts, styles and current fashion. Pick your cut, save it to favorites and show it to your barber.",
+    pillFree: "Free version", pillPro: "PRO version · Everything unlocked",
+    favs: "Favorites", noFavs: "You have no favorites yet.<br>Tap the heart ♥ on any style to save it here.",
+    open: "View details", proTag: "PRO",
+    labSuits: "Suits", labAsk: "Ask for", labKey: "Finishing key",
+    labEffect: "Effect", labUpkeep: "Upkeep",
+    forBarber: "For your barber · Para tu barbero",
+    showBarber: "📸 Show it to your barber",
+    barberHint: "Show this screen at the barbershop · Muestra esta pantalla en la barbería",
+    close: "Close",
+    proTitle: "Styles PRO — the complete catalog",
+    proPrice: "$7.99 · one-time payment",
+    proList: [
+      "All 33 styles complete, each with its photo and guide card",
+      "Interactive guide: what suits your face shape",
+      "The 10 barber phrases in English and Spanish",
+      "The complete maintenance kit, product by product",
+      "Looks by occasion and current fashion trends",
+      "“Show it to your barber” mode on every style"
+    ],
+    proBtn: "Get the PRO version — $7.99",
+    proLocked: "This style is in the PRO version",
+    guideT: "What suits my face shape?",
+    guideIntro: "Tap your face shape and see what suits you, what to watch out for, and the recommended styles.",
+    gSuits: "Suits you", gAvoid: "Watch out for",
+    phrasesT: "Phrases for your barber",
+    phrasesIntro: "In English and Spanish, ready to use in any barbershop or salon in the United States.",
+    kitT: "Maintenance kit",
+    kitIntro: "The right product for every need, with the how-to tip.",
+    kitCols: ["Need", "Useful product", "Tip"],
+    looksT: "Looks by occasion",
+    looksIntro: "The complete ready-to-wear look: outfit and the hair that matches.",
+    looksCols: ["Occasion", "Recommended look", "Hair that matches"],
+    modaT: "Current fashion around the world",
+    modaCols: ["Trend", "How to wear it", "Works with"],
+    ageT: "Style by age and lifestyle",
+    ageCols: ["Profile", "Recommended cuts", "Fashion that goes with it"],
+    footNote: "Photos are editorial inspiration references; every style adapts to your hair, your face and your routine."
+  }
+};
+
+let lang = localStorage.getItem("estilos_lang") || "es";
+if (!STR[lang]) lang = "es";
+let curCat = "hombres";
+let favs = new Set(JSON.parse(localStorage.getItem("estilos_favs_v1") || "[]"));
+let curFace = null;
+
+const $ = s => document.querySelector(s);
+const S = () => STR[lang];
+const byId = id => DATA.styles.find(x => x.id === id);
+const isOpen = st => MODE === "pro" || st.free;
+const catName = c => { const k = DATA.cats.find(x => x.id === c); return k ? k[lang] : c; };
+
+function saveFavs(){ localStorage.setItem("estilos_favs_v1", JSON.stringify([...favs])); }
+function toggleFav(id, ev){
+  if (ev) ev.stopPropagation();
+  favs.has(id) ? favs.delete(id) : favs.add(id);
+  saveFavs(); renderGrid();
+  const sh = $("#sheet"); if (!sh.classList.contains("hidden")) fillSheet(currentSheetId);
+}
+
+function fieldLabels(cat){
+  if (cat === "barba") return { a: S().labSuits, b: S().labKey, c: null };
+  if (cat === "color") return { a: S().labEffect, b: null, c: S().labUpkeep };
+  return { a: S().labSuits, b: S().labAsk, c: S().labUpkeep };
+}
+function barberLines(st){
+  return {
+    es: st.es.b ? st.es.b : (st.es.n + " — " + st.es.a),
+    en: st.en.b ? st.en.b : (st.en.n + " — " + st.en.a)
+  };
+}
+
+function renderTabs(){
+  const t = $("#tabs"); t.innerHTML = "";
+  DATA.cats.forEach(c => {
+    const n = DATA.styles.filter(x => x.cat === c.id).length;
+    const b = document.createElement("button");
+    b.className = "tab" + (curCat === c.id ? " active" : "");
+    b.innerHTML = c[lang] + ' <span class="cnt">' + n + "</span>";
+    b.onclick = () => { curCat = c.id; renderTabs(); renderGrid(); };
+    t.appendChild(b);
+  });
+  const f = document.createElement("button");
+  f.className = "tab" + (curCat === "favs" ? " active" : "");
+  f.innerHTML = "♥ " + S().favs + ' <span class="cnt">' + favs.size + "</span>";
+  f.onclick = () => { curCat = "favs"; renderTabs(); renderGrid(); };
+  t.appendChild(f);
+}
+
+function cardEl(st){
+  const open = isOpen(st);
+  const d = st[lang];
+  const card = document.createElement("button");
+  card.className = "card" + (open ? "" : " locked") + (st.plate ? " wide" : "");
+  card.setAttribute("aria-label", d.n);
+  const heart = '<span class="heart' + (favs.has(st.id) ? " on" : "") + '" data-fav="' + st.id + '">♥</span>';
+  const badge = open ? "" : '<span class="probadge">' + S().proTag + '</span><span class="lockbadge">🔒</span>';
+  card.innerHTML = '<span class="ph"><img loading="lazy" src="' + IMG_BASE + st.img + '" alt="' + d.n + '">' + badge + heart + "</span>" +
+    '<span class="nm">' + d.n + "<small>" + (open ? S().open : S().proLocked) + "</small></span>";
+  card.querySelector("[data-fav]").addEventListener("click", ev => toggleFav(st.id, ev));
+  card.addEventListener("click", () => {
+    if (open) openSheet(st.id);
+    else { const p = $("#procard"); if (p) { p.scrollIntoView({ behavior: "smooth", block: "center" }); p.classList.remove("pulse"); void p.offsetWidth; p.classList.add("pulse"); } }
+  });
+  return card;
+}
+
+function renderGrid(){
+  const g = $("#grid"); g.innerHTML = "";
+  let list = curCat === "favs" ? DATA.styles.filter(x => favs.has(x.id)) : DATA.styles.filter(x => x.cat === curCat);
+  if (!list.length) { g.innerHTML = '<div class="empty">' + S().noFavs + "</div>"; return; }
+  list.forEach(st => g.appendChild(cardEl(st)));
+}
+
+let currentSheetId = null;
+function openSheet(id){
+  currentSheetId = id;
+  fillSheet(id);
+  $("#backdrop").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+}
+function closeSheet(){
+  $("#backdrop").classList.add("hidden");
+  document.body.style.overflow = "";
+  currentSheetId = null;
+}
+function fillSheet(id){
+  const st = byId(id); if (!st) return;
+  const d = st[lang], L = fieldLabels(st.cat), bl = barberLines(st);
+  let fields = "";
+  if (st.plate) {
+    fields = '<div class="field">' + d.a + "</div>";
+  } else {
+    fields += '<div class="field"><span class="lab">' + L.a + "</span>" + d.a + "</div>";
+    if (L.b && d.b) fields += '<div class="field"><span class="lab">' + L.b + "</span>" + d.b + "</div>";
+    if (L.c && d.c) fields += '<div class="field"><span class="lab">' + L.c + "</span>" + d.c + "</div>";
+  }
+  $("#sheet").innerHTML =
+    '<div class="ph"><img src="' + IMG_BASE + st.img + '" alt="' + d.n + '">' +
+    '<button class="x" id="sheet-x" aria-label="' + S().close + '">✕</button>' +
+    '<span class="heart' + (favs.has(st.id) ? " on" : "") + '" id="sheet-heart">♥</span></div>' +
+    '<div class="body"><h3>' + d.n + "</h3>" +
+    '<div style="color:var(--soft);font-size:13.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">' + catName(st.cat) + "</div>" +
+    fields +
+    '<div class="phrasebox"><span class="lab">' + S().forBarber + '</span>' +
+    '<div class="pes">“' + bl.es + '”</div><div class="pen">“' + bl.en + '”</div></div>' +
+    '<button class="btn" id="sheet-barber">' + S().showBarber + "</button>" +
+    "</div>";
+  $("#sheet-x").onclick = closeSheet;
+  $("#sheet-heart").addEventListener("click", ev => toggleFav(st.id, ev));
+  $("#sheet-barber").onclick = () => openBarber(st.id);
+}
+$("#backdrop").addEventListener("click", e => { if (e.target.id === "backdrop") closeSheet(); });
+
+function openBarber(id){
+  const st = byId(id); if (!st) return;
+  const d = st[lang], bl = barberLines(st);
+  const first = lang === "es" ? bl.es : bl.en, second = lang === "es" ? bl.en : bl.es;
+  $("#barber").innerHTML =
+    '<button class="x" id="barber-x" aria-label="' + S().close + '">✕</button>' +
+    '<div class="bimg"><img src="' + IMG_BASE + st.img + '" alt="' + d.n + '"></div>' +
+    '<div class="binfo"><h3>' + d.n + '</h3>' +
+    '<div class="bp">“' + first + '”</div><div class="bp en">“' + second + '”</div>' +
+    '<div class="hint">' + S().barberHint + "</div></div>";
+  $("#barber").classList.remove("hidden");
+  $("#barber-x").onclick = () => { $("#barber").classList.add("hidden"); };
+}
+
+function renderProCard(){
+  const p = $("#procard");
+  if (MODE !== "free") { p.classList.add("hidden"); return; }
+  p.classList.remove("hidden");
+  p.innerHTML = "<h2>" + S().proTitle + '</h2><div class="price">' + S().proPrice + "</div>" +
+    "<ul>" + S().proList.map(x => "<li>" + x + "</li>").join("") + "</ul>" +
+    (PAYHIP_PRO_URL ? '<a class="btn" href="' + PAYHIP_PRO_URL + '" target="_blank" rel="noopener">' + S().proBtn + "</a>" : "");
+}
+
+function tableHTML(rows, cols){
+  return rows.map(r => '<div class="trow"><div class="t1">' + r[0][lang] + '</div><div class="t2">' + r[1][lang] + '</div><div class="t3">' + r[2][lang] + "</div></div>").join("");
+}
+function renderExtras(){
+  const ex = $("#extras");
+  if (MODE !== "pro") { ex.innerHTML = ""; return; }
+  let h = "";
+  h += '<section class="section"><h2>' + S().guideT + '</h2><p class="intro">' + S().guideIntro + '</p><div class="chips" id="face-chips">' +
+    DATA.faces.map(f => '<button class="chip' + (curFace === f.id ? " active" : "") + '" data-face="' + f.id + '">' + f[lang].face + "</button>").join("") + '</div><div id="face-box"></div></section>';
+  h += '<section class="section"><h2>' + S().phrasesT + '</h2><p class="intro">' + S().phrasesIntro + "</p>" +
+    DATA.phrases.map(p => '<div class="phrase"><div class="es">' + (lang === "es" ? p[0] : p[1]) + '</div><div class="en">' + (lang === "es" ? p[1] : p[0]) + "</div></div>").join("") + "</section>";
+  h += '<section class="section"><h2>' + S().kitT + '</h2><p class="intro">' + S().kitIntro + "</p>" + tableHTML(DATA.kit, S().kitCols) + "</section>";
+  h += '<section class="section"><h2>' + S().looksT + '</h2><p class="intro">' + S().looksIntro + "</p>" + tableHTML(DATA.looks, S().looksCols) + "</section>";
+  h += '<section class="section"><h2>' + S().modaT + "</h2>" + tableHTML(DATA.moda, S().modaCols) + "</section>";
+  h += '<section class="section"><h2>' + S().ageT + "</h2>" + tableHTML(DATA.age, S().ageCols) + "</section>";
+  ex.innerHTML = h;
+  ex.querySelectorAll("[data-face]").forEach(b => b.addEventListener("click", () => { curFace = b.dataset.face; renderExtras(); fillFace(); }));
+  fillFace();
+}
+function fillFace(){
+  const box = $("#face-box"); if (!box) return;
+  if (!curFace) { box.innerHTML = ""; return; }
+  const f = DATA.faces.find(x => x.id === curFace); if (!f) { box.innerHTML = ""; return; }
+  const d = f[lang];
+  box.innerHTML = '<div class="facebox">' +
+    '<p class="row"><span class="lab">' + S().gSuits + "</span>" + d.suits + "</p>" +
+    '<p class="row"><span class="lab">' + S().gAvoid + "</span>" + d.avoid + "</p>" +
+    '<div class="recs">' + f.rec.map(id => { const st = byId(id); return '<button class="rec" data-rec="' + id + '"><img src="' + IMG_BASE + st.img + '" alt="">' + st[lang].n + "</button>"; }).join("") + "</div></div>";
+  box.querySelectorAll("[data-rec]").forEach(b => b.addEventListener("click", () => openSheet(b.dataset.rec)));
+}
+
+function renderAll(){
+  document.documentElement.lang = lang;
+  $("#lang-es").classList.toggle("active", lang === "es");
+  $("#lang-en").classList.toggle("active", lang === "en");
+  $("#hero-title").textContent = MODE === "pro" ? (lang === "es" ? "Estilos PRO" : "Styles PRO") : (lang === "es" ? "Estilos" : "Styles");
+  $("#hero-sub").textContent = S().heroSub;
+  const pill = $("#hero-pill");
+  pill.textContent = MODE === "pro" ? S().pillPro : S().pillFree;
+  pill.classList.toggle("pro", MODE === "pro");
+  $("#foot-note").textContent = S().footNote;
+  renderTabs(); renderGrid(); renderProCard(); renderExtras();
+  if (currentSheetId) fillSheet(currentSheetId);
+}
+$("#lang-es").addEventListener("click", () => { lang = "es"; localStorage.setItem("estilos_lang", "es"); renderAll(); });
+$("#lang-en").addEventListener("click", () => { lang = "en"; localStorage.setItem("estilos_lang", "en"); renderAll(); });
+renderAll();
+</script>
+</body>
+</html>
