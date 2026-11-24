@@ -538,12 +538,12 @@
   /* ================= Progreso guardado + medallas + extras ================= */
   var SAVE_KEY="kgmathpro_save_v1";
   var MEDALS=[
-    {id:"first", icon:"\U0001F949", es:"Primera estrella", en:"First star"},
-    {id:"perfect", icon:"\U0001F3C5", es:"Ronda perfecta", en:"Perfect round"},
-    {id:"fire", icon:"\U0001F525", es:"Racha de fuego", en:"On fire"},
+    {id:"first", icon:"\u{1F949}", es:"Primera estrella", en:"First star"},
+    {id:"perfect", icon:"\u{1F3C5}", es:"Ronda perfecta", en:"Perfect round"},
+    {id:"fire", icon:"\u{1F525}", es:"Racha de fuego", en:"On fire"},
     {id:"ten", icon:"\u2B50", es:"10 estrellas", en:"10 stars"},
-    {id:"explorer", icon:"\U0001F393", es:"Explorador total", en:"Total explorer"},
-    {id:"champion", icon:"\U0001F451", es:"\u00A1Campe\u00F3n total!", en:"Grand champion!"}
+    {id:"explorer", icon:"\u{1F393}", es:"Explorador total", en:"Total explorer"},
+    {id:"champion", icon:"\u{1F451}", es:"\u00A1Campe\u00F3n total!", en:"Grand champion!"}
   ];
   var medalsEarned=[];
   function allStarMaps(){ return [starsByLevel, starsByLevelPro]; }
@@ -561,7 +561,7 @@
       var data=JSON.parse(raw);
       allStarMaps().forEach(function(m,i){ var src=data["m"+i]||{}; for(var k in m){ if(typeof src[k]==="number") m[k]=src[k]; } });
       if(data.medals) medalsEarned=data.medals;
-      if(data.sound===false){ soundOn=false; var b=$("btn-sound"); if(b){ b.textContent="\U0001F507"; b.setAttribute("aria-pressed","false"); } }
+      if(data.sound===false){ soundOn=false; var b=$("btn-sound"); if(b){ b.textContent="\u{1F507}"; b.setAttribute("aria-pressed","false"); } }
     }catch(e){}
   }
   function medalName(m){ return LANG==="en" ? m.en : m.es; }
@@ -594,7 +594,7 @@
   }
   function showMedalToast(names){
     var t=T(), toast=$("medal-toast"); if(!toast) return;
-    toast.innerHTML="\U0001F3C6 <strong>"+t.newMedal+"</strong><br>"+names.join(" \u00B7 ");
+    toast.innerHTML="\u{1F3C6} <strong>"+t.newMedal+"</strong><br>"+names.join(" \u00B7 ");
     toast.classList.remove("hidden"); toast.classList.remove("show"); void toast.offsetWidth; toast.classList.add("show");
     sndFanfare(false);
     setTimeout(function(){ toast.classList.add("hidden"); }, 4600);
@@ -1029,7 +1029,7 @@
   function celebrate(stars, improved){
     var t=T();
     if(improved && stars>0){
-      var b=$("record-badge"); b.textContent="\U0001F3C5 "+t.record; b.classList.remove("hidden");
+      var b=$("record-badge"); b.textContent="\u{1F3C5} "+t.record; b.classList.remove("hidden");
     }
     setTimeout(praiseSpeak, 500);
     var em=$("result-emoji");
@@ -1057,7 +1057,7 @@
       p.style.transform="rotate("+(Math.random()*360)+"deg)";
       box.appendChild(p);
     }
-    var emojis=["\u2B50","\U0001F389","\u2728","\U0001F38A","\U0001F31F"];
+    var emojis=["\u2B50","\u{1F389}","\u2728","\u{1F38A}","\u{1F31F}"];
     for(var j=0;j<(big?16:8);j++){
       var b=document.createElement("b");
       b.textContent=pick(emojis);
