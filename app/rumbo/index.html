@@ -154,6 +154,7 @@
 
 <div id="floatBtns">
   <button class="iconbtn" id="btnPitch" title="Vista 3D">3D</button>
+  <button class="iconbtn off" id="btnSat" title="Vista satelital">SAT</button>
   <button class="iconbtn on" id="btnCenter" title="Seguir mi ubicación">🧭</button>
 </div>
 
@@ -255,8 +256,35 @@ map.on("load",function(){
   map.addLayer({id:"route-line",type:"line",source:"route",
     paint:{"line-color":"#17e6c8","line-width":7,"line-opacity":1},
     layout:{"line-cap":"round","line-join":"round"}});
+  // Vista satelital real (Esri World Imagery) + rótulos de referencia; los edificios 3D quedan encima.
+  try{
+    var lys0=map.getStyle().layers, firstId=null;
+    for(var li=0;li<lys0.length;li++){ if(lys0[li].type!=="background"){ firstId=lys0[li].id; break; } }
+    map.addSource("sat",{type:"raster",tiles:["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],tileSize:256,maxzoom:19,attribution:"Esri World Imagery"});
+    map.addLayer({id:"sat-layer",type:"raster",source:"sat",layout:{visibility:"none"}},firstId||undefined);
+    map.addSource("satrefT",{type:"raster",tiles:["https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}"],tileSize:256,maxzoom:19});
+    map.addLayer({id:"satref-t",type:"raster",source:"satrefT",layout:{visibility:"none"}},"route-casing");
+    map.addSource("satrefB",{type:"raster",tiles:["https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"],tileSize:256,maxzoom:19});
+    map.addLayer({id:"satref-b",type:"raster",source:"satrefB",layout:{visibility:"none"}},"route-casing");
+    try{ S.sat=localStorage.getItem("rumbo_sat")==="1"; }catch(e){}
+    if(S.sat) applySat();
+  }catch(e){}
   restoreRoute();
 });
+
+/* ===== Vista satelital: oculta el mapa dibujado y muestra la foto real ===== */
+var SAT_KEEP={"background":1,"sat-layer":1,"satref-t":1,"satref-b":1,"route-casing":1,"route-line":1,"done-casing":1,"done-line":1,"building-3d":1};
+function applySat(){
+  if(!map.getLayer("sat-layer"))return;
+  var lys=map.getStyle().layers;
+  for(var i=0;i<lys.length;i++){
+    var id=lys[i].id;
+    if(id==="sat-layer"||id==="satref-t"||id==="satref-b") map.setLayoutProperty(id,"visibility",S.sat?"visible":"none");
+    else if(!SAT_KEEP[id]) map.setLayoutProperty(id,"visibility",S.sat?"none":"visible");
+  }
+  $("btnSat").classList.toggle("off",!S.sat);
+  try{localStorage.setItem("rumbo_sat",S.sat?"1":"0");}catch(e){}
+}
 
 /* Marcador de mi posición (flecha que gira con el rumbo) */
 var meEl=document.createElement("div"); meEl.className="meWrap";
@@ -395,6 +423,7 @@ $("btnCenter").addEventListener("click",function(){
   S.follow=true; this.classList.add("on");
   if(S.pos) map.easeTo({center:S.pos,pitch:S.pitch3d?60:0,zoom:16.8,duration:700});
 });
+$("btnSat").addEventListener("click",function(){ S.sat=!S.sat; applySat(); });
 $("btnPitch").addEventListener("click",function(){
   S.pitch3d=!S.pitch3d;
   map.easeTo({pitch:S.pitch3d?60:0,duration:600});
