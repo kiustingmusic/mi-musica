@@ -466,13 +466,20 @@ $("btnGo").addEventListener("click",function(){
 
 /* ================= Lugares guardados ================= */
 var PRESETS=[
-  {key:"home", query:"21 Clintwood Dr Apt C, Rochester, NY 14620"},
+  {key:"home", lngLat:[-77.5899619,43.1277462], addr:"21 Clintwood Drive, Rochester, NY 14620"},
   {key:"clinic", query:"Fresenius Greece Rochester NY"}
 ];
 function loadFavs(){ try{return JSON.parse(localStorage.getItem("rumbo_favs")||"[]");}catch(e){return [];} }
 function saveFavs(f){ try{localStorage.setItem("rumbo_favs",JSON.stringify(f));}catch(e){} }
 function goPreset(p){
   var name=T()[p.key];
+  if(p.lngLat){
+    var d0={name:name.replace(/^\S+\s/,""), addr:p.addr||"", lngLat:p.lngLat};
+    setDest(d0);
+    if(S.pos) startRoute(S.pos,d0);
+    else setStatus(tt("Destino listo. Esperando GPS para guiarte…","Destination ready. Waiting for GPS…"));
+    return;
+  }
   setStatus(tt("Buscando ","Searching ")+name+"…");
   geocode(p.query).then(function(res){
     if(!res||!res.length){ setStatus(tt("No encontré ","Not found: ")+name); return; }
