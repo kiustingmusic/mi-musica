@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>¿Qué Viene? — La Tabla de la Bolita</title>
+<meta name="description" content="Escribe el número que salió y la tabla te dice qué viene. La tabla de Boul-Pa-Nou en una app.">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#062a30">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="¿Qué Viene?">
+<style>
+  :root{
+    --bg:#062a30; --bg2:#0a3d42; --panel:rgba(10,61,66,.92); --panel2:rgba(14,80,84,.85);
+    --gold:#f5c542; --gold2:#ffd968; --teal:#17e6c8; --txt:#f4f1e6; --muted:#a8c8c2;
+    --radius:20px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(120% 90% at 50% 0%, #0d4a4c 0%, var(--bg) 55%, #04191d 100%);
+    color:var(--txt); min-height:100vh;
+    padding:calc(env(safe-area-inset-top,0px) + 18px) 16px calc(env(safe-area-inset-bottom,0px) + 28px);
+  }
+  .wrap{max-width:560px;margin:0 auto;}
+  header{text-align:center;margin-bottom:18px;}
+  header img{width:92px;height:92px;border-radius:22px;box-shadow:0 10px 30px rgba(0,0,0,.5),0 0 0 1px rgba(245,197,66,.35);}
+  h1{margin:12px 0 2px;font-size:34px;letter-spacing:.5px;color:var(--gold);text-shadow:0 2px 14px rgba(245,197,66,.35);}
+  .sub{color:var(--muted);font-size:15px;margin:0;}
+  .card{
+    background:linear-gradient(165deg,var(--panel2),var(--panel));
+    border:1px solid rgba(245,197,66,.28); border-radius:var(--radius);
+    padding:18px; margin:16px 0; box-shadow:0 12px 30px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.08);
+  }
+  .card h2{margin:0 0 6px;font-size:19px;color:var(--gold2);}
+  .hint{color:var(--muted);font-size:14px;margin:0 0 14px;}
+  .lookup{display:flex;gap:10px;}
+  #num{
+    flex:1;min-width:0;text-align:center;font-size:40px;font-weight:800;letter-spacing:8px;
+    padding:10px 6px;border-radius:16px;border:2px solid rgba(245,197,66,.5);
+    background:rgba(0,0,0,.35);color:#fff;outline:none;
+  }
+  #num:focus{border-color:var(--gold);}
+  #go{
+    flex:none;border:none;border-radius:16px;padding:0 22px;font-size:18px;font-weight:800;cursor:pointer;
+    background:linear-gradient(180deg,var(--gold2),#dfa91f);color:#231a02;box-shadow:0 6px 18px rgba(245,197,66,.35);
+  }
+  #go:active{transform:scale(.96);}
+  #result{margin-top:16px;display:none;}
+  .rule{border-top:1px solid rgba(245,197,66,.18);padding:14px 0 4px;}
+  .rule:first-child{border-top:none;padding-top:2px;}
+  .rule .from{font-size:15px;color:var(--muted);margin-bottom:10px;}
+  .rule .from b{color:#fff;font-size:17px;}
+  .balls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;}
+  .ball{
+    width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:24px;font-weight:800;color:#3a2a02;
+    background:radial-gradient(circle at 32% 28%, #fff3c4 0%, var(--gold2) 38%, #e0a91e 72%, #9c720c 100%);
+    box-shadow:0 6px 14px rgba(0,0,0,.45), inset 0 -6px 10px rgba(120,80,0,.45), inset 0 4px 6px rgba(255,255,255,.6);
+  }
+  .ball.rep{background:radial-gradient(circle at 32% 28%, #d8fff6 0%, var(--teal) 40%, #0da88f 75%, #066e5c 100%);color:#02302a;}
+  .nota{font-size:14px;color:var(--gold2);margin:2px 0 10px;}
+  .orig{font-size:13px;color:var(--muted);font-style:italic;margin:0 0 8px;}
+  .linea{
+    border:1px solid rgba(23,230,200,.5);background:rgba(23,230,200,.08);border-radius:14px;
+    padding:12px 14px;margin-top:12px;font-size:15px;
+  }
+  .linea b{color:var(--teal);}
+  .none{font-size:16px;color:var(--muted);padding:8px 0 2px;}
+  table{width:100%;border-collapse:collapse;}
+  td{padding:11px 4px;border-bottom:1px solid rgba(245,197,66,.14);font-size:15px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  td.s{white-space:nowrap;width:86px;}
+  .chip{
+    display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:44px;padding:0 8px;border-radius:50%;
+    font-weight:800;font-size:17px;color:#3a2a02;cursor:pointer;border:none;
+    background:radial-gradient(circle at 32% 28%, #fff3c4 0%, var(--gold2) 38%, #e0a91e 72%, #9c720c 100%);
+    box-shadow:0 4px 10px rgba(0,0,0,.4), inset 0 -4px 7px rgba(120,80,0,.45), inset 0 3px 5px rgba(255,255,255,.6);
+  }
+  .chip:active{transform:scale(.93);}
+  td.v{color:var(--txt);}
+  td.v .arr{color:var(--gold);font-weight:700;}
+  .foot{text-align:center;color:var(--muted);font-size:12.5px;line-height:1.55;margin-top:20px;}
+  .foot b{color:var(--gold2);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="icon-512.png" alt="¿Qué Viene?">
+    <h1>¿QUÉ VIENE?</h1>
+    <p class="sub">La tabla de la bolita · Boul-Pa-Nou</p>
+  </header>
+
+  <div class="card">
+    <h2>🔮 ¿Qué número salió?</h2>
+    <p class="hint">Escribe el número que salió (fijo o corrido) y la tabla te dice qué viene detrás.</p>
+    <div class="lookup">
+      <input id="num" type="text" inputmode="numeric" autocomplete="off" maxlength="2" placeholder="00" aria-label="Número que salió">
+      <button id="go">Ver</button>
+    </div>
+    <div id="result"></div>
+  </div>
+
+  <div class="card">
+    <h2>📋 La tabla completa</h2>
+    <p class="hint">Toca un número dorado para ver qué viene cuando sale.</p>
+    <table id="tabla"></table>
+  </div>
+
+  <p class="foot">
+    Tabla tomada del video de <b>Boul-Pa-Nou</b> (Facebook, 27 de noviembre de 2026), tal como fue publicada.<br>
+    Es la tabla de la tradición de la bolita: una guía de juego, sin garantía de acierto.<br>
+    App de <b>Kiustin G</b> · kiusting.com
+  </p>
+</div>
+
+<script>
+"use strict";
+/* Tabla de Boul-Pa-Nou, transcrita del video (una sola tabla, 20 reglas).
+   s = números que salen (disparadores) · v = números que vienen · rep = número que repite además */
+var RULES=[
+  {s:["16"],v:["38","64","69"],t:"Cuando sale 16 viene 38-64-69"},
+  {s:["69"],v:["16","88","62","56"],t:"Cuando sale 69 viene 16-88-62-56"},
+  {s:["39","86"],v:["34","30"],t:"Cuando sale 39 o 86 lo repiten y sale 34-30",nota:"El 39 y el 86 se repiten entre sí."},
+  {s:["29","26"],v:["27","91"],t:"Cuando sale 29-26 viene 27-91"},
+  {s:["90"],v:["54","72","61"],t:"Cuando sale 90 juega con 54-72-61"},
+  {s:["88"],v:["34","38","18"],rep:"83",t:"Cuando sale 88 viene 34-38-18 y repiten 83"},
+  {s:["75"],v:["04","30","52"],t:"Cuando sale 75 viene 04-30-52"},
+  {linea:true,t:"Cuando sale línea 3 y línea 8 preparados que repiten toda la semana"},
+  {s:["35"],v:["83","46","31"],t:"Cuando sale 35 viene 83-46-31"},
+  {s:["00"],v:["08"],t:"Cuando sale 00 viene 08"},
+  {s:["26"],v:["62","30","58"],t:"Cuando sale 26 viene 62-30-58"},
+  {s:["95","65"],v:["35","30"],t:"Cuando sale 95 o 65 viene 35-30"},
+  {s:["34"],v:["73","78","53"],t:"Cuando sale 34 viene 73-78-53"},
+  {s:["55"],v:["64","21"],t:"Cuando sale 55 viene 64-21"},
+  {s:["83"],v:["38","63","21"],t:"Cuando sale 83 repite 38-63-21"},
+  {s:["45"],v:["16","59","26"],t:"Cuando sale 45 viene 16-59-26"},
+  {s:["15"],v:["70","05","25"],t:"Cuando sale 15 viene 70-05-25"},
+  {s:["24"],v:["45","27","70"],t:"Cuando sale 24 viene 45-27-70",nota:"En la tabla original aparece un «16» suelto al final de esta línea."},
+  {s:["65"],v:["69","05"],rep:"50",t:"Cuando sale 65 viene 69-05 y repiten 50"},
+  {s:["07"],v:["03","18","51"],t:"Cuando sale 07 viene 03-18-51"}
+];
+var $=function(id){return document.getElementById(id);};
+function ball(n,rep){ return '<div class="ball'+(rep?' rep':'')+'">'+n+'</div>'; }
+function lookup(raw){
+  var q=(raw||"").replace(/\D/g,"");
+  if(q.length===1) q="0"+q;
+  var box=$("result"); box.style.display="block";
+  if(q.length!==2){ box.innerHTML='<p class="none">Escribe un número de dos cifras.</p>'; return; }
+  var hits=RULES.filter(function(r){ return r.s && r.s.indexOf(q)>-1; });
+  var html="";
+  if(hits.length){
+    hits.forEach(function(r){
+      html+='<div class="rule"><div class="from">Salió el <b>'+q+'</b> → viene:</div><div class="balls">'
+        + r.v.map(function(n){return ball(n,false);}).join("")
+        + (r.rep? ball(r.rep,true):"") + '</div>'
+        + (r.rep? '<p class="nota">🟢 Y además repite el <b>'+r.rep+'</b>.</p>':"")
+        + (r.nota? '<p class="nota">📌 '+r.nota+'</p>':"")
+        + '<p class="orig">“'+r.t+'”</p></div>';
+    });
+  } else {
+    html='<p class="none">El <b style="color:#fff">'+q+'</b> no está en la tabla como número que sale.</p>';
+  }
+  var tens=q.charAt(0);
+  if(tens==="3"||tens==="8"){
+    html+='<div class="linea">⚠️ <b>Salió línea '+tens+'</b> — según la tabla: cuando sale línea 3 y línea 8, preparados, que <b>repiten toda la semana</b>.</div>';
+  }
+  box.innerHTML=html;
+}
+$("go").addEventListener("click",function(){ lookup($("num").value); });
+$("num").addEventListener("input",function(){
+  this.value=this.value.replace(/\D/g,"").slice(0,2);
+  if(this.value.length===2) lookup(this.value);
+});
+$("num").addEventListener("keydown",function(e){ if(e.key==="Enter") lookup(this.value); });
+
+/* Tabla completa */
+(function(){
+  var tb=$("tabla"), html="";
+  RULES.forEach(function(r){
+    if(r.linea){
+      html+='<tr><td class="s"><span style="font-size:22px">⚠️</span></td><td class="v"><b>Línea 3 y línea 8</b> — preparados, que repiten toda la semana.</td></tr>';
+      return;
+    }
+    var chips=r.s.map(function(n){ return '<button class="chip" data-n="'+n+'">'+n+'</button>'; }).join(" ");
+    var viene=r.v.join(" · ")+(r.rep? ' <span class="arr">+ repite</span> '+r.rep : "");
+    html+='<tr><td class="s">'+chips+'</td><td class="v"><span class="arr">viene →</span> '+viene+'</td></tr>';
+  });
+  tb.innerHTML=html;
+  tb.addEventListener("click",function(e){
+    var b=e.target.closest(".chip"); if(!b) return;
+    $("num").value=b.getAttribute("data-n");
+    lookup(b.getAttribute("data-n"));
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+})();
+</script>
+</body>
+</html>
