@@ -298,6 +298,7 @@ function onPos(p){
   if(c.heading!=null && !isNaN(c.heading) && (c.speed==null || c.speed>0.5)) S.heading=c.heading;
   else if(S.lastPos && haversine(S.lastPos,lngLat)>6) S.heading=bearingTo(S.lastPos,lngLat);
   S.lastPos=S.pos; S.pos=lngLat;
+  if(S.pendingDest && S.dest){ S.pendingDest=false; startRoute(S.pos,S.dest); }
   meMarker.setLngLat(lngLat);
   if(!meMarker._added){ meMarker.addTo(map); meMarker._added=true; }
   var ar=$("meArrow"); if(ar && S.heading!=null) ar.style.transform="rotate("+S.heading+"deg)";
@@ -400,7 +401,7 @@ function voiceSearch(qtext){
     setDest(d);
     speak(tt("Te llevo a ","Taking you to ")+d.name);
     if(S.pos) startRoute(S.pos,d);
-    else setStatus(tt("Destino listo. Esperando GPS para guiarte…","Destination ready. Waiting for GPS…"));
+    else { S.pendingDest=true; setStatus(tt("Destino listo. Buscando tu ubicación para guiarte…","Destination ready. Finding your location to guide you…")); }
   }).catch(function(){ setStatus(tt("Error de búsqueda. Revisa tu conexión.","Search error. Check your connection.")); });
 }
 $("btnMic").addEventListener("click",function(){
@@ -460,7 +461,7 @@ $("btnFavDest").addEventListener("click",function(){
 });
 $("btnGo").addEventListener("click",function(){
   if(!S.dest)return;
-  if(!S.pos){ setStatus(tt("Esperando tu ubicación GPS… inténtalo en unos segundos.","Waiting for your GPS location… try again in a few seconds.")); return; }
+  if(!S.pos){ S.pendingDest=true; setStatus(tt("Buscando tu ubicación… la ruta arranca sola en cuanto te encuentre.","Finding your location… the route starts by itself as soon as it finds you.")); return; }
   startRoute(S.pos,S.dest);
 });
 
@@ -477,7 +478,7 @@ function goPreset(p){
     var d0={name:name.replace(/^\S+\s/,""), addr:p.addr||"", lngLat:p.lngLat};
     setDest(d0);
     if(S.pos) startRoute(S.pos,d0);
-    else setStatus(tt("Destino listo. Esperando GPS para guiarte…","Destination ready. Waiting for GPS…"));
+    else { S.pendingDest=true; setStatus(tt("Destino listo. Buscando tu ubicación para guiarte…","Destination ready. Finding your location to guide you…")); }
     return;
   }
   setStatus(tt("Buscando ","Searching ")+name+"…");
@@ -486,7 +487,7 @@ function goPreset(p){
     var item=res[0];
     var d={name:name.replace(/^\S+\s/,""), addr:item.display_name, lngLat:[parseFloat(item.lon),parseFloat(item.lat)]};
     setDest(d);
-    if(S.pos) startRoute(S.pos,d); else setStatus(tt("Destino listo. Esperando GPS para guiarte…","Destination ready. Waiting for GPS…"));
+    if(S.pos) startRoute(S.pos,d); else { S.pendingDest=true; setStatus(tt("Destino listo. Buscando tu ubicación para guiarte…","Destination ready. Finding your location to guide you…")); }
   }).catch(function(){ setStatus(tt("Error buscando ","Search error: ")+name); });
 }
 function renderPlaces(){
@@ -501,7 +502,7 @@ function renderPlaces(){
     var label=document.createElement("span"); label.textContent="⭐ "+f.name;
     label.addEventListener("click",function(){
       setDest({name:f.name,addr:f.addr,lngLat:f.lngLat});
-      if(S.pos)startRoute(S.pos,S.dest);
+      if(S.pos)startRoute(S.pos,S.dest); else S.pendingDest=true;
     });
     var del=document.createElement("span"); del.className="del"; del.textContent="✕";
     del.addEventListener("click",function(ev){
@@ -705,7 +706,7 @@ function requestWake(){
   try{ if(navigator.wakeLock) navigator.wakeLock.request("screen").then(function(w){S.wakeLock=w;}).catch(function(){}); }catch(e){}
 }
 function stopNav(silent){
-  S.nav=false; S.steps=[]; S.routeGeom=null;
+  S.nav=false; S.pendingDest=false; S.steps=[]; S.routeGeom=null;
   try{ localStorage.removeItem("rumbo_route"); }catch(e){}
   $("banner").style.display="none";
   $("navInfo").style.display="none";
