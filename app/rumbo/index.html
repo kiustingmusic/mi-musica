@@ -38,6 +38,13 @@
     background:linear-gradient(180deg,#4df5d8,var(--teal2));box-shadow:0 3px 10px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.5);}
   .btn:active{transform:scale(.96);}
   #btnSearch{font-size:16px;padding:12px 18px;}
+  #btnMic{width:44px;height:44px;border-radius:50%;border:1px solid rgba(23,230,200,.45);
+    background:var(--panel2);color:var(--teal);font-size:20px;cursor:pointer;flex:none;
+    display:flex;align-items:center;justify-content:center;}
+  #btnMic:active{transform:scale(.94);}
+  #btnMic.listening{background:linear-gradient(180deg,#ff8a8a,#e04444);color:#fff;border-color:transparent;
+    animation:micpulse 1s ease-out infinite;}
+  @keyframes micpulse{0%{box-shadow:0 0 0 0 rgba(255,90,90,.55);}70%{box-shadow:0 0 0 12px rgba(255,90,90,0);}100%{box-shadow:0 0 0 0 rgba(255,90,90,0);}}
   .iconbtn{width:52px;height:52px;border-radius:50%;font-size:24px;display:flex;align-items:center;justify-content:center;flex:none;
     background:var(--panel);color:var(--teal);border:1px solid rgba(23,230,200,.45);
     box-shadow:0 6px 20px rgba(0,0,0,.45);cursor:pointer;backdrop-filter:blur(8px);}
@@ -118,6 +125,7 @@
 <div id="searchbar">
   <div id="searchbox">
     <input id="q" type="text" placeholder="¿A dónde vas?" autocomplete="off" enterkeyhint="search">
+    <button id="btnMic" title="Buscar por voz">🎤</button>
     <button class="btn" id="btnSearch">Buscar</button>
   </div>
   <button class="iconbtn" id="btnVoice" title="Voz de guía">🔊</button>
@@ -338,6 +346,60 @@ function renderResults(res){
 $("btnSearch").addEventListener("click",doSearch);
 $("q").addEventListener("keydown",function(e){ if(e.key==="Enter"){doSearch(); this.blur();} });
 $("q").addEventListener("focus",function(){ if(!S.nav)$("results").style.display=$("results").children.length?"block":"none"; });
+
+/* ================= Búsqueda por voz (Web Speech API) ================= */
+var recog=null, recogOn=false;
+function voiceSearch(qtext){
+  setStatus("Buscando…");
+  geocode(qtext).then(function(res){
+    if(!res.length) return geocode(qtext+" Rochester NY");
+    return res;
+  }).then(function(res){
+    if(!res||!res.length){
+      setStatus("No encontré «"+qtext+"». Inténtalo de nuevo.");
+      speak("No encontré esa dirección");
+      return;
+    }
+    renderResults(res);
+    var item=res[0];
+    var d={name:shortName(item), addr:item.display_name, lngLat:[parseFloat(item.lon),parseFloat(item.lat)]};
+    $("results").style.display="none";
+    setDest(d);
+    speak("Te llevo a "+d.name);
+    if(S.pos) startRoute(S.pos,d);
+    else setStatus("Destino listo. Esperando GPS para guiarte…");
+  }).catch(function(){ setStatus("Error de búsqueda. Revisa tu conexión."); });
+}
+$("btnMic").addEventListener("click",function(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){ setStatus("Tu navegador no soporta búsqueda por voz"); return; }
+  if(recogOn&&recog){ try{recog.stop();}catch(e){} return; }
+  try{ recog=new SR(); }catch(e){ setStatus("Tu navegador no soporta búsqueda por voz"); return; }
+  recog.lang="es-ES";
+  recog.interimResults=false;
+  recog.maxAlternatives=1;
+  recog.onresult=function(ev){
+    var txt=(ev.results[0]&&ev.results[0][0])?ev.results[0][0].transcript.trim():"";
+    if(!txt){ setStatus("No te escuché. Inténtalo de nuevo."); return; }
+    $("q").value=txt;
+    speak("Buscando: "+txt);
+    voiceSearch(txt);
+  };
+  recog.onerror=function(ev){
+    if(ev.error==="not-allowed"||ev.error==="service-not-allowed")
+      setStatus("Permite el micrófono para buscar por voz.");
+    else if(ev.error==="no-speech")
+      setStatus("No te escuché. Inténtalo de nuevo.");
+    else if(ev.error!=="aborted")
+      setStatus("Error de voz. Inténtalo de nuevo.");
+  };
+  recog.onend=function(){ recogOn=false; $("btnMic").classList.remove("listening"); };
+  recogOn=true;
+  $("btnMic").classList.add("listening");
+  setStatus("🎤 Escuchando… di tu destino");
+  try{ recog.start(); }
+  catch(e){ recogOn=false; $("btnMic").classList.remove("listening"); setStatus("No se pudo iniciar el micrófono."); }
+});
 
 /* ================= Destino ================= */
 function setDest(d){
