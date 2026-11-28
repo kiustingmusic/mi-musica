@@ -261,7 +261,13 @@ map.on("load",function(){
 /* Marcador de mi posición (flecha que gira con el rumbo) */
 var meEl=document.createElement("div"); meEl.className="meWrap";
 meEl.innerHTML='<div class="meHalo"></div><div class="meBadge"><div class="meArrow" id="meArrow">'+
-  '<svg width="40" height="40" viewBox="0 0 24 24"><path d="M12 1 L20 22 L12 17 L4 22 Z" fill="#0aa2c0" stroke="#ffffff" stroke-width="1.2"/></svg></div></div>';
+  '<svg width="42" height="42" viewBox="0 0 48 48">'+
+  '<rect x="11" y="3" width="26" height="42" rx="9" fill="#0b5563" stroke="#ffffff" stroke-width="2"/>'+
+  '<path d="M14 15 L34 15 L31 22 L17 22 Z" fill="#bfeef5"/>'+
+  '<path d="M17 33 L31 33 L34 39 L14 39 Z" fill="#8fd4de"/>'+
+  '<rect x="15.5" y="23.5" width="17" height="8" rx="2.5" fill="#0e6a7a"/>'+
+  '<circle cx="15" cy="7" r="2" fill="#ffe9a8"/><circle cx="33" cy="7" r="2" fill="#ffe9a8"/>'+
+  '</svg></div></div>';
 var meMarker=new maplibregl.Marker({element:meEl}).setLngLat([-77.6088,43.1566]);
 var destEl=document.createElement("div"); destEl.className="destPin"; destEl.textContent="📍";
 var destMarker=null;
