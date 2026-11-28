@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#062a30">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Rumbo">
+<title>Rumbo Kiustin — Navegación</title>
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+<style>
+  :root{
+    --bg:#062a30; --bg2:#0a3d44; --teal:#17e6c8; --teal2:#0bbfa5; --cyan:#39c6ff;
+    --panel:rgba(6,42,48,.92); --panel2:rgba(10,61,68,.9); --txt:#eafffb; --muted:#9fd8d2;
+    --danger:#ff5a5a; --radius:18px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;overflow:hidden;background:var(--bg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--txt);}
+  #map{position:absolute;inset:0;}
+  .maplibregl-ctrl-attrib{font-size:9px;background:rgba(255,255,255,.6)!important;}
+
+  /* ---------- Barra de búsqueda ---------- */
+  #searchbar{position:absolute;top:calc(env(safe-area-inset-top,0px) + 10px);left:10px;right:10px;z-index:30;
+    display:flex;gap:8px;}
+  #searchbox{flex:1;display:flex;align-items:center;gap:8px;background:var(--panel);
+    border:1px solid rgba(23,230,200,.45);border-radius:999px;padding:6px 6px 6px 16px;
+    box-shadow:0 6px 24px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.12);backdrop-filter:blur(8px);}
+  #q{flex:1;background:transparent;border:none;outline:none;color:var(--txt);font-size:17px;min-width:0;}
+  #q::placeholder{color:var(--muted);}
+  .btn{border:none;cursor:pointer;font-weight:700;color:#04302a;border-radius:999px;
+    background:linear-gradient(180deg,#4df5d8,var(--teal2));box-shadow:0 3px 10px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.5);}
+  .btn:active{transform:scale(.96);}
+  #btnSearch{font-size:16px;padding:12px 18px;}
+  .iconbtn{width:52px;height:52px;border-radius:50%;font-size:24px;display:flex;align-items:center;justify-content:center;flex:none;
+    background:var(--panel);color:var(--teal);border:1px solid rgba(23,230,200,.45);
+    box-shadow:0 6px 20px rgba(0,0,0,.45);cursor:pointer;backdrop-filter:blur(8px);}
+  .iconbtn:active{transform:scale(.94);}
+  .iconbtn.off{color:#7fa8a3;}
+
+  /* ---------- Resultados ---------- */
+  #results{position:absolute;top:calc(env(safe-area-inset-top,0px) + 78px);left:10px;right:10px;z-index:29;
+    background:var(--panel);border:1px solid rgba(23,230,200,.35);border-radius:var(--radius);overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.5);display:none;max-height:46vh;overflow-y:auto;backdrop-filter:blur(10px);}
+  .result{padding:14px 16px;border-bottom:1px solid rgba(23,230,200,.15);cursor:pointer;}
+  .result:last-child{border-bottom:none;}
+  .result:active{background:var(--panel2);}
+  .result .rn{font-size:16px;font-weight:700;}
+  .result .ra{font-size:13px;color:var(--muted);margin-top:2px;}
+
+  /* ---------- Banner de maniobra ---------- */
+  #banner{position:absolute;top:calc(env(safe-area-inset-top,0px) + 78px);left:10px;right:10px;z-index:28;
+    background:linear-gradient(160deg,rgba(10,77,84,.97),rgba(6,42,48,.97));
+    border:1px solid rgba(23,230,200,.55);border-radius:22px;padding:18px;display:none;
+    box-shadow:0 12px 34px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.14);backdrop-filter:blur(10px);}
+  #banner .row{display:flex;align-items:center;gap:14px;}
+  #bArrow{font-size:78px;line-height:1;color:var(--teal);text-shadow:0 0 22px rgba(23,230,200,.7);flex:none;width:90px;text-align:center;}
+  #bDist{font-size:37px;font-weight:800;color:#fff;white-space:nowrap;}
+  #bStreet{font-size:22px;font-weight:700;color:var(--txt);margin-top:3px;line-height:1.3;}
+  #bThen{font-size:14px;color:var(--muted);margin-top:8px;border-top:1px solid rgba(23,230,200,.2);padding-top:8px;}
+
+  /* ---------- Panel inferior ---------- */
+  #sheet{position:absolute;left:10px;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);z-index:30;
+    background:var(--panel);border:1px solid rgba(23,230,200,.35);border-radius:22px;padding:12px 14px;
+    box-shadow:0 -6px 30px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.1);backdrop-filter:blur(10px);}
+  #destCard{display:none;margin-bottom:10px;}
+  #destName{font-size:17px;font-weight:800;line-height:1.3;}
+  #destAddr{font-size:13px;color:var(--muted);margin:2px 0 10px;line-height:1.35;}
+  .destBtns{display:flex;gap:8px;}
+  #btnGo{flex:1;font-size:18px;padding:14px 10px;}
+  #btnFavDest{font-size:16px;padding:14px 14px;background:var(--panel2);color:var(--teal);border:1px solid rgba(23,230,200,.5);box-shadow:none;}
+  #optRow{display:flex;margin-bottom:10px;}
+  #btnAvoid.on{background:linear-gradient(180deg,#4df5d8,var(--teal2));color:#04302a;border-color:transparent;}
+  #placesRow{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;}
+  #placesRow::-webkit-scrollbar{display:none;}
+  .chip{flex:none;display:flex;align-items:center;gap:7px;background:var(--panel2);color:var(--txt);
+    border:1px solid rgba(23,230,200,.4);border-radius:999px;padding:12px 16px;font-size:16px;font-weight:700;cursor:pointer;}
+  .chip:active{transform:scale(.96);}
+  .chip .del{color:var(--danger);font-weight:900;padding:0 2px;font-size:18px;}
+  #navInfo{display:none;align-items:center;justify-content:space-between;gap:10px;}
+  #navInfo .big{font-size:24px;font-weight:800;}
+  #navInfo .small{font-size:13px;color:var(--muted);}
+  #btnStop{background:linear-gradient(180deg,#ff8a8a,#e04444);color:#fff;font-size:16px;padding:12px 18px;}
+  #statusMsg{font-size:13px;color:var(--muted);text-align:center;margin-top:8px;min-height:16px;}
+
+  /* ---------- Velocidad y botones flotantes ---------- */
+  #speedo{position:absolute;left:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 168px);z-index:25;
+    width:84px;height:84px;border-radius:50%;background:var(--panel);border:2px solid rgba(23,230,200,.55);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    box-shadow:0 8px 24px rgba(0,0,0,.5);backdrop-filter:blur(8px);}
+  #speedMph{font-size:30px;font-weight:800;line-height:1;}
+  #speedUnit{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.5px;}
+  #speedKmh{font-size:12px;color:var(--teal);font-weight:700;}
+  #floatBtns{position:absolute;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 168px);z-index:25;
+    display:flex;flex-direction:column;gap:10px;}
+  #btnCenter.on{color:#04302a;background:linear-gradient(180deg,#4df5d8,var(--teal2));}
+
+  /* Marcador de mi posición */
+  .meWrap{width:54px;height:54px;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+  .meHalo{position:absolute;width:54px;height:54px;border-radius:50%;background:rgba(57,198,255,.25);border:2px solid rgba(57,198,255,.5);}
+  .meArrow{width:34px;height:34px;display:flex;align-items:center;justify-content:center;transition:transform .3s linear;}
+  .meArrow svg{filter:drop-shadow(0 2px 5px rgba(0,0,0,.6));}
+  .destPin{font-size:38px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.6));pointer-events:none;}
+
+  footer{position:absolute;left:0;right:0;bottom:0;z-index:5;text-align:center;pointer-events:none;}
+  footer span{font-size:10px;color:rgba(234,255,251,.55);background:rgba(6,42,48,.45);padding:2px 10px;border-radius:8px 8px 0 0;}
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<div id="searchbar">
+  <div id="searchbox">
+    <input id="q" type="text" placeholder="¿A dónde vas?" autocomplete="off" enterkeyhint="search">
+    <button class="btn" id="btnSearch">Buscar</button>
+  </div>
+  <button class="iconbtn" id="btnVoice" title="Voz de guía">🔊</button>
+</div>
+
+<div id="results"></div>
+
+<div id="banner">
+  <div class="row">
+    <div id="bArrow">⬆</div>
+    <div style="flex:1;min-width:0;">
+      <div id="bDist">—</div>
+      <div id="bStreet">—</div>
+    </div>
+  </div>
+  <div id="bThen" style="display:none;"></div>
+</div>
+
+<div id="speedo">
+  <div id="speedMph">0</div>
+  <div id="speedUnit">MPH</div>
+  <div id="speedKmh">0 km/h</div>
+</div>
+
+<div id="floatBtns">
+  <button class="iconbtn" id="btnPitch" title="Vista 3D">3D</button>
+  <button class="iconbtn on" id="btnCenter" title="Seguir mi ubicación">🧭</button>
+</div>
+
+<div id="sheet">
+  <div id="destCard">
+    <div id="destName"></div>
+    <div id="destAddr"></div>
+    <div class="destBtns">
+      <button class="btn" id="btnGo">🚗 Cómo llegar</button>
+      <button class="btn" id="btnFavDest">⭐ Guardar</button>
+    </div>
+  </div>
+  <div id="optRow">
+    <button class="chip" id="btnAvoid">🚫 Evitar expressway: <b id="avoidState">No</b></button>
+  </div>
+  <div id="placesRow"></div>
+  <div id="navInfo">
+    <div>
+      <div class="big"><span id="etaTime">—</span> <span class="small" id="etaClock"></span></div>
+      <div class="small"><span id="remainDist">—</span> restantes</div>
+    </div>
+    <button class="btn" id="btnStop">Terminar</button>
+  </div>
+  <div id="statusMsg">Toca 🏠 Casa o 🏥 Clínica, o busca una dirección.</div>
+</div>
+
+<footer><span>Rumbo Kiustin — uso personal · Mapa actualizado de OpenStreetMap</span></footer>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script>
+(function(){
+"use strict";
+/* ================= Utilidades ================= */
+function $(id){return document.getElementById(id);}
+function haversine(a,b){var R=6371000,rad=Math.PI/180;
+  var dLat=(b[1]-a[1])*rad,dLng=(b[0]-a[0])*rad;
+  var s=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(a[1]*rad)*Math.cos(b[1]*rad)*Math.sin(dLng/2)*Math.sin(dLng/2);
+  return 2*R*Math.asin(Math.sqrt(s));}
+function bearingTo(a,b){var rad=Math.PI/180;
+  var y=Math.sin((b[0]-a[0])*rad)*Math.cos(b[1]*rad);
+  var x=Math.cos(a[1]*rad)*Math.sin(b[1]*rad)-Math.sin(a[1]*rad)*Math.cos(b[1]*rad)*Math.cos((b[0]-a[0])*rad);
+  return (Math.atan2(y,x)/rad+360)%360;}
+function fmtDist(m){if(m<1000)return Math.round(m/10)*10+" m";var km=m/1000;return (km<10?km.toFixed(1):Math.round(km))+" km";}
+function fmtDistMi(m){var mi=m/1609.34;return (mi<10?mi.toFixed(1):Math.round(mi))+" mi";}
+function fmtDur(s){var min=Math.round(s/60);if(min<60)return min+" min";return Math.floor(min/60)+" h "+(min%60)+" min";}
+function setStatus(t){$("statusMsg").textContent=t||"";}
+
+/* ================= Estado ================= */
+var S={
+  pos:null, heading:null, lastPos:null, follow:true, voice:true, pitch3d:true,
+  dest:null,            // {name, addr, lngLat:[lng,lat]}
+  nav:false, steps:[], stepIdx:0, routeGeom:null, routeDist:0, routeDur:0,
+  announced:{}, lastReroute:0, arrived:false, wakeLock:null, avoidHwy:false
+};
+
+/* ================= Mapa ================= */
+var map=new maplibregl.Map({
+  container:"map",
+  style:"https://tiles.openfreemap.org/styles/liberty",
+  center:[-77.6088,43.1566], zoom:12, pitch:0, bearing:0,
+  attributionControl:{compact:true}
+});
+map.addControl(new maplibregl.NavigationControl({showCompass:true}),"bottom-right");
+map.on("dragstart",function(){ if(S.follow){S.follow=false;$("btnCenter").classList.remove("on");} });
+map.on("load",function(){
+  // Edificios 3D: el estilo liberty ya trae la capa "building-3d" (fill-extrusion).
+  try{
+    if(map.getLayer("building-3d")){
+      map.setPaintProperty("building-3d","fill-extrusion-color","#7fc9c0");
+      map.setPaintProperty("building-3d","fill-extrusion-opacity",0.85);
+    }
+  }catch(e){}
+  map.addSource("route",{type:"geojson",data:{type:"FeatureCollection",features:[]}});
+  map.addLayer({id:"route-casing",type:"line",source:"route",
+    paint:{"line-color":"#04302a","line-width":13,"line-opacity":0.85},
+    layout:{"line-cap":"round","line-join":"round"}});
+  map.addLayer({id:"route-line",type:"line",source:"route",
+    paint:{"line-color":"#17e6c8","line-width":7,"line-opacity":1},
+    layout:{"line-cap":"round","line-join":"round"}});
+});
+
+/* Marcador de mi posición (flecha que gira con el rumbo) */
+var meEl=document.createElement("div"); meEl.className="meWrap";
+meEl.innerHTML='<div class="meHalo"></div><div class="meArrow" id="meArrow">'+
+  '<svg width="34" height="34" viewBox="0 0 24 24"><path d="M12 1 L20 22 L12 17 L4 22 Z" fill="#39c6ff" stroke="#fff" stroke-width="1.6"/></svg></div>';
+var meMarker=new maplibregl.Marker({element:meEl}).setLngLat([-77.6088,43.1566]);
+var destEl=document.createElement("div"); destEl.className="destPin"; destEl.textContent="📍";
+var destMarker=null;
+
+/* ================= Voz (Web Speech API) ================= */
+var esVoice=null;
+function pickVoice(){
+  try{
+    var vs=window.speechSynthesis.getVoices();
+    esVoice=vs.filter(function(v){return /^es/i.test(v.lang);})[0]||
+            vs.filter(function(v){return /spanish|español/i.test(v.name);})[0]||null;
+  }catch(e){}
+}
+if("speechSynthesis" in window){ pickVoice(); window.speechSynthesis.onvoiceschanged=pickVoice; }
+function speak(text){
+  if(!S.voice || !("speechSynthesis" in window)) return;
+  try{
+    window.speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(text);
+    u.lang="es-US"; if(esVoice)u.voice=esVoice;
+    u.rate=1.0;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+$("btnVoice").addEventListener("click",function(){
+  S.voice=!S.voice;
+  this.textContent=S.voice?"🔊":"🔇";
+  this.classList.toggle("off",!S.voice);
+  if(S.voice)speak("Voz activada"); else if("speechSynthesis" in window)window.speechSynthesis.cancel();
+});
+
+/* ================= Geolocalización ================= */
+function onPos(p){
+  var c=p.coords, lngLat=[c.longitude,c.latitude];
+  if(c.heading!=null && !isNaN(c.heading) && (c.speed==null || c.speed>0.5)) S.heading=c.heading;
+  else if(S.lastPos && haversine(S.lastPos,lngLat)>6) S.heading=bearingTo(S.lastPos,lngLat);
+  S.lastPos=S.pos; S.pos=lngLat;
+  meMarker.setLngLat(lngLat);
+  if(!meMarker._added){ meMarker.addTo(map); meMarker._added=true; }
+  var ar=$("meArrow"); if(ar && S.heading!=null) ar.style.transform="rotate("+S.heading+"deg)";
+  var kmh=(c.speed!=null && c.speed>=0)?c.speed*3.6:0;
+  $("speedMph").textContent=Math.round(kmh*0.621371);
+  $("speedKmh").textContent=Math.round(kmh)+" km/h";
+  if(S.follow){
+    map.easeTo({center:lngLat, bearing:(S.nav&&S.heading!=null)?S.heading:map.getBearing(),
+      pitch:S.pitch3d?60:0, zoom:Math.max(map.getZoom(),16.8), duration:700});
+  }
+  if(S.nav) navTick();
+}
+function onPosErr(e){ setStatus("Activa la ubicación (GPS) para poder guiarte."); }
+if("geolocation" in navigator){
+  navigator.geolocation.watchPosition(onPos,onPosErr,{enableHighAccuracy:true,maximumAge:1000,timeout:20000});
+}else setStatus("Este navegador no tiene GPS.");
+
+/* Botones flotantes */
+$("btnCenter").addEventListener("click",function(){
+  S.follow=true; this.classList.add("on");
+  if(S.pos) map.easeTo({center:S.pos,pitch:S.pitch3d?60:0,zoom:16.8,duration:700});
+});
+$("btnPitch").addEventListener("click",function(){
+  S.pitch3d=!S.pitch3d;
+  map.easeTo({pitch:S.pitch3d?60:0,duration:600});
+  this.classList.toggle("off",!S.pitch3d);
+});
+
+/* ================= Búsqueda (Nominatim, sesgado a Rochester NY) ================= */
+var VIEWBOX="-78.05,43.35,-77.35,42.95"; // Monroe County aprox. (oeste,norte,este,sur)
+function geocode(q){
+  var url="https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&addressdetails=1"+
+    "&countrycodes=us&viewbox="+VIEWBOX+"&bounded=0&q="+encodeURIComponent(q);
+  return fetch(url,{headers:{"Accept":"application/json"}}).then(function(r){return r.json();});
+}
+function shortName(item){
+  if(item.address){
+    var a=item.address;
+    var main=a.road?(a.house_number?a.house_number+" ":"")+a.road:(item.display_name.split(",")[0]);
+    return main;
+  }
+  return item.display_name.split(",")[0];
+}
+function doSearch(){
+  var q=$("q").value.trim(); if(!q)return;
+  setStatus("Buscando…");
+  geocode(q).then(function(res){
+    if(!res.length) return geocode(q+" Rochester NY");
+    return res;
+  }).then(function(res){
+    renderResults(res||[]); setStatus(res&&res.length?"":"Sin resultados. Prueba con calle y número.");
+  }).catch(function(){ setStatus("Error de búsqueda. Revisa tu conexión."); });
+}
+function renderResults(res){
+  var box=$("results"); box.innerHTML="";
+  if(!res.length){box.style.display="none";return;}
+  res.forEach(function(item){
+    var d=document.createElement("div"); d.className="result";
+    var rn=document.createElement("div"); rn.className="rn"; rn.textContent=shortName(item);
+    var ra=document.createElement("div"); ra.className="ra"; ra.textContent=item.display_name;
+    d.appendChild(rn); d.appendChild(ra);
+    d.addEventListener("click",function(){
+      setDest({name:shortName(item), addr:item.display_name, lngLat:[parseFloat(item.lon),parseFloat(item.lat)]});
+      box.style.display="none";
+    });
+    box.appendChild(d);
+  });
+  box.style.display="block";
+}
+$("btnSearch").addEventListener("click",doSearch);
+$("q").addEventListener("keydown",function(e){ if(e.key==="Enter"){doSearch(); this.blur();} });
+$("q").addEventListener("focus",function(){ if(!S.nav)$("results").style.display=$("results").children.length?"block":"none"; });
+
+/* ================= Destino ================= */
+function setDest(d){
+  S.dest=d;
+  if(destMarker)destMarker.remove();
+  destMarker=new maplibregl.Marker({element:destEl}).setLngLat(d.lngLat).addTo(map);
+  $("destName").textContent=d.name;
+  $("destAddr").textContent=d.addr||"";
+  $("destCard").style.display="block";
+  $("navInfo").style.display="none";
+  if(!S.nav){
+    var b=new maplibregl.LngLatBounds();
+    if(S.pos)b.extend(S.pos);
+    b.extend(d.lngLat);
+    map.fitBounds(b,{padding:70,duration:800,maxZoom:16});
+  }
+  setStatus("Destino listo. Toca «Cómo llegar».");
+}
+$("btnFavDest").addEventListener("click",function(){
+  if(!S.dest)return;
+  var favs=loadFavs();
+  if(favs.some(function(f){return f.name===S.dest.name;})){ setStatus("Ya está en tus favoritos."); return; }
+  favs.push({name:S.dest.name, addr:S.dest.addr, lngLat:S.dest.lngLat});
+  saveFavs(favs); renderPlaces(); setStatus("Guardado en favoritos ⭐");
+});
+$("btnGo").addEventListener("click",function(){
+  if(!S.dest)return;
+  if(!S.pos){ setStatus("Esperando tu ubicación GPS… inténtalo en unos segundos."); return; }
+  startRoute(S.pos,S.dest);
+});
+
+/* ================= Lugares guardados ================= */
+var PRESETS=[
+  {name:"🏠 Casa", query:"21 Clintwood Dr Apt C, Rochester, NY 14620"},
+  {name:"🏥 Clínica", query:"Fresenius Greece Rochester NY"}
+];
+function loadFavs(){ try{return JSON.parse(localStorage.getItem("rumbo_favs")||"[]");}catch(e){return [];} }
+function saveFavs(f){ try{localStorage.setItem("rumbo_favs",JSON.stringify(f));}catch(e){} }
+function goPreset(p){
+  setStatus("Buscando "+p.name+"…");
+  geocode(p.query).then(function(res){
+    if(!res||!res.length){ setStatus("No encontré «"+p.name+"»."); return; }
+    var item=res[0];
+    var d={name:p.name.replace(/^\S+\s/,""), addr:item.display_name, lngLat:[parseFloat(item.lon),parseFloat(item.lat)]};
+    setDest(d);
+    if(S.pos) startRoute(S.pos,d); else setStatus("Destino listo. Esperando GPS para guiarte…");
+  }).catch(function(){ setStatus("Error buscando "+p.name+"."); });
+}
+function renderPlaces(){
+  var row=$("placesRow"); row.innerHTML="";
+  PRESETS.forEach(function(p){
+    var c=document.createElement("button"); c.className="chip"; c.textContent=p.name;
+    c.addEventListener("click",function(){ goPreset(p); });
+    row.appendChild(c);
+  });
+  loadFavs().forEach(function(f,i){
+    var c=document.createElement("button"); c.className="chip";
+    var label=document.createElement("span"); label.textContent="⭐ "+f.name;
+    label.addEventListener("click",function(){
+      setDest({name:f.name,addr:f.addr,lngLat:f.lngLat});
+      if(S.pos)startRoute(S.pos,S.dest);
+    });
+    var del=document.createElement("span"); del.className="del"; del.textContent="✕";
+    del.addEventListener("click",function(ev){
+      ev.stopPropagation();
+      var favs=loadFavs(); favs.splice(i,1); saveFavs(favs); renderPlaces();
+    });
+    c.appendChild(label); c.appendChild(del);
+    row.appendChild(c);
+  });
+}
+renderPlaces();
+
+/* Opción «Evitar expressway» (guardada solo en este teléfono) */
+function renderAvoid(){
+  $("avoidState").textContent=S.avoidHwy?"Sí":"No";
+  $("btnAvoid").classList.toggle("on",S.avoidHwy);
+}
+try{ S.avoidHwy=localStorage.getItem("rumbo_avoid_hwy")==="1"; }catch(e){}
+$("btnAvoid").addEventListener("click",function(){
+  S.avoidHwy=!S.avoidHwy;
+  try{ localStorage.setItem("rumbo_avoid_hwy",S.avoidHwy?"1":"0"); }catch(e){}
+  renderAvoid();
+  setStatus(S.avoidHwy?"Evitar expressway: ACTIVADO. Rutas por calles locales.":"Evitar expressway: desactivado.");
+  if(S.nav&&S.pos&&S.dest) startRoute(S.pos,S.dest);
+});
+renderAvoid();
+
+/* ================= Instrucciones de maniobra (español) ================= */
+function arrowFor(m){
+  var mod=m.modifier||"";
+  switch(m.type){
+    case "arrive": return "🏁";
+    case "roundabout": case "rotary": return "⟳";
+    case "merge": return "⤴";
+    case "on ramp": return "⤴";
+    case "off ramp": return "⤵";
+    case "fork": return mod.indexOf("left")>=0?"⬅":"➡";
+    case "uturn": return "↩";
+  }
+  if(mod.indexOf("sharp left")>=0)return "⬅";
+  if(mod.indexOf("sharp right")>=0)return "➡";
+  if(mod.indexOf("slight left")>=0)return "↖";
+  if(mod.indexOf("slight right")>=0)return "↗";
+  if(mod==="left")return "⬅";
+  if(mod==="right")return "➡";
+  if(mod==="uturn")return "↩";
+  return "⬆";
+}
+function instructionFor(step){
+  var m=step.maneuver, mod=m.modifier||"", name=step.name||"";
+  var hacia=name?(" en "+name):"";
+  var t;
+  switch(m.type){
+    case "arrive": return "Has llegado a tu destino";
+    case "depart": t="Sal hacia"+(name?(" "+name):" tu destino"); return t;
+    case "roundabout": case "rotary":
+      t="En la rotonda, toma la "+(m.exit?m.exit+"ª":"siguiente")+" salida"; return t+(name?(" hacia "+name):"");
+    case "merge": return "Incorpórate"+hacia;
+    case "on ramp": return "Toma la rampa"+hacia;
+    case "off ramp": var ex=step.destinations||step.ref;
+      return "Toma la salida"+(ex?(" "+ex):"")+hacia;
+    case "fork":
+      t=(mod.indexOf("left")>=0)?"En la bifurcación, mantente a la izquierda":"En la bifurcación, mantente a la derecha";
+      return t+(name?(" hacia "+name):"");
+    case "end of road":
+      t=(mod==="left")?"Al final de la calle, gira a la izquierda":"Al final de la calle, gira a la derecha";
+      return t+hacia;
+    case "new name": return "Sigue por "+(name||"la calle");
+    case "continue": return "Sigue recto"+(name?(" por "+name):"");
+    case "notification": return "Sigue recto";
+  }
+  // turn y demás
+  if(mod==="uturn")return "Da la vuelta"+hacia;
+  if(mod.indexOf("sharp left")>=0)return "Gira fuerte a la izquierda"+hacia;
+  if(mod.indexOf("sharp right")>=0)return "Gira fuerte a la derecha"+hacia;
+  if(mod.indexOf("slight left")>=0)return "Gira levemente a la izquierda"+hacia;
+  if(mod.indexOf("slight right")>=0)return "Gira levemente a la derecha"+hacia;
+  if(mod==="left")return "Gira a la izquierda"+hacia;
+  if(mod==="right")return "Gira a la derecha"+hacia;
+  return "Sigue recto"+(name?(" por "+name):"");
+}
+
+/* ================= Rutas =================
+   Pasos unificados: {loc:[lng,lat], distAfter:m, arrow, text, isArrive}.
+   Motores públicos sin llave: OSRM (ruta normal) y Valhalla OSM (evitar expressway).
+   App independiente: solo contacta servicios públicos de mapas/rutas/geocodificación;
+   favoritos y ajustes viven únicamente en el localStorage de este teléfono. */
+function applyRoute(coords,steps,totalDist,totalDur,firstIdx){
+  S.routeGeom=coords; S.routeDist=totalDist; S.routeDur=totalDur;
+  S.steps=steps; S.stepIdx=firstIdx||0; S.announced={}; S.arrived=false; S.nav=true;
+  var src=map.getSource("route");
+  if(src)src.setData({type:"Feature",geometry:{type:"LineString",coordinates:coords}});
+  $("banner").style.display="block";
+  $("destCard").style.display="none";
+  $("navInfo").style.display="flex";
+  S.follow=true; $("btnCenter").classList.add("on");
+  map.easeTo({center:S.pos||coords[0],pitch:S.pitch3d?60:0,zoom:17,duration:800});
+  setStatus("Ruta lista. ¡Buen viaje!");
+  var st=S.steps[S.stepIdx];
+  if(st)speak("Ruta lista. "+st.text);
+  requestWake();
+  navTick();
+}
+function routeOSRM(from,dest,fallbackNote){
+  var url="https://router.project-osrm.org/route/v1/driving/"+
+    from[0]+","+from[1]+";"+dest.lngLat[0]+","+dest.lngLat[1]+
+    "?overview=full&geometries=geojson&steps=true&annotations=false";
+  fetch(url).then(function(r){return r.json();}).then(function(data){
+    if(!data.routes||!data.routes.length){ setStatus("No se encontró ruta."); return; }
+    var route=data.routes[0];
+    var steps=route.legs[0].steps.map(function(st){
+      return {loc:st.maneuver.location, distAfter:st.distance||0,
+        arrow:arrowFor(st.maneuver), text:instructionFor(st),
+        isArrive:st.maneuver.type==="arrive"};
+    });
+    // Saltar el paso "depart": la primera maniobra útil es la siguiente
+    var idx=(steps.length>1 && route.legs[0].steps[0].maneuver.type==="depart")?1:0;
+    applyRoute(route.geometry.coordinates,steps,route.distance,route.duration,idx);
+    if(fallbackNote)setStatus(fallbackNote);
+  }).catch(function(){ setStatus("Error calculando la ruta. Revisa tu conexión."); });
+}
+function decodePolyline6(str){
+  var coords=[],lat=0,lng=0,i=0,b,shift,result;
+  while(i<str.length){
+    shift=0; result=0;
+    do{ b=str.charCodeAt(i++)-63; result|=((b&0x1f)<<shift); shift+=5; }while(b>=0x20);
+    lat+=((result&1)?~(result>>1):(result>>1));
+    shift=0; result=0;
+    do{ b=str.charCodeAt(i++)-63; result|=((b&0x1f)<<shift); shift+=5; }while(b>=0x20);
+    lng+=((result&1)?~(result>>1):(result>>1));
+    coords.push([lng/1e6,lat/1e6]);
+  }
+  return coords;
+}
+function valhallaArrow(t){
+  if(t===4||t===5||t===6)return "🏁";
+  if(t===12||t===13)return "↩";
+  if(t===26||t===27||t===28)return "⟳";
+  if(t===11||t===10||t===2||t===23)return "➡";
+  if(t===14||t===15||t===3||t===24)return "⬅";
+  if(t===9)return "↗";
+  if(t===16)return "↖";
+  if(t===18||t===19||t===17||t===25)return "⤴";
+  if(t===20||t===21)return "⤵";
+  return "⬆";
+}
+function routeValhalla(from,dest){
+  var body={locations:[{lat:from[1],lon:from[0]},{lat:dest.lngLat[1],lon:dest.lngLat[0]}],
+    costing:"auto",costing_options:{auto:{use_highways:0}},
+    directions_options:{units:"kilometers",language:"es-ES"}};
+  fetch("https://valhalla1.openstreetmap.de/route",{method:"POST",
+    headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})
+  .then(function(r){return r.json();}).then(function(data){
+    if(!data.trip||!data.trip.legs||!data.trip.legs.length) throw new Error("sin ruta");
+    var leg=data.trip.legs[0];
+    var coords=decodePolyline6(leg.shape);
+    if(coords.length<2) throw new Error("sin geometría");
+    var steps=leg.maneuvers.map(function(m){
+      return {loc:coords[Math.min(m.begin_shape_index,coords.length-1)],
+        distAfter:(m.length||0)*1000, arrow:valhallaArrow(m.type),
+        text:(m.instruction||"Sigue recto").replace(/\.\s*$/,""),
+        isArrive:(m.type===4||m.type===5||m.type===6)};
+    });
+    applyRoute(coords,steps,(data.trip.summary.length||0)*1000,data.trip.summary.time||0,0);
+    if(data.trip.summary.has_highway) setStatus("Ruta lista (ojo: un tramo corto usa vía rápida, no había alternativa).");
+    else setStatus("Ruta SIN expressway lista. ¡Buen viaje!");
+  }).catch(function(){
+    routeOSRM(from,dest,"Ruta normal: no se pudo evitar el expressway esta vez.");
+  });
+}
+function startRoute(from,dest){
+  setStatus("Calculando ruta…");
+  if(S.avoidHwy) routeValhalla(from,dest); else routeOSRM(from,dest);
+}
+function requestWake(){
+  try{ if(navigator.wakeLock) navigator.wakeLock.request("screen").then(function(w){S.wakeLock=w;}).catch(function(){}); }catch(e){}
+}
+function stopNav(silent){
+  S.nav=false; S.steps=[]; S.routeGeom=null;
+  $("banner").style.display="none";
+  $("navInfo").style.display="none";
+  var src=map.getSource("route");
+  if(src)src.setData({type:"FeatureCollection",features:[]});
+  if(S.wakeLock){try{S.wakeLock.release();}catch(e){} S.wakeLock=null;}
+  if(!silent)setStatus("Navegación terminada.");
+}
+$("btnStop").addEventListener("click",function(){ stopNav(false); if(S.dest)$("destCard").style.display="block"; });
+
+/* Distancia mínima a la línea de ruta (para detectar desvíos) */
+function distToRoute(pos){
+  if(!S.routeGeom)return 0;
+  var min=Infinity, step=Math.max(1,Math.floor(S.routeGeom.length/120));
+  for(var i=0;i<S.routeGeom.length;i+=step){
+    var d=haversine(pos,S.routeGeom[i]); if(d<min)min=d;
+  }
+  return min;
+}
+
+/* ================= Bucle de navegación ================= */
+function navTick(){
+  if(!S.nav||!S.pos||!S.steps.length)return;
+  var dest=S.dest;
+  // Llegada
+  if(dest && haversine(S.pos,dest.lngLat)<35 && !S.arrived){
+    S.arrived=true;
+    $("bArrow").textContent="🏁";
+    $("bDist").textContent="Llegaste";
+    $("bStreet").textContent=dest.name;
+    $("bThen").style.display="none";
+    speak("Has llegado a tu destino");
+    setStatus("🏁 Has llegado a "+dest.name);
+    var keep=dest; stopNav(true); S.dest=keep;
+    $("destCard").style.display="block";
+    return;
+  }
+  var step=S.steps[S.stepIdx];
+  if(!step)return;
+  var dNext=haversine(S.pos,step.loc);
+  // Avanzar de paso al acercarnos a la maniobra (aviso "al punto")
+  if(dNext<25 && S.stepIdx<S.steps.length-1){
+    S.stepIdx++; step=S.steps[S.stepIdx];
+    dNext=haversine(S.pos,step.loc);
+    if(!step.isArrive) speak(step.text);
+  }
+  // Banner
+  $("bArrow").textContent=step.arrow;
+  $("bDist").textContent=fmtDist(dNext);
+  $("bStreet").textContent=step.text;
+  var next=S.steps[S.stepIdx+1];
+  if(next && !next.isArrive){
+    $("bThen").style.display="block";
+    $("bThen").textContent="Después: "+next.text;
+  } else $("bThen").style.display="none";
+  // Avisos por voz TEMPRANOS: ~800 m, ~400 m y ~200 m antes de la maniobra
+  if(!step.isArrive){
+    var ths=[800,400,200];
+    for(var ti=0;ti<ths.length;ti++){
+      var akey="s"+S.stepIdx+"_"+ths[ti];
+      if(dNext<=ths[ti]+20 && !S.announced[akey]){
+        S.announced[akey]=true;
+        if(dNext>60) speak("En "+fmtDist(dNext)+", "+step.text.charAt(0).toLowerCase()+step.text.slice(1));
+        break;
+      }
+    }
+  }
+  // Restante y ETA
+  var remain=dNext;
+  for(var j=S.stepIdx;j<S.steps.length;j++) remain+=S.steps[j].distAfter||0;
+  var eta=S.routeDist>0?(S.routeDur*remain/S.routeDist):0;
+  $("etaTime").textContent=fmtDur(eta);
+  var llegada=new Date(Date.now()+eta*1000);
+  $("etaClock").textContent="· llegada "+llegada.toLocaleTimeString("es-US",{hour:"numeric",minute:"2-digit"});
+  $("remainDist").textContent=fmtDistMi(remain)+" ("+fmtDist(remain)+")";
+  // Desvío → recalcular (máx. cada 15 s)
+  var now=Date.now();
+  if(distToRoute(S.pos)>70 && now-S.lastReroute>15000){
+    S.lastReroute=now;
+    speak("Recalculando ruta");
+    startRoute(S.pos,S.dest);
+  }
+}
+})();
+</script>
+</body>
+</html>
