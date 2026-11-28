@@ -109,9 +109,11 @@
   #btnCenter.on{color:#04302a;background:linear-gradient(180deg,#4df5d8,var(--teal2));}
 
   /* Marcador de mi posición */
-  .meWrap{width:54px;height:54px;display:flex;align-items:center;justify-content:center;pointer-events:none;}
-  .meHalo{position:absolute;width:54px;height:54px;border-radius:50%;background:rgba(57,198,255,.25);border:2px solid rgba(57,198,255,.5);}
-  .meArrow{width:34px;height:34px;display:flex;align-items:center;justify-content:center;transition:transform .3s linear;}
+  .meWrap{width:68px;height:68px;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+  .meHalo{position:absolute;width:66px;height:66px;border-radius:50%;background:rgba(23,230,200,.18);border:2px solid rgba(23,230,200,.45);animation:mePulse 2.2s ease-out infinite;}
+  @keyframes mePulse{0%{transform:scale(.72);opacity:.9}70%{transform:scale(1.12);opacity:.25}100%{transform:scale(1.12);opacity:0}}
+  .meBadge{width:52px;height:52px;border-radius:50%;background:#fff;border:3px solid #07333b;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 16px rgba(0,0,0,.55);}
+  .meArrow{width:40px;height:40px;display:flex;align-items:center;justify-content:center;transition:transform .3s linear;}
   .meArrow svg{filter:drop-shadow(0 2px 5px rgba(0,0,0,.6));}
   .destPin{font-size:38px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.6));pointer-events:none;}
 
@@ -238,7 +240,15 @@ map.on("load",function(){
       map.setPaintProperty("building-3d","fill-extrusion-opacity",0.85);
     }
   }catch(e){}
+  try{ map.setSky({"sky-color":"#0a3a46","horizon-color":"#cfeee9","fog-color":"#0a3a46","sky-horizon-blend":0.6,"horizon-fog-blend":0.6,"fog-ground-blend":0.4}); }catch(e){}
   map.addSource("route",{type:"geojson",data:{type:"FeatureCollection",features:[]}});
+  map.addSource("routeDone",{type:"geojson",data:{type:"FeatureCollection",features:[]}});
+  map.addLayer({id:"done-casing",type:"line",source:"routeDone",
+    paint:{"line-color":"#3d4a47","line-width":13,"line-opacity":0.7},
+    layout:{"line-cap":"round","line-join":"round"}});
+  map.addLayer({id:"done-line",type:"line",source:"routeDone",
+    paint:{"line-color":"#93a5a0","line-width":7,"line-opacity":0.95},
+    layout:{"line-cap":"round","line-join":"round"}});
   map.addLayer({id:"route-casing",type:"line",source:"route",
     paint:{"line-color":"#04302a","line-width":13,"line-opacity":0.85},
     layout:{"line-cap":"round","line-join":"round"}});
@@ -250,8 +260,8 @@ map.on("load",function(){
 
 /* Marcador de mi posición (flecha que gira con el rumbo) */
 var meEl=document.createElement("div"); meEl.className="meWrap";
-meEl.innerHTML='<div class="meHalo"></div><div class="meArrow" id="meArrow">'+
-  '<svg width="34" height="34" viewBox="0 0 24 24"><path d="M12 1 L20 22 L12 17 L4 22 Z" fill="#39c6ff" stroke="#fff" stroke-width="1.6"/></svg></div>';
+meEl.innerHTML='<div class="meHalo"></div><div class="meBadge"><div class="meArrow" id="meArrow">'+
+  '<svg width="40" height="40" viewBox="0 0 24 24"><path d="M12 1 L20 22 L12 17 L4 22 Z" fill="#0aa2c0" stroke="#ffffff" stroke-width="1.2"/></svg></div></div>';
 var meMarker=new maplibregl.Marker({element:meEl}).setLngLat([-77.6088,43.1566]);
 var destEl=document.createElement("div"); destEl.className="destPin"; destEl.textContent="📍";
 var destMarker=null;
@@ -289,6 +299,45 @@ $("btnVoice").addEventListener("click",function(){
   if(S.voice)speak("Voz activada"); else if("speechSynthesis" in window)window.speechSynthesis.cancel();
 });
 
+/* ===== El carro SOBRE la ruta: proyección, progreso y movimiento suave ===== */
+function projectOnSeg(p,a,b){
+  var kx=111320*Math.cos(a[1]*Math.PI/180), ky=110540;
+  var px=(p[0]-a[0])*kx, py=(p[1]-a[1])*ky, bx=(b[0]-a[0])*kx, by=(b[1]-a[1])*ky;
+  var L2=bx*bx+by*by, t=L2?Math.max(0,Math.min(1,(px*bx+py*by)/L2)):0;
+  var dx=px-bx*t, dy=py-by*t;
+  return {pt:[a[0]+(bx*t)/kx, a[1]+(by*t)/ky], d:Math.sqrt(dx*dx+dy*dy)};
+}
+function snapToRoute(pos){
+  var g=S.routeGeom; if(!g||g.length<2) return {pt:pos,idx:0,dist:1e9};
+  var best=Infinity, bi=0, bpt=g[0], r, i;
+  var from=Math.max(0,(S.snapIdx||0)-2), to=Math.min(g.length-2,(S.snapIdx||0)+45);
+  for(i=from;i<=to;i++){ r=projectOnSeg(pos,g[i],g[i+1]); if(r.d<best){best=r.d;bi=i;bpt=r.pt;} }
+  if(best>60){ for(i=0;i<g.length-1;i++){ r=projectOnSeg(pos,g[i],g[i+1]); if(r.d<best){best=r.d;bi=i;bpt=r.pt;} } }
+  S.snapIdx=bi;
+  return {pt:bpt, idx:bi, dist:best};
+}
+function updateRouteProgress(snap){
+  var g=S.routeGeom; if(!g) return;
+  var done=g.slice(0,snap.idx+1).concat([snap.pt]);
+  var rest=[snap.pt].concat(g.slice(snap.idx+1));
+  var sd=map.getSource("routeDone"); if(sd)sd.setData({type:"Feature",geometry:{type:"LineString",coordinates:done}});
+  var sr=map.getSource("route"); if(sr)sr.setData({type:"Feature",geometry:{type:"LineString",coordinates:rest}});
+}
+var meAnim=null;
+function animateMe(to){
+  if(!meMarker._added){ meMarker.setLngLat(to); meMarker.addTo(map); meMarker._added=true; return; }
+  var cur=meMarker.getLngLat(), fromA=[cur.lng,cur.lat];
+  if(haversine(fromA,to)>400){ meMarker.setLngLat(to); return; }
+  if(meAnim)cancelAnimationFrame(meAnim);
+  var t0=performance.now();
+  function fr(t){
+    var k=Math.min(1,(t-t0)/850), e=k*k*(3-2*k);
+    meMarker.setLngLat([fromA[0]+(to[0]-fromA[0])*e, fromA[1]+(to[1]-fromA[1])*e]);
+    if(k<1) meAnim=requestAnimationFrame(fr);
+  }
+  meAnim=requestAnimationFrame(fr);
+}
+
 /* ================= Geolocalización ================= */
 function onPos(p){
   var c=p.coords, lngLat=[c.longitude,c.latitude];
@@ -299,15 +348,25 @@ function onPos(p){
   else if(S.lastPos && haversine(S.lastPos,lngLat)>6) S.heading=bearingTo(S.lastPos,lngLat);
   S.lastPos=S.pos; S.pos=lngLat;
   if(S.pendingDest && S.dest){ S.pendingDest=false; startRoute(S.pos,S.dest); }
-  meMarker.setLngLat(lngLat);
-  if(!meMarker._added){ meMarker.addTo(map); meMarker._added=true; }
+  var disp=lngLat;
+  if(S.nav && S.routeGeom){
+    var snap=snapToRoute(lngLat);
+    if(snap.dist<45){ disp=snap.pt; updateRouteProgress(snap); }
+  }
+  animateMe(disp);
   var ar=$("meArrow"); if(ar && S.heading!=null) ar.style.transform="rotate("+S.heading+"deg)";
   var kmh=(c.speed!=null && c.speed>=0)?c.speed*3.6:0;
   $("speedMph").textContent=Math.round(kmh*0.621371);
   $("speedKmh").textContent=Math.round(kmh)+" km/h";
   if(S.follow){
-    map.easeTo({center:lngLat, bearing:(S.nav&&S.heading!=null)?S.heading:map.getBearing(),
-      pitch:S.pitch3d?60:0, zoom:Math.max(map.getZoom(),16.8), duration:700});
+    if(S.nav){
+      var g=S.routeGeom, ahead=g?g[Math.min((S.snapIdx||0)+4,g.length-1)]:null;
+      var brg=(S.heading!=null)?S.heading:(ahead?bearingTo(disp,ahead):map.getBearing());
+      map.easeTo({center:disp, bearing:brg, pitch:65, zoom:18, offset:[0,150], duration:850});
+    } else {
+      map.easeTo({center:lngLat, bearing:map.getBearing(),
+        pitch:S.pitch3d?60:0, zoom:Math.max(map.getZoom(),16.8), duration:700});
+    }
   }
   if(S.nav) navTick();
 }
@@ -618,11 +677,14 @@ function applyRoute(coords,steps,totalDist,totalDur,firstIdx){
   S.steps=steps; S.stepIdx=firstIdx||0; S.announced={}; S.arrived=false; S.nav=true;
   var src=map.getSource("route");
   if(src)src.setData({type:"Feature",geometry:{type:"LineString",coordinates:coords}});
+  var sd0=map.getSource("routeDone"); if(sd0)sd0.setData({type:"FeatureCollection",features:[]});
+  S.snapIdx=0;
   $("banner").style.display="block";
   $("destCard").style.display="none";
   $("navInfo").style.display="flex";
   S.follow=true; $("btnCenter").classList.add("on");
-  map.easeTo({center:S.pos||coords[0],pitch:S.pitch3d?60:0,zoom:17,duration:800});
+  S.pitch3d=true; $("btnPitch").classList.remove("off");
+  map.easeTo({center:S.pos||coords[0],pitch:65,zoom:17.6,offset:[0,130],duration:800});
   setStatus(tt("Ruta lista. ¡Buen viaje!","Route ready. Have a good trip!"));
   var st=S.steps[S.stepIdx];
   if(st)speak(tt("Ruta lista. ","Route ready. ")+st.text);
@@ -712,6 +774,8 @@ function stopNav(silent){
   $("navInfo").style.display="none";
   var src=map.getSource("route");
   if(src)src.setData({type:"FeatureCollection",features:[]});
+  var sd9=map.getSource("routeDone"); if(sd9)sd9.setData({type:"FeatureCollection",features:[]});
+  S.snapIdx=0;
   if(S.wakeLock){try{S.wakeLock.release();}catch(e){} S.wakeLock=null;}
   if(!silent)setStatus(tt("Navegación terminada.","Navigation ended."));
 }
