@@ -82,7 +82,7 @@
   .destBtns{display:flex;gap:8px;}
   #btnGo{flex:1;font-size:18px;padding:14px 10px;}
   #btnFavDest{font-size:16px;padding:14px 14px;background:var(--panel2);color:var(--teal);border:1px solid rgba(23,230,200,.5);box-shadow:none;}
-  #optRow{display:flex;margin-bottom:10px;}
+  #optRow{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
   #btnAvoid.on{background:linear-gradient(180deg,#4df5d8,var(--teal2));color:#04302a;border-color:transparent;}
   #placesRow{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;}
   #placesRow::-webkit-scrollbar{display:none;}
@@ -165,13 +165,14 @@
     </div>
   </div>
   <div id="optRow">
-    <button class="chip" id="btnAvoid">🚫 Evitar expressway: <b id="avoidState">No</b></button>
+    <button class="chip" id="btnAvoid"><span id="avoidLbl">🚫 Evitar expressway: </span><b id="avoidState">No</b></button>
+    <button class="chip" id="btnLang">🌐 <b id="langState">ES</b></button>
   </div>
   <div id="placesRow"></div>
   <div id="navInfo">
     <div>
       <div class="big"><span id="etaTime">—</span> <span class="small" id="etaClock"></span></div>
-      <div class="small"><span id="remainDist">—</span> restantes</div>
+      <div class="small"><span id="remainDist">—</span> <span id="remainLbl">restantes</span></div>
     </div>
     <button class="btn" id="btnStop">Terminar</button>
   </div>
@@ -204,8 +205,21 @@ var S={
   pos:null, heading:null, lastPos:null, follow:true, voice:true, pitch3d:true,
   dest:null,            // {name, addr, lngLat:[lng,lat]}
   nav:false, steps:[], stepIdx:0, routeGeom:null, routeDist:0, routeDur:0,
-  announced:{}, lastReroute:0, arrived:false, wakeLock:null, avoidHwy:false
+  announced:{}, lastReroute:0, arrived:false, wakeLock:null, avoidHwy:false, lang:"es"
 };
+try{ S.lang=localStorage.getItem("rumbo_lang")==="en"?"en":"es"; }catch(e){}
+
+/* ================= Idioma (ES/EN) ================= */
+var TXT={
+  es:{ph:"¿A dónde vas?",search:"Buscar",go:"🚗 Cómo llegar",save:"⭐ Guardar",stop:"Terminar",
+      remain:"restantes",arrival:"llegada",avoid:"🚫 Evitar expressway: ",yes:"Sí",no:"No",
+      home:"🏠 Casa",clinic:"🏥 Clínica",defStatus:"Toca 🏠 Casa o 🏥 Clínica, o busca una dirección."},
+  en:{ph:"Where are you going?",search:"Search",go:"🚗 Directions",save:"⭐ Save",stop:"End",
+      remain:"remaining",arrival:"arrival",avoid:"🚫 Avoid highways: ",yes:"Yes",no:"No",
+      home:"🏠 Home",clinic:"🏥 Clinic",defStatus:"Tap 🏠 Home or 🏥 Clinic, or search for an address."}
+};
+function T(){ return TXT[S.lang]||TXT.es; }
+function tt(es,en){ return S.lang==="en"?en:es; }
 
 /* ================= Mapa ================= */
 var map=new maplibregl.Map({
@@ -231,6 +245,7 @@ map.on("load",function(){
   map.addLayer({id:"route-line",type:"line",source:"route",
     paint:{"line-color":"#17e6c8","line-width":7,"line-opacity":1},
     layout:{"line-cap":"round","line-join":"round"}});
+  restoreRoute();
 });
 
 /* Marcador de mi posición (flecha que gira con el rumbo) */
@@ -256,7 +271,13 @@ function speak(text){
   try{
     window.speechSynthesis.cancel();
     var u=new SpeechSynthesisUtterance(text);
-    u.lang="es-US"; if(esVoice)u.voice=esVoice;
+    var en=(S.lang==="en");
+    u.lang=en?"en-US":"es-US";
+    try{
+      var vs=window.speechSynthesis.getVoices(), re=en?/^en/i:/^es/i;
+      var v=vs.filter(function(x){return re.test(x.lang);})[0];
+      if(v)u.voice=v; else if(!en&&esVoice)u.voice=esVoice;
+    }catch(e){}
     u.rate=1.0;
     window.speechSynthesis.speak(u);
   }catch(e){}
@@ -319,13 +340,13 @@ function shortName(item){
 }
 function doSearch(){
   var q=$("q").value.trim(); if(!q)return;
-  setStatus("Buscando…");
+  setStatus(tt("Buscando…","Searching…"));
   geocode(q).then(function(res){
     if(!res.length) return geocode(q+" Rochester NY");
     return res;
   }).then(function(res){
-    renderResults(res||[]); setStatus(res&&res.length?"":"Sin resultados. Prueba con calle y número.");
-  }).catch(function(){ setStatus("Error de búsqueda. Revisa tu conexión."); });
+    renderResults(res||[]); setStatus(res&&res.length?"":tt("Sin resultados. Prueba con calle y número.","No results. Try a street and number."));
+  }).catch(function(){ setStatus(tt("Error de búsqueda. Revisa tu conexión.","Search error. Check your connection.")); });
 }
 function renderResults(res){
   var box=$("results"); box.innerHTML="";
@@ -356,8 +377,8 @@ function voiceSearch(qtext){
     return res;
   }).then(function(res){
     if(!res||!res.length){
-      setStatus("No encontré «"+qtext+"». Inténtalo de nuevo.");
-      speak("No encontré esa dirección");
+      setStatus(S.lang==="en"?("No results for \""+qtext+"\". Try again."):("No encontré «"+qtext+"». Inténtalo de nuevo."));
+      speak(tt("No encontré esa dirección","I couldn't find that address"));
       return;
     }
     renderResults(res);
@@ -365,38 +386,38 @@ function voiceSearch(qtext){
     var d={name:shortName(item), addr:item.display_name, lngLat:[parseFloat(item.lon),parseFloat(item.lat)]};
     $("results").style.display="none";
     setDest(d);
-    speak("Te llevo a "+d.name);
+    speak(tt("Te llevo a ","Taking you to ")+d.name);
     if(S.pos) startRoute(S.pos,d);
-    else setStatus("Destino listo. Esperando GPS para guiarte…");
-  }).catch(function(){ setStatus("Error de búsqueda. Revisa tu conexión."); });
+    else setStatus(tt("Destino listo. Esperando GPS para guiarte…","Destination ready. Waiting for GPS…"));
+  }).catch(function(){ setStatus(tt("Error de búsqueda. Revisa tu conexión.","Search error. Check your connection.")); });
 }
 $("btnMic").addEventListener("click",function(){
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){ setStatus("Tu navegador no soporta búsqueda por voz"); return; }
+  if(!SR){ setStatus(tt("Tu navegador no soporta búsqueda por voz","Your browser doesn't support voice search")); return; }
   if(recogOn&&recog){ try{recog.stop();}catch(e){} return; }
-  try{ recog=new SR(); }catch(e){ setStatus("Tu navegador no soporta búsqueda por voz"); return; }
-  recog.lang="es-ES";
+  try{ recog=new SR(); }catch(e){ setStatus(tt("Tu navegador no soporta búsqueda por voz","Your browser doesn't support voice search")); return; }
+  recog.lang=(S.lang==="en")?"en-US":"es-ES";
   recog.interimResults=false;
   recog.maxAlternatives=1;
   recog.onresult=function(ev){
     var txt=(ev.results[0]&&ev.results[0][0])?ev.results[0][0].transcript.trim():"";
-    if(!txt){ setStatus("No te escuché. Inténtalo de nuevo."); return; }
+    if(!txt){ setStatus(tt("No te escuché. Inténtalo de nuevo.","I didn't hear you. Try again.")); return; }
     $("q").value=txt;
-    speak("Buscando: "+txt);
+    speak(tt("Buscando: ","Searching: ")+txt);
     voiceSearch(txt);
   };
   recog.onerror=function(ev){
     if(ev.error==="not-allowed"||ev.error==="service-not-allowed")
-      setStatus("Permite el micrófono para buscar por voz.");
+      setStatus(tt("Permite el micrófono para buscar por voz.","Allow the microphone to search by voice."));
     else if(ev.error==="no-speech")
-      setStatus("No te escuché. Inténtalo de nuevo.");
+      setStatus(tt("No te escuché. Inténtalo de nuevo.","I didn't hear you. Try again."));
     else if(ev.error!=="aborted")
       setStatus("Error de voz. Inténtalo de nuevo.");
   };
   recog.onend=function(){ recogOn=false; $("btnMic").classList.remove("listening"); };
   recogOn=true;
   $("btnMic").classList.add("listening");
-  setStatus("🎤 Escuchando… di tu destino");
+  setStatus(tt("🎤 Escuchando… di tu destino","🎤 Listening… say your destination"));
   try{ recog.start(); }
   catch(e){ recogOn=false; $("btnMic").classList.remove("listening"); setStatus("No se pudo iniciar el micrófono."); }
 });
@@ -416,7 +437,7 @@ function setDest(d){
     b.extend(d.lngLat);
     map.fitBounds(b,{padding:70,duration:800,maxZoom:16});
   }
-  setStatus("Destino listo. Toca «Cómo llegar».");
+  setStatus(tt("Destino listo. Toca «Cómo llegar».","Destination ready. Tap Directions."));
 }
 $("btnFavDest").addEventListener("click",function(){
   if(!S.dest)return;
@@ -427,31 +448,32 @@ $("btnFavDest").addEventListener("click",function(){
 });
 $("btnGo").addEventListener("click",function(){
   if(!S.dest)return;
-  if(!S.pos){ setStatus("Esperando tu ubicación GPS… inténtalo en unos segundos."); return; }
+  if(!S.pos){ setStatus(tt("Esperando tu ubicación GPS… inténtalo en unos segundos.","Waiting for your GPS location… try again in a few seconds.")); return; }
   startRoute(S.pos,S.dest);
 });
 
 /* ================= Lugares guardados ================= */
 var PRESETS=[
-  {name:"🏠 Casa", query:"21 Clintwood Dr Apt C, Rochester, NY 14620"},
-  {name:"🏥 Clínica", query:"Fresenius Greece Rochester NY"}
+  {key:"home", query:"21 Clintwood Dr Apt C, Rochester, NY 14620"},
+  {key:"clinic", query:"Fresenius Greece Rochester NY"}
 ];
 function loadFavs(){ try{return JSON.parse(localStorage.getItem("rumbo_favs")||"[]");}catch(e){return [];} }
 function saveFavs(f){ try{localStorage.setItem("rumbo_favs",JSON.stringify(f));}catch(e){} }
 function goPreset(p){
-  setStatus("Buscando "+p.name+"…");
+  var name=T()[p.key];
+  setStatus(tt("Buscando ","Searching ")+name+"…");
   geocode(p.query).then(function(res){
-    if(!res||!res.length){ setStatus("No encontré «"+p.name+"»."); return; }
+    if(!res||!res.length){ setStatus(tt("No encontré ","Not found: ")+name); return; }
     var item=res[0];
-    var d={name:p.name.replace(/^\S+\s/,""), addr:item.display_name, lngLat:[parseFloat(item.lon),parseFloat(item.lat)]};
+    var d={name:name.replace(/^\S+\s/,""), addr:item.display_name, lngLat:[parseFloat(item.lon),parseFloat(item.lat)]};
     setDest(d);
-    if(S.pos) startRoute(S.pos,d); else setStatus("Destino listo. Esperando GPS para guiarte…");
-  }).catch(function(){ setStatus("Error buscando "+p.name+"."); });
+    if(S.pos) startRoute(S.pos,d); else setStatus(tt("Destino listo. Esperando GPS para guiarte…","Destination ready. Waiting for GPS…"));
+  }).catch(function(){ setStatus(tt("Error buscando ","Search error: ")+name); });
 }
 function renderPlaces(){
   var row=$("placesRow"); row.innerHTML="";
   PRESETS.forEach(function(p){
-    var c=document.createElement("button"); c.className="chip"; c.textContent=p.name;
+    var c=document.createElement("button"); c.className="chip"; c.textContent=T()[p.key];
     c.addEventListener("click",function(){ goPreset(p); });
     row.appendChild(c);
   });
@@ -475,7 +497,7 @@ renderPlaces();
 
 /* Opción «Evitar expressway» (guardada solo en este teléfono) */
 function renderAvoid(){
-  $("avoidState").textContent=S.avoidHwy?"Sí":"No";
+  $("avoidState").textContent=S.avoidHwy?T().yes:T().no;
   $("btnAvoid").classList.toggle("on",S.avoidHwy);
 }
 try{ S.avoidHwy=localStorage.getItem("rumbo_avoid_hwy")==="1"; }catch(e){}
@@ -483,10 +505,33 @@ $("btnAvoid").addEventListener("click",function(){
   S.avoidHwy=!S.avoidHwy;
   try{ localStorage.setItem("rumbo_avoid_hwy",S.avoidHwy?"1":"0"); }catch(e){}
   renderAvoid();
-  setStatus(S.avoidHwy?"Evitar expressway: ACTIVADO. Rutas por calles locales.":"Evitar expressway: desactivado.");
+  setStatus(S.avoidHwy?tt("Evitar expressway: ACTIVADO. Rutas por calles locales.","Avoid highways: ON. Routes use local streets."):tt("Evitar expressway: desactivado.","Avoid highways: off."));
   if(S.nav&&S.pos&&S.dest) startRoute(S.pos,S.dest);
 });
 renderAvoid();
+
+/* Selector de idioma: interfaz básica + reconocimiento + guía por voz */
+function applyLang(withStatus){
+  var t=T();
+  $("q").placeholder=t.ph;
+  $("btnSearch").textContent=t.search;
+  $("btnGo").textContent=t.go;
+  $("btnFavDest").textContent=t.save;
+  $("btnStop").textContent=t.stop;
+  $("remainLbl").textContent=t.remain;
+  $("avoidLbl").textContent=t.avoid;
+  $("btnMic").title=tt("Buscar por voz","Voice search");
+  $("langState").textContent=S.lang.toUpperCase();
+  renderAvoid(); renderPlaces();
+  if(withStatus)setStatus(t.defStatus);
+}
+$("btnLang").addEventListener("click",function(){
+  S.lang=(S.lang==="en")?"es":"en";
+  try{ localStorage.setItem("rumbo_lang",S.lang); }catch(e){}
+  applyLang(false);
+  setStatus(S.lang==="en"?"Language: English":"Idioma: Español");
+});
+applyLang(true);
 
 /* ================= Instrucciones de maniobra (español) ================= */
 function arrowFor(m){
@@ -558,11 +603,13 @@ function applyRoute(coords,steps,totalDist,totalDur,firstIdx){
   $("navInfo").style.display="flex";
   S.follow=true; $("btnCenter").classList.add("on");
   map.easeTo({center:S.pos||coords[0],pitch:S.pitch3d?60:0,zoom:17,duration:800});
-  setStatus("Ruta lista. ¡Buen viaje!");
+  setStatus(tt("Ruta lista. ¡Buen viaje!","Route ready. Have a good trip!"));
   var st=S.steps[S.stepIdx];
-  if(st)speak("Ruta lista. "+st.text);
+  if(st)speak(tt("Ruta lista. ","Route ready. ")+st.text);
   requestWake();
   navTick();
+  persistRoute();
+  precacheRouteTiles(coords);
 }
 function routeOSRM(from,dest,fallbackNote){
   var url="https://router.project-osrm.org/route/v1/driving/"+
@@ -610,7 +657,7 @@ function valhallaArrow(t){
 function routeValhalla(from,dest){
   var body={locations:[{lat:from[1],lon:from[0]},{lat:dest.lngLat[1],lon:dest.lngLat[0]}],
     costing:"auto",costing_options:{auto:{use_highways:0}},
-    directions_options:{units:"kilometers",language:"es-ES"}};
+    directions_options:{units:"kilometers",language:(S.lang==="en"?"en-US":"es-ES")}};
   fetch("https://valhalla1.openstreetmap.de/route",{method:"POST",
     headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})
   .then(function(r){return r.json();}).then(function(data){
@@ -625,10 +672,10 @@ function routeValhalla(from,dest){
         isArrive:(m.type===4||m.type===5||m.type===6)};
     });
     applyRoute(coords,steps,(data.trip.summary.length||0)*1000,data.trip.summary.time||0,0);
-    if(data.trip.summary.has_highway) setStatus("Ruta lista (ojo: un tramo corto usa vía rápida, no había alternativa).");
-    else setStatus("Ruta SIN expressway lista. ¡Buen viaje!");
+    if(data.trip.summary.has_highway) setStatus(tt("Ruta lista (ojo: un tramo corto usa vía rápida, no había alternativa).","Route ready (note: a short stretch uses a highway, no alternative)."));
+    else setStatus(tt("Ruta SIN expressway lista. ¡Buen viaje!","Route with NO highways ready. Have a good trip!"));
   }).catch(function(){
-    routeOSRM(from,dest,"Ruta normal: no se pudo evitar el expressway esta vez.");
+    routeOSRM(from,dest,tt("Ruta normal: no se pudo evitar el expressway esta vez.","Regular route: highways couldn't be avoided this time."));
   });
 }
 function startRoute(from,dest){
@@ -640,14 +687,96 @@ function requestWake(){
 }
 function stopNav(silent){
   S.nav=false; S.steps=[]; S.routeGeom=null;
+  try{ localStorage.removeItem("rumbo_route"); }catch(e){}
   $("banner").style.display="none";
   $("navInfo").style.display="none";
   var src=map.getSource("route");
   if(src)src.setData({type:"FeatureCollection",features:[]});
   if(S.wakeLock){try{S.wakeLock.release();}catch(e){} S.wakeLock=null;}
-  if(!silent)setStatus("Navegación terminada.");
+  if(!silent)setStatus(tt("Navegación terminada.","Navigation ended."));
 }
 $("btnStop").addEventListener("click",function(){ stopNav(false); if(S.dest)$("destCard").style.display="block"; });
+
+/* ================= Sin conexión: ruta persistente + tiles del corredor =================
+   La ruta activa se guarda en localStorage; si la app se recarga o se pierde
+   la señal, se restaura y la guía continúa con el GPS (que no necesita internet).
+   La ruta NUNCA se borra por falta de red: solo se borra al terminar la navegación. */
+var RUMBO_CACHE="rumbo-v1";
+function persistRoute(){
+  try{
+    if(!S.nav||!S.dest||!S.routeGeom)return;
+    localStorage.setItem("rumbo_route",JSON.stringify({
+      dest:S.dest, coords:S.routeGeom, steps:S.steps,
+      dist:S.routeDist, dur:S.routeDur, stepIdx:S.stepIdx, when:Date.now()
+    }));
+  }catch(e){}
+}
+function restoreRoute(){
+  try{
+    var raw=localStorage.getItem("rumbo_route"); if(!raw)return;
+    var r=JSON.parse(raw);
+    if(!r||!r.dest||!r.coords||r.coords.length<2)return;
+    if(r.when&&Date.now()-r.when>6*3600*1000){ localStorage.removeItem("rumbo_route"); return; }
+    setDest(r.dest);
+    applyRoute(r.coords,r.steps||[],r.dist||0,r.dur||0,r.stepIdx||0);
+    setStatus(tt("Ruta restaurada. La guía continúa.","Route restored. Guidance continues."));
+  }catch(e){}
+}
+function tileTemplate(){
+  try{
+    var srcs=map.getStyle().sources;
+    for(var k in srcs){ if(srcs[k].tiles&&srcs[k].tiles.length)return srcs[k].tiles[0]; }
+  }catch(e){}
+  return "https://tiles.openfreemap.org/planet/{z}/{x}/{y}.pbf";
+}
+function lngLatToTile(lng,lat,z){
+  var n=Math.pow(2,z), x=Math.floor((lng+180)/360*n), latR=lat*Math.PI/180;
+  var y=Math.floor((1-Math.log(Math.tan(latR)+1/Math.cos(latR))/Math.PI)/2*n);
+  return [x,y];
+}
+function precacheRouteTiles(coords){
+  if(!("caches" in window)||!coords||coords.length<2)return;
+  var tpl=tileTemplate(), seen={}, urls=[];
+  var pts=[coords[0]], acc=0, i;
+  for(i=1;i<coords.length;i++){
+    acc+=haversine(coords[i-1],coords[i]);
+    if(acc>=350){ pts.push(coords[i]); acc=0; }
+  }
+  pts.push(coords[coords.length-1]);
+  [15,16].forEach(function(z){
+    pts.forEach(function(p){
+      var t=lngLatToTile(p[0],p[1],z);
+      for(var dx=-1;dx<=1;dx++)for(var dy=-1;dy<=1;dy++){
+        var key=z+"/"+(t[0]+dx)+"/"+(t[1]+dy);
+        if(!seen[key]){ seen[key]=1; urls.push(tpl.replace("{z}",z).replace("{x}",t[0]+dx).replace("{y}",t[1]+dy)); }
+      }
+    });
+  });
+  if(urls.length>400)urls=urls.slice(0,400);
+  caches.open(RUMBO_CACHE).then(function(c){
+    var idx=0, active=0;
+    function pump(){
+      while(active<6&&idx<urls.length){
+        (function(u){
+          active++;
+          c.match(u).then(function(hit){ if(!hit)return c.add(u); })
+            .catch(function(){})
+            .then(function(){ active--; pump(); });
+        })(urls[idx++]);
+      }
+    }
+    pump();
+  }).catch(function(){});
+}
+window.addEventListener("offline",function(){
+  if(S.nav)setStatus(tt("Sin conexión: sigue la ruta marcada","No connection: follow the marked route"));
+});
+window.addEventListener("online",function(){
+  if(S.nav&&S.pos&&S.dest){
+    setStatus(tt("Conexión recuperada","Back online"));
+    if(distToRoute(S.pos)>70){ S.lastReroute=0; startRoute(S.pos,S.dest); }
+  }
+});
 
 /* Distancia mínima a la línea de ruta (para detectar desvíos) */
 function distToRoute(pos){
@@ -667,11 +796,11 @@ function navTick(){
   if(dest && haversine(S.pos,dest.lngLat)<35 && !S.arrived){
     S.arrived=true;
     $("bArrow").textContent="🏁";
-    $("bDist").textContent="Llegaste";
+    $("bDist").textContent=tt("Llegaste","You arrived");
     $("bStreet").textContent=dest.name;
     $("bThen").style.display="none";
-    speak("Has llegado a tu destino");
-    setStatus("🏁 Has llegado a "+dest.name);
+    speak(tt("Has llegado a tu destino","You have arrived at your destination"));
+    setStatus("🏁 "+tt("Has llegado a ","You have arrived at ")+dest.name);
     var keep=dest; stopNav(true); S.dest=keep;
     $("destCard").style.display="block";
     return;
@@ -683,6 +812,7 @@ function navTick(){
   if(dNext<25 && S.stepIdx<S.steps.length-1){
     S.stepIdx++; step=S.steps[S.stepIdx];
     dNext=haversine(S.pos,step.loc);
+    persistRoute();
     if(!step.isArrive) speak(step.text);
   }
   // Banner
@@ -692,7 +822,7 @@ function navTick(){
   var next=S.steps[S.stepIdx+1];
   if(next && !next.isArrive){
     $("bThen").style.display="block";
-    $("bThen").textContent="Después: "+next.text;
+    $("bThen").textContent=tt("Después: ","Then: ")+next.text;
   } else $("bThen").style.display="none";
   // Avisos por voz TEMPRANOS: ~800 m, ~400 m y ~200 m antes de la maniobra
   if(!step.isArrive){
@@ -712,17 +842,30 @@ function navTick(){
   var eta=S.routeDist>0?(S.routeDur*remain/S.routeDist):0;
   $("etaTime").textContent=fmtDur(eta);
   var llegada=new Date(Date.now()+eta*1000);
-  $("etaClock").textContent="· llegada "+llegada.toLocaleTimeString("es-US",{hour:"numeric",minute:"2-digit"});
+  $("etaClock").textContent="· "+T().arrival+" "+llegada.toLocaleTimeString("es-US",{hour:"numeric",minute:"2-digit"});
   $("remainDist").textContent=fmtDistMi(remain)+" ("+fmtDist(remain)+")";
   // Desvío → recalcular (máx. cada 15 s)
   var now=Date.now();
   if(distToRoute(S.pos)>70 && now-S.lastReroute>15000){
     S.lastReroute=now;
-    speak("Recalculando ruta");
-    startRoute(S.pos,S.dest);
+    if(navigator.onLine===false){
+      // Sin conexión NO se borra la ruta: se avisa y se reintenta al volver la señal
+      setStatus(tt("Sin conexión: sigue la ruta marcada","No connection: follow the marked route"));
+      speak(tt("Sin conexión: sigue la ruta marcada","No connection. Follow the marked route."));
+    }else{
+      speak(tt("Recalculando ruta","Recalculating route"));
+      startRoute(S.pos,S.dest);
+    }
   }
 }
 })();
+
+/* Service worker: Rumbo abre sin conexión y conserva el mapa del trayecto */
+if("serviceWorker" in navigator){
+  window.addEventListener("load",function(){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  });
+}
 </script>
 </body>
 </html>
