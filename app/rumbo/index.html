@@ -292,6 +292,9 @@ $("btnVoice").addEventListener("click",function(){
 /* ================= Geolocalización ================= */
 function onPos(p){
   var c=p.coords, lngLat=[c.longitude,c.latitude];
+  var _now=Date.now();
+  if(S.pos && S.posAcc && c.accuracy && c.accuracy>S.posAcc*3 && c.accuracy>150 && (_now-(S.posAt||0))<25000) return;
+  S.posAcc=c.accuracy; S.posAt=_now;
   if(c.heading!=null && !isNaN(c.heading) && (c.speed==null || c.speed>0.5)) S.heading=c.heading;
   else if(S.lastPos && haversine(S.lastPos,lngLat)>6) S.heading=bearingTo(S.lastPos,lngLat);
   S.lastPos=S.pos; S.pos=lngLat;
@@ -307,9 +310,18 @@ function onPos(p){
   }
   if(S.nav) navTick();
 }
-function onPosErr(e){ setStatus("Activa la ubicación (GPS) para poder guiarte."); }
+var _loPosStarted=false;
+function startLoPos(){
+  if(_loPosStarted || !("geolocation" in navigator)) return; _loPosStarted=true;
+  navigator.geolocation.watchPosition(onPos,function(){},{enableHighAccuracy:false,maximumAge:15000,timeout:30000});
+}
+function onPosErr(e){
+  if(e && e.code===1){ setStatus(tt("Activa la ubicación (GPS) para poder guiarte.","Turn on location (GPS) so I can guide you.")); }
+  else startLoPos();
+}
 if("geolocation" in navigator){
   navigator.geolocation.watchPosition(onPos,onPosErr,{enableHighAccuracy:true,maximumAge:1000,timeout:20000});
+  setTimeout(function(){ if(!S.pos) startLoPos(); },9000);
 }else setStatus("Este navegador no tiene GPS.");
 
 /* Botones flotantes */
