@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#062a30">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Familia">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Familia — Panel de la casa</title>
+<style>
+  :root{
+    --bg:#062a30; --bg2:#0a3d44; --teal:#17e6c8; --teal2:#0bbfa5; --cyan:#39c6ff;
+    --gold:#f5c542; --gold2:#d99a16;
+    --panel:rgba(10,61,68,.92); --panel2:rgba(14,74,84,.88);
+    --glass:linear-gradient(160deg, rgba(23,230,200,.16), rgba(57,198,255,.06) 55%, rgba(245,197,66,.08));
+    --txt:#eafffb; --muted:#9fd8d2; --danger:#ff6b6b; --ok:#39e08a; --warn:#ffb84d;
+    --radius:18px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;min-height:100%;background:
+    radial-gradient(120% 90% at 50% -10%, #0d4a54 0%, var(--bg) 55%) fixed;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--txt);}
+  body{padding:calc(env(safe-area-inset-top,0px) + 14px) 14px calc(env(safe-area-inset-bottom,0px) + 22px);}
+  .wrap{max-width:520px;margin:0 auto;}
+  h1{font-size:26px;margin:0 0 2px;letter-spacing:.3px;}
+  h2{font-size:19px;margin:22px 0 10px;}
+  h3{font-size:16px;margin:0 0 6px;}
+  p{margin:6px 0;}
+  .muted{color:var(--muted);font-size:14px;}
+  .small{font-size:12.5px;color:var(--muted);}
+  .logo{width:74px;height:74px;border-radius:20px;box-shadow:0 10px 26px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.35);display:block;margin:8px auto 10px;}
+  .card{background:var(--glass);background-color:var(--panel);border:1px solid rgba(23,230,200,.25);
+    border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:0 8px 22px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.12);}
+  .card.gold{border-color:rgba(245,197,66,.45);}
+  .btn{display:block;width:100%;border:none;border-radius:14px;padding:15px 16px;font-size:17px;font-weight:700;
+    color:#04222a;background:linear-gradient(180deg,#2ff0d2,#0bbfa5);box-shadow:0 6px 16px rgba(11,191,165,.35), inset 0 1px 0 rgba(255,255,255,.5);cursor:pointer;margin:9px 0;}
+  .btn:active{transform:scale(.985);}
+  .btn.gold{background:linear-gradient(180deg,#ffd968,#e0a81c);box-shadow:0 6px 16px rgba(224,168,28,.35), inset 0 1px 0 rgba(255,255,255,.55);}
+  .btn.ghost{background:rgba(255,255,255,.07);color:var(--txt);border:1px solid rgba(159,216,210,.35);box-shadow:none;font-weight:600;}
+  .btn.danger{background:linear-gradient(180deg,#ff8a8a,#e04848);color:#2a0404;}
+  .btn.big{font-size:20px;padding:19px 16px;border-radius:16px;}
+  .btnrow{display:flex;gap:9px;}
+  .btnrow .btn{flex:1;margin:4px 0;}
+  input,select,textarea{width:100%;background:rgba(4,34,42,.75);border:1px solid rgba(23,230,200,.3);color:var(--txt);
+    border-radius:12px;padding:12px 13px;font-size:16px;margin:5px 0 10px;font-family:inherit;}
+  input:focus,select,textarea:focus{outline:2px solid rgba(23,230,200,.55);}
+  label{font-size:13.5px;color:var(--muted);font-weight:600;letter-spacing:.2px;}
+  .pin{letter-spacing:10px;text-align:center;font-size:24px;font-weight:800;}
+  .role{display:flex;gap:10px;margin:14px 0;}
+  .role button{flex:1;border-radius:16px;border:1px solid rgba(23,230,200,.3);background:var(--panel2);color:var(--txt);
+    padding:16px 6px;font-size:16px;font-weight:700;cursor:pointer;}
+  .role button .em{font-size:30px;display:block;margin-bottom:5px;}
+  .role button.sel{border-color:var(--gold);background:linear-gradient(170deg, rgba(245,197,66,.28), rgba(10,61,68,.9));box-shadow:0 0 0 2px rgba(245,197,66,.35);}
+  .topbar{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+  .topbar img{width:44px;height:44px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.4);}
+  .topbar .who{flex:1;}
+  .chip{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.3px;}
+  .chip.pend{background:rgba(255,184,77,.18);color:var(--warn);border:1px solid rgba(255,184,77,.5);}
+  .chip.apr{background:rgba(57,224,138,.15);color:var(--ok);border:1px solid rgba(57,224,138,.5);}
+  .chip.den{background:rgba(255,107,107,.15);color:var(--danger);border:1px solid rgba(255,107,107,.5);}
+  .item{border-top:1px solid rgba(159,216,210,.16);padding:11px 0;}
+  .item:first-of-type{border-top:none;}
+  .rulegrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .rulebox{background:rgba(4,34,42,.55);border:1px solid rgba(23,230,200,.2);border-radius:14px;padding:12px;text-align:center;}
+  .rulebox .em{font-size:26px;}
+  .rulebox .val{font-size:19px;font-weight:800;margin-top:3px;}
+  .rulebox .lab{font-size:12px;color:var(--muted);font-weight:600;}
+  .check{display:flex;align-items:center;gap:11px;padding:10px 0;border-top:1px solid rgba(159,216,210,.16);}
+  .check:first-of-type{border-top:none;}
+  .check .box{width:30px;height:30px;flex:0 0 30px;border-radius:9px;border:2px solid rgba(23,230,200,.55);display:flex;align-items:center;justify-content:center;font-size:18px;color:#04222a;cursor:pointer;background:rgba(255,255,255,.05);}
+  .check.done .box{background:linear-gradient(180deg,#2ff0d2,#0bbfa5);}
+  .check.done .txt{color:var(--muted);text-decoration:line-through;}
+  .check .txt{flex:1;font-size:16px;}
+  .note{background:rgba(245,197,66,.1);border:1px solid rgba(245,197,66,.4);border-radius:14px;padding:13px 14px;font-size:13.5px;line-height:1.5;color:#ffe9b0;}
+  .err{color:#ffb3b3;font-size:14px;min-height:18px;text-align:center;}
+  .center{text-align:center;}
+  .hidden{display:none !important;}
+  .tabs{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 2px;}
+  .tabs button{flex:1;min-width:70px;padding:10px 4px;border-radius:12px;border:1px solid rgba(23,230,200,.28);background:rgba(255,255,255,.05);color:var(--txt);font-size:13.5px;font-weight:700;cursor:pointer;}
+  .tabs button.sel{background:linear-gradient(180deg, rgba(23,230,200,.32), rgba(11,191,165,.18));border-color:var(--teal);}
+  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 20px);
+    background:linear-gradient(180deg,#2ff0d2,#0bbfa5);color:#04222a;font-weight:800;padding:12px 20px;border-radius:999px;
+    box-shadow:0 10px 26px rgba(0,0,0,.5);font-size:15px;z-index:99;opacity:0;pointer-events:none;transition:opacity .25s;}
+  .toast.show{opacity:1;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ PUERTA: CÓDIGO FAMILIAR ============ -->
+  <section id="gate">
+    <img class="logo" src="icon-512.png" alt="Familia">
+    <h1 class="center">Familia</h1>
+    <p class="center muted">El panel privado de nuestra casa.<br>Solo para nosotros tres. 🏠</p>
+    <div class="card">
+      <label for="codeInput">Código familiar</label>
+      <input id="codeInput" class="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="••••">
+      <div class="err" id="gateErr"></div>
+      <button class="btn gold" id="gateBtn">Entrar</button>
+      <p class="small center">La primera vez se usa el código provisional que viene con la app; los padres lo cambian en Ajustes al primer uso.</p>
+    </div>
+  </section>
+
+  <!-- ============ SELECCIÓN DE ROL ============ -->
+  <section id="roleSel" class="hidden">
+    <img class="logo" src="icon-512.png" alt="Familia">
+    <h1 class="center">¿Quién entra?</h1>
+    <p class="center muted">Elige tu nombre para ver tu pantalla.</p>
+    <div class="role">
+      <button data-role="papa"><span class="em">👨</span>Papá</button>
+      <button data-role="mama"><span class="em">👩</span>Mamá</button>
+      <button data-role="nino"><span class="em">🧒</span>Niño</button>
+    </div>
+    <button class="btn" id="roleBtn">Continuar</button>
+    <button class="btn ghost" id="roleBack">Volver</button>
+  </section>
+
+  <!-- ============ APP ============ -->
+  <section id="app" class="hidden">
+    <div class="topbar">
+      <img src="icon-512.png" alt="">
+      <div class="who">
+        <h1 style="font-size:21px;">Familia</h1>
+        <div class="small" id="whoLine">—</div>
+      </div>
+      <button class="btn ghost" id="exitBtn" style="width:auto;padding:9px 13px;margin:0;">Salir</button>
+    </div>
+
+    <!-- ======== VISTA PADRES ======== -->
+    <div id="parentView" class="hidden">
+      <div class="tabs" id="parentTabs">
+        <button data-tab="reglas" class="sel">📋 Reglas</button>
+        <button data-tab="solicitudes">🙋 Solicitudes</button>
+        <button data-tab="llegadas">🏠 Llegadas</button>
+        <button data-tab="tareas">🧹 Tareas</button>
+        <button data-tab="ajustes">⚙️ Ajustes</button>
+      </div>
+
+      <div class="ptab" id="ptab-reglas">
+        <h2>Reglas y horarios de la casa</h2>
+        <div class="card">
+          <label>🌙 Hora de dormir</label>
+          <input type="time" id="rBed">
+          <label>🌅 Hora de levantarse</label>
+          <input type="time" id="rWake">
+          <label>📱 Tiempo de pantalla al día (minutos)</label>
+          <input type="number" id="rScreen" min="0" max="1440" step="5">
+          <label>📚 Horario de tareas / deberes</label>
+          <input type="text" id="rHomework" placeholder="Ej.: 5:00 p. m. – 6:00 p. m.">
+          <button class="btn" id="saveRules">Guardar reglas</button>
+          <p class="small">El niño ve estas reglas en su pantalla tal como quedan guardadas aquí.</p>
+        </div>
+      </div>
+
+      <div class="ptab hidden" id="ptab-solicitudes">
+        <h2>Solicitudes del niño</h2>
+        <div class="card" id="reqListParents"><p class="muted">Todavía no hay solicitudes.</p></div>
+      </div>
+
+      <div class="ptab hidden" id="ptab-llegadas">
+        <h2>Registro de llegadas y salidas</h2>
+        <div class="card" id="checkinList"><p class="muted">Todavía no hay registros.</p></div>
+      </div>
+
+      <div class="ptab hidden" id="ptab-tareas">
+        <h2>Tareas del hogar del niño</h2>
+        <div class="card">
+          <div id="choreListParents"></div>
+          <label style="margin-top:10px;display:block;">Nueva tarea</label>
+          <input type="text" id="newChore" placeholder="Ej.: Sacar la basura">
+          <button class="btn" id="addChore">Añadir tarea</button>
+          <button class="btn ghost" id="resetChores">Marcar todas como pendientes (nuevo día)</button>
+        </div>
+      </div>
+
+      <div class="ptab hidden" id="ptab-ajustes">
+        <h2>Ajustes de los padres</h2>
+        <div class="card gold" id="pinGate">
+          <p>🔒 Esta zona es solo para Papá y Mamá. Escribe el <b>PIN de padres</b>:</p>
+          <input id="pinInput" class="pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••">
+          <div class="err" id="pinErr"></div>
+          <button class="btn gold" id="pinBtn">Abrir ajustes</button>
+        </div>
+        <div class="card hidden" id="pinZone">
+          <h3>🔑 Cambiar código familiar</h3>
+          <label>Código nuevo (el que usa toda la familia para entrar)</label>
+          <input id="newCode" type="text" inputmode="numeric" autocomplete="off">
+          <button class="btn" id="saveCode">Guardar código</button>
+          <h3 style="margin-top:18px;">🔒 Cambiar PIN de padres</h3>
+          <label>PIN nuevo de 4 dígitos</label>
+          <input id="newPin" class="pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••">
+          <button class="btn" id="savePin">Guardar PIN</button>
+          <p class="small">Apunten el código y el PIN en un lugar seguro de la casa. Si se olvidan, hay que reinstalar la app en ese teléfono.</p>
+        </div>
+        <div class="note" style="margin-top:12px;">
+          <b>Nota honesta de la familia:</b> esta app es nuestro panel de reglas, permisos y acuerdos.
+          El bloqueo real de aplicaciones y los límites forzados dentro del iPhone los pone Apple con
+          <b>«Tiempo en pantalla»</b> y la cuenta de niño de la familia (En familia / Family Sharing).
+          Aquí acordamos las reglas; allá se hacen cumplir en el teléfono del niño.
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== VISTA NIÑO ======== -->
+    <div id="childView" class="hidden">
+      <h2>📋 Mis reglas de hoy</h2>
+      <div class="rulegrid">
+        <div class="rulebox"><div class="em">🌙</div><div class="val" id="cBed">—</div><div class="lab">A dormir</div></div>
+        <div class="rulebox"><div class="em">🌅</div><div class="val" id="cWake">—</div><div class="lab">A levantarse</div></div>
+        <div class="rulebox"><div class="em">📱</div><div class="val" id="cScreen">—</div><div class="lab">Pantalla al día</div></div>
+        <div class="rulebox"><div class="em">📚</div><div class="val" id="cHomework" style="font-size:15px;">—</div><div class="lab">Tareas / deberes</div></div>
+      </div>
+
+      <h2>🏠 Avisar a casa</h2>
+      <button class="btn big" id="btnArrive">✅ Ya llegué a casa</button>
+      <button class="btn big gold" id="btnLeave">🚶 Voy a salir</button>
+      <p class="small center">Al tocar, queda guardada la hora. Si aceptas el permiso de ubicación, también se guarda dónde estás.</p>
+
+      <h2>🙋 Pedir permiso</h2>
+      <div class="card">
+        <label>¿Qué quieres pedir?</label>
+        <select id="reqType">
+          <option value="Más tiempo de pantalla">📱 Más tiempo de pantalla</option>
+          <option value="Permiso para una app o juego">🎮 Permiso para una app o juego</option>
+          <option value="Una compra">🛒 Una compra</option>
+          <option value="Salir / ir a jugar">⚽ Salir / ir a jugar</option>
+          <option value="Otra cosa">✋ Otra cosa</option>
+        </select>
+        <label>Nota para Papá y Mamá</label>
+        <textarea id="reqNote" rows="2" placeholder="Ej.: 30 minutos más, por favor"></textarea>
+        <button class="btn" id="sendReq">Enviar solicitud</button>
+      </div>
+      <h3> Mis solicitudes</h3>
+      <div class="card" id="reqListChild"><p class="muted">Todavía no has pedido nada.</p></div>
+
+      <h2>🧹 Mis tareas del hogar</h2>
+      <div class="card"><div id="choreListChild"></div></div>
+    </div>
+
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ================================================================
+   FAMILIA — Panel familiar privado (v1, datos locales por teléfono)
+   Sincronización futura: ver FamiliaSync al final (sin credenciales).
+   ================================================================ */
+var LS_KEY = "familiaKG_v1";
+
+/* Marcadores PROVISIONALES de fábrica: los padres los cambian en
+   Ajustes en el primer uso. No son códigos definitivos. */
+var FACTORY_CODE = "1122";
+var FACTORY_PIN  = "3344";
+
+function seed(){
+  return {
+    code: FACTORY_CODE,
+    parentPin: FACTORY_PIN,
+    role: null,
+    rules: { bedtime:"21:00", wake:"07:00", screenMinutes:120, homework:"5:00 p. m. – 6:00 p. m." },
+    requests: [],   /* {id,type,note,status,ts} */
+    checkins: [],   /* {id,kind,ts,loc} */
+    chores: [       /* {id,text,done} */
+      {id:1, text:"Hacer la cama", done:false},
+      {id:2, text:"Hacer las tareas de la escuela", done:false},
+      {id:3, text:"Recoger los juguetes y el cuarto", done:false},
+      {id:4, text:"Cepillarse los dientes antes de dormir", done:false}
+    ]
+  };
+}
+function load(){
+  try{
+    var raw = localStorage.getItem(LS_KEY);
+    if(!raw) return seed();
+    var d = JSON.parse(raw);
+    var s = seed();
+    for(var k in s){ if(d[k]===undefined) d[k]=s[k]; }
+    return d;
+  }catch(e){ return seed(); }
+}
+function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }catch(e){} }
+var DB = load();
+
+/* ---------- utilidades ---------- */
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function fmtTime(t){
+  if(!t) return "—";
+  var p = t.split(":"); if(p.length<2) return t;
+  var h = parseInt(p[0],10), m = p[1];
+  var ap = h>=12 ? "p. m." : "a. m."; var h12 = h%12; if(h12===0) h12=12;
+  return h12 + ":" + m + " " + ap;
+}
+function fmtDT(ts){
+  var d = new Date(ts);
+  return d.toLocaleDateString("es-US",{day:"numeric",month:"short"}) + " · " +
+         d.toLocaleTimeString("es-US",{hour:"numeric",minute:"2-digit"});
+}
+var toastTimer=null;
+function toast(msg){
+  var t=$("toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer=setTimeout(function(){ t.classList.remove("show"); },2300);
+}
+
+/* ---------- puerta y roles ---------- */
+var chosenRole = null;
+$("gateBtn").addEventListener("click", function(){
+  var v = $("codeInput").value.trim();
+  if(v === DB.code){
+    $("gateErr").textContent="";
+    $("gate").classList.add("hidden");
+    $("roleSel").classList.remove("hidden");
+  }else{
+    $("gateErr").textContent = "Ese código no es. Pídelo a Papá o Mamá.";
+  }
+});
+$("codeInput").addEventListener("keydown", function(e){ if(e.key==="Enter") $("gateBtn").click(); });
+
+document.querySelectorAll("#roleSel .role button").forEach(function(b){
+  b.addEventListener("click", function(){
+    document.querySelectorAll("#roleSel .role button").forEach(function(x){ x.classList.remove("sel"); });
+    b.classList.add("sel"); chosenRole = b.getAttribute("data-role");
+  });
+});
+$("roleBtn").addEventListener("click", function(){
+  if(!chosenRole){ toast("Elige quién entra 👆"); return; }
+  DB.role = chosenRole; save();
+  enterApp();
+});
+$("roleBack").addEventListener("click", function(){
+  $("roleSel").classList.add("hidden");
+  $("gate").classList.remove("hidden");
+});
+$("exitBtn").addEventListener("click", function(){
+  $("app").classList.add("hidden");
+  $("roleSel").classList.add("hidden");
+  $("gate").classList.remove("hidden");
+  $("codeInput").value="";
+});
+
+var ROLE_NAMES = { papa:"Papá 👨", mama:"Mamá 👩", nino:"Niño 🧒" };
+function enterApp(){
+  $("roleSel").classList.add("hidden");
+  $("gate").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  $("whoLine").textContent = "Entraste como: " + (ROLE_NAMES[DB.role]||"");
+  if(DB.role==="nino"){
+    $("childView").classList.remove("hidden");
+    $("parentView").classList.add("hidden");
+    renderChild();
+  }else{
+    $("parentView").classList.remove("hidden");
+    $("childView").classList.add("hidden");
+    renderParents();
+  }
+  window.scrollTo(0,0);
+}
+
+/* ---------- pestañas de padres ---------- */
+document.querySelectorAll("#parentTabs button").forEach(function(b){
+  b.addEventListener("click", function(){
+    document.querySelectorAll("#parentTabs button").forEach(function(x){ x.classList.remove("sel"); });
+    b.classList.add("sel");
+    document.querySelectorAll(".ptab").forEach(function(p){ p.classList.add("hidden"); });
+    $("ptab-"+b.getAttribute("data-tab")).classList.remove("hidden");
+    renderParents();
+  });
+});
+
+/* ---------- reglas ---------- */
+function renderRules(){
+  $("rBed").value = DB.rules.bedtime||"";
+  $("rWake").value = DB.rules.wake||"";
+  $("rScreen").value = DB.rules.screenMinutes;
+  $("rHomework").value = DB.rules.homework||"";
+}
+$("saveRules").addEventListener("click", function(){
+  DB.rules.bedtime = $("rBed").value || DB.rules.bedtime;
+  DB.rules.wake = $("rWake").value || DB.rules.wake;
+  var sc = parseInt($("rScreen").value,10);
+  DB.rules.screenMinutes = isNaN(sc) ? DB.rules.screenMinutes : Math.max(0, Math.min(1440, sc));
+  DB.rules.homework = $("rHomework").value.trim();
+  save(); toast("Reglas guardadas ✅");
+});
+
+/* ---------- solicitudes ---------- */
+function statusChip(st){
+  if(st==="aprobada") return '<span class="chip apr">Aprobada</span>';
+  if(st==="denegada") return '<span class="chip den">Denegada</span>';
+  return '<span class="chip pend">Pendiente</span>';
+}
+function renderRequests(){
+  var htmlP="", htmlC="";
+  if(!DB.requests.length){
+    htmlP = '<p class="muted">Todavía no hay solicitudes.</p>';
+    htmlC = '<p class="muted">Todavía no has pedido nada.</p>';
+  }else{
+    DB.requests.slice().reverse().forEach(function(r){
+      var head = "<b>"+esc(r.type)+"</b> " + statusChip(r.status) +
+        (r.note ? '<br><span class="muted">“'+esc(r.note)+'”</span>' : "") +
+        '<br><span class="small">'+fmtDT(r.ts)+"</span>";
+      htmlC += '<div class="item">'+head+"</div>";
+      var btns = "";
+      if(r.status==="pendiente"){
+        btns = '<div class="btnrow"><button class="btn" data-apr="'+r.id+'">✔ Aprobar</button>'+
+               '<button class="btn danger" data-den="'+r.id+'">✖ Denegar</button></div>';
+      }
+      htmlP += '<div class="item">'+head+btns+"</div>";
+    });
+  }
+  $("reqListParents").innerHTML = htmlP;
+  $("reqListChild").innerHTML = htmlC;
+  $("reqListParents").querySelectorAll("[data-apr]").forEach(function(b){
+    b.addEventListener("click", function(){ setReq(b.getAttribute("data-apr"), "aprobada"); });
+  });
+  $("reqListParents").querySelectorAll("[data-den]").forEach(function(b){
+    b.addEventListener("click", function(){ setReq(b.getAttribute("data-den"), "denegada"); });
+  });
+}
+function setReq(id, st){
+  DB.requests.forEach(function(r){ if(String(r.id)===String(id)) r.status = st; });
+  save(); renderRequests();
+  toast(st==="aprobada" ? "Solicitud aprobada ✔" : "Solicitud denegada ✖");
+}
+$("sendReq").addEventListener("click", function(){
+  DB.requests.push({
+    id: Date.now(),
+    type: $("reqType").value,
+    note: $("reqNote").value.trim(),
+    status: "pendiente",
+    ts: Date.now()
+  });
+  $("reqNote").value="";
+  save(); renderRequests();
+  toast("Solicitud enviada a Papá y Mamá 🙋");
+});
+
+/* ---------- llegadas / salidas ---------- */
+function doCheckin(kind){
+  var entry = { id: Date.now(), kind: kind, ts: Date.now(), loc: null };
+  DB.checkins.push(entry); save(); renderCheckins();
+  toast(kind==="llegada" ? "¡Bienvenido a casa! 🏠" : "Salida registrada 🚶");
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(function(pos){
+      entry.loc = pos.coords.latitude.toFixed(5) + ", " + pos.coords.longitude.toFixed(5);
+      save(); renderCheckins();
+    }, function(){ /* sin permiso: solo la hora */ }, { timeout: 8000, maximumAge: 60000 });
+  }
+}
+$("btnArrive").addEventListener("click", function(){ doCheckin("llegada"); });
+$("btnLeave").addEventListener("click", function(){ doCheckin("salida"); });
+function renderCheckins(){
+  var el = $("checkinList");
+  if(!DB.checkins.length){ el.innerHTML = '<p class="muted">Todavía no hay registros.</p>'; return; }
+  el.innerHTML = DB.checkins.slice().reverse().slice(0,40).map(function(c){
+    var t = c.kind==="llegada" ? "🏠 Ya llegué a casa" : "🚶 Voy a salir";
+    return '<div class="item"><b>'+t+'</b><br><span class="small">'+fmtDT(c.ts)+
+      (c.loc ? " · 📍 "+esc(c.loc) : "")+"</span></div>";
+  }).join("");
+}
+
+/* ---------- tareas del hogar ---------- */
+function choreRow(c, forChild){
+  return '<div class="check'+(c.done?" done":"")+'">'+
+    '<div class="box" data-chore="'+c.id+'">'+(c.done?"✔":"")+'</div>'+
+    '<div class="txt">'+esc(c.text)+'</div>'+
+    (forChild ? "" : '<button class="btn ghost" style="width:auto;padding:6px 10px;margin:0;" data-delchore="'+c.id+'">🗑</button>')+
+    "</div>";
+}
+function renderChores(){
+  var html = DB.chores.map(function(c){ return choreRow(c,false); }).join("") || '<p class="muted">No hay tareas. Añade la primera abajo.</p>';
+  $("choreListParents").innerHTML = html;
+  var htmlC = DB.chores.map(function(c){ return choreRow(c,true); }).join("") || '<p class="muted">No tienes tareas. 🎉</p>';
+  $("choreListChild").innerHTML = htmlC;
+  document.querySelectorAll("[data-chore]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var id = b.getAttribute("data-chore");
+      DB.chores.forEach(function(c){ if(String(c.id)===String(id)) c.done = !c.done; });
+      save(); renderChores();
+    });
+  });
+  document.querySelectorAll("[data-delchore]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var id = b.getAttribute("data-delchore");
+      DB.chores = DB.chores.filter(function(c){ return String(c.id)!==String(id); });
+      save(); renderChores();
+    });
+  });
+}
+$("addChore").addEventListener("click", function(){
+  var t = $("newChore").value.trim();
+  if(!t){ toast("Escribe la tarea primero"); return; }
+  DB.chores.push({ id: Date.now(), text: t, done:false });
+  $("newChore").value="";
+  save(); renderChores(); toast("Tarea añadida 🧹");
+});
+$("resetChores").addEventListener("click", function(){
+  DB.chores.forEach(function(c){ c.done=false; });
+  save(); renderChores(); toast("Nuevo día: tareas pendientes 🌅");
+});
+
+/* ---------- ajustes (PIN de padres) ---------- */
+$("pinBtn").addEventListener("click", function(){
+  if($("pinInput").value.trim() === DB.parentPin){
+    $("pinErr").textContent="";
+    $("pinGate").classList.add("hidden");
+    $("pinZone").classList.remove("hidden");
+    $("newCode").value = DB.code;
+  }else{
+    $("pinErr").textContent = "PIN incorrecto.";
+  }
+});
+$("saveCode").addEventListener("click", function(){
+  var v = $("newCode").value.trim();
+  if(v.length < 4){ toast("El código debe tener al menos 4 caracteres"); return; }
+  DB.code = v; save(); toast("Código familiar actualizado 🔑");
+});
+$("savePin").addEventListener("click", function(){
+  var v = $("newPin").value.trim();
+  if(!/^\d{4}$/.test(v)){ toast("El PIN debe ser de 4 dígitos"); return; }
+  DB.parentPin = v; save(); $("newPin").value=""; toast("PIN de padres actualizado 🔒");
+});
+
+/* ---------- renders ---------- */
+function renderParents(){ renderRules(); renderRequests(); renderCheckins(); renderChores(); }
+function renderChild(){
+  $("cBed").textContent = fmtTime(DB.rules.bedtime);
+  $("cWake").textContent = fmtTime(DB.rules.wake);
+  var sc = DB.rules.screenMinutes;
+  $("cScreen").textContent = sc >= 60 ? (Math.floor(sc/60) + " h" + (sc%60 ? " " + (sc%60) + " min" : "")) : (sc + " min");
+  $("cHomework").textContent = DB.rules.homework || "—";
+  renderRequests(); renderChores();
+}
+
+/* ================================================================
+   FamiliaSync (FUTURO — todavía NO conectado):
+   La v1 guarda todo en localStorage de cada teléfono.
+   El paso siguiente es un servidor privado de la familia
+   (como Paisano/Supabase) para que los tres teléfonos vean lo
+   mismo en vivo. No hay credenciales aquí a propósito.
+   ================================================================ */
+var FamiliaSync = { enabled:false, push:function(){}, pull:function(){} };
+</script>
+</body>
+</html>
