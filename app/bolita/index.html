@@ -125,6 +125,14 @@
     <table id="tabla"></table>
   </div>
 
+  <div class="card">
+    <h2>📊 Pronósticos por lotería</h2>
+    <p class="hint">Calculados con el historial de un año de las tablas YAILIN (diciembre a noviembre): qué marca la tabla de Boul-Pa-Nou tras el último número, cuáles pares están atrasados y cuáles vienen calientes.</p>
+    <div class="tabs" id="ltabs"></div>
+    <div id="lpanel"></div>
+    <p class="orig" style="margin-top:14px">Cómo se calcula: cada par suma puntos por 4 señales — la tabla «cuando sale → viene» aplicada al último número, el atraso (sorteos sin salir), lo caliente de los últimos 90 sorteos y su frecuencia en el año. Probamos las tablas contra el historial real: aciertan parecido al azar, como manda la matemática — cada sorteo es independiente y ningún sistema garantiza aciertos. Es una guía de juego, no una promesa.</p>
+  </div>
+
   <p class="foot">
     Tablas tomadas de los videos de <b>Boul-Pa-Nou</b> (Facebook), tal como fueron publicadas en cada fecha.<br>
     Son las tablas de la tradición de la bolita: una guía de juego, sin garantía de acierto.<br>
@@ -208,6 +216,36 @@ $("tabla").addEventListener("click",function(e){
   window.scrollTo({top:0,behavior:"smooth"});
 });
 renderTabs(); renderTable();
+var PRON = {"loterias": [{"id": "azul", "etiqueta": "Tabla azul · mañana y noche", "sorteos": 716, "ultimo": "700", "ultimos_pares": ["13", "97", "00"], "digitos_calientes": [["0", "4", "5"], ["9", "8", "5"], ["3", "5", "1"]], "pares_calientes": [["58", 14], ["16", 14], ["40", 13], ["81", 12], ["94", 11], ["87", 11], ["91", 11], ["19", 11]], "pares_recientes": [["45", 4], ["06", 3], ["38", 3], ["97", 3], ["51", 3]], "atrasados": [["34", 525], ["66", 411], ["69", 384], ["22", 275], ["35", 241], ["88", 237], ["83", 232], ["76", 229]], "nunca_salieron": [], "pronostico": [["51", 0.403], ["57", 0.377], ["16", 0.355], ["40", 0.349], ["38", 0.338], ["00", 0.332], ["06", 0.332], ["23", 0.332]], "razones": {"51": ["la tabla lo marca tras el 00", "caliente: 3 veces en los últimos 90 sorteos"], "57": ["la tabla lo marca tras el 00"], "16": ["histórico fuerte: 14 veces en el año"], "40": ["histórico fuerte: 13 veces en el año"], "38": ["caliente: 3 veces en los últimos 90 sorteos"], "00": ["caliente: 3 veces en los últimos 90 sorteos"], "06": ["la tabla lo marca tras el 00", "caliente: 3 veces en los últimos 90 sorteos"], "23": []}, "validacion": {"principal": {"ultimos2": [116, 9, 0.079, 0.98], "primeros2": [117, 13, 0.083, 1.34]}, "negra00": {"ultimos2": [153, 9, 0.092, 0.64], "primeros2": [169, 25, 0.095, 1.56]}, "abr44": {"ultimos2": [72, 7, 0.107, 0.9], "primeros2": [88, 13, 0.107, 1.38]}, "may69": {"ultimos2": [77, 11, 0.105, 1.36], "primeros2": [84, 6, 0.095, 0.75]}, "pares": {"ultimos2": [198, 9, 0.059, 0.77], "primeros2": [230, 9, 0.059, 0.67]}, "acomp": {"ultimos2": [508, 36, 0.059, 1.21], "primeros2": [544, 37, 0.059, 1.16]}}}, {"id": "naranja", "etiqueta": "GEORGIA · mañana, tarde y noche", "sorteos": 1074, "ultimo": "354", "ultimos_pares": ["93", "02", "54"], "digitos_calientes": [["3", "0", "5"], ["7", "6", "8"], ["7", "3", "6"]], "pares_calientes": [["73", 18], ["15", 18], ["89", 17], ["63", 17], ["79", 17], ["32", 17], ["18", 16], ["76", 16]], "pares_recientes": [["71", 4], ["20", 3], ["89", 3], ["79", 3], ["57", 2]], "atrasados": [["25", 439], ["29", 426], ["90", 385], ["99", 369], ["31", 353], ["49", 338], ["91", 313], ["21", 271]], "nunca_salieron": [], "pronostico": [["57", 0.424], ["10", 0.422], ["27", 0.422], ["29", 0.421], ["36", 0.36], ["49", 0.358], ["79", 0.354], ["89", 0.349]], "razones": {"57": ["la tabla lo marca tras el 54"], "10": ["la tabla lo marca tras el 54"], "27": ["la tabla lo marca tras el 54"], "29": ["la tabla lo marca tras el 54", "atrasado: 426 sorteos sin salir"], "36": ["la tabla lo marca tras el 54"], "49": ["la tabla lo marca tras el 54"], "79": ["caliente: 3 veces en los últimos 90 sorteos"], "89": ["caliente: 3 veces en los últimos 90 sorteos"]}, "validacion": {"principal": {"ultimos2": [181, 14, 0.083, 0.93], "primeros2": [160, 14, 0.08, 1.1]}, "negra00": {"ultimos2": [217, 23, 0.091, 1.16], "primeros2": [232, 26, 0.094, 1.19]}, "abr44": {"ultimos2": [99, 10, 0.108, 0.94], "primeros2": [117, 14, 0.108, 1.11]}, "may69": {"ultimos2": [147, 18, 0.105, 1.17], "primeros2": [125, 12, 0.097, 0.99]}, "pares": {"ultimos2": [299, 20, 0.059, 1.14], "primeros2": [338, 21, 0.059, 1.06]}, "acomp": {"ultimos2": [784, 47, 0.059, 1.02], "primeros2": [819, 37, 0.059, 0.77]}}}, {"id": "rosa", "etiqueta": "Tabla rosa · día y noche", "sorteos": 716, "ultimo": "366", "ultimos_pares": ["14", "72", "66"], "digitos_calientes": [["3", "2", "5"], ["0", "9", "1"], ["2", "5", "6"]], "pares_calientes": [["02", 12], ["28", 11], ["55", 11], ["56", 11], ["52", 11], ["95", 11], ["22", 11], ["59", 11]], "pares_recientes": [["19", 4], ["52", 3], ["08", 3], ["28", 3], ["55", 3]], "atrasados": [["84", 504], ["26", 473], ["73", 443], ["34", 409], ["07", 370], ["42", 350], ["12", 340], ["32", 333]], "nunca_salieron": [], "pronostico": [["19", 0.468], ["18", 0.36], ["52", 0.354], ["05", 0.352], ["08", 0.352], ["55", 0.349], ["28", 0.348], ["66", 0.332]], "razones": {"19": ["la tabla lo marca tras el 66", "caliente: 4 veces en los últimos 90 sorteos"], "18": ["la tabla lo marca tras el 66"], "52": ["caliente: 3 veces en los últimos 90 sorteos"], "05": ["la tabla lo marca tras el 66"], "08": ["caliente: 3 veces en los últimos 90 sorteos"], "55": ["caliente: 3 veces en los últimos 90 sorteos"], "28": ["caliente: 3 veces en los últimos 90 sorteos"], "66": ["caliente: 3 veces en los últimos 90 sorteos"]}, "validacion": {"principal": {"ultimos2": [115, 12, 0.08, 1.3], "primeros2": [104, 11, 0.079, 1.34]}, "negra00": {"ultimos2": [179, 17, 0.095, 1.0], "primeros2": [142, 11, 0.094, 0.83]}, "abr44": {"ultimos2": [65, 5, 0.107, 0.72], "primeros2": [71, 10, 0.11, 1.28]}, "may69": {"ultimos2": [80, 8, 0.094, 1.06], "primeros2": [87, 8, 0.099, 0.93]}, "pares": {"ultimos2": [207, 7, 0.059, 0.58], "primeros2": [230, 14, 0.059, 1.04]}, "acomp": {"ultimos2": [533, 28, 0.059, 0.89], "primeros2": [547, 31, 0.059, 0.96]}}}]};
+var lcur = 1;
+function renderL(){
+  $("ltabs").innerHTML = PRON.loterias.map(function(l,i){
+    return '<button class="tab'+(i===lcur?' on':'')+'" data-i="'+i+'">'+l.etiqueta.split(" · ")[0]+'<small>'+l.sorteos+' sorteos</small></button>';
+  }).join("");
+  var l = PRON.loterias[lcur]; if(!l){ $("lpanel").innerHTML=""; return; }
+  var balls = l.pronostico.map(function(ps){ return ball(ps[0],false); }).join("");
+  var raz = l.pronostico.map(function(ps){
+    var r=(l.razones[ps[0]]||[])[0];
+    return r? '<p class="nota" style="margin:0 0 4px"><b style="color:#fff">'+ps[0]+'</b> — '+r+'</p>' : "";
+  }).join("");
+  var dig = l.digitos_calientes.map(function(dd,i){
+    return '<div style="flex:1;text-align:center"><div style="font-size:12px;color:var(--muted)">'+(i+1)+'º dígito</div><div style="font-size:26px;font-weight:800;color:var(--gold)">'+dd[0]+'</div><div style="font-size:12px;color:var(--muted)">'+dd.slice(1).join(" · ")+'</div></div>';
+  }).join("");
+  var cal = l.pares_calientes.slice(0,5).map(function(pc){ return '<b style="color:#fff">'+pc[0]+'</b> ('+pc[1]+')'; }).join(" · ");
+  var atr = l.atrasados.slice(0,5).map(function(pc){ return '<b style="color:#fff">'+pc[0]+'</b> ('+pc[1]+')'; }).join(" · ");
+  $("lpanel").innerHTML =
+    '<p class="from" style="color:var(--muted);font-size:14px;margin:4px 0 10px">'+l.etiqueta+' · último número que salió: <b style="color:#fff;font-size:17px">'+l.ultimo+'</b></p>'
+    + '<div class="from" style="font-size:15px;color:var(--muted);margin-bottom:10px">🔥 <b style="color:#fff">Probables de hoy</b></div><div class="balls">'+balls+'</div>'
+    + raz
+    + '<div style="display:flex;gap:8px;margin:16px 0 6px">'+dig+'</div>'
+    + '<p class="nota" style="color:var(--muted)">🎲 Pares que más salieron en el año: '+cal+'</p>'
+    + '<p class="nota" style="color:var(--muted)">⏳ Más atrasados (sorteos sin salir): '+atr+'</p>';
+}
+$("ltabs").addEventListener("click",function(e){
+  var b=e.target.closest(".tab"); if(!b) return;
+  lcur=+b.getAttribute("data-i"); renderL();
+});
+renderL();
 </script>
 </body>
 </html>
